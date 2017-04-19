@@ -7,8 +7,8 @@ gwt {
     minHeapSize="1G"
 
     src = files(file("src/")) // Needs to be in front of "modules" below.
-    modules 'me.dumfing.alk.GdxDefinition'
-    devModules 'me.dumfing.alk.GdxDefinitionSuperdev'
+    modules 'me.dumfing.multishooter.GdxDefinition'
+    devModules 'me.dumfing.multishooter.GdxDefinitionSuperdev'
     project.webAppDirName = 'webapp'
 
     compiler {

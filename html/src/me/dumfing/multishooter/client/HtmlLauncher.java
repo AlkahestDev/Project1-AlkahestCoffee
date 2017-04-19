@@ -1,9 +1,9 @@
-package me.dumfing.alk.client;
+package me.dumfing.multishooter.client;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import me.dumfing.alk.AlkahestCoffee;
+import me.dumfing.multishooter.MainShooter;
 
 public class HtmlLauncher extends GwtApplication {
 
@@ -14,6 +14,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener () {
-                return new AlkahestCoffee();
+                return new MainShooter();
         }
 }

@@ -17,7 +17,7 @@ allprojects {
 
     version = '1.0'
     ext {
-        appName = "AlkahestCoffee"
+        appName = "MultiplayerShooterTest"
         gdxVersion = '1.9.5'
         roboVMVersion = '2.3.0'
         box2DLightsVersion = '1.4'

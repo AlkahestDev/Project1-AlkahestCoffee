@@ -1,16 +1,16 @@
-package me.dumfing.alk;
+package me.dumfing.multishooter;
 
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import me.dumfing.alk.AlkahestCoffee;
+import me.dumfing.multishooter.MainShooter;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new AlkahestCoffee(), config);
+		initialize(new MainShooter(), config);
 	}
 }
