@@ -44,6 +44,7 @@ public class MainServer {
 
             @Override
             public void received(Connection connection, Object o) {
+                //We will be using a request and response system rather than periodically broadcasting to all clients as there's no easy way to have the server periodically update the clients
                 super.received(connection, o);
             }
 
@@ -60,9 +61,6 @@ public class MainServer {
     public void stop(){
         this.server.stop();
         this.isRunning = false;
-    }
-    public void updateClients(){ // send info about worldstate to clients
-
     }
     public boolean running(){
         return this.isRunning;
