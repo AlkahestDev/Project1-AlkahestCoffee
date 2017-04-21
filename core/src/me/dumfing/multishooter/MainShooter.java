@@ -4,45 +4,33 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import me.dumfing.mainmenu.MainMenu;
 import me.dumfing.multiplayerTools.MultiplayerClient;
 import me.dumfing.multiplayerTools.MultiplayerTools;
-
-import java.util.Scanner;
 
 public class MainShooter extends ApplicationAdapter implements InputProcessor{
 	private float scW, scH;
 	SpriteBatch batch;
 	AssetManager assetManager;
-	GameState state;
+	public static GameState state;
 	Texture tuzki, menuImg;
 	Texture[] loadingFrames;
 	MultiplayerClient player;
 	MultiplayerTools.PlayerSoldier clientSoldier;
+	ShapeRenderer sr;
+	MainMenu gameMain;
     int loadingFrame, frameCount;
 
-	private enum GameState{
-		LOADINGGAME, // loading all assets into the assetmanager and place them into variables
-		MAINMENU, // Main menu with play, settings, and quit
-		MAINMENUSETTINGS, // settings for the game
-		SERVERBROWSER, // browse all active servers on the network
-			STARTSERVER, // start your own server on the network
-		CONNECTINGTOSERVER, // currently establishing a connection to the server
-		CONNECTEDTOSERVER, // might not be used
-		PICKINGTEAM, // pick a team to join
-		PICKINGLOADOUT, // pick what class you are
-		PLAYINGGAME, // playing the game
-		ROUNDOVER, // end of round, show scoreboard etc.
-		//return to main menu
-		QUIT // exiting game
-		;
-
-	}
 	@Override
 	public void create () {
+		sr = new ShapeRenderer();
+		gameMain = new MainMenu();
 	    loadingFrame = frameCount = 0;
 	    int numFrames = 14;
 	    loadingFrames = new Texture[numFrames];
@@ -54,11 +42,15 @@ public class MainShooter extends ApplicationAdapter implements InputProcessor{
 		state = GameState.LOADINGGAME;
 		batch = new SpriteBatch();
 		assetManager = new AssetManager();
+		//Sticking random things to load into the assetmanager to see how long it'll take to load
 		assetManager.load("tuzki.png",Texture.class);
 		assetManager.load("Desktop.jpg",Texture.class);
-
+		assetManager.load("4k-image-santiago.jpg",Texture.class);
+		assetManager.load("4914003-galaxy-wallpaper-png.png",Texture.class);
+		assetManager.load("volcano-30238.png",Texture.class);
 		player = new MultiplayerClient();
 		player.startClient();
+		Gdx.input.setInputProcessor(this);
 	}
 
 	@Override
@@ -73,19 +65,34 @@ public class MainShooter extends ApplicationAdapter implements InputProcessor{
                     tuzki = assetManager.get("tuzki.png");
                     menuImg = assetManager.get("Desktop.jpg");
 					state = GameState.MAINMENU;
+					gameMain.setInputProcessor();
+					gameMain.setBackground(new TextureRegion(menuImg));
+					gameMain.addBackground(new TextureRegion(tuzki));
+					gameMain.setFrameTime(1);
 				}
 
 				batch.begin();
-					batch.draw(loadingFrames[loadingFrame],scW/2- loadingFrames[loadingFrame].getWidth()/2,scH/2- loadingFrames[loadingFrame].getHeight()/2); // draw tuzki frame at center of screen
+				batch.draw(loadingFrames[loadingFrame],scW/2- loadingFrames[loadingFrame].getWidth()/2,scH-loadingFrames[loadingFrame].getHeight()); // draw tuzki frame at center of screen
 				batch.end();
+				sr.begin(ShapeRenderer.ShapeType.Filled);
+					sr.setColor(Color.WHITE);
+					sr.rect(scW/2-200,20,400,30);
+					sr.setColor(Color.RED);
+					//System.out.println(396f*assetManager.getProgress());
+					sr.rect(scW/2-198,22,396f*assetManager.getProgress(),26);
+					//sr.circle(scW/2,100,90f*assetManager.getProgress());
+				sr.end();
 				if(frameCount % 2 == 0) { // change frame at 30fps (render is called at 60hz)
                     loadingFrame = (1 + loadingFrame) % loadingFrames.length; // increase frame by 1, setting it to 0 if it goes over the number of frames
                 }
 				break;
 			case MAINMENU:
-				batch.begin();
-				batch.draw(menuImg,scW/2-menuImg.getWidth()/2,scH/2-menuImg.getHeight()/2);
-				batch.end();
+				gameMain.update();
+				sr.begin(ShapeRenderer.ShapeType.Filled);
+					batch.begin();
+						gameMain.draw(batch,sr,true);
+					batch.end();
+				sr.end();
 				break;
 			case MAINMENUSETTINGS:
 				break;
