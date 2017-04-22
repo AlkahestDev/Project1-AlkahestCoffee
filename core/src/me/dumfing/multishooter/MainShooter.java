@@ -7,6 +7,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -28,12 +30,14 @@ public class MainShooter extends ApplicationAdapter implements InputProcessor{
 	ShapeRenderer sr;
 	LoadingMenu loadingMenu;
 	Menu gameMain;
+	BitmapFontCache bmfc;
 	@Override
 	public void create () {
 		assetManager = new AssetManager();
 		queueLoading();
+		bmfc = new BitmapFontCache(new BitmapFont());
 		sr = new ShapeRenderer();
-		gameMain = new MainMenu();
+		gameMain = new MainMenu(bmfc);
 		loadingMenu = new LoadingMenu(assetManager);
 		setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded
 		scW = Gdx.graphics.getWidth();
@@ -49,6 +53,7 @@ public class MainShooter extends ApplicationAdapter implements InputProcessor{
 	public void render () {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		bmfc.clear(); // clear bitmap font cache because it doesn't clear itself upon drawing (grumble grumble)
 		switch(state){
 			case LOADINGGAME: // we shouldn't ever be going back to LOADINGGAME
                 //LOADINGGAME just needs to call assetManager.update(), then assign the values
@@ -65,11 +70,15 @@ public class MainShooter extends ApplicationAdapter implements InputProcessor{
 				break;
 			case MAINMENU:
 				gameMain.update();
-				sr.begin(ShapeRenderer.ShapeType.Filled);
-					batch.begin();
-						gameMain.draw(batch,sr);
-					batch.end();
+				batch.begin(); // draw menu related things
+					gameMain.spriteDraw(batch);
+				batch.end();
+				sr.begin(ShapeRenderer.ShapeType.Filled); // draw shapes
+					gameMain.shapeDraw(sr);
 				sr.end();
+				batch.begin(); // draw text
+					bmfc.draw(batch);
+				batch.end();
 				break;
 			case MAINMENUSETTINGS:
 				break;
@@ -197,6 +206,7 @@ public class MainShooter extends ApplicationAdapter implements InputProcessor{
 		playButton.setUnpressedTexture(new TextureRegion(galaxy));
 		settingsButton.setPressedTexture(new TextureRegion(santiago));
 		settingsButton.setUnpressedTexture(new TextureRegion(galaxy));
+		gameMain.setBackground(new TextureRegion(santiago));
 		gameMain.addButton(playButton);
 		gameMain.addButton(settingsButton);
 	}

@@ -24,7 +24,6 @@ public class Menu implements InputProcessor{
     boolean animatedBackground;
     Array<TextureRegion> background; // all images used for background
     Array<Sprite> images = new Array<Sprite>(); // sprites for images, they can have their own position and texture
-
     public Menu(){
         buttons = new Array<MenuTools.Button>();
         backgroundFrame = 0;
@@ -51,36 +50,24 @@ public class Menu implements InputProcessor{
         }
         this.frameCount++;
     }
-    public void draw(SpriteBatch sb, ShapeRenderer sr, boolean debug){
+    public void spriteDraw(SpriteBatch sb){
         sb.draw(background.get(backgroundFrame),0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        if(debug){
-            for(MenuTools.Button bt : this.buttons){
-                if(bt.getClicked()){
-                    sr.setColor(Color.BLUE);
-                    DrawTools.rec(sr,bt.getButtonArea());
-                }
-                else {
-                    sr.setColor(Color.RED);
-                    DrawTools.rec(sr, bt.getButtonArea());
+            for(MenuTools.Button bt : this.buttons) {
+                if (bt.getClicked()) {
+                    sb.draw(bt.pressed, bt.getButtonArea().x, bt.getButtonArea().y, bt.getButtonArea().width, bt.getButtonArea().height);
+                } else {
+                    sb.draw(bt.unpressed, bt.getButtonArea().x, bt.getButtonArea().y, bt.getButtonArea().width, bt.getButtonArea().height);
                 }
             }
-        }
-        else{
-            for(MenuTools.Button bt : this.buttons){
-                if(bt.getClicked()){
-                    sb.draw(bt.pressed,bt.getButtonArea().x,bt.getButtonArea().y,bt.getButtonArea().width,bt.getButtonArea().height);
-                }
-                else {
-                    sb.draw(bt.unpressed,bt.getButtonArea().x,bt.getButtonArea().y,bt.getButtonArea().width,bt.getButtonArea().height);
-                }
-            }
-        }
         for(Sprite sp : images){
             sp.draw(sb);
         }
     }
+    public void shapeDraw(ShapeRenderer sr){
+    }
     public void draw(SpriteBatch sb, ShapeRenderer sr){
-        this.draw(sb,sr,false);
+        this.spriteDraw(sb);
+        this.shapeDraw(sr);
     }
     public void addImage(Sprite imgIn){ // add a sprite for drawing over buttons
         this.images.add(imgIn);
