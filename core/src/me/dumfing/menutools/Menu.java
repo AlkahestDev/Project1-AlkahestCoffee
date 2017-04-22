@@ -12,7 +12,11 @@ import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.DrawTools;
 
 /**
- * Created by dumpl on 4/21/2017.
+ * TODO: Text boxes
+ * WORK IN PROGRESS
+ * Menu.java
+ * Aaron Li
+ * Provides basic functions for all menus, animated backgrounds, buttons, images, textboxes(wip)
  */
 public class Menu implements InputProcessor{
     private Array<MenuTools.Button> buttons;
@@ -20,6 +24,7 @@ public class Menu implements InputProcessor{
     boolean animatedBackground;
     Array<TextureRegion> background; // all images used for background
     Array<Sprite> images = new Array<Sprite>(); // sprites for images, they can have their own position and texture
+
     public Menu(){
         buttons = new Array<MenuTools.Button>();
         backgroundFrame = 0;
@@ -63,10 +68,10 @@ public class Menu implements InputProcessor{
         else{
             for(MenuTools.Button bt : this.buttons){
                 if(bt.getClicked()){
-                    sb.draw(bt.pressed,bt.getButtonArea().x,bt.getButtonArea().y);
+                    sb.draw(bt.pressed,bt.getButtonArea().x,bt.getButtonArea().y,bt.getButtonArea().width,bt.getButtonArea().height);
                 }
                 else {
-                    sb.draw(bt.unpressed,bt.getButtonArea().x,bt.getButtonArea().y);
+                    sb.draw(bt.unpressed,bt.getButtonArea().x,bt.getButtonArea().y,bt.getButtonArea().width,bt.getButtonArea().height);
                 }
             }
         }

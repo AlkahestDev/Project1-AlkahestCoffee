@@ -10,7 +10,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import me.dumfing.mainmenu.MainMenu;
+import me.dumfing.menus.LoadingMenu;
+import me.dumfing.menus.MainMenu;
+import me.dumfing.menutools.Menu;
+import me.dumfing.menutools.MenuTools;
 import me.dumfing.multiplayerTools.MultiplayerClient;
 import me.dumfing.multiplayerTools.MultiplayerTools;
 
@@ -20,34 +23,23 @@ public class MainShooter extends ApplicationAdapter implements InputProcessor{
 	AssetManager assetManager;
 	public static GameState state;
 	Texture tuzki, menuImg;
-	Texture[] loadingFrames;
 	MultiplayerClient player;
 	MultiplayerTools.PlayerSoldier clientSoldier;
 	ShapeRenderer sr;
-	MainMenu gameMain;
-    int loadingFrame, frameCount;
-
+	LoadingMenu loadingMenu;
+	Menu gameMain;
 	@Override
 	public void create () {
+		assetManager = new AssetManager();
+		queueLoading();
 		sr = new ShapeRenderer();
 		gameMain = new MainMenu();
-	    loadingFrame = frameCount = 0;
-	    int numFrames = 14;
-	    loadingFrames = new Texture[numFrames];
-	    for(int i = 1; i<numFrames+1;i++){
-	        loadingFrames[i-1] = new Texture(Gdx.files.internal(String.format("loading/tuzkiii%d.png",i)));
-        }
+		loadingMenu = new LoadingMenu(assetManager);
+		setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded
 		scW = Gdx.graphics.getWidth();
 		scH = Gdx.graphics.getHeight();
 		state = GameState.LOADINGGAME;
 		batch = new SpriteBatch();
-		assetManager = new AssetManager();
-		//Sticking random things to load into the assetmanager to see how long it'll take to load
-		assetManager.load("tuzki.png",Texture.class);
-		assetManager.load("Desktop.jpg",Texture.class);
-		assetManager.load("4k-image-santiago.jpg",Texture.class);
-		assetManager.load("4914003-galaxy-wallpaper-png.png",Texture.class);
-		assetManager.load("volcano-30238.png",Texture.class);
 		player = new MultiplayerClient();
 		player.startClient();
 		Gdx.input.setInputProcessor(this);
@@ -60,37 +52,22 @@ public class MainShooter extends ApplicationAdapter implements InputProcessor{
 		switch(state){
 			case LOADINGGAME: // we shouldn't ever be going back to LOADINGGAME
                 //LOADINGGAME just needs to call assetManager.update(), then assign the values
-				if(assetManager.update()) { // returns true if done loading
-                    //assets are assigned to variables here
-                    tuzki = assetManager.get("tuzki.png");
-                    menuImg = assetManager.get("Desktop.jpg");
-					state = GameState.MAINMENU;
-					gameMain.setInputProcessor();
-					gameMain.setBackground(new TextureRegion(menuImg));
-					gameMain.addBackground(new TextureRegion(tuzki));
-					gameMain.setFrameTime(1);
-				}
-
-				batch.begin();
-				batch.draw(loadingFrames[loadingFrame],scW/2- loadingFrames[loadingFrame].getWidth()/2,scH-loadingFrames[loadingFrame].getHeight()); // draw tuzki frame at center of screen
-				batch.end();
+				loadingMenu.update();
 				sr.begin(ShapeRenderer.ShapeType.Filled);
-					sr.setColor(Color.WHITE);
-					sr.rect(scW/2-200,20,400,30);
-					sr.setColor(Color.RED);
-					//System.out.println(396f*assetManager.getProgress());
-					sr.rect(scW/2-198,22,396f*assetManager.getProgress(),26);
-					//sr.circle(scW/2,100,90f*assetManager.getProgress());
+					batch.begin();
+						loadingMenu.draw(batch,sr);
+					batch.end();
 				sr.end();
-				if(frameCount % 2 == 0) { // change frame at 30fps (render is called at 60hz)
-                    loadingFrame = (1 + loadingFrame) % loadingFrames.length; // increase frame by 1, setting it to 0 if it goes over the number of frames
-                }
+				if(loadingMenu.doneLoading()) { // returns true if done loading
+					//assets are assigned to variables here
+					assignValues();
+				}
 				break;
 			case MAINMENU:
 				gameMain.update();
 				sr.begin(ShapeRenderer.ShapeType.Filled);
 					batch.begin();
-						gameMain.draw(batch,sr,true);
+						gameMain.draw(batch,sr);
 					batch.end();
 				sr.end();
 				break;
@@ -113,7 +90,6 @@ public class MainShooter extends ApplicationAdapter implements InputProcessor{
 			case QUIT:
 				break;
 		}
-        frameCount = (1 + frameCount) % Integer.MAX_VALUE; // increase frameCount by 1, setting it to 0 if it is above integer.max_value
 	}
 
 	@Override
@@ -160,5 +136,68 @@ public class MainShooter extends ApplicationAdapter implements InputProcessor{
 	public void dispose () {
 		batch.dispose();
 		player.stopClient();
+	}
+	public void assignValues(){
+		tuzki = assetManager.get("tuzki.png");
+		menuImg = assetManager.get("Desktop.jpg");
+
+		state = GameState.MAINMENU;
+		gameMain.setInputProcessor();
+		gameMain.addImage(tuzki,Gdx.graphics.getWidth()/2-100,Gdx.graphics.getHeight()/2-20);
+		gameMain.setFrameTime(15);
+		setupMainMenu();
+	}
+	public void queueLoading(){ // queue files for assetManager to load
+		//Sticking random things to load into the assetmanager to see how long it'll take to load
+		assetManager.load("tuzki.png",Texture.class);
+		assetManager.load("Desktop.jpg",Texture.class);
+		assetManager.load("4k-image-santiago.jpg",Texture.class);
+		assetManager.load("4914003-galaxy-wallpaper-png.png",Texture.class);
+		assetManager.load("volcano-30238.png",Texture.class);
+		for(int i = 1; i<10; i++){
+			assetManager.load(String.format("L%d.png",i),Texture.class);
+			assetManager.load(String.format("R%d.png",i),Texture.class);
+		}
+	}
+	public void setupLoadingMenu(){
+		int numFrames = 39;
+		for(int i = 0; i<numFrames;i++){
+			loadingMenu.addBackground(new TextureRegion(new Texture(Gdx.files.internal(String.format("loading/loadingKnight/loadingKnight%d.png",i)))));
+		}
+		loadingMenu.setFrameTime(30);
+	}
+	public void setupMainMenu(){
+		MenuTools.Button playButton, settingsButton, quitButton;
+		for(int i = 1; i<10; i++){
+			Texture tmp = assetManager.get(String.format("L%d.png",i));
+			gameMain.addBackground(new TextureRegion(tmp));
+		}
+		for(int i = 1; i<10; i++){
+			Texture tmp = assetManager.get(String.format("R%d.png",i));
+			gameMain.addBackground(new TextureRegion(tmp));
+		}
+		playButton = new MenuTools.Button(0, 6 * (Gdx.graphics.getHeight() / 10), 400, 100, new MenuTools.OnClick() {
+			@Override
+			public void action() {
+				MainShooter.state = GameState.SERVERBROWSER;
+				System.out.println("Play!");
+			}
+		});
+		settingsButton = new MenuTools.Button(0, 5 * (Gdx.graphics.getHeight() / 10), 400, 100, new MenuTools.OnClick() {
+			@Override
+			public void action() {
+				MainShooter.state = GameState.MAINMENUSETTINGS;
+				System.out.println("Settings");
+			}
+		});
+		Texture santiago, galaxy;
+		santiago = assetManager.get("4k-image-santiago.jpg");
+		galaxy = assetManager.get("4914003-galaxy-wallpaper-png.png");
+		playButton.setPressedTexture(new TextureRegion(santiago));
+		playButton.setUnpressedTexture(new TextureRegion(galaxy));
+		settingsButton.setPressedTexture(new TextureRegion(santiago));
+		settingsButton.setUnpressedTexture(new TextureRegion(galaxy));
+		gameMain.addButton(playButton);
+		gameMain.addButton(settingsButton);
 	}
 }

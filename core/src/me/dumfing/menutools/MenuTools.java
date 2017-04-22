@@ -59,6 +59,12 @@ public class MenuTools {
                 }
             }
         }
+        public void setPressedTexture(TextureRegion pressedTexture){
+            this.pressed = pressedTexture;
+        }
+        public void setUnpressedTexture(TextureRegion unpressedTexture){
+            this.unpressed = unpressedTexture;
+        }
         public void draw(ShapeRenderer sr){
             this.draw(sr,null,true);
         }
