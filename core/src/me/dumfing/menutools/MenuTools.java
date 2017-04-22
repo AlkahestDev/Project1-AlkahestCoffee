@@ -104,8 +104,10 @@ public class MenuTools {
             if(this.frameCount%40 == 0){
                 this.showCursor = !showCursor;
             }
-            for(int i = 0; i<267; i++){
-                this.heldKeys[i]++;
+            for(int i = 0; i<257; i++){
+                if(heldKeys[i]>-1) {
+                    this.heldKeys[i]++;
+                }
             }
         }
         public boolean collidePoint(float mX, float mY){
