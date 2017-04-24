@@ -1,11 +1,14 @@
 package me.dumfing.menutools;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Align;
 import me.dumfing.gdxtools.DrawTools;
+
+import java.util.Arrays;
 
 /**
  * TODO: textbox arrow keys, deleting, and getting text
@@ -14,6 +17,7 @@ import me.dumfing.gdxtools.DrawTools;
  * So far there is a button and textbox(WIP)
  */
 public class MenuTools {
+    public static final int keyTime = 7; // number of frames before a key is registered again
     private static final String legalChars = " `~1!2@3#4$5%6^7&8*9(0)-_=+qwertyuiopasdfghjklzxcvbnm,<.>/?;:'\"\\|][}{";
     public interface OnClick{
         void action();
@@ -92,6 +96,7 @@ public class MenuTools {
             initVars();
         }
         public void update(BitmapFontCache ch, boolean focused){
+            handleHeldKeys();
             ch.setColor(Color.BLACK);
             ch.addText(this.sOut.toString(),this.boxShape.getX()+3,this.boxShape.getY()+this.boxShape.getHeight(),0,this.sOut.length(),this.boxShape.getWidth(), Align.left,false,"");
             if(focused){
@@ -100,7 +105,7 @@ public class MenuTools {
             else{
                 this.frameCount = 0; // keeps delay consistent when refocusing on a textbox (also aids in staying away from Integer.MAX_VALUE)
             }
-            System.out.println(this.frameCount+" "+this.frameCount%30);
+            //System.out.println(this.frameCount+" "+this.frameCount%30);
             if(this.frameCount%40 == 0){
                 this.showCursor = !showCursor;
             }
@@ -119,7 +124,7 @@ public class MenuTools {
             sr.setColor(Color.WHITE);
             sr.rect(this.boxShape.x+2,this.boxShape.y+2,this.boxShape.width-4,this.boxShape.height-4);
             sr.setColor(Color.BLACK);
-            float tWidth = new GlyphLayout(fnt,this.sOut.toString()).width;
+            float tWidth = new GlyphLayout(fnt,this.sOut.toString().substring(0,curPos)).width;
             if(tWidth<this.boxShape.width-12 && focused && showCursor) { // for the line to be drawn, the width fo the text must be within the width of the box, and the box must be focused
                 sr.rect(this.boxShape.getX() + tWidth + 5, this.boxShape.getY() + 3, 1, this.boxShape.getHeight() - 6);
             }
@@ -130,6 +135,7 @@ public class MenuTools {
             this.curPos = this.frameCount = 0;
             this.heldKeys = new int[257];
             this.showCursor = false;
+            Arrays.fill(this.heldKeys,-1);
         }
         public void keyDown(int keycode){
             this.heldKeys[keycode+1] = 0;
@@ -139,9 +145,37 @@ public class MenuTools {
         public void keyUp(int keycode){
             this.heldKeys[keycode+1] = -1;
         }
+        public void handleHeldKeys(){
+            boolean keyPressed = false;
+            if(this.heldKeys[Input.Keys.LEFT+1] % keyTime == 0){
+                this.curPos = Math.max(0,this.curPos-1);
+                keyPressed = true;
+            }
+            if(this.heldKeys[Input.Keys.RIGHT+1] % keyTime == 0){
+                this.curPos = Math.min(this.sOut.length(),this.curPos+1);
+                keyPressed = true;
+            }
+            if(this.heldKeys[Input.Keys.BACKSPACE+1] % keyTime == 0){
+                if(this.curPos>0){
+                    this.sOut.deleteCharAt(this.curPos-1);
+                    this.curPos--;
+                }
+            }
+            if(this.heldKeys[Input.Keys.FORWARD_DEL+1] % keyTime == 0){
+                if(this.curPos<this.sOut.length()){
+                    this.sOut.deleteCharAt(this.curPos);
+                }
+            }
+            if(keyPressed){
+                this.showCursor = true;
+                this.frameCount = 0;
+            }
+        }
         public void keyTyped(char keyIn){
             if(legalChars.contains(""+Character.toLowerCase(keyIn))){
                 this.sOut.insert(curPos,keyIn);
+                this.showCursor = true;
+                this.frameCount = 0;
                 this.curPos++;
             }
         }

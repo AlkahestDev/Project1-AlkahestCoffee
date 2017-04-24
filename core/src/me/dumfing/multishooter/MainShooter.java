@@ -173,7 +173,7 @@ public class MainShooter extends ApplicationAdapter implements InputProcessor{
 		for(int i = 0; i<numFrames;i++){
 			loadingMenu.addBackground(new TextureRegion(new Texture(Gdx.files.internal(String.format("loading/loadingKnight/loadingKnight%d.png",i)))));
 		}
-		loadingMenu.setFrameTime(30);
+		loadingMenu.setFrameTime(25);
 	}
 	public void setupMainMenu(){
 		MenuTools.Button playButton, settingsButton, quitButton;
