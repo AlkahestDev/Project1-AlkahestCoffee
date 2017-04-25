@@ -4,7 +4,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -14,8 +13,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import me.dumfing.menus.LoadingMenu;
 import me.dumfing.menus.MainMenu;
-import me.dumfing.menutools.Menu;
-import me.dumfing.menutools.MenuTools;
+import me.dumfing.menus.Menu;
+import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.multiplayerTools.MultiplayerClient;
 import me.dumfing.multiplayerTools.MultiplayerTools;
 
@@ -25,8 +24,8 @@ public class MainShooter extends ApplicationAdapter implements InputProcessor{
 	AssetManager assetManager;
 	public static GameState state;
 	Texture tuzki, menuImg;
-	MultiplayerClient player;
-	MultiplayerTools.PlayerSoldier clientSoldier;
+	public static MultiplayerClient player; // public to allow any menu to access easily
+	public static MultiplayerTools.PlayerSoldier clientSoldier; // public to allow any menu to access easily
 	ShapeRenderer sr;
 	LoadingMenu loadingMenu;
 	Menu gameMain;
@@ -38,13 +37,14 @@ public class MainShooter extends ApplicationAdapter implements InputProcessor{
 		bmfc = new BitmapFontCache(new BitmapFont());
 		sr = new ShapeRenderer();
 		gameMain = new MainMenu(bmfc);
-		loadingMenu = new LoadingMenu(assetManager);
-		setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded
+		loadingMenu = new LoadingMenu(assetManager,bmfc);
+		setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded, background frames are loaded and added to it here
 		scW = Gdx.graphics.getWidth();
 		scH = Gdx.graphics.getHeight();
 		state = GameState.LOADINGGAME;
 		batch = new SpriteBatch();
 		player = new MultiplayerClient();
+		clientSoldier = new MultiplayerTools.PlayerSoldier(0,0,0,"");
 		player.startClient();
 		Gdx.input.setInputProcessor(this);
 	}

@@ -2,17 +2,17 @@ package me.dumfing.menus;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import me.dumfing.menutools.Menu;
 
 /**
  * Created by dumpl on 4/21/2017.
  */
 public class LoadingMenu extends Menu {
     AssetManager manager;
-    public LoadingMenu(AssetManager manager){
+    public LoadingMenu(AssetManager manager, BitmapFontCache bmfc){
+        super(bmfc);
         this.manager = manager;
     }
 
