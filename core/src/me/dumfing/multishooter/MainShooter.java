@@ -34,7 +34,7 @@ public class MainShooter extends ApplicationAdapter implements InputProcessor{
 	public void create () {
 		assetManager = new AssetManager();
 		queueLoading();
-		bmfc = new BitmapFontCache(new BitmapFont());
+		bmfc = new BitmapFontCache(new BitmapFont(Gdx.files.internal("fonts/dagger40.fnt")));
 		sr = new ShapeRenderer();
 		gameMain = new MainMenu(bmfc);
 		loadingMenu = new LoadingMenu(assetManager,bmfc);
@@ -163,6 +163,7 @@ public class MainShooter extends ApplicationAdapter implements InputProcessor{
 		assetManager.load("4k-image-santiago.jpg",Texture.class);
 		assetManager.load("4914003-galaxy-wallpaper-png.png",Texture.class);
 		assetManager.load("volcano-30238.png",Texture.class);
+		assetManager.load("fonts/dagger40.fnt",BitmapFont.class);
 		for(int i = 1; i<10; i++){
 			assetManager.load(String.format("L%d.png",i),Texture.class);
 			assetManager.load(String.format("R%d.png",i),Texture.class);

@@ -27,6 +27,7 @@ public class Menu implements InputProcessor{
     private Array<TextureRegion> background; // all images used for background
     private LinkedList<Sprite> images; // sprites for images, they can have their own position and texture
     private LinkedList<MenuTools.TextBox> textBoxes;
+    private LinkedList<MenuTools.ColourRect> colRects;
     private BitmapFontCache textCache;
     private MenuTools.TextBox focused; // the textbox that the user will be typing into
     public Menu(BitmapFontCache bmfc){
@@ -35,6 +36,7 @@ public class Menu implements InputProcessor{
         background = new Array<TextureRegion>();
         images = new LinkedList<Sprite>();
         textBoxes = new LinkedList<MenuTools.TextBox>();
+        colRects = new LinkedList<MenuTools.ColourRect>();
         this.textCache = bmfc;
     }
     public void setInputProcessor(){
@@ -45,6 +47,9 @@ public class Menu implements InputProcessor{
     }
     public void addTextBox(MenuTools.TextBox txtIn){
         this.textBoxes.add(txtIn);
+    }
+    public void addColRect(MenuTools.ColourRect rIn){
+        this.colRects.add(rIn);
     }
     public void removeTextBox(MenuTools.TextBox toRm){
         this.textBoxes.remove(toRm); // removes the box with the same memory address in the Array of Text Boxes
@@ -64,6 +69,9 @@ public class Menu implements InputProcessor{
         for(MenuTools.TextBox tb : textBoxes){ // go through all TextBoxes in the Menu
             tb.update(textCache,focused ==tb); // update the textbox
         }
+        for(MenuTools.ColourRect cR : colRects){
+            cR.update();
+        }
         this.frameCount++; // increase frameCounter
     }
     public void spriteDraw(SpriteBatch sb){ // draw all SpriteBatch related things
@@ -80,6 +88,9 @@ public class Menu implements InputProcessor{
         }
     }
     public void shapeDraw(ShapeRenderer sr){ // draw all shape related things
+        for(MenuTools.ColourRect cR : colRects){
+            cR.draw(sr);
+        }
         for(MenuTools.TextBox tb : textBoxes){ // TextBoxes look like two rectangles drawn on eachother
             tb.draw(sr,textCache.getFont(),tb == focused); // draw the textBox, if it's the focused one then it'll have the cursor being drawn
         }

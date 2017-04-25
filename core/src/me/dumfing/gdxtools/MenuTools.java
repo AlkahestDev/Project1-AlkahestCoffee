@@ -25,6 +25,50 @@ public class MenuTools {
     public interface OnEnter{
         void action(String sIn);
     }
+    public static class ColourRect{
+        private Rectangle rectShape;
+        private Color rectColor;
+        private float vX, vY;
+        public ColourRect(float x, float y, float w, float h, float r, float g, float b, float a){
+            this.rectColor = new Color(r,g,b,a);
+            this.rectShape = new Rectangle(x,y,w,h);
+        }
+        public ColourRect(Rectangle rectShape, float r,float g,float b,float a){
+            this.rectColor = new Color(r,g,b,a);
+            this.rectShape = rectShape;
+        }
+        public ColourRect(Rectangle rectShape, Color rectCol){
+            this.rectShape = rectShape;
+            this.rectColor = rectCol;
+        }
+        public void draw(ShapeRenderer sr){
+            sr.setColor(this.rectColor);
+            DrawTools.rec(sr,this.rectShape);
+        }
+        public void update(){
+            this.rectShape.x+=this.vX;
+            this.rectShape.y+=this.vY;
+            if(this.vX > 0){
+                this.vX = Math.max(0,this.vX-0.5f);
+            }
+            else if(this.vX < 0){
+                this.vX = Math.min(0,this.vX +0.5f);
+            }
+            if(this.vY > 0){
+                this.vY = Math.max(0,this.vY-0.5f);
+            }
+            else if(this.vY < 0){
+                this.vY = Math.min(0,this.vY + 0.5f);
+            }
+        }
+        public void setVelocity(float x, float y){
+            this.vX = x;
+            this.vY = y;
+        }
+        public Rectangle getRectShape(){
+            return this.rectShape;
+        }
+    }
     public static class Button{
         private TextureRegion unpressed, pressed; // how the button looks when it's held down and when it's not held down
         private Rectangle buttonArea;
@@ -133,7 +177,7 @@ public class MenuTools {
             }
             handleHeldKeys();
             ch.setColor(Color.BLACK);
-            ch.addText(this.sOut.toString(),this.boxShape.getX()+3,this.boxShape.getY()+this.boxShape.getHeight(),0,this.sOut.length(),this.boxShape.getWidth(), Align.left,false,"");
+            ch.addText(this.sOut.toString(),this.boxShape.getX()+3,this.boxShape.getY()+this.boxShape.getHeight() - 7,0,this.sOut.length(),this.boxShape.getWidth(), Align.left,false,"");
             if(focused){
                 this.frameCount++; // Integer.MAX_VALUE frames is around 414 days to overflow, if a user has the text box open for 414 days, the game probably won't be worth keeping open
             }
@@ -161,7 +205,7 @@ public class MenuTools {
             sr.setColor(Color.BLACK);
             float tWidth = new GlyphLayout(fnt,this.sOut.toString().substring(0,curPos)).width;
             if(tWidth<this.boxShape.width-12 && focused && showCursor) { // for the line to be drawn, the width fo the text must be within the width of the box, and the box must be focused
-                sr.rect(this.boxShape.getX() + tWidth + 5, this.boxShape.getY() + 3, 1, this.boxShape.getHeight() - 6);
+                sr.rect(this.boxShape.getX() + tWidth + 5, this.boxShape.getY() + 5, 1, this.boxShape.getHeight() - 10);
             }
 
         }
