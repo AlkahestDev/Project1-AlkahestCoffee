@@ -1,10 +1,9 @@
-package me.dumfing.multishooter;
+package me.dumfing.maingame;
 
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import me.dumfing.multishooter.MainShooter;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override

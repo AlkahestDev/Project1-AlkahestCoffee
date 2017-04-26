@@ -28,6 +28,7 @@ public class Menu implements InputProcessor{
     private LinkedList<Sprite> images; // sprites for images, they can have their own position and texture
     private LinkedList<MenuTools.TextBox> textBoxes;
     private LinkedList<MenuTools.ColourRect> colRects;
+    private LinkedList<MenuBox> menuBoxes;
     private BitmapFontCache textCache;
     private MenuTools.TextBox focused; // the textbox that the user will be typing into
     public Menu(BitmapFontCache bmfc){
@@ -37,6 +38,7 @@ public class Menu implements InputProcessor{
         images = new LinkedList<Sprite>();
         textBoxes = new LinkedList<MenuTools.TextBox>();
         colRects = new LinkedList<MenuTools.ColourRect>();
+        menuBoxes = new LinkedList<MenuBox>();
         this.textCache = bmfc;
     }
     public void setInputProcessor(){
@@ -50,6 +52,9 @@ public class Menu implements InputProcessor{
     }
     public void addColRect(MenuTools.ColourRect rIn){
         this.colRects.add(rIn);
+    }
+    public void addMenuBox(MenuBox mbIn){
+        this.menuBoxes.add(mbIn);
     }
     public void removeTextBox(MenuTools.TextBox toRm){
         this.textBoxes.remove(toRm); // removes the box with the same memory address in the Array of Text Boxes
@@ -72,6 +77,9 @@ public class Menu implements InputProcessor{
         for(MenuTools.ColourRect cR : colRects){
             cR.update();
         }
+        for(MenuBox mb : menuBoxes){
+            mb.update();
+        }
         this.frameCount++; // increase frameCounter
     }
     public void spriteDraw(SpriteBatch sb){ // draw all SpriteBatch related things
@@ -86,6 +94,9 @@ public class Menu implements InputProcessor{
         for(Sprite sp : images){ // draw all Sprites in the Menu
             sp.draw(sb);
         }
+        for(MenuBox mb : menuBoxes){
+            mb.spriteDraw(sb);
+        }
     }
     public void shapeDraw(ShapeRenderer sr){ // draw all shape related things
         for(MenuTools.ColourRect cR : colRects){
@@ -93,6 +104,9 @@ public class Menu implements InputProcessor{
         }
         for(MenuTools.TextBox tb : textBoxes){ // TextBoxes look like two rectangles drawn on eachother
             tb.draw(sr,textCache.getFont(),tb == focused); // draw the textBox, if it's the focused one then it'll have the cursor being drawn
+        }
+        for(MenuBox mb : menuBoxes){
+            mb.shapeDraw(sr);
         }
     }
     public void draw(SpriteBatch sb, ShapeRenderer sr){ // Singular draw method to take up less space if the order of drawing doesn't matter

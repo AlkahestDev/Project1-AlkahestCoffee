@@ -1,4 +1,4 @@
-package me.dumfing.multishooter;
+package me.dumfing.maingame;
 
 public enum GameState{
 	LOADINGGAME, // loading all assets into the assetmanager and place them into variables

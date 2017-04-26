@@ -1,4 +1,4 @@
-package me.dumfing.multishooter;
+package me.dumfing.maingame;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -15,10 +15,11 @@ import me.dumfing.menus.LoadingMenu;
 import me.dumfing.menus.MainMenu;
 import me.dumfing.menus.Menu;
 import me.dumfing.gdxtools.MenuTools;
+import me.dumfing.menus.MenuBox;
 import me.dumfing.multiplayerTools.MultiplayerClient;
 import me.dumfing.multiplayerTools.MultiplayerTools;
 
-public class MainShooter extends ApplicationAdapter implements InputProcessor{
+public class MainGame extends ApplicationAdapter implements InputProcessor{
 	private float scW, scH;
 	SpriteBatch batch;
 	AssetManager assetManager;
@@ -163,7 +164,8 @@ public class MainShooter extends ApplicationAdapter implements InputProcessor{
 		assetManager.load("4k-image-santiago.jpg",Texture.class);
 		assetManager.load("4914003-galaxy-wallpaper-png.png",Texture.class);
 		assetManager.load("volcano-30238.png",Texture.class);
-		assetManager.load("fonts/dagger40.fnt",BitmapFont.class);
+		//assetManager.load("fonts/dagger40.fnt",BitmapFont.class);
+		assetManager.load("menubackdrops/canvas.png",Texture.class);
 		for(int i = 1; i<10; i++){
 			assetManager.load(String.format("L%d.png",i),Texture.class);
 			assetManager.load(String.format("R%d.png",i),Texture.class);
@@ -189,17 +191,20 @@ public class MainShooter extends ApplicationAdapter implements InputProcessor{
 		playButton = new MenuTools.Button(0, 6 * (Gdx.graphics.getHeight() / 10), 400, 100, new MenuTools.OnClick() {
 			@Override
 			public void action() {
-				MainShooter.state = GameState.SERVERBROWSER;
+				MainGame.state = GameState.SERVERBROWSER;
 				System.out.println("Play!");
 			}
 		});
 		settingsButton = new MenuTools.Button(0, 5 * (Gdx.graphics.getHeight() / 10), 400, 100, new MenuTools.OnClick() {
 			@Override
 			public void action() {
-				MainShooter.state = GameState.MAINMENUSETTINGS;
+				MainGame.state = GameState.MAINMENUSETTINGS;
 				System.out.println("Settings");
 			}
 		});
+		MenuBox askUserNameBox = new MenuBox(Gdx.graphics.getWidth()-165,Gdx.graphics.getHeight() - 85,330,170,bmfc);
+		askUserNameBox.setBackground(new TextureRegion((Texture)assetManager.get("menubackdrops/canvas.png")));
+		gameMain.addMenuBox(askUserNameBox);
 		Texture santiago, galaxy;
 		santiago = assetManager.get("4k-image-santiago.jpg");
 		galaxy = assetManager.get("4914003-galaxy-wallpaper-png.png");

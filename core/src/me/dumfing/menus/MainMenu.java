@@ -3,7 +3,7 @@ package me.dumfing.menus;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import me.dumfing.gdxtools.MenuTools;
-import me.dumfing.multishooter.MainShooter;
+import me.dumfing.maingame.MainGame;
 
 /**
  * Created by dumpl on 4/20/2017.
@@ -19,18 +19,19 @@ public class MainMenu extends Menu{
                 int gHeight = Gdx.graphics.getHeight();
                 float vY = -18.4f;
                 if(gHeight >=660) {
-                    vY = -(19.5f + (gHeight - 660) / 80f);
+                    vY = -(20f + (gHeight - 660) / 60f);
                 }
                 askUserName.setVelocity(0,vY);
                 askUserNameBack.setVelocity(0,vY);
+                askUserNameBorder.setVelocity(0,vY);
                 askUserName.setEnterAction(new MenuTools.OnEnter() {public void action(String sIn) {}}); // set the action to do nothing so you can't reset the velocity
-                MainShooter.clientSoldier.setName(tIn);
+                MainGame.clientSoldier.setName(tIn);
                 //MainShooter.player.connectToServer(tIn);
                 //MainMenu.super.removeTextBox(askUserName);
             }
         });
-        super.addColRect(askUserNameBorder);
-        super.addColRect(askUserNameBack);
-        super.addTextBox(askUserName);
+        //super.addColRect(askUserNameBorder);
+        //super.addColRect(askUserNameBack);
+        //super.addTextBox(askUserName);
     }
 }

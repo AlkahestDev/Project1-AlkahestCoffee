@@ -1,9 +1,9 @@
-package me.dumfing.multishooter.client;
+package me.dumfing.maingame.client;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import me.dumfing.multishooter.MainShooter;
+import me.dumfing.maingame.MainShooter;
 
 public class HtmlLauncher extends GwtApplication {
 

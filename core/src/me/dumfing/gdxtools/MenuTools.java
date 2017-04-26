@@ -25,26 +25,65 @@ public class MenuTools {
     public interface OnEnter{
         void action(String sIn);
     }
+
+    /**
+     * A Rectangular area that can be drawn with a ShapeRenderer
+     */
     public static class ColourRect{
         private Rectangle rectShape;
         private Color rectColor;
         private float vX, vY;
+        /**
+         * The constructor for the ColourRect
+         * @param x The X position of the Rectangle
+         * @param y The Y position of the Rectangle
+         * @param w The width of the Rectangle
+         * @param h The height of the Rectangle
+         * @param r The red component of the ColourRect
+         * @param g The green component of the ColourRect
+         * @param b The blue component of the ColourRect
+         * @param a The alpha value of the ColourRect
+         */
         public ColourRect(float x, float y, float w, float h, float r, float g, float b, float a){
             this.rectColor = new Color(r,g,b,a);
             this.rectShape = new Rectangle(x,y,w,h);
         }
+
+        /**
+         * The constructor for the ColourRect
+         * @param rectShape A Rectangle object for the ColourRect
+         * @param r The red component of the ColourRect
+         * @param g The green component of the ColourRect
+         * @param b The blue component of the ColourRect
+         * @param a The alpha value of the ColourRect
+         */
         public ColourRect(Rectangle rectShape, float r,float g,float b,float a){
             this.rectColor = new Color(r,g,b,a);
             this.rectShape = rectShape;
         }
+
+        /**
+         * The constructor for the ColourRect
+         * @param rectShape A Rectangle object for the ColourRect
+         * @param rectCol A Color object to determine the color for the ColourRect
+         */
         public ColourRect(Rectangle rectShape, Color rectCol){
             this.rectShape = rectShape;
             this.rectColor = rectCol;
         }
+
+        /**
+         * Draws the ColourRect
+         * @param sr ShapeRenderer used to draw the ColourRect
+         */
         public void draw(ShapeRenderer sr){
             sr.setColor(this.rectColor);
             DrawTools.rec(sr,this.rectShape);
         }
+
+        /**
+         * Moves the ColourRect based on it's velocity
+         */
         public void update(){
             this.rectShape.x+=this.vX;
             this.rectShape.y+=this.vY;
@@ -61,40 +100,98 @@ public class MenuTools {
                 this.vY = Math.min(0,this.vY + 0.5f);
             }
         }
+
+        /**
+         * Set the X and Y components of the ColourRect's motion
+         * @param x The X component of the ColourRect's velocity
+         * @param y The Y component of the ColourRect's velocity
+         */
         public void setVelocity(float x, float y){
             this.vX = x;
             this.vY = y;
         }
+
+        /**
+         * Returns the rectangular area of the ColourRect
+         * @return The Rectangle object used to draw the ColourRect
+         */
         public Rectangle getRectShape(){
             return this.rectShape;
         }
     }
+
+    /**
+     * A Button that can be pressed call a OnClick method
+     * The method is called on releasing the LMB on the Button
+     */
     public static class Button{
         private TextureRegion unpressed, pressed; // how the button looks when it's held down and when it's not held down
         private Rectangle buttonArea;
         boolean isPressed = false;
         OnClick callback;
+
+        /**
+         * Constructor for the Button
+         * @param x The X position of the Button
+         * @param y The Y position of the Button
+         * @param width The width of the Button
+         * @param height The height of the Button
+         * @param callback The action to be taken when the button is clicked
+         */
         public Button(float x, float y, float width, float height,OnClick callback){
             buttonArea = new Rectangle(x,y,width,height);
             this.callback = callback;
         }
+
+        /**
+         * Sets the state of the button
+         * @param pressed boolean for whether or not it's pressed
+         */
         public void setPressed(boolean pressed){
             this.isPressed = pressed;
         }
+
+        /**
+         * Calls the OnClick method assigned to the button
+         */
         public void activate(){
             callback.action();
         }
+
+        /**
+         * Checks if a coordinate is within the area of the button
+         * @param mX The x portion of the coordinate to check with
+         * @param mY The y portion of the coordinate to check with
+         * @return Returns a boolean that determines whether or not the coordinates lies within the area of the button
+         */
         public boolean collidepoint(float mX, float mY){
             return this.buttonArea.contains(mX, mY);
             //return isPressed;
         }
+
+        /**
+         * Returns the Rectangular area of the Button
+         * @return The Rectangle Object used to determine the buttons shape and area
+         */
         public Rectangle getButtonArea(){
             return this.buttonArea;
         }
+
+        /**
+         * Gets whether or not the button is pressed or not
+         * @return boolean for if the button is being pressed
+         */
         public boolean getClicked(){
             return this.isPressed;
         }
-        public void draw(ShapeRenderer sr, Batch batch, boolean debug){
+
+        /**
+         * Draws the button. Will not scale or stretch the TextureRegion if it's shape isn't the same as the Button
+         * @param sr ShapeRenderer to draw the button if in debug mode
+         * @param batch The SpriteBatch to draw the button if not in debug mode
+         * @param debug Flag to turn on debug mode for the button
+         */
+        public void draw(ShapeRenderer sr, SpriteBatch batch, boolean debug){
             if(debug){
                 if(this.isPressed) {
                     sr.setColor(Color.RED);
@@ -114,26 +211,62 @@ public class MenuTools {
                 }
             }
         }
+
+        /**
+         * Sets the texture to be used for when the button is being pressed
+         * @param pressedTexture TextureRegion to be drawn when the button is pressed
+         */
         public void setPressedTexture(TextureRegion pressedTexture){
             this.pressed = pressedTexture;
         }
+
+        /**
+         * Sets the texture to be used for when the button is not being pressed
+         * @param unpressedTexture TextureRegion to be drawn when the button is not pressed
+         */
         public void setUnpressedTexture(TextureRegion unpressedTexture){
             this.unpressed = unpressedTexture;
         }
+
+        /**
+         * Gets the TextureRegion to be used when the button is being pressed
+         * @return The TextureRegion that the button uses when it's pressed
+         */
         public TextureRegion getPressed() {
             return pressed;
         }
+
+        /**
+         * Gets the TextureRegion to be used when the button is not being pressed
+         * @return The TextureRegion that the button uses when it's not pressed
+         */
         public TextureRegion getUnpressed() {
             return unpressed;
         }
+
+        /**
+         * Draws the Shape portion of the button
+         * Essentialy calls the main draw method in debug mode
+         * @param sr The ShapeRenderer used to draw the button's rectangular portion
+         */
         public void draw(ShapeRenderer sr){
             this.draw(sr,null,true);
         }
-        public void draw(Batch batch){
+
+        /**
+         * Draws the TextureRegion portion of the button
+         * Essentially calls the main draw method without debug mode
+         * @param batch The SpriteBatch to be used to draw the button
+         */
+        public void draw(SpriteBatch batch){
             this.draw(null,batch,false);
         }
 
     }
+
+    /**
+     * TextBox for getting String input from the user
+     */
     public static class TextBox{
         float vX,vY;
         Rectangle boxShape;
@@ -142,6 +275,12 @@ public class MenuTools {
         int[] heldKeys; // shift everything up by one because anykey is -1
         boolean showCursor;
         OnEnter enterText;
+
+        /**
+         * Constructor for TextBox
+         * @param bShape
+         * @param eT
+         */
         public TextBox(Rectangle bShape, OnEnter eT){
             this.boxShape = bShape;
             this.enterText = eT;
