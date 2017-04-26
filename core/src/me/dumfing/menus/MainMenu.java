@@ -13,7 +13,7 @@ public class MainMenu extends Menu{
         super(bmfc);
         final MenuTools.ColourRect askUserNameBack = new MenuTools.ColourRect(Gdx.graphics.getWidth()/2-163,Gdx.graphics.getHeight()/2-83,326,166,1,0.96f,0.89f,1);
         final MenuTools.ColourRect askUserNameBorder = new MenuTools.ColourRect(Gdx.graphics.getWidth()/2-165, Gdx.graphics.getHeight()/2 - 85, 330,170,0,0,0,1);
-        final MenuTools.TextBox askUserName =  new MenuTools.TextBox(Gdx.graphics.getWidth()/2-150, Gdx.graphics.getHeight()/2-70, 300, 40);
+        final MenuTools.TextField askUserName =  new MenuTools.TextField(Gdx.graphics.getWidth()/2-150, Gdx.graphics.getHeight()/2-70, 300, 40);
         askUserName.setEnterAction(new MenuTools.OnEnter() {
             public void action(String tIn) {
                 int gHeight = Gdx.graphics.getHeight();

@@ -1,5 +1,8 @@
 package me.dumfing.maingame;
 
+/**
+ * Enum for what state the game is in (which menu is currently open, what's currently happening in the game)
+ */
 public enum GameState{
 	LOADINGGAME, // loading all assets into the assetmanager and place them into variables
 	MAINMENU, // Main menu with play, settings, and quit

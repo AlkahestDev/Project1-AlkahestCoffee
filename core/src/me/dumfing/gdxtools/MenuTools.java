@@ -265,9 +265,9 @@ public class MenuTools {
     }
 
     /**
-     * TextBox for getting String input from the user
+     * TextField for getting String input from the user
      */
-    public static class TextBox{
+    public static class TextField {
         float vX,vY;
         Rectangle boxShape;
         StringBuilder sOut;
@@ -277,29 +277,57 @@ public class MenuTools {
         OnEnter enterText;
 
         /**
-         * Constructor for TextBox
-         * @param bShape
-         * @param eT
+         * Constructor for TextField
+         * @param bShape A Rectangle object for the area the TextField takes up
+         * @param eT An OnEnter interface that determines what the TextField does when the user presses enter
          */
-        public TextBox(Rectangle bShape, OnEnter eT){
+        public TextField(Rectangle bShape, OnEnter eT){
             this.boxShape = bShape;
             this.enterText = eT;
             initVars();
         }
-        public TextBox(float x, float y, float width, float height, OnEnter eT){
+
+        /**
+         * Constructor for TextField
+         * @param x The x position of the TextField
+         * @param y The y position of the TextField
+         * @param width The width of the TextField
+         * @param height The height of the TextField
+         * @param eT The OnEnter interface that determines what the TextField does when the user presses enter
+         */
+        public TextField(float x, float y, float width, float height, OnEnter eT){
             this.boxShape = new Rectangle(x,y,width,height);
             this.enterText = eT;
             initVars();
         }
-        public TextBox(float x, float y, float width, float height){
+
+        /**
+         * Constructor for TextField, leaves entertext null for setting it later with setEnterAction
+         * @param x The x position of the TextField
+         * @param y The y position of the TextField
+         * @param width The width of the TextField
+         * @param height The height of the TextField
+         */
+        public TextField(float x, float y, float width, float height){
             this.boxShape = new Rectangle(x,y,width,height);
             this.enterText = null;
             initVars();
         }
+
+        /**
+         * Set the action for the TextField to call when the user presses enter
+         * @param et OnEnter object for the TextField to call
+         */
         public void setEnterAction(OnEnter et){
             this.enterText = et;
         }
-        public void update(BitmapFontCache ch, boolean focused){
+
+        /**
+         * Updates the TextField
+         * @param bmfc The BitmapFontCache for drawing the text in the TextField
+         * @param focused Whether or not this TextField is being typed into
+         */
+        public void update(BitmapFontCache bmfc, boolean focused){
             this.boxShape.x+=vX;
             this.boxShape.y+=vY;
             if(vX > 0) {
@@ -315,8 +343,8 @@ public class MenuTools {
                 this.vY = Math.min(0,this.vY + 0.5f);
             }
             handleHeldKeys();
-            ch.setColor(Color.BLACK);
-            ch.addText(this.sOut.toString(),this.boxShape.getX()+3,this.boxShape.getY()+this.boxShape.getHeight() - 7,0,this.sOut.length(),this.boxShape.getWidth(), Align.left,false,"");
+            bmfc.setColor(Color.BLACK);
+            bmfc.addText(this.sOut.toString(),this.boxShape.getX()+3,this.boxShape.getY()+this.boxShape.getHeight() - 7,0,this.sOut.length(),this.boxShape.getWidth(), Align.left,false,"");
             if(focused){
                 this.frameCount++; // Integer.MAX_VALUE frames is around 414 days to overflow, if a user has the text box open for 414 days, the game probably won't be worth keeping open
             }
@@ -333,9 +361,23 @@ public class MenuTools {
                 }
             }
         }
+
+        /**
+         * Determines whether a coordinate point lies within the bounds of this TextField
+         * @param mX The x position of the coordinate
+         * @param mY The y position of the coordinate
+         * @return boolean that determines whether or not the point lies within the bounds of the rectangle
+         */
         public boolean collidePoint(float mX, float mY){
             return this.boxShape.contains(mX,mY);
         }
+
+        /**
+         * Draws the TextField
+         * @param sr ShapeRenderer for drawing the TextField
+         * @param fnt BitmapFont for determining the width of the text, should be the same font that the BitmapFontCache is using
+         * @param focused boolean for whether or not this TextField is currently focused on
+         */
         public void draw(ShapeRenderer sr, BitmapFont fnt, boolean focused){
             sr.setColor(Color.BLACK);
             DrawTools.rec(sr,this.boxShape);
@@ -348,7 +390,11 @@ public class MenuTools {
             }
 
         }
-        public void initVars(){
+
+        /**
+         * Singular method to initialize the variables for all constructors
+         */
+        private void initVars(){
             this.sOut = new StringBuilder();
             this.curPos = this.frameCount = 0;
             this.vX = this.vY = 0;
@@ -356,24 +402,46 @@ public class MenuTools {
             this.showCursor = false;
             Arrays.fill(this.heldKeys,-1);
         }
+
+        /**
+         * Handles keypresses received from KeyPress events
+         * @param keycode The keycode of the key that was pressed
+         */
         public void keyDown(int keycode){
             this.heldKeys[keycode+1] = 0;
             this.showCursor = true;
             this.frameCount = 0;
             //Keys that should only be pressed once
             if(keycode == Input.Keys.ENTER){
-                this.enterText.action(this.sOut.toString());
+                if(this.enterText != null) {
+                    this.enterText.action(this.sOut.toString());
+                }
                 this.sOut = new StringBuilder();
                 this.curPos = 0;
             }
         }
+
+        /**
+         * Set the velocity of the TextField for animated movement
+         * @param x The x component of the TextField's velocity
+         * @param y The y component of the TextField's velocity
+         */
         public void setVelocity(float x, float y){
             this.vX = x;
             this.vY = y;
         }
+
+        /**
+         * Handler for when you release a key
+         * @param keycode The keycode for the key that was released
+         */
         public void keyUp(int keycode){
             this.heldKeys[keycode+1] = -1;
         }
+
+        /**
+         * Handles held keys, if a key is being held this will periodically execute the keys function
+         */
         public void handleHeldKeys(){
             //Keys that need to be repressed periodically
             boolean keyPressed = false;
@@ -403,6 +471,11 @@ public class MenuTools {
                 this.frameCount = 0;
             }
         }
+
+        /**
+         * Handles events from when the user is normally typing
+         * @param keyIn The char for the letter that was entered
+         */
         public void keyTyped(char keyIn){
             if(legalChars.contains(""+Character.toLowerCase(keyIn))){
                 this.sOut.insert(curPos,keyIn);
@@ -411,6 +484,11 @@ public class MenuTools {
                 this.curPos++;
             }
         }
+
+        /**
+         * gets the text out of the StringBuilder (and the TextField)
+         * @return The text the user has typed into the TextField thus far
+         */
         public String getText(){
             return this.sOut.toString();
         }
