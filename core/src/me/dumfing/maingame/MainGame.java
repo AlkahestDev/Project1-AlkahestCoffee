@@ -29,7 +29,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static MultiplayerTools.PlayerSoldier clientSoldier; // public to allow any menu to access easily
 	ShapeRenderer sr;
 	LoadingMenu loadingMenu;
-	Menu gameMain;
+	MainMenu gameMain;
 	BitmapFontCache bmfc;
 	@Override
 	public void create () {
@@ -37,8 +37,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		queueLoading();
 		bmfc = new BitmapFontCache(new BitmapFont(Gdx.files.internal("fonts/dagger40.fnt")));
 		sr = new ShapeRenderer();
-		gameMain = new MainMenu(bmfc);
-		loadingMenu = new LoadingMenu(assetManager,bmfc);
+		gameMain = new MainMenu(bmfc,assetManager);
+		loadingMenu = new LoadingMenu(bmfc, assetManager);
 		setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded, background frames are loaded and added to it here
 		scW = Gdx.graphics.getWidth();
 		scH = Gdx.graphics.getHeight();
@@ -67,9 +67,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				if(loadingMenu.doneLoading()) { // returns true if done loading
 					//assets are assigned to variables here
 					assignValues();
+					gameMain.init(assetManager, bmfc);
 				}
 				break;
 			case MAINMENU:
+				if(Gdx.input.getInputProcessor() != gameMain ){
+					gameMain.setInputProcessor();
+				}
 				gameMain.update();
 				batch.begin(); // draw menu related things
 					gameMain.spriteDraw(batch);
@@ -152,10 +156,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		menuImg = assetManager.get("Desktop.jpg");
 
 		state = GameState.MAINMENU;
-		gameMain.setInputProcessor();
-		gameMain.addImage(tuzki,Gdx.graphics.getWidth()/2-100,Gdx.graphics.getHeight()/2-20);
-		gameMain.setFrameTime(15);
-		setupMainMenu();
+		//gameMain.setInputProcessor();
+		//gameMain.addImage(tuzki,Gdx.graphics.getWidth()/2-100,Gdx.graphics.getHeight()/2-20);
+		//gameMain.setFrameTime(15);
 	}
 	public void queueLoading(){ // queue files for assetManager to load
 		//Sticking random things to load into the assetmanager to see how long it'll take to load
@@ -177,43 +180,5 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			loadingMenu.addBackground(new TextureRegion(new Texture(Gdx.files.internal(String.format("loading/loadingKnight/loadingKnight%d.png",i)))));
 		}
 		loadingMenu.setFrameTime(25);
-	}
-	public void setupMainMenu(){
-		MenuTools.Button playButton, settingsButton, quitButton;
-		for(int i = 1; i<10; i++){
-			Texture tmp = assetManager.get(String.format("L%d.png",i));
-			gameMain.addBackground(new TextureRegion(tmp));
-		}
-		for(int i = 1; i<10; i++){
-			Texture tmp = assetManager.get(String.format("R%d.png",i));
-			gameMain.addBackground(new TextureRegion(tmp));
-		}
-		playButton = new MenuTools.Button(0, 6 * (Gdx.graphics.getHeight() / 10), 400, 100, new MenuTools.OnClick() {
-			@Override
-			public void action() {
-				MainGame.state = GameState.SERVERBROWSER;
-				System.out.println("Play!");
-			}
-		});
-		settingsButton = new MenuTools.Button(0, 5 * (Gdx.graphics.getHeight() / 10), 400, 100, new MenuTools.OnClick() {
-			@Override
-			public void action() {
-				MainGame.state = GameState.MAINMENUSETTINGS;
-				System.out.println("Settings");
-			}
-		});
-		MenuBox askUserNameBox = new MenuBox(Gdx.graphics.getWidth()-165,Gdx.graphics.getHeight() - 85,330,170,bmfc);
-		askUserNameBox.setBackground(new TextureRegion((Texture)assetManager.get("menubackdrops/canvas.png")));
-		gameMain.addMenuBox(askUserNameBox);
-		Texture santiago, galaxy;
-		santiago = assetManager.get("4k-image-santiago.jpg");
-		galaxy = assetManager.get("4914003-galaxy-wallpaper-png.png");
-		playButton.setPressedTexture(new TextureRegion(santiago));
-		playButton.setUnpressedTexture(new TextureRegion(galaxy));
-		settingsButton.setPressedTexture(new TextureRegion(santiago));
-		settingsButton.setUnpressedTexture(new TextureRegion(galaxy));
-		gameMain.setBackground(new TextureRegion(santiago));
-		gameMain.addButton(playButton);
-		gameMain.addButton(settingsButton);
 	}
 }

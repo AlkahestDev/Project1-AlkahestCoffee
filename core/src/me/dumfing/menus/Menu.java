@@ -2,6 +2,7 @@ package me.dumfing.menus;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -226,6 +227,14 @@ public class Menu implements InputProcessor{
     }
 
     /**
+     * Allows you to populate the menu's components with assets that are loaded from the assetManager
+     * @param assetManager
+     * @param bmfc
+     */
+    public void init(AssetManager assetManager, BitmapFontCache bmfc){
+
+    }
+    /**
      * The event that handles Keypresses
      * @param keycode The keycode of the key that was pressed
      * @return Whether or not the input was processed
@@ -281,7 +290,9 @@ public class Menu implements InputProcessor{
                 return true;
             }
         }
-        focused = null;
+        for(MenuBox mb : menuBoxes){
+            focused = mb.textFieldsClicked(screenX,screenY);
+        }
         return true;
     }
 
@@ -337,4 +348,5 @@ public class Menu implements InputProcessor{
     public boolean scrolled(int amount) {
         return false;
     }
+
 }

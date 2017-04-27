@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  */
 public class LoadingMenu extends Menu {
     AssetManager manager;
-    public LoadingMenu(AssetManager manager, BitmapFontCache bmfc){
+    public LoadingMenu(BitmapFontCache bmfc, AssetManager manager){
         super(bmfc);
         this.manager = manager;
     }

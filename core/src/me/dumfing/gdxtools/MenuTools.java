@@ -390,7 +390,10 @@ public class MenuTools {
             }
 
         }
-
+        public void translate(float x, float y){
+            this.boxShape.x+=x;
+            this.boxShape.y+=y;
+        }
         /**
          * Singular method to initialize the variables for all constructors
          */
