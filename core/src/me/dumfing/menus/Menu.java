@@ -26,7 +26,7 @@ public class Menu implements InputProcessor{
     private int backgroundFrame, frameTime, frameCount; // allows for animated backgrounds
     private boolean animatedBackground;
     private Array<TextureRegion> background; // all images used for background
-    private LinkedList<Sprite> images; // sprites for images, they can have their own position and texture
+    private LinkedList<MenuTools.TextureRect> images; // sprites for images, they can have their own position and texture
     private LinkedList<MenuTools.TextField> textFields;
     private LinkedList<MenuTools.ColourRect> colRects;
     private LinkedList<MenuBox> menuBoxes;
@@ -41,7 +41,7 @@ public class Menu implements InputProcessor{
         buttons = new LinkedList<MenuTools.Button>();
         backgroundFrame = 0;
         background = new Array<TextureRegion>();
-        images = new LinkedList<Sprite>();
+        images = new LinkedList<MenuTools.TextureRect>();
         textFields = new LinkedList<MenuTools.TextField>();
         colRects = new LinkedList<MenuTools.ColourRect>();
         menuBoxes = new LinkedList<MenuBox>();
@@ -118,7 +118,7 @@ public class Menu implements InputProcessor{
             cR.update();
         }
         for(MenuBox mb : menuBoxes){
-            mb.update();
+            mb.update(focused);
         }
         this.frameCount++; // increase frameCounter
     }
@@ -136,8 +136,8 @@ public class Menu implements InputProcessor{
                 sb.draw(bt.getUnpressed(), bt.getButtonArea().x, bt.getButtonArea().y, bt.getButtonArea().width, bt.getButtonArea().height); // draw the unclicked button
             }
         }
-        for(Sprite sp : images){ // draw all Sprites in the Menu
-            sp.draw(sb);
+        for(MenuTools.TextureRect sp : images){ // draw all Sprites in the Menu
+            sp.spriteDraw(sb);
         }
         for(MenuBox mb : menuBoxes){
             mb.spriteDraw(sb);
@@ -156,7 +156,7 @@ public class Menu implements InputProcessor{
             tb.draw(sr,textCache.getFont(),tb == focused); // draw the textBox, if it's the focused one then it'll have the cursor being drawn
         }
         for(MenuBox mb : menuBoxes){
-            mb.shapeDraw(sr);
+            mb.shapeDraw(sr,focused);
         }
     }
 
@@ -174,7 +174,7 @@ public class Menu implements InputProcessor{
      * Adds a Sprite based Image to the Menu
      * @param imgIn A Sprite object to draw on the Menu
      */
-    public void addImage(Sprite imgIn){ // add a sprite for drawing over buttons
+    public void addImage(MenuTools.TextureRect imgIn){ // add a sprite for drawing over buttons
         this.images.add(imgIn);
     } // add Images to the Menu
 
@@ -184,10 +184,9 @@ public class Menu implements InputProcessor{
      * @param x The X position of the Sprite
      * @param y The Y position of the Sprite
      */
-    public void addImage(Texture img, int x, int y){ // add the components of a sprite
-        Sprite temp = new Sprite(img);
-        temp.setPosition(x,y);
-        addImage(temp);
+    public void addImage(Texture img, int x, int y){ // add the components of a TextureRect
+        MenuTools.TextureRect temp = new MenuTools.TextureRect(x,y, img.getWidth(),img.getHeight());
+        temp.setRectTexture(img);
     }
 
     /**

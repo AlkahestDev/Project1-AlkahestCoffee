@@ -2,11 +2,13 @@ package me.dumfing.gdxtools;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Align;
 import me.dumfing.gdxtools.DrawTools;
+import org.w3c.dom.css.Rect;
 
 import java.util.Arrays;
 
@@ -27,9 +29,40 @@ public class MenuTools {
     }
 
     /**
+     * A Rectangular area for Textures and TextureRegions, similar to a sprite but can have velocity
+     */
+    public static class TextureRect extends MenuObject {
+        private Rectangle rectShape;
+        private TextureRegion rectTexture;
+        private float vX = 0;
+        private float vY = 0;
+
+        /**
+         * Constructor for TextureRect
+         * @param x The x position of the TextureRect
+         * @param y The y position of the TextureRect
+         * @param w The width of the TextureRect
+         * @param h The height of the TextureRect
+         */
+        public TextureRect(float x, float y, float w, float h){
+            super(x,y,w,h);
+        }
+        public void setRectTexture(TextureRegion tr){
+            this.rectTexture = tr;
+        }
+        public void setRectTexture(Texture t){
+            this.rectTexture = new TextureRegion(t);
+        }
+
+        @Override
+        public void spriteDraw(SpriteBatch sb) {
+            DrawTools.textureRect(sb,super.shape,this.rectTexture);
+        }
+    }
+    /**
      * A Rectangular area that can be drawn with a ShapeRenderer
      */
-    public static class ColourRect{
+    public static class ColourRect extends MenuObject{
         private Rectangle rectShape;
         private Color rectColor;
         private float vX, vY;
@@ -39,84 +72,29 @@ public class MenuTools {
          * @param y The Y position of the Rectangle
          * @param w The width of the Rectangle
          * @param h The height of the Rectangle
-         * @param r The red component of the ColourRect
-         * @param g The green component of the ColourRect
-         * @param b The blue component of the ColourRect
-         * @param a The alpha value of the ColourRect
          */
-        public ColourRect(float x, float y, float w, float h, float r, float g, float b, float a){
+        public ColourRect(float x, float y, float w, float h){
+            super(x,y,w,h);
+        }
+        public void setColor(float r, float g, float b, float a){
             this.rectColor = new Color(r,g,b,a);
-            this.rectShape = new Rectangle(x,y,w,h);
         }
-
-        /**
-         * The constructor for the ColourRect
-         * @param rectShape A Rectangle object for the ColourRect
-         * @param r The red component of the ColourRect
-         * @param g The green component of the ColourRect
-         * @param b The blue component of the ColourRect
-         * @param a The alpha value of the ColourRect
-         */
-        public ColourRect(Rectangle rectShape, float r,float g,float b,float a){
-            this.rectColor = new Color(r,g,b,a);
-            this.rectShape = rectShape;
-        }
-
-        /**
-         * The constructor for the ColourRect
-         * @param rectShape A Rectangle object for the ColourRect
-         * @param rectCol A Color object to determine the color for the ColourRect
-         */
-        public ColourRect(Rectangle rectShape, Color rectCol){
-            this.rectShape = rectShape;
-            this.rectColor = rectCol;
-        }
-
         /**
          * Draws the ColourRect
          * @param sr ShapeRenderer used to draw the ColourRect
          */
         public void draw(ShapeRenderer sr){
             sr.setColor(this.rectColor);
-            DrawTools.rec(sr,this.rectShape);
+            DrawTools.rec(sr,super.shape);
         }
 
-        /**
-         * Moves the ColourRect based on it's velocity
-         */
-        public void update(){
-            this.rectShape.x+=this.vX;
-            this.rectShape.y+=this.vY;
-            if(this.vX > 0){
-                this.vX = Math.max(0,this.vX-0.5f);
-            }
-            else if(this.vX < 0){
-                this.vX = Math.min(0,this.vX +0.5f);
-            }
-            if(this.vY > 0){
-                this.vY = Math.max(0,this.vY-0.5f);
-            }
-            else if(this.vY < 0){
-                this.vY = Math.min(0,this.vY + 0.5f);
-            }
-        }
-
-        /**
-         * Set the X and Y components of the ColourRect's motion
-         * @param x The X component of the ColourRect's velocity
-         * @param y The Y component of the ColourRect's velocity
-         */
-        public void setVelocity(float x, float y){
-            this.vX = x;
-            this.vY = y;
-        }
 
         /**
          * Returns the rectangular area of the ColourRect
          * @return The Rectangle object used to draw the ColourRect
          */
         public Rectangle getRectShape(){
-            return this.rectShape;
+            return super.shape;
         }
     }
 
@@ -124,22 +102,24 @@ public class MenuTools {
      * A Button that can be pressed call a OnClick method
      * The method is called on releasing the LMB on the Button
      */
-    public static class Button{
+    public static class Button extends MenuObject {
         private TextureRegion unpressed, pressed; // how the button looks when it's held down and when it's not held down
         private Rectangle buttonArea;
         boolean isPressed = false;
         OnClick callback;
-
+        float vX = 0;
+        float vY = 0;
         /**
          * Constructor for the Button
          * @param x The X position of the Button
          * @param y The Y position of the Button
          * @param width The width of the Button
          * @param height The height of the Button
-         * @param callback The action to be taken when the button is clicked
          */
-        public Button(float x, float y, float width, float height,OnClick callback){
-            buttonArea = new Rectangle(x,y,width,height);
+        public Button(float x, float y, float width, float height){
+            super(x,y,width,height);
+        }
+        public void setCallback(OnClick callback){
             this.callback = callback;
         }
 
@@ -165,7 +145,7 @@ public class MenuTools {
          * @return Returns a boolean that determines whether or not the coordinates lies within the area of the button
          */
         public boolean collidepoint(float mX, float mY){
-            return this.buttonArea.contains(mX, mY);
+            return super.shape.contains(mX, mY);
             //return isPressed;
         }
 
@@ -174,7 +154,7 @@ public class MenuTools {
          * @return The Rectangle Object used to determine the buttons shape and area
          */
         public Rectangle getButtonArea(){
-            return this.buttonArea;
+            return super.shape;
         }
 
         /**
@@ -186,7 +166,8 @@ public class MenuTools {
         }
 
         /**
-         * Draws the button. Will not scale or stretch the TextureRegion if it's shape isn't the same as the Button
+         * Draws the button. Will not scale or stretch the TextureRegion if it's shape isn't the same as the Button<br>
+         * Due to compatibility reasons, velocity will be handled here as well
          * @param sr ShapeRenderer to draw the button if in debug mode
          * @param batch The SpriteBatch to draw the button if not in debug mode
          * @param debug Flag to turn on debug mode for the button
@@ -211,7 +192,6 @@ public class MenuTools {
                 }
             }
         }
-
         /**
          * Sets the texture to be used for when the button is being pressed
          * @param pressedTexture TextureRegion to be drawn when the button is pressed
@@ -267,7 +247,7 @@ public class MenuTools {
     /**
      * TextField for getting String input from the user
      */
-    public static class TextField {
+    public static class TextField extends MenuObject{
         float vX,vY;
         Rectangle boxShape;
         StringBuilder sOut;
@@ -278,39 +258,13 @@ public class MenuTools {
 
         /**
          * Constructor for TextField
-         * @param bShape A Rectangle object for the area the TextField takes up
-         * @param eT An OnEnter interface that determines what the TextField does when the user presses enter
-         */
-        public TextField(Rectangle bShape, OnEnter eT){
-            this.boxShape = bShape;
-            this.enterText = eT;
-            initVars();
-        }
-
-        /**
-         * Constructor for TextField
-         * @param x The x position of the TextField
-         * @param y The y position of the TextField
-         * @param width The width of the TextField
-         * @param height The height of the TextField
-         * @param eT The OnEnter interface that determines what the TextField does when the user presses enter
-         */
-        public TextField(float x, float y, float width, float height, OnEnter eT){
-            this.boxShape = new Rectangle(x,y,width,height);
-            this.enterText = eT;
-            initVars();
-        }
-
-        /**
-         * Constructor for TextField, leaves entertext null for setting it later with setEnterAction
          * @param x The x position of the TextField
          * @param y The y position of the TextField
          * @param width The width of the TextField
          * @param height The height of the TextField
          */
         public TextField(float x, float y, float width, float height){
-            this.boxShape = new Rectangle(x,y,width,height);
-            this.enterText = null;
+            super(x,y,width,height);
             initVars();
         }
 
@@ -328,23 +282,9 @@ public class MenuTools {
          * @param focused Whether or not this TextField is being typed into
          */
         public void update(BitmapFontCache bmfc, boolean focused){
-            this.boxShape.x+=vX;
-            this.boxShape.y+=vY;
-            if(vX > 0) {
-                this.vX = Math.max(0, this.vX - 0.5f);
-            }
-            else if(vX < 0){
-                this.vX = Math.min(0, this.vX + 0.5f);
-            }
-            if(vY > 0){
-                this.vY = Math.max(0, this.vY - 0.5f);
-            }
-            else if(this.vY < 0){
-                this.vY = Math.min(0,this.vY + 0.5f);
-            }
             handleHeldKeys();
             bmfc.setColor(Color.BLACK);
-            bmfc.addText(this.sOut.toString(),this.boxShape.getX()+3,this.boxShape.getY()+this.boxShape.getHeight() - 7,0,this.sOut.length(),this.boxShape.getWidth(), Align.left,false,"");
+            bmfc.addText(this.sOut.toString(),super.shape.getX()+3,super.shape.getY()+super.shape.getHeight() - 7,0,this.sOut.length(),super.shape.getWidth(), Align.left,false,"");
             if(focused){
                 this.frameCount++; // Integer.MAX_VALUE frames is around 414 days to overflow, if a user has the text box open for 414 days, the game probably won't be worth keeping open
             }
@@ -360,6 +300,7 @@ public class MenuTools {
                     this.heldKeys[i]++;
                 }
             }
+            super.update();
         }
 
         /**
@@ -369,7 +310,7 @@ public class MenuTools {
          * @return boolean that determines whether or not the point lies within the bounds of the rectangle
          */
         public boolean collidePoint(float mX, float mY){
-            return this.boxShape.contains(mX,mY);
+            return super.shape.contains(mX,mY);
         }
 
         /**
@@ -380,20 +321,16 @@ public class MenuTools {
          */
         public void draw(ShapeRenderer sr, BitmapFont fnt, boolean focused){
             sr.setColor(Color.BLACK);
-            DrawTools.rec(sr,this.boxShape);
+            DrawTools.rec(sr,super.shape);
             sr.setColor(Color.WHITE);
-            sr.rect(this.boxShape.x+2,this.boxShape.y+2,this.boxShape.width-4,this.boxShape.height-4);
+            sr.rect(super.shape.x+2,super.shape.y+2,super.shape.width-4,super.shape.height-4);
             sr.setColor(Color.BLACK);
             float tWidth = new GlyphLayout(fnt,this.sOut.toString().substring(0,curPos)).width;
-            if(tWidth<this.boxShape.width-12 && focused && showCursor) { // for the line to be drawn, the width fo the text must be within the width of the box, and the box must be focused
-                sr.rect(this.boxShape.getX() + tWidth + 5, this.boxShape.getY() + 5, 1, this.boxShape.getHeight() - 10);
+            if(tWidth<super.shape.width-12 && focused && showCursor) { // for the line to be drawn, the width fo the text must be within the width of the box, and the box must be focused
+                sr.rect(super.shape.getX() + tWidth + 5, super.shape.getY() + 5, 1, super.shape.getHeight() - 10);
             }
+        }
 
-        }
-        public void translate(float x, float y){
-            this.boxShape.x+=x;
-            this.boxShape.y+=y;
-        }
         /**
          * Singular method to initialize the variables for all constructors
          */
@@ -424,15 +361,6 @@ public class MenuTools {
             }
         }
 
-        /**
-         * Set the velocity of the TextField for animated movement
-         * @param x The x component of the TextField's velocity
-         * @param y The y component of the TextField's velocity
-         */
-        public void setVelocity(float x, float y){
-            this.vX = x;
-            this.vY = y;
-        }
 
         /**
          * Handler for when you release a key
@@ -494,6 +422,23 @@ public class MenuTools {
          */
         public String getText(){
             return this.sOut.toString();
+        }
+    }
+
+    /**
+     * Will increase or decrease a number towards 0 by steps of 0.5
+     * @param numIn The number to be modified
+     * @return The number 0.5 units closer to 0
+     */
+    public static float towardsZero(float numIn){
+        if(numIn > 0) {
+            return Math.max(0, numIn - 0.5f);
+        }
+        else if(numIn < 0){
+            return Math.min(0, numIn + 0.5f);
+        }
+        else{
+            return numIn;
         }
     }
 }
