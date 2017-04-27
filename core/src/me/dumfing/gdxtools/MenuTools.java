@@ -29,6 +29,25 @@ public class MenuTools {
     }
 
     /**
+     * Allows you to queue text to write on the Menu
+     */
+    public static class QueueText extends MenuObject{
+        String qText;
+        int centering = Align.left;
+        float textWidth = 0;
+        public QueueText(float x, float y, float w, float h) {
+            super(x, y, w, h);
+        }
+
+        public void setText(String tIn,BitmapFontCache bmfc){
+            this.qText = tIn;
+            textWidth = new GlyphLayout(bmfc.getFont(),tIn).width;
+        }
+        public void queue(BitmapFontCache bmfc){
+            bmfc.addText(this.qText,super.shape.x,super.shape.y,textWidth,0,false);
+        }
+    }
+    /**
      * A Rectangular area for Textures and TextureRegions, similar to a sprite but can have velocity
      */
     public static class TextureRect extends MenuObject {
@@ -440,5 +459,15 @@ public class MenuTools {
         else{
             return numIn;
         }
+    }
+
+    /**
+     * Returns the length of text with a given font
+     * @param fntIn The font to use
+     * @param sIn The text to check the width of
+     * @return The width the text will take up
+     */
+    public static float textWidth(BitmapFont fntIn, String sIn){
+        return new GlyphLayout(fntIn,sIn).width;
     }
 }

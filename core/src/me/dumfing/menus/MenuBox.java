@@ -27,6 +27,7 @@ public class MenuBox extends MenuObject{
     private LinkedList<MenuTools.TextureRect> images; // sprites for images, they can have their own position and texture
     private LinkedList<MenuTools.TextField> textFields;
     private LinkedList<MenuTools.ColourRect> colRects;
+    private LinkedList<MenuTools.QueueText> textToDraw;
     private BitmapFontCache textCache;
     private MenuTools.TextField focused; // the textbox that the user will be typing into
     private float vX, vY;
@@ -45,6 +46,7 @@ public class MenuBox extends MenuObject{
         this.images = new LinkedList<MenuTools.TextureRect>();
         this.textFields = new LinkedList<MenuTools.TextField>();
         this.colRects = new LinkedList<MenuTools.ColourRect>();
+        this.textToDraw = new LinkedList<MenuTools.QueueText>();
         this.textCache = bmfc;
         this.vX = 0;
         this.vY = 0;
@@ -52,6 +54,10 @@ public class MenuBox extends MenuObject{
     public void addTextField(MenuTools.TextField tfIn){
         tfIn.translate(super.getRect().x,super.getRect().y);
         this.textFields.add(tfIn);
+    }
+    public void addQueueText(MenuTools.QueueText qtIn){
+        qtIn.translate(super.getRect().x,super.getRect().y);
+        this.textToDraw.add(qtIn);
     }
     /**
      * Sets the background for the MenuBox
@@ -77,6 +83,9 @@ public class MenuBox extends MenuObject{
         for(MenuTools.ColourRect cR : colRects){
             cR.update();
         }
+        for(MenuTools.QueueText qt : textToDraw){
+            qt.update();
+        }
     }
 
     /**
@@ -92,6 +101,9 @@ public class MenuBox extends MenuObject{
         for(MenuTools.TextField tb : textFields){ // TextBoxes look like two rectangles drawn on eachother
             tb.draw(sr,textCache.getFont(),tb == focused); // draw the textBox, if it's the focused one then it'll have the cursor being drawn
         }
+        for(MenuTools.QueueText qt : this.textToDraw){
+            qt.queue(textCache);
+        }
     }
 
     /**
@@ -106,6 +118,9 @@ public class MenuBox extends MenuObject{
             } else {
                 sb.draw(bt.getUnpressed(), bt.getButtonArea().x, bt.getButtonArea().y, bt.getButtonArea().width, bt.getButtonArea().height); // draw the unclicked button
             }
+        }
+        for(MenuTools.QueueText qt : this.textToDraw){
+            qt.queue(textCache);
         }
         for(MenuTools.TextureRect sp : images){ // draw all Sprites in the Menu
             sp.spriteDraw(sb);
@@ -140,6 +155,9 @@ public class MenuBox extends MenuObject{
         }
         for(MenuTools.ColourRect cr : colRects){
             cr.setVelocity(x,y);
+        }
+        for(MenuTools.QueueText qt : textToDraw){
+            qt.setVelocity(x,y);
         }
     }
 }

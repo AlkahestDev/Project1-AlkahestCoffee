@@ -19,7 +19,7 @@ import java.util.LinkedList;
  * WORK IN PROGRESS<br>
  * Menu.java<br>
  * Aaron Li<br>
- * Provides basic functions for all menus, animated backgrounds, buttons, images, textboxes(wip)
+ * Provides basic functions for all menus, animated backgrounds, buttons, images, textboxes
  */
 public class Menu implements InputProcessor{
     private LinkedList<MenuTools.Button> buttons;
@@ -30,6 +30,7 @@ public class Menu implements InputProcessor{
     private LinkedList<MenuTools.TextField> textFields;
     private LinkedList<MenuTools.ColourRect> colRects;
     private LinkedList<MenuBox> menuBoxes;
+    private LinkedList<MenuTools.QueueText> queuedText;
     private BitmapFontCache textCache;
     private MenuTools.TextField focused; // the textbox that the user will be typing into
 
@@ -45,6 +46,7 @@ public class Menu implements InputProcessor{
         textFields = new LinkedList<MenuTools.TextField>();
         colRects = new LinkedList<MenuTools.ColourRect>();
         menuBoxes = new LinkedList<MenuBox>();
+        queuedText = new LinkedList<MenuTools.QueueText>();
         this.textCache = bmfc;
     }
 
@@ -89,6 +91,13 @@ public class Menu implements InputProcessor{
     }
 
     /**
+     * Adds a QueueText to the Menu
+     * @param qtIn The QueueText object to add to the menu
+     */
+    public void addQueueText(MenuTools.QueueText qtIn){
+        this.queuedText.add(qtIn);
+    }
+    /**
      * Removes a TextField from the Menu
      * @param toRm The TextField object to remove
      */
@@ -102,6 +111,7 @@ public class Menu implements InputProcessor{
     public void update(){
         for(MenuTools.Button bt : buttons){ //check all the buttons if they're currently pressed and the mouse is hovering over them
             bt.setPressed(bt.collidepoint(Gdx.input.getX(),Gdx.graphics.getHeight()-Gdx.input.getY()) && Gdx.input.isButtonPressed(0)); // if the button is colliding with the mouse and the mouse is left clicking, make it look like it's pressed
+            bt.update();
         }
         if(this.animatedBackground){ // if this Menu has a non-static background
             if(this.frameCount%this.frameTime == 0){ // if it's time to change frames
@@ -130,6 +140,7 @@ public class Menu implements InputProcessor{
     public void spriteDraw(SpriteBatch sb){ // draw all SpriteBatch related things
         sb.draw(background.get(backgroundFrame),0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight()); // draw the appropriate background frame, stretching it if needed
         for(MenuTools.Button bt : this.buttons) { // check all the buttons in the Menu
+            System.out.println(bt.getRect().x+" "+bt.getClicked());
             if (bt.getClicked()) { // if the button has been clicked
                 sb.draw(bt.getPressed(), bt.getButtonArea().x, bt.getButtonArea().y, bt.getButtonArea().width, bt.getButtonArea().height); // draw the clicked button
             } else {
@@ -141,6 +152,9 @@ public class Menu implements InputProcessor{
         }
         for(MenuBox mb : menuBoxes){
             mb.spriteDraw(sb);
+        }
+        for(MenuTools.QueueText qt : queuedText){
+            qt.queue(textCache);
         }
     }
 
@@ -232,6 +246,12 @@ public class Menu implements InputProcessor{
      */
     public void init(AssetManager assetManager, BitmapFontCache bmfc){
 
+    }
+    /**
+     *  Clears the currently focused TextField so it can stop listening to keypresses
+     */
+    public void clearFocused(){
+        this.focused = null;
     }
     /**
      * The event that handles Keypresses
