@@ -3,6 +3,7 @@ package me.dumfing.menus;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -34,13 +35,15 @@ public class Menu implements InputProcessor{
     private LinkedList<MenuTools.QueueText> queuedText;
     private Array<BitmapFontCache> fontCaches;
     private MenuTools.TextField focused; // the textbox that the user will be typing into
-
+    private OrthographicCamera camera;
+    private AssetManager manager;
     /**
      * Constructor for the menu
      * @param bmfc BitMapFontCache for drawing all text in the menu
      */
-    public Menu(Array<BitmapFontCache> bmfc){
+    public Menu(Array<BitmapFontCache> bmfc, AssetManager manager, OrthographicCamera camera){
         buttons = new LinkedList<MenuTools.Button>();
+        this.manager = manager;
         backgroundFrame = 0;
         background = new Array<TextureRegion>();
         images = new LinkedList<MenuTools.TextureRect>();
@@ -49,6 +52,11 @@ public class Menu implements InputProcessor{
         menuBoxes = new LinkedList<MenuBox>();
         queuedText = new LinkedList<MenuTools.QueueText>();
         this.fontCaches = bmfc;
+        this.camera = camera;
+    }
+
+    public AssetManager getManager() {
+        return manager;
     }
 
     /**
@@ -170,7 +178,7 @@ public class Menu implements InputProcessor{
             cR.draw(sr);
         }
         for(MenuTools.TextField tb : textFields){ // TextBoxes look like two rectangles drawn on eachother
-            tb.draw(sr,fontCaches,tb == focused); // draw the textBox, if it's the focused one then it'll have the cursor being drawn
+            tb.shapeDraw(sr,fontCaches,tb == focused); // draw the textBox, if it's the focused one then it'll have the cursor being drawn
         }
         for(MenuBox mb : menuBoxes){
             mb.shapeDraw(sr,focused);
@@ -183,10 +191,14 @@ public class Menu implements InputProcessor{
      * @param sr The ShapeRenderer used to draw the Shapes
      */
     public void draw(SpriteBatch sb, ShapeRenderer sr){ // Singular draw method to take up less space if the order of drawing doesn't matter
-        this.spriteDraw(sb);
-        this.shapeDraw(sr);
+        //this.spriteDraw(sb);
+        //this.shapeDraw(sr);
     }
-
+    public void fontDraw(SpriteBatch sb){
+        for(BitmapFontCache bmfc : fontCaches){
+            bmfc.draw(sb);
+        }
+    }
     /**
      * Adds a Sprite based Image to the Menu
      * @param imgIn A Sprite object to draw on the Menu
@@ -244,10 +256,8 @@ public class Menu implements InputProcessor{
 
     /**
      * Allows you to populate the menu's components with assets that are loaded from the assetManager
-     * @param assetManager
-     * @param bmfc
      */
-    public void init(AssetManager assetManager, BitmapFontCache bmfc){
+    public void init(){
 
     }
     /**
@@ -263,6 +273,17 @@ public class Menu implements InputProcessor{
      */
     public Array<BitmapFontCache> getFonts(){
         return this.fontCaches;
+    }
+    public void standardDraw(SpriteBatch sb, ShapeRenderer sr){
+        sb.begin();
+            this.spriteDraw(sb);
+        sb.end();
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+            this.shapeDraw(sr);
+        sr.end();
+        sb.begin();
+            this.fontDraw(sb);
+        sb.end();
     }
     /**
      * The event that handles Keypresses

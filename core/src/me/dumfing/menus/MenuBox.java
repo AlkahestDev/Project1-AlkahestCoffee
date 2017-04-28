@@ -106,7 +106,7 @@ public class MenuBox extends MenuObject{
             cR.draw(sr);
         }
         for(MenuTools.TextField tb : textFields){ // TextBoxes look like two rectangles drawn on eachother
-            tb.draw(sr, fontCaches,tb == focused); // draw the textBox, if it's the focused one then it'll have the cursor being drawn
+            tb.shapeDraw(sr, fontCaches,tb == focused); // draw the textBox, if it's the focused one then it'll have the cursor being drawn
         }
         for(MenuTools.QueueText qt : this.textToDraw){
             qt.queue(fontCaches);
@@ -177,5 +177,34 @@ public class MenuBox extends MenuObject{
                 return;
             }
         }
+    }
+
+    public void translate(float x, float y) {
+        super.translate(x, y);
+        for(MenuTools.TextField tf: textFields){
+            tf.translate(x,y);
+        }
+        for(MenuTools.Button bt : buttons){
+            bt.translate(x, y);
+        }
+        for(MenuTools.TextureRect sp : images){
+            sp.translate(x,y);
+        }
+        for(MenuTools.ColourRect cr : colRects){
+            cr.translate(x,y);
+        }
+        for(MenuTools.QueueText qt : textToDraw){
+            qt.translate(x,y);
+        }
+    }
+
+    /**
+     * Checks if a point is within the bounds of this MenuBox
+     * @param mx
+     * @param my
+     * @return
+     */
+    public boolean collidePoint(float mx, float my){
+        return this.getRect().contains(mx,my);
     }
 }

@@ -3,7 +3,8 @@ package me.dumfing.maingame.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import me.dumfing.maingame.MainShooter;
+import me.dumfing.maingame.MainGame;
+
 
 public class HtmlLauncher extends GwtApplication {
 
@@ -14,6 +15,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener () {
-                return new MainShooter();
+                return new MainGame();
         }
 }

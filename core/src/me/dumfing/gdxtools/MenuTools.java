@@ -2,10 +2,12 @@ package me.dumfing.gdxtools;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.DrawTools;
@@ -341,7 +343,7 @@ public class MenuTools {
          * @param fnt BitmapFont for determining the width of the text, should be the same font that the BitmapFontCache is using
          * @param focused boolean for whether or not this TextField is currently focused on
          */
-        public void draw(ShapeRenderer sr, Array<BitmapFontCache> fnt, boolean focused){
+        public void shapeDraw(ShapeRenderer sr, Array<BitmapFontCache> fnt, boolean focused){
             sr.setColor(Color.BLACK);
             DrawTools.rec(sr,super.shape);
             sr.setColor(Color.WHITE);

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.utils.Array;
 import me.dumfing.menus.LoadingMenu;
 import me.dumfing.menus.MainMenu;
 import me.dumfing.menus.Menu;
+import me.dumfing.menus.ServerBrowser;
 import me.dumfing.multiplayerTools.MultiplayerClient;
 import me.dumfing.multiplayerTools.MultiplayerTools;
 
@@ -30,6 +32,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	ShapeRenderer shapeRenderer;
 	LoadingMenu loadingMenu;
 	MainMenu gameMain;
+	ServerBrowser serverBrowser;
+	OrthographicCamera camera;
 	Array<BitmapFontCache> fontCaches;
 	public static final int DAGGER40 = 0;
 	public static final int DAGGER20 = 1;
@@ -38,6 +42,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public void create () {
 		assetManager = new AssetManager();
 		queueLoading();
+		camera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		camera.translate(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
+		camera.update();
 		fontCaches = new Array<BitmapFontCache>();
 		BitmapFont dagger40 = new BitmapFont(Gdx.files.internal("fonts/dagger40.fnt"));
 		BitmapFont dagger20 = new BitmapFont(Gdx.files.internal("fonts/dagger20.fnt"));
@@ -49,8 +56,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		fontCaches.add(new BitmapFontCache(dagger20));
 		fontCaches.add(new BitmapFontCache(dagger50));
 		shapeRenderer = new ShapeRenderer();
-		gameMain = new MainMenu(fontCaches,assetManager);
-		loadingMenu = new LoadingMenu(fontCaches, assetManager);
+		gameMain = new MainMenu(fontCaches,assetManager, camera);
+		loadingMenu = new LoadingMenu(fontCaches, assetManager, camera);
+		serverBrowser = new ServerBrowser(fontCaches,assetManager,camera);
 		setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded, background frames are loaded and added to it here
 		scW = Gdx.graphics.getWidth();
 		scH = Gdx.graphics.getHeight();
@@ -59,6 +67,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		player = new MultiplayerClient();
 		clientSoldier = new MultiplayerTools.PlayerSoldier(0,0,0,"");
 		player.startClient();
+		shapeRenderer.setProjectionMatrix(camera.combined);
+		batch.setProjectionMatrix(camera.combined);
 		Gdx.input.setInputProcessor(this);
 	}
 
@@ -73,11 +83,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			case LOADINGGAME: // we shouldn't ever be going back to LOADINGGAME
                 //LOADINGGAME just needs to call assetManager.update(), then assign the values
 				loadingMenu.update();
-				drawMenu(loadingMenu);
+				loadingMenu.draw(batch,shapeRenderer);
 				if(loadingMenu.doneLoading()) { // returns true if done loading
 					//assets are assigned to variables here
 					assignValues();
-					gameMain.init(assetManager);
+					gameMain.init();
+					serverBrowser.init();
 				}
 				break;
 			case MAINMENU:
@@ -85,11 +96,16 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					gameMain.setInputProcessor();
 				}
 				gameMain.update();
-				drawMenu(gameMain);
+				gameMain.draw(batch,shapeRenderer);
 				break;
 			case MAINMENUSETTINGS:
 				break;
 			case SERVERBROWSER:
+			    if(Gdx.input.getInputProcessor()!=serverBrowser){
+			        serverBrowser.setInputProcessor();
+                }
+                serverBrowser.update();
+			    serverBrowser.draw(batch,shapeRenderer);
 				break;
 			case STARTSERVER:
 				break;
@@ -180,7 +196,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		}
 		loadingMenu.setFrameTime(25);
 	}
-	public void drawMenu(Menu toDraw){
+	/*public void drawMenu(Menu toDraw){
 		batch.begin();
 			toDraw.spriteDraw(batch);
 		batch.end();
@@ -192,5 +208,5 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				bmfc.draw(batch);
 			}
 		batch.end();
-	}
+	}*/
 }

@@ -2,10 +2,12 @@ package me.dumfing.menus;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import me.dumfing.gdxtools.MenuTools;
@@ -20,19 +22,27 @@ import static me.dumfing.maingame.MainGame.DAGGER50;
  * Created by dumpl on 4/20/2017.
  */
 public class MainMenu extends Menu{
-    private AssetManager manager;
-    public MainMenu(Array<BitmapFontCache> bmfc, AssetManager assetManager) {
-        super(bmfc);
-        this.manager = assetManager;
+    //private AssetManager manager;
+    public MainMenu(Array<BitmapFontCache> bmfc, AssetManager assetManager, OrthographicCamera camera) {
+        super(bmfc,assetManager, camera);
+        //this.manager = assetManager;
     }
 
-    @Override
-    public void spriteDraw(SpriteBatch sb) {
-        super.spriteDraw(sb);
+    public void draw(SpriteBatch sb, ShapeRenderer sr) {
+        super.draw(sb, sr);
+        sb.begin();
+            this.spriteDraw(sb);
+        sb.end();
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+            this.shapeDraw(sr);
+        sr.end();
+        sb.begin();
+            this.fontDraw(sb);
+        sb.end();
     }
 
-    public void init(AssetManager am){
-        this.setBackground(new TextureRegion((Texture)am.get("4914003-galaxy-wallpaper-png.png")));
+    public void init(){
+        this.setBackground(new TextureRegion((Texture)super.getManager().get("4914003-galaxy-wallpaper-png.png")));
         final MenuBox askUserNameBox = new MenuBox(Gdx.graphics.getWidth()/2-165,Gdx.graphics.getHeight()/2-70,330,140,super.getFonts());
         final MenuTools.TextField askUserNameField = new MenuTools.TextField(5, 5, 320, 40);
         final MenuTools.QueueText userNameError = new MenuTools.QueueText(5,60,0,0);
@@ -78,7 +88,7 @@ public class MainMenu extends Menu{
         userNameError.setFont(DAGGER20);
         askUserNameBox.addQueueText(userNameError);
         askUserNameBox.addTextField(askUserNameField);
-        askUserNameBox.setBackground(new TextureRegion((Texture)am.get("menubackdrops/canvas.png")));
+        askUserNameBox.setBackground(new TextureRegion((Texture)super.getManager().get("menubackdrops/canvas.png")));
         String tempMessage = "Pick a username";
         MenuTools.QueueText tempQt = new MenuTools.QueueText(165-MenuTools.textWidth(super.getFonts().get(DAGGER40).getFont(),tempMessage)/2,120,0,0);
         tempQt.setText(tempMessage,super.getFonts());
@@ -111,12 +121,12 @@ public class MainMenu extends Menu{
                 Gdx.app.exit();
             }
         });
-        playButton.setPressedTexture(new TextureRegion((Texture) manager.get("4k-image-santiago.jpg")));
-        playButton.setUnpressedTexture(new TextureRegion((Texture)manager.get("volcano-30238.png")));
-        settingsButton.setPressedTexture(new TextureRegion((Texture) manager.get("4k-image-santiago.jpg")));
-        settingsButton.setUnpressedTexture(new TextureRegion((Texture)manager.get("volcano-30238.png")));
-        quitButton.setPressedTexture(new TextureRegion((Texture) manager.get("4k-image-santiago.jpg")));
-        quitButton.setUnpressedTexture(new TextureRegion((Texture)manager.get("volcano-30238.png")));
+        playButton.setPressedTexture(new TextureRegion((Texture) super.getManager().get("4k-image-santiago.jpg")));
+        playButton.setUnpressedTexture(new TextureRegion((Texture)super.getManager().get("volcano-30238.png")));
+        settingsButton.setPressedTexture(new TextureRegion((Texture) super.getManager().get("4k-image-santiago.jpg")));
+        settingsButton.setUnpressedTexture(new TextureRegion((Texture)super.getManager().get("volcano-30238.png")));
+        quitButton.setPressedTexture(new TextureRegion((Texture) super.getManager().get("4k-image-santiago.jpg")));
+        quitButton.setUnpressedTexture(new TextureRegion((Texture)super.getManager().get("volcano-30238.png")));
         settingsBox.addButton(settingsButton);
         playBox.addButton(playButton);
         quitBox.addButton(quitButton);
