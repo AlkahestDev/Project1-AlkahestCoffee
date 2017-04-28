@@ -28,9 +28,6 @@ android/libs/x86/
 android/libs/x86_64/
 android/gen/
 .idea/
-*.ipr
-*.iws
-*.iml
 out/
 com_crashlytics_export_strings.xml
 
