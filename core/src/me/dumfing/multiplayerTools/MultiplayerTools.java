@@ -88,6 +88,12 @@ public class MultiplayerTools {
             super.name = name;
         }
     }
+    public static class ConnectionRequest{
+        public String playerName;
+        public ConnectionRequest(String playerName){
+            this.playerName = playerName;
+        }
+    }
     public static class RequestWorld{
         public RequestWorld(){
         }

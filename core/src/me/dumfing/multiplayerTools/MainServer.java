@@ -5,6 +5,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * Created by dumpl on 4/18/2017.
@@ -12,7 +13,9 @@ import java.io.IOException;
 public class MainServer {
     private Server server;
     private boolean isRunning;
+    HashMap<Connection, MultiplayerTools.PlayerSoldier> players;
     public MainServer(int pTCP, int pUDP){
+        this.players = new HashMap<Connection, MultiplayerTools.PlayerSoldier>();
         this.server = new Server();
         MultiplayerTools.register(this.server);
         try {

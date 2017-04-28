@@ -15,6 +15,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MenuTools;
 
+import static me.dumfing.maingame.MainGame.DAGGER20;
+
 public class ServerBrowser extends Menu{
     private MenuBox serverList;
     /**
@@ -28,8 +30,11 @@ public class ServerBrowser extends Menu{
         super(bmfc, manager, camera);
     }
 
+    /**
+     * Initializes the ServerBrowser
+     */
     public void init() {
-        super.init();
+        //super.init();
         super.setBackground(new TextureRegion((Texture)super.getManager().get("tuzki.png")));
         serverList = new MenuBox(Gdx.graphics.getWidth()-400,Gdx.graphics.getHeight()-2000,400,2000,super.getFonts());
         final String[] serverNames = {"PARTY SERVER","[RED]SOVIET RUSSIA", "Hei","DumfingServer1"};
@@ -46,6 +51,7 @@ public class ServerBrowser extends Menu{
             serverList.addButton(bt);
             MenuTools.QueueText qt = new MenuTools.QueueText(5,2000-(i*60+10),0,0);
             qt.setText(new String(serverNames[finalI]),super.getFonts());
+            qt.setFont(DAGGER20);
             serverList.addQueueText(qt);
             super.addMenuBox(serverList);
         }
@@ -60,6 +66,7 @@ public class ServerBrowser extends Menu{
                 serverList.translate(0,10*amount);
             }
             else if(amount > 0){
+                System.out.println("scU");
                 serverList.translate(0,10*amount);
             }
             System.out.println(serverList.getRect().y);

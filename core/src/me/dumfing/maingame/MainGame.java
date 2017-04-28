@@ -13,10 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
-import me.dumfing.menus.LoadingMenu;
-import me.dumfing.menus.MainMenu;
-import me.dumfing.menus.Menu;
-import me.dumfing.menus.ServerBrowser;
+import me.dumfing.menus.*;
 import me.dumfing.multiplayerTools.MultiplayerClient;
 import me.dumfing.multiplayerTools.MultiplayerTools;
 
@@ -33,6 +30,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	LoadingMenu loadingMenu;
 	MainMenu gameMain;
 	ServerBrowser serverBrowser;
+	SettingsMenu settingsMenu;
 	OrthographicCamera camera;
 	Array<BitmapFontCache> fontCaches;
 	public static final int DAGGER40 = 0;
@@ -59,6 +57,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		gameMain = new MainMenu(fontCaches,assetManager, camera);
 		loadingMenu = new LoadingMenu(fontCaches, assetManager, camera);
 		serverBrowser = new ServerBrowser(fontCaches,assetManager,camera);
+		settingsMenu = new SettingsMenu(fontCaches,assetManager,camera);
 		setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded, background frames are loaded and added to it here
 		scW = Gdx.graphics.getWidth();
 		scH = Gdx.graphics.getHeight();
@@ -89,6 +88,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					assignValues();
 					gameMain.init();
 					serverBrowser.init();
+					settingsMenu.init();
 				}
 				break;
 			case MAINMENU:
@@ -96,9 +96,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					gameMain.setInputProcessor();
 				}
 				gameMain.update();
-				gameMain.draw(batch,shapeRenderer);
+				gameMain.standardDraw(batch,shapeRenderer);
 				break;
 			case MAINMENUSETTINGS:
+				if(Gdx.input.getInputProcessor() != settingsMenu){
+					settingsMenu.setInputProcessor();
+				}
+				settingsMenu.update();
+				settingsMenu.standardDraw(batch,shapeRenderer);
 				break;
 			case SERVERBROWSER:
 			    if(Gdx.input.getInputProcessor()!=serverBrowser){
