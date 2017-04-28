@@ -4,11 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.DrawTools;
 import me.dumfing.gdxtools.MenuObject;
@@ -31,7 +29,7 @@ public class MenuBox extends MenuObject{
     private LinkedList<MenuTools.TextField> textFields;
     private LinkedList<MenuTools.ColourRect> colRects;
     private LinkedList<MenuTools.QueueText> textToDraw;
-    private Array<BitmapFontCache> textCaches;
+    private Array<BitmapFontCache> fontCaches;
     private MenuTools.TextField focused; // the textbox that the user will be typing into
     private float vX, vY;
 
@@ -50,7 +48,7 @@ public class MenuBox extends MenuObject{
         this.textFields = new LinkedList<MenuTools.TextField>();
         this.colRects = new LinkedList<MenuTools.ColourRect>();
         this.textToDraw = new LinkedList<MenuTools.QueueText>();
-        this.textCaches = bmfc;
+        this.fontCaches = bmfc;
         this.background = new TextureRegion(new Texture(0,0, Pixmap.Format.RGBA8888));
         this.vX = 0;
         this.vY = 0;
@@ -87,7 +85,7 @@ public class MenuBox extends MenuObject{
             bt.update();
         }
         for(MenuTools.TextField tb : textFields){ // go through all TextBoxes in the Menu
-            tb.update(textCaches,focused ==tb); // update the textbox
+            tb.update(fontCaches,focused ==tb); // update the textbox
         }
         for(MenuTools.ColourRect cR : colRects){
             cR.update();
@@ -108,10 +106,10 @@ public class MenuBox extends MenuObject{
             cR.draw(sr);
         }
         for(MenuTools.TextField tb : textFields){ // TextBoxes look like two rectangles drawn on eachother
-            tb.draw(sr,textCaches,tb == focused); // draw the textBox, if it's the focused one then it'll have the cursor being drawn
+            tb.draw(sr, fontCaches,tb == focused); // draw the textBox, if it's the focused one then it'll have the cursor being drawn
         }
         for(MenuTools.QueueText qt : this.textToDraw){
-            qt.queue(textCaches);
+            qt.queue(fontCaches);
         }
     }
 
@@ -125,7 +123,7 @@ public class MenuBox extends MenuObject{
             bt.draw(sb);
         }
         for(MenuTools.QueueText qt : this.textToDraw){
-            qt.queue(textCaches);
+            qt.queue(fontCaches);
         }
         for(MenuTools.TextureRect sp : images){ // draw all Sprites in the Menu
             sp.spriteDraw(sb);

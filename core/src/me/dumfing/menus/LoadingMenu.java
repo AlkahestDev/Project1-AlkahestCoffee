@@ -24,12 +24,12 @@ public class LoadingMenu extends Menu {
     }
 
     @Override
-    public void draw(SpriteBatch sb, ShapeRenderer sr) {
+    public void shapeDraw(ShapeRenderer sr) {
+        super.shapeDraw(sr);
         sr.setColor(1,0.96f,0.89f,1);
         sr.rect(Gdx.graphics.getWidth()/2-200,20,400,30);
         sr.setColor(0,0.5f,1,1);
         sr.rect(Gdx.graphics.getWidth()/2-198,22,396f*manager.getProgress(),26);
-        super.draw(sb, sr);
     }
     public boolean doneLoading(){
         return this.manager.getProgress() == 1;

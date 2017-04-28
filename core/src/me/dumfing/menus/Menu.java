@@ -131,6 +131,9 @@ public class Menu implements InputProcessor{
         for(MenuBox mb : menuBoxes){
             mb.update(focused);
         }
+        for(MenuTools.QueueText qt : queuedText){
+            qt.update();
+        }
         this.frameCount++; // increase frameCounter
     }
 

@@ -14,12 +14,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.menus.LoadingMenu;
 import me.dumfing.menus.MainMenu;
+import me.dumfing.menus.Menu;
 import me.dumfing.multiplayerTools.MultiplayerClient;
 import me.dumfing.multiplayerTools.MultiplayerTools;
 
-import java.util.HashMap;
-
 public class MainGame extends ApplicationAdapter implements InputProcessor{
+	public static final String versionNumber = "1e-10000000";
 	private float scW, scH;
 	SpriteBatch batch;
 	AssetManager assetManager;
@@ -27,12 +27,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	Texture tuzki, menuImg;
 	public static MultiplayerClient player; // public to allow any menu to access easily
 	public static MultiplayerTools.PlayerSoldier clientSoldier; // public to allow any menu to access easily
-	ShapeRenderer sr;
+	ShapeRenderer shapeRenderer;
 	LoadingMenu loadingMenu;
 	MainMenu gameMain;
 	Array<BitmapFontCache> fontCaches;
 	public static final int DAGGER40 = 0;
 	public static final int DAGGER20 = 1;
+	public static final int DAGGER50 = 2;
 	@Override
 	public void create () {
 		assetManager = new AssetManager();
@@ -40,11 +41,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		fontCaches = new Array<BitmapFontCache>();
 		BitmapFont dagger40 = new BitmapFont(Gdx.files.internal("fonts/dagger40.fnt"));
 		BitmapFont dagger20 = new BitmapFont(Gdx.files.internal("fonts/dagger20.fnt"));
+		BitmapFont dagger50 = new BitmapFont(Gdx.files.internal("fonts/dagger50.fnt"));
 		dagger40.getData().markupEnabled = true;
 		dagger20.getData().markupEnabled = true;
+		dagger50.getData().markupEnabled = true;
 		fontCaches.add(new BitmapFontCache(dagger40));
 		fontCaches.add(new BitmapFontCache(dagger20));
-		sr = new ShapeRenderer();
+		fontCaches.add(new BitmapFontCache(dagger50));
+		shapeRenderer = new ShapeRenderer();
 		gameMain = new MainMenu(fontCaches,assetManager);
 		loadingMenu = new LoadingMenu(fontCaches, assetManager);
 		setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded, background frames are loaded and added to it here
@@ -69,11 +73,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			case LOADINGGAME: // we shouldn't ever be going back to LOADINGGAME
                 //LOADINGGAME just needs to call assetManager.update(), then assign the values
 				loadingMenu.update();
-				sr.begin(ShapeRenderer.ShapeType.Filled);
-					batch.begin();
-						loadingMenu.draw(batch,sr);
-					batch.end();
-				sr.end();
+				drawMenu(loadingMenu);
 				if(loadingMenu.doneLoading()) { // returns true if done loading
 					//assets are assigned to variables here
 					assignValues();
@@ -85,17 +85,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					gameMain.setInputProcessor();
 				}
 				gameMain.update();
-				batch.begin(); // draw menu related things
-					gameMain.spriteDraw(batch);
-				batch.end();
-				sr.begin(ShapeRenderer.ShapeType.Filled); // draw shapes
-					gameMain.shapeDraw(sr);
-				sr.end();
-				batch.begin(); // draw text
-					for(BitmapFontCache bmfc : fontCaches){
-						bmfc.draw(batch);
-					}
-				batch.end();
+				drawMenu(gameMain);
 				break;
 			case MAINMENUSETTINGS:
 				break;
@@ -189,5 +179,18 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			loadingMenu.addBackground(new TextureRegion(new Texture(Gdx.files.internal(String.format("loading/loadingKnight/loadingKnight%d.png",i)))));
 		}
 		loadingMenu.setFrameTime(25);
+	}
+	public void drawMenu(Menu toDraw){
+		batch.begin();
+			toDraw.spriteDraw(batch);
+		batch.end();
+		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+			toDraw.shapeDraw(shapeRenderer);
+		shapeRenderer.end();
+		batch.begin();
+			for(BitmapFontCache bmfc : fontCaches){
+				bmfc.draw(batch);
+			}
+		batch.end();
 	}
 }

@@ -43,12 +43,16 @@ public class MenuTools {
             preferredFont = DAGGER40;
             this.qText = "";
         }
-        public void setPreferredFont(int fontID){
+        public void setFont(int fontID){
             this.preferredFont = fontID;
         }
         public void setText(String tIn,Array<BitmapFontCache> bmfc){
             this.qText = tIn;
             textWidth = new GlyphLayout(bmfc.get(preferredFont).getFont(),tIn).width;
+        }
+        public void clearText(){
+            this.qText = "";
+            textWidth = 0;
         }
         public void queue(Array<BitmapFontCache> fontCaches){
             fontCaches.get(preferredFont).addText(this.qText,super.shape.x,super.shape.y,textWidth,0,false);
