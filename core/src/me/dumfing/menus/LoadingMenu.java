@@ -5,13 +5,14 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by dumpl on 4/21/2017.
  */
 public class LoadingMenu extends Menu {
     AssetManager manager;
-    public LoadingMenu(BitmapFontCache bmfc, AssetManager manager){
+    public LoadingMenu(Array<BitmapFontCache> bmfc, AssetManager manager){
         super(bmfc);
         this.manager = manager;
     }

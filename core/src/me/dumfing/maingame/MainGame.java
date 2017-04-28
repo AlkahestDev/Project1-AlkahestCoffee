@@ -11,13 +11,13 @@ import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Array;
 import me.dumfing.menus.LoadingMenu;
 import me.dumfing.menus.MainMenu;
-import me.dumfing.menus.Menu;
-import me.dumfing.gdxtools.MenuTools;
-import me.dumfing.menus.MenuBox;
 import me.dumfing.multiplayerTools.MultiplayerClient;
 import me.dumfing.multiplayerTools.MultiplayerTools;
+
+import java.util.HashMap;
 
 public class MainGame extends ApplicationAdapter implements InputProcessor{
 	private float scW, scH;
@@ -30,15 +30,23 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	ShapeRenderer sr;
 	LoadingMenu loadingMenu;
 	MainMenu gameMain;
-	BitmapFontCache bmfc;
+	Array<BitmapFontCache> fontCaches;
+	public static final int DAGGER40 = 0;
+	public static final int DAGGER20 = 1;
 	@Override
 	public void create () {
 		assetManager = new AssetManager();
 		queueLoading();
-		bmfc = new BitmapFontCache(new BitmapFont(Gdx.files.internal("fonts/dagger40.fnt")));
+		fontCaches = new Array<BitmapFontCache>();
+		BitmapFont dagger40 = new BitmapFont(Gdx.files.internal("fonts/dagger40.fnt"));
+		BitmapFont dagger20 = new BitmapFont(Gdx.files.internal("fonts/dagger20.fnt"));
+		dagger40.getData().markupEnabled = true;
+		dagger20.getData().markupEnabled = true;
+		fontCaches.add(new BitmapFontCache(dagger40));
+		fontCaches.add(new BitmapFontCache(dagger20));
 		sr = new ShapeRenderer();
-		gameMain = new MainMenu(bmfc,assetManager);
-		loadingMenu = new LoadingMenu(bmfc, assetManager);
+		gameMain = new MainMenu(fontCaches,assetManager);
+		loadingMenu = new LoadingMenu(fontCaches, assetManager);
 		setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded, background frames are loaded and added to it here
 		scW = Gdx.graphics.getWidth();
 		scH = Gdx.graphics.getHeight();
@@ -54,7 +62,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public void render () {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		bmfc.clear(); // clear bitmap font cache because it doesn't clear itself upon drawing (grumble grumble)
+		for(BitmapFontCache bmfc : fontCaches) {
+			bmfc.clear(); // clear bitmap font cache because it doesn't clear itself upon drawing (grumble grumble)
+		}
 		switch(state){
 			case LOADINGGAME: // we shouldn't ever be going back to LOADINGGAME
                 //LOADINGGAME just needs to call assetManager.update(), then assign the values
@@ -67,7 +77,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				if(loadingMenu.doneLoading()) { // returns true if done loading
 					//assets are assigned to variables here
 					assignValues();
-					gameMain.init(assetManager, bmfc);
+					gameMain.init(assetManager);
 				}
 				break;
 			case MAINMENU:
@@ -82,7 +92,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					gameMain.shapeDraw(sr);
 				sr.end();
 				batch.begin(); // draw text
-					bmfc.draw(batch);
+					for(BitmapFontCache bmfc : fontCaches){
+						bmfc.draw(batch);
+					}
 				batch.end();
 				break;
 			case MAINMENUSETTINGS:
@@ -156,9 +168,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		menuImg = assetManager.get("Desktop.jpg");
 
 		state = GameState.MAINMENU;
-		//gameMain.setInputProcessor();
-		//gameMain.addImage(tuzki,Gdx.graphics.getWidth()/2-100,Gdx.graphics.getHeight()/2-20);
-		//gameMain.setFrameTime(15);
 	}
 	public void queueLoading(){ // queue files for assetManager to load
 		//Sticking random things to load into the assetmanager to see how long it'll take to load

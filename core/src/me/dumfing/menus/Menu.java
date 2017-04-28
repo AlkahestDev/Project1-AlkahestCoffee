@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MenuTools;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -31,14 +32,14 @@ public class Menu implements InputProcessor{
     private LinkedList<MenuTools.ColourRect> colRects;
     private LinkedList<MenuBox> menuBoxes;
     private LinkedList<MenuTools.QueueText> queuedText;
-    private BitmapFontCache textCache;
+    private Array<BitmapFontCache> fontCaches;
     private MenuTools.TextField focused; // the textbox that the user will be typing into
 
     /**
      * Constructor for the menu
      * @param bmfc BitMapFontCache for drawing all text in the menu
      */
-    public Menu(BitmapFontCache bmfc){
+    public Menu(Array<BitmapFontCache> bmfc){
         buttons = new LinkedList<MenuTools.Button>();
         backgroundFrame = 0;
         background = new Array<TextureRegion>();
@@ -47,7 +48,7 @@ public class Menu implements InputProcessor{
         colRects = new LinkedList<MenuTools.ColourRect>();
         menuBoxes = new LinkedList<MenuBox>();
         queuedText = new LinkedList<MenuTools.QueueText>();
-        this.textCache = bmfc;
+        this.fontCaches = bmfc;
     }
 
     /**
@@ -122,7 +123,7 @@ public class Menu implements InputProcessor{
             this.backgroundFrame = 0; // use the first frame in the array (which is the one that is set by calling setBackground)
         }
         for(MenuTools.TextField tb : textFields){ // go through all TextBoxes in the Menu
-            tb.update(textCache,focused ==tb); // update the textbox
+            tb.update(fontCaches,focused ==tb); // update the textbox
         }
         for(MenuTools.ColourRect cR : colRects){
             cR.update();
@@ -140,11 +141,10 @@ public class Menu implements InputProcessor{
     public void spriteDraw(SpriteBatch sb){ // draw all SpriteBatch related things
         sb.draw(background.get(backgroundFrame),0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight()); // draw the appropriate background frame, stretching it if needed
         for(MenuTools.Button bt : this.buttons) { // check all the buttons in the Menu
-            System.out.println(bt.getRect().x+" "+bt.getClicked());
             if (bt.getClicked()) { // if the button has been clicked
-                sb.draw(bt.getPressed(), bt.getButtonArea().x, bt.getButtonArea().y, bt.getButtonArea().width, bt.getButtonArea().height); // draw the clicked button
+                sb.draw(bt.getPressed(), bt.getRect().x, bt.getRect().y, bt.getRect().width, bt.getRect().height); // draw the clicked button
             } else {
-                sb.draw(bt.getUnpressed(), bt.getButtonArea().x, bt.getButtonArea().y, bt.getButtonArea().width, bt.getButtonArea().height); // draw the unclicked button
+                sb.draw(bt.getUnpressed(), bt.getRect().x, bt.getRect().y, bt.getRect().width, bt.getRect().height); // draw the unclicked button
             }
         }
         for(MenuTools.TextureRect sp : images){ // draw all Sprites in the Menu
@@ -154,7 +154,7 @@ public class Menu implements InputProcessor{
             mb.spriteDraw(sb);
         }
         for(MenuTools.QueueText qt : queuedText){
-            qt.queue(textCache);
+            qt.queue(fontCaches);
         }
     }
 
@@ -167,7 +167,7 @@ public class Menu implements InputProcessor{
             cR.draw(sr);
         }
         for(MenuTools.TextField tb : textFields){ // TextBoxes look like two rectangles drawn on eachother
-            tb.draw(sr,textCache.getFont(),tb == focused); // draw the textBox, if it's the focused one then it'll have the cursor being drawn
+            tb.draw(sr,fontCaches,tb == focused); // draw the textBox, if it's the focused one then it'll have the cursor being drawn
         }
         for(MenuBox mb : menuBoxes){
             mb.shapeDraw(sr,focused);
@@ -253,6 +253,14 @@ public class Menu implements InputProcessor{
     public void clearFocused(){
         this.focused = null;
     }
+
+    /**
+     * Returns an Array of BitmapFontCaches
+     * @return
+     */
+    public Array<BitmapFontCache> getFonts(){
+        return this.fontCaches;
+    }
     /**
      * The event that handles Keypresses
      * @param keycode The keycode of the key that was pressed
@@ -331,6 +339,9 @@ public class Menu implements InputProcessor{
             if(bt.collidepoint(screenX,screenY)){ // if the mouse is hovering over a button
                 bt.activate(); // activate that button's function
             }
+        }
+        for(MenuBox mb : menuBoxes){
+            mb.checkButtonsPressed(screenX,screenY);
         }
         return true;
     }

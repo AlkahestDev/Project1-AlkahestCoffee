@@ -7,10 +7,13 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.DrawTools;
 import org.w3c.dom.css.Rect;
 
 import java.util.Arrays;
+
+import static me.dumfing.maingame.MainGame.DAGGER40;
 
 /**
  * TODO: getting text from text box
@@ -33,18 +36,22 @@ public class MenuTools {
      */
     public static class QueueText extends MenuObject{
         String qText;
-        int centering = Align.left;
+        int preferredFont;
         float textWidth = 0;
         public QueueText(float x, float y, float w, float h) {
             super(x, y, w, h);
+            preferredFont = DAGGER40;
+            this.qText = "";
         }
-
-        public void setText(String tIn,BitmapFontCache bmfc){
+        public void setPreferredFont(int fontID){
+            this.preferredFont = fontID;
+        }
+        public void setText(String tIn,Array<BitmapFontCache> bmfc){
             this.qText = tIn;
-            textWidth = new GlyphLayout(bmfc.getFont(),tIn).width;
+            textWidth = new GlyphLayout(bmfc.get(preferredFont).getFont(),tIn).width;
         }
-        public void queue(BitmapFontCache bmfc){
-            bmfc.addText(this.qText,super.shape.x,super.shape.y,textWidth,0,false);
+        public void queue(Array<BitmapFontCache> fontCaches){
+            fontCaches.get(preferredFont).addText(this.qText,super.shape.x,super.shape.y,textWidth,0,false);
         }
     }
     /**
@@ -123,7 +130,6 @@ public class MenuTools {
      */
     public static class Button extends MenuObject {
         private TextureRegion unpressed, pressed; // how the button looks when it's held down and when it's not held down
-        private Rectangle buttonArea;
         boolean isPressed = false;
         OnClick callback;
         float vX = 0;
@@ -169,14 +175,6 @@ public class MenuTools {
         }
 
         /**
-         * Returns the Rectangular area of the Button
-         * @return The Rectangle Object used to determine the buttons shape and area
-         */
-        public Rectangle getButtonArea(){
-            return super.shape;
-        }
-
-        /**
          * Gets whether or not the button is pressed or not
          * @return boolean for if the button is being pressed
          */
@@ -186,7 +184,6 @@ public class MenuTools {
 
         /**
          * Draws the button. Will not scale or stretch the TextureRegion if it's shape isn't the same as the Button<br>
-         * Due to compatibility reasons, velocity will be handled here as well
          * @param sr ShapeRenderer to draw the button if in debug mode
          * @param batch The SpriteBatch to draw the button if not in debug mode
          * @param debug Flag to turn on debug mode for the button
@@ -195,19 +192,22 @@ public class MenuTools {
             if(debug){
                 if(this.isPressed) {
                     sr.setColor(Color.RED);
-                    DrawTools.rec(sr, this.buttonArea);
+                    DrawTools.rec(sr, super.getRect());
                 }
                 else{
                     sr.setColor(Color.BLUE);
-                    DrawTools.rec(sr,this.buttonArea);
+                    DrawTools.rec(sr,super.getRect());
                 }
             }
             else{
                 if(this.isPressed){
-                    batch.draw(pressed,buttonArea.getX(),buttonArea.getY());
+                    //batch.draw(pressed,super.getRect().getX(),super.getRect().getY(),super.getRect().getWidth(),super.getRect().getHeight());
+                    DrawTools.textureRect(batch,super.getRect(),pressed);
                 }
                 else{
-                    batch.draw(unpressed,buttonArea.getX(),buttonArea.getY());
+                    //System.out.println(super.vX);
+                    DrawTools.textureRect(batch,super.getRect(),unpressed);
+                    //batch.draw(unpressed,super.getRect().getX(),super.getRect().getY(),super.getR);
                 }
             }
         }
@@ -270,7 +270,7 @@ public class MenuTools {
         float vX,vY;
         Rectangle boxShape;
         StringBuilder sOut;
-        int curPos, frameCount;
+        int curPos, frameCount, fontId;
         int[] heldKeys; // shift everything up by one because anykey is -1
         boolean showCursor;
         OnEnter enterText;
@@ -300,17 +300,16 @@ public class MenuTools {
          * @param bmfc The BitmapFontCache for drawing the text in the TextField
          * @param focused Whether or not this TextField is being typed into
          */
-        public void update(BitmapFontCache bmfc, boolean focused){
+        public void update(Array<BitmapFontCache> bmfc, boolean focused){
             handleHeldKeys();
-            bmfc.setColor(Color.BLACK);
-            bmfc.addText(this.sOut.toString(),super.shape.getX()+3,super.shape.getY()+super.shape.getHeight() - 7,0,this.sOut.length(),super.shape.getWidth(), Align.left,false,"");
+            bmfc.get(fontId).setColor(Color.BLACK);
+            bmfc.get(fontId).addText(this.sOut.toString(),super.shape.getX()+3,super.shape.getY()+super.shape.getHeight() - 7,0,this.sOut.length(),super.shape.getWidth(), Align.left,false,"");
             if(focused){
                 this.frameCount++; // Integer.MAX_VALUE frames is around 414 days to overflow, if a user has the text box open for 414 days, the game probably won't be worth keeping open
             }
             else{
                 this.frameCount = 0; // keeps delay consistent when refocusing on a textbox (also aids in staying away from Integer.MAX_VALUE)
             }
-            //System.out.println(this.frameCount+" "+this.frameCount%30);
             if(this.frameCount%40 == 0){
                 this.showCursor = !showCursor;
             }
@@ -338,18 +337,25 @@ public class MenuTools {
          * @param fnt BitmapFont for determining the width of the text, should be the same font that the BitmapFontCache is using
          * @param focused boolean for whether or not this TextField is currently focused on
          */
-        public void draw(ShapeRenderer sr, BitmapFont fnt, boolean focused){
+        public void draw(ShapeRenderer sr, Array<BitmapFontCache> fnt, boolean focused){
             sr.setColor(Color.BLACK);
             DrawTools.rec(sr,super.shape);
             sr.setColor(Color.WHITE);
             sr.rect(super.shape.x+2,super.shape.y+2,super.shape.width-4,super.shape.height-4);
             sr.setColor(Color.BLACK);
-            float tWidth = new GlyphLayout(fnt,this.sOut.toString().substring(0,curPos)).width;
+            float tWidth = new GlyphLayout(fnt.get(this.fontId).getFont(),this.sOut.toString().substring(0,curPos)).width;
             if(tWidth<super.shape.width-12 && focused && showCursor) { // for the line to be drawn, the width fo the text must be within the width of the box, and the box must be focused
                 sr.rect(super.shape.getX() + tWidth + 5, super.shape.getY() + 5, 1, super.shape.getHeight() - 10);
             }
         }
 
+        /**
+         * Sets the font to use for drawing
+         * @param fontId The id of the font
+         */
+        public void setFont(int fontId){
+            this.fontId = fontId;
+        }
         /**
          * Singular method to initialize the variables for all constructors
          */
@@ -359,6 +365,7 @@ public class MenuTools {
             this.vX = this.vY = 0;
             this.heldKeys = new int[257];
             this.showCursor = false;
+            this.fontId = DAGGER40;
             Arrays.fill(this.heldKeys,-1);
         }
 

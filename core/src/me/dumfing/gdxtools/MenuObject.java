@@ -47,14 +47,20 @@ public class MenuObject {
 
     }
     /**
-     * Moves the object with it's velocity
+     * Moves the object with it's velocity<br>
+     * REMEMBER TO ADD EVERYTHING TO THE MENUBOX BEFORE SETTING IT'S VELOCITY
      */
     public void update(){
         this.translate(vX,vY);
         this.vX = towardsZero(vX);
         this.vY = towardsZero(vY);
     }
-
+    public float getvX(){
+        return this.vX;
+    }
+    public float getvY(){
+        return this.vY;
+    }
     /**
      * Sets the velocity of the object
      * @param x The x component of the velocity
