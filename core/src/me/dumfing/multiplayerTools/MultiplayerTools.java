@@ -4,12 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
-
 import java.util.HashMap;
 
-/**
- * Created by dumpl on 4/18/2017.
- */
 public class MultiplayerTools {
     public static final int UDPPORT = 8625;
     public static final int TCPPORT = 8626;
