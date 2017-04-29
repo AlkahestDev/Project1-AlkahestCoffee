@@ -13,18 +13,11 @@ import java.util.HashMap;
 public class MainServer {
     private Server server;
     private boolean isRunning;
-    HashMap<Connection, MultiplayerTools.PlayerSoldier> players;
-    public MainServer(int pTCP, int pUDP){
-        this.players = new HashMap<Connection, MultiplayerTools.PlayerSoldier>();
-        this.server = new Server();
-        MultiplayerTools.register(this.server);
-        try {
-            this.server.bind(pTCP,pUDP);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public MainServer(){
+    private String svName;
+    HashMap<Connection, PlayerSoldier> players;
+    public MainServer(final String svName){
+        this.svName = svName;
+        this.players = new HashMap<Connection, PlayerSoldier>();
         this.server = new Server();
         MultiplayerTools.register(this.server);
         try {
@@ -36,7 +29,9 @@ public class MainServer {
             @Override
             public void connected(Connection connection) {
                 System.out.printf("Client Connected! %d\n",connection.getID());
+                connection.updateReturnTripTime();
                 super.connected(connection);
+
             }
 
             @Override
@@ -48,6 +43,11 @@ public class MainServer {
             @Override
             public void received(Connection connection, Object o) {
                 //We will be using a request and response system rather than periodically broadcasting to all clients as there's no easy way to have the server periodically update the clients
+                System.out.println("Received Object");
+                if(o instanceof MultiplayerTools.ServerInfoRequest){
+                    MultiplayerTools.ServerInfoRequest svir = (MultiplayerTools.ServerInfoRequest) o;
+                    connection.sendTCP(new MultiplayerTools.ServerSummary(0,0,connection.getReturnTripTime(),svName,svir.svIP));
+                }
                 super.received(connection, o);
             }
 

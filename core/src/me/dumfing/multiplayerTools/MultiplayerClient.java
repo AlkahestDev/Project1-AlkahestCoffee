@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Listener;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -14,13 +15,15 @@ import java.util.List;
  */
 public class MultiplayerClient {
     private Client playerClient;
+    private HashMap<Connection, MultiplayerTools.ServerSummary> serverSummaries;
     public MultiplayerClient(){
         playerClient = new Client();
+        serverSummaries = new HashMap<Connection, MultiplayerTools.ServerSummary>();
         MultiplayerTools.register(playerClient);
         playerClient.addListener(new Listener.ThreadedListener(new Listener(){
             @Override
             public void connected(Connection connection) {
-                System.out.printf("Successfully connected to %s",connection.getID());
+                System.out.printf("Successfully connected to %s\n",connection.getID());
                 super.connected(connection);
             }
             @Override
@@ -30,6 +33,13 @@ public class MultiplayerClient {
 
             @Override
             public void received(Connection connection, Object o) {
+                System.out.println("Got info!");
+                if(o instanceof MultiplayerTools.ServerSummary){
+                    System.out.println("Info");
+                    MultiplayerTools.ServerSummary temp = (MultiplayerTools.ServerSummary) o;
+                    serverSummaries.put(connection,temp);
+                    connection.close();
+                }
                 super.received(connection, o);
             }
 
@@ -62,6 +72,19 @@ public class MultiplayerClient {
     public InetAddress findServer(){
         return playerClient.discoverHost(MultiplayerTools.UDPPORT, 1000);
     }
+    public void pingServer(String serverIP){
+        try {
+            playerClient.connect(100,serverIP,MultiplayerTools.TCPPORT, MultiplayerTools.UDPPORT);
+            playerClient.sendTCP(new MultiplayerTools.ServerInfoRequest(serverIP));
+        } catch (IOException e) {
+            System.out.println("Could not connect to "+serverIP);
+        }
+    }
+
+    public HashMap<Connection, MultiplayerTools.ServerSummary> getServers() {
+        return serverSummaries;
+    }
+
     public void requestWorld(){ // asks server for world info
         playerClient.sendUDP(new MultiplayerTools.RequestWorld());
     }
