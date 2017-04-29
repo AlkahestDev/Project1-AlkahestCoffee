@@ -16,6 +16,9 @@ import com.badlogic.gdx.utils.Array;
 import me.dumfing.menus.*;
 import me.dumfing.multiplayerTools.MultiplayerClient;
 import me.dumfing.multiplayerTools.MultiplayerTools;
+import me.dumfing.multiplayerTools.PlayerSoldier;
+
+import java.net.InetAddress;
 
 public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static final String versionNumber = "1e-10000000";
@@ -25,7 +28,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static GameState state;
 	Texture tuzki, menuImg;
 	public static MultiplayerClient player; // public to allow any menu to access easily
-	public static MultiplayerTools.PlayerSoldier clientSoldier; // public to allow any menu to access easily
+	public static PlayerSoldier clientSoldier; // public to allow any menu to access easily
 	ShapeRenderer shapeRenderer;
 	LoadingMenu loadingMenu;
 	MainMenu gameMain;
@@ -33,6 +36,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	SettingsMenu settingsMenu;
 	OrthographicCamera camera;
 	Array<BitmapFontCache> fontCaches;
+	boolean findingServers = false;
+	Runnable findServers;
 	public static final int DAGGER40 = 0;
 	public static final int DAGGER20 = 1;
 	public static final int DAGGER50 = 2;
@@ -64,8 +69,28 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		state = GameState.LOADINGGAME;
 		batch = new SpriteBatch();
 		player = new MultiplayerClient();
-		clientSoldier = new MultiplayerTools.PlayerSoldier(0,0,0,"");
+		clientSoldier = new PlayerSoldier(0,0,0,"");
 		player.startClient();
+		findServers = new Runnable() {
+			@Override
+			public void run() {
+				findingServers = true;
+				for(InetAddress addr : player.findServers()){
+					player.pingServer(addr.getHostAddress());
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				findingServers = false;
+				System.out.println("print things!");
+				for(MultiplayerTools.ServerSummary svsm : player.getServers().values()){
+					System.out.println(svsm);
+				}
+			}
+		};
+		new Thread(findServers).start();
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		batch.setProjectionMatrix(camera.combined);
 		Gdx.input.setInputProcessor(this);
@@ -108,6 +133,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			case SERVERBROWSER:
 			    if(Gdx.input.getInputProcessor()!=serverBrowser){
 			        serverBrowser.setInputProcessor();
+			        System.out.println("RUN!");
+			        new Thread(findServers).start();
+
                 }
                 serverBrowser.update();
 			    serverBrowser.draw(batch,shapeRenderer);

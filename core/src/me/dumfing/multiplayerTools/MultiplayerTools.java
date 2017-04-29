@@ -16,6 +16,23 @@ public class MultiplayerTools {
     public static void register(EndPoint endpoint){
         Kryo serializer = endpoint.getKryo();
         serializer.register(PlayerInfo.class);
+        serializer.register(ServerSummary.class);
+    }
+    public static class ServerSummary{
+        public int num, max, ping;
+        public String serverName;
+        public ServerSummary(){
+
+        }
+        public ServerSummary(int numPlayers, int maxPlayers, int ping, String serverName){
+            this.num = numPlayers;
+            this.max = maxPlayers;
+            this.ping = ping;
+            this.serverName = serverName;
+        }
+        public String toString(){
+            return String.format("%20s %d/%d %d",serverName.substring(0,Math.min(20,serverName.length())),num,max,ping);
+        }
     }
     public static class PlayerInfo{
         private Vector2 pPos;
@@ -54,40 +71,18 @@ public class MultiplayerTools {
         public String getName(){
             return this.name;
         }
-    }
-    public static class PlayerSoldier extends PlayerInfo{ // a more detailed version of the players that will be sent at the start but won't be sent around as much later
-        private int health, maxHealth;
-        private float vX, vY;
-        public PlayerSoldier(float x, float y, int team){
-            super(x,y,team,null);
-            this.vX = 0;
-            this.vY = 0;
-            this.health = 100;
-            this.maxHealth = 100;
-        }
-        public PlayerSoldier(float x, float y, int team, String name){
-            super(x, y, team, name);
-            this.vX = 0;
-            this.vY = 0;
-            this.health = 100;
-            this.maxHealth = 100;
-        }
-        public void setMaxHealth(int maxHealth){
-            this.maxHealth = maxHealth;
-        }
-        public PlayerInfo getPlayerInfo(){
-            return new PlayerInfo(this); // a stripped down version of this for what other people see
-        }
-        public int getHealth(){
-            return this.health;
-        }
-        public int getMaxHealth(){
-            return this.maxHealth;
-        }
         public void setName(String name){
-            super.name = name;
+            this.name = name;
+        }
+        public void setTeam(int team) {
+            this.team = team;
+        }
+
+        public int getHealth() {
+            return health;
         }
     }
+
     public static class ConnectionRequest{
         public String playerName;
         public ConnectionRequest(String playerName){
