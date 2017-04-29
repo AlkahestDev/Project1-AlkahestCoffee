@@ -74,7 +74,8 @@ public class MultiplayerClient {
     }
     public void pingServer(String serverIP){
         try {
-            playerClient.connect(50,serverIP,MultiplayerTools.TCPPORT, MultiplayerTools.UDPPORT);
+            playerClient.connect(100,serverIP,MultiplayerTools.TCPPORT, MultiplayerTools.UDPPORT);
+            playerClient.sendTCP(new MultiplayerTools.ServerInfoRequest(serverIP));
         } catch (IOException e) {
             System.out.println("Could not connect to "+serverIP);
         }

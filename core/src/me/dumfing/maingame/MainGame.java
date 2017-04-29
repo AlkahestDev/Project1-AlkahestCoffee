@@ -86,7 +86,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				findingServers = false;
 				System.out.println("print things!");
 				for(MultiplayerTools.ServerSummary svsm : player.getServers().values()){
-					System.out.println(svsm);
+					System.out.println(svsm+" "+svsm.serverIP);
 				}
 			}
 		};
