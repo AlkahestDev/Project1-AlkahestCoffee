@@ -20,26 +20,21 @@ public class MultiplayerTools {
         serializer.register(ServerInfoRequest.class);
     }
     public static class ServerInfoRequest{
-        public String svIP;
         public ServerInfoRequest(){
 
-        }
-        public ServerInfoRequest(String svIP){
-            this.svIP = svIP;
         }
     }
     public static class ServerSummary{
         public int num, max, ping;
-        public String serverName, serverIP;
+        public String serverName;
         public ServerSummary(){
 
         }
-        public ServerSummary(int numPlayers, int maxPlayers, int ping, String serverName, String serverIP){
+        public ServerSummary(int numPlayers, int maxPlayers, int ping, String serverName){
             this.num = numPlayers;
             this.max = maxPlayers;
             this.ping = ping;
             this.serverName = serverName;
-            this.serverIP = serverIP;
         }
         public String toString(){
             return String.format("%20s %d/%d %d",serverName.substring(0,Math.min(20,serverName.length())),num,max,ping);

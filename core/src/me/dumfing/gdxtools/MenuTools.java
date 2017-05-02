@@ -48,6 +48,9 @@ public class MenuTools {
         public void setFont(int fontID){
             this.preferredFont = fontID;
         }
+        public String getText(){
+            return this.qText;
+        }
         public void setText(String tIn,Array<BitmapFontCache> bmfc){
             this.qText = tIn;
             textWidth = new GlyphLayout(bmfc.get(preferredFont).getFont(),tIn).width;

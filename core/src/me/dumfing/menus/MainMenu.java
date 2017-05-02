@@ -43,8 +43,8 @@ public class MainMenu extends Menu{
 
     public void init(){
         this.setBackground(new TextureRegion((Texture)super.getManager().get("4914003-galaxy-wallpaper-png.png")));
-        final MenuBox askUserNameBox = new MenuBox(Gdx.graphics.getWidth()/2-165,Gdx.graphics.getHeight()/2-70,330,140,super.getFonts());
-        final MenuTools.TextField askUserNameField = new MenuTools.TextField(5, 5, 320, 40);
+        final MenuBox askUserNameBox = new MenuBox(Gdx.graphics.getWidth()/2-180,Gdx.graphics.getHeight()/2-70,360,140,super.getFonts());
+        final MenuTools.TextField askUserNameField = new MenuTools.TextField(5, 5, 350, 40);
         final MenuTools.QueueText userNameError = new MenuTools.QueueText(5,60,0,0);
         askUserNameField.setEnterAction(new MenuTools.OnEnter() {
             @Override
@@ -89,8 +89,8 @@ public class MainMenu extends Menu{
         askUserNameBox.addQueueText(userNameError);
         askUserNameBox.addTextField(askUserNameField);
         askUserNameBox.setBackground(new TextureRegion((Texture)super.getManager().get("menubackdrops/canvas.png")));
-        String tempMessage = "Pick a username";
-        MenuTools.QueueText tempQt = new MenuTools.QueueText(165-MenuTools.textWidth(super.getFonts().get(DAGGER40).getFont(),tempMessage)/2,120,0,0);
+        String tempMessage = "Enter a username";
+        MenuTools.QueueText tempQt = new MenuTools.QueueText(180-MenuTools.textWidth(super.getFonts().get(DAGGER40).getFont(),tempMessage)/2,120,0,0);
         tempQt.setText(tempMessage,super.getFonts());
         askUserNameBox.addQueueText(tempQt);
         super.addMenuBox(askUserNameBox);

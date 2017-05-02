@@ -207,4 +207,20 @@ public class MenuBox extends MenuObject{
     public boolean collidePoint(float mx, float my){
         return this.getRect().contains(mx,my);
     }
+    public Array<BitmapFontCache> getFontCaches(){
+        return this.fontCaches;
+    }
+    /**
+     * Removes all buttons from the MenuBox
+     */
+    public void clearButtons(){
+        this.buttons = new LinkedList<MenuTools.Button>();
+    }
+
+    /**
+     * Removes all Queued Text
+     */
+    public void clearText(){
+        this.textToDraw = new LinkedList<MenuTools.QueueText>();
+    }
 }

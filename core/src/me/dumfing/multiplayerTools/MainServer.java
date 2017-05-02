@@ -13,9 +13,12 @@ import java.util.HashMap;
 public class MainServer {
     private Server server;
     private boolean isRunning;
+    private int maxPlayers;
+    private int numPlayers = 0;
     private String svName;
     HashMap<Connection, PlayerSoldier> players;
-    public MainServer(final String svName){
+    public MainServer(final String svName, final int maxPlayers){
+        this.maxPlayers = maxPlayers;
         this.svName = svName;
         this.players = new HashMap<Connection, PlayerSoldier>();
         this.server = new Server();
@@ -46,7 +49,7 @@ public class MainServer {
                 System.out.println("Received Object");
                 if(o instanceof MultiplayerTools.ServerInfoRequest){
                     MultiplayerTools.ServerInfoRequest svir = (MultiplayerTools.ServerInfoRequest) o;
-                    connection.sendTCP(new MultiplayerTools.ServerSummary(0,0,connection.getReturnTripTime(),svName,svir.svIP));
+                    connection.sendTCP(new MultiplayerTools.ServerSummary(0,maxPlayers,connection.getReturnTripTime(),svName.substring(0,Math.min(16,svName.length()))));
                 }
                 super.received(connection, o);
             }

@@ -32,15 +32,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	ShapeRenderer shapeRenderer;
 	LoadingMenu loadingMenu;
 	MainMenu gameMain;
-	ServerBrowser serverBrowser;
+	public static ServerBrowser serverBrowser; // static so I can access the serverList from the findServers runnable in MultiplayerClient
 	SettingsMenu settingsMenu;
 	OrthographicCamera camera;
 	Array<BitmapFontCache> fontCaches;
-	boolean findingServers = false;
-	Runnable findServers;
 	public static final int DAGGER40 = 0;
 	public static final int DAGGER20 = 1;
 	public static final int DAGGER50 = 2;
+	public static final int DAGGER30 = 3;
 	@Override
 	public void create () {
 		assetManager = new AssetManager();
@@ -49,15 +48,19 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		camera.translate(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
 		camera.update();
 		fontCaches = new Array<BitmapFontCache>();
+		//TODO: reorder numerically
 		BitmapFont dagger40 = new BitmapFont(Gdx.files.internal("fonts/dagger40.fnt"));
 		BitmapFont dagger20 = new BitmapFont(Gdx.files.internal("fonts/dagger20.fnt"));
 		BitmapFont dagger50 = new BitmapFont(Gdx.files.internal("fonts/dagger50.fnt"));
+		BitmapFont dagger30 = new BitmapFont(Gdx.files.internal("fonts/dagger30.fnt"));
 		dagger40.getData().markupEnabled = true;
 		dagger20.getData().markupEnabled = true;
 		dagger50.getData().markupEnabled = true;
+		dagger30.getData().markupEnabled = true;
 		fontCaches.add(new BitmapFontCache(dagger40));
 		fontCaches.add(new BitmapFontCache(dagger20));
 		fontCaches.add(new BitmapFontCache(dagger50));
+		fontCaches.add(new BitmapFontCache(dagger30));
 		shapeRenderer = new ShapeRenderer();
 		gameMain = new MainMenu(fontCaches,assetManager, camera);
 		loadingMenu = new LoadingMenu(fontCaches, assetManager, camera);
@@ -71,26 +74,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		player = new MultiplayerClient();
 		clientSoldier = new PlayerSoldier(0,0,0,"");
 		player.startClient();
-		findServers = new Runnable() {
-			@Override
-			public void run() {
-				findingServers = true;
-				for(InetAddress addr : player.findServers()){
-					player.pingServer(addr.getHostAddress());
-					try {
-						Thread.sleep(500);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-				findingServers = false;
-				System.out.println("print things!");
-				for(MultiplayerTools.ServerSummary svsm : player.getServers().values()){
-					System.out.println(svsm+" "+svsm.serverIP);
-				}
-			}
-		};
-		new Thread(findServers).start();
+		player.pingServers();
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		batch.setProjectionMatrix(camera.combined);
 		Gdx.input.setInputProcessor(this);
@@ -114,6 +98,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					gameMain.init();
 					serverBrowser.init();
 					settingsMenu.init();
+					// ping when done loading so there will hopefully be servers shown when
+					// you open the server browser
+					player.pingServers();
 				}
 				break;
 			case MAINMENU:
@@ -134,8 +121,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			    if(Gdx.input.getInputProcessor()!=serverBrowser){
 			        serverBrowser.setInputProcessor();
 			        System.out.println("RUN!");
-			        new Thread(findServers).start();
-
+			        //update the server browser's list with mroe up to date information
+			        player.pingServers();
                 }
                 serverBrowser.update();
 			    serverBrowser.draw(batch,shapeRenderer);
