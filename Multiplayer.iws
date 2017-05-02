@@ -11,6 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="28ee9a6b-0dc9-4c9b-8cd5-de0c3fdede1d" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/DesktopClient/desktop.jar" afterPath="$PROJECT_DIR$/out/artifacts/DesktopClient/desktop.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/Server/core.jar" afterPath="$PROJECT_DIR$/out/artifacts/Server/core.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Multiplayer.iws" afterPath="$PROJECT_DIR$/Multiplayer.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/me/dumfing/gdxtools/MenuTools.java" afterPath="$PROJECT_DIR$/core/src/me/dumfing/gdxtools/MenuTools.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/me/dumfing/menus/Menu.java" afterPath="$PROJECT_DIR$/core/src/me/dumfing/menus/Menu.java" />
@@ -314,9 +316,15 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+<<<<<<< HEAD
+      <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
+=======
       <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="Scratches" />
+>>>>>>> parent of c41d3be... jars and apks m'dudes
       <pane id="ProjectPane">
         <subPane>
           <PATH>
