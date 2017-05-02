@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
- * TODO: Text boxes<br>
+ *
  * WORK IN PROGRESS<br>
  * Menu.java<br>
  * Aaron Li<br>

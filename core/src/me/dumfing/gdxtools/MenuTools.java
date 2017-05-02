@@ -18,7 +18,6 @@ import java.util.Arrays;
 import static me.dumfing.maingame.MainGame.DAGGER40;
 
 /**
- * TODO: getting text from text box
  * MenuTools.java
  * Various elements used in menus
  * So far there is a button and textbox(WIP)

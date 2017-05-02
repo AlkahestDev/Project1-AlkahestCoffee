@@ -15,7 +15,7 @@ import me.dumfing.gdxtools.MenuTools;
 import java.util.LinkedList;
 
 /**
- *  TODO: Make TextBoxes clickable and usable<br>
+ *
  * MenuBox.java<br>
  * Aaron Li<br>
  * Works like a menu but has the ability to be added to a menu to be drawn and can move around

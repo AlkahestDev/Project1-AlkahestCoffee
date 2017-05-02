@@ -40,7 +40,8 @@ public class ServerBrowser extends Menu{
     public void init() {
         //super.init();
         super.setBackground(new TextureRegion((Texture) super.getManager().get("tuzki.png")));
-        serverList = new ServerBrowserList(880, 0, 400, 2000, super.getFonts(), this.getManager());
+        float serverListHeight = 3000;
+        serverList = new ServerBrowserList(880, Gdx.graphics.getHeight() - serverListHeight, 400, serverListHeight, super.getFonts(), this.getManager());
         super.addMenuBox(serverList);
         addRefreshButton();
         addBackButton();
@@ -121,9 +122,9 @@ public class ServerBrowser extends Menu{
                 float btPosY = bNum*btHeight;
                 MultiplayerTools.ServerSummary svInfo = serverList.get(k);
                 String tOut = String.format("%s%d|%d [%s]%5d",(svInfo.num>=svInfo.max?"[RED]":""),svInfo.num,svInfo.max,ratePing(svInfo.ping),svInfo.ping);
-                MenuTools.Button bt= new MenuTools.Button(0,Gdx.graphics.getHeight()-btPosY-btHeight,super.getRect().getWidth(),btHeight);
-                MenuTools.QueueText sName = new MenuTools.QueueText(5,Gdx.graphics.getHeight()-btPosY-btHeight/2+7,0,0);
-                MenuTools.QueueText peopleLimit = new MenuTools.QueueText(super.getRect().getWidth()-MenuTools.textWidth(getFonts().get(DAGGER30).getFont(),tOut)-2,Gdx.graphics.getHeight() - btPosY-btHeight/2+7,0,0);
+                MenuTools.Button bt= new MenuTools.Button(0,super.getRect().getHeight()-btPosY-btHeight,super.getRect().getWidth(),btHeight);
+                MenuTools.QueueText sName = new MenuTools.QueueText(5,super.getRect().getHeight()-btPosY-btHeight/2+7,0,0);
+                MenuTools.QueueText peopleLimit = new MenuTools.QueueText(super.getRect().getWidth()-MenuTools.textWidth(getFonts().get(DAGGER30).getFont(),tOut)-2,super.getRect().getHeight()-btPosY-btHeight/2+7, 0,0);
                 System.out.println(sName.getRect()+" "+peopleLimit.getRect());
                 peopleLimit.setFont(DAGGER30);
                 sName.setFont(DAGGER30);
@@ -150,16 +151,15 @@ public class ServerBrowser extends Menu{
             }
         }
         public void onScroll(int amount){
+            System.out.println(this.getRect()+" "+amount);
             if(amount>0){
-                if(this.getRect().getY()>0){
-                    System.out.println(this.getRect()+" "+amount);
-                    this.translate(0,amount);
+                if(this.getRect().getY()<0){// <= Gdx.graphics.getHeight()-this.getRect().getHeight()){
+                    this.translate(0,5*amount);
                 }
             }
             else{
-                if(this.getRect().getY()<0){
-                    System.out.println(this.getRect()+" "+amount);
-                    this.translate(0,amount);
+                if(this.getRect().getY() > Gdx.graphics.getHeight()-this.getRect().getHeight()){
+                    this.translate(0,5*amount);
                 }
             }
         }
