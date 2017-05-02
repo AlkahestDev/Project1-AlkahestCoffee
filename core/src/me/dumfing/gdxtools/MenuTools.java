@@ -25,7 +25,7 @@ import static me.dumfing.maingame.MainGame.DAGGER40;
  */
 public class MenuTools {
     public static final int keyTime = 7; // number of frames before a key is registered again
-    private static final String legalChars = " `~1!2@3#4$5%6^7&8*9(0)-_=+qwertyuiopasdfghjklzxcvbnm,<.>/?;:'\"\\|][}{";
+    //private static final String legalChars = " `~1!2@3#4$5%6^7&8*9(0)-_=+qwertyuiopasdfghjklzxcvbnm,<.>/?;:'\"\\|][}{";
     public interface OnClick{
         void action();
     }
@@ -82,6 +82,11 @@ public class MenuTools {
         public TextureRect(float x, float y, float w, float h){
             super(x,y,w,h);
         }
+
+        public TextureRect(Rectangle rect) {
+            super(rect.x,rect.y,rect.width,rect.height);
+        }
+
         public void setRectTexture(TextureRegion tr){
             this.rectTexture = tr;
         }
@@ -443,7 +448,7 @@ public class MenuTools {
          * @param keyIn The char for the letter that was entered
          */
         public void keyTyped(char keyIn){
-            if(legalChars.contains(""+Character.toLowerCase(keyIn))){
+            if(' '<=Character.toLowerCase(keyIn) && Character.toLowerCase(keyIn)<='~'){
                 this.sOut.insert(curPos,keyIn);
                 this.showCursor = true;
                 this.frameCount = 0;

@@ -74,7 +74,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		player = new MultiplayerClient();
 		clientSoldier = new PlayerSoldier(0,0,0,"");
 		player.startClient();
-		player.pingServers();
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		batch.setProjectionMatrix(camera.combined);
 		Gdx.input.setInputProcessor(this);
@@ -98,8 +97,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					gameMain.init();
 					serverBrowser.init();
 					settingsMenu.init();
-					// ping when done loading so there will hopefully be servers shown when
-					// you open the server browser
 					player.pingServers();
 				}
 				break;
@@ -121,8 +118,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			    if(Gdx.input.getInputProcessor()!=serverBrowser){
 			        serverBrowser.setInputProcessor();
 			        System.out.println("RUN!");
-			        //update the server browser's list with mroe up to date information
-			        player.pingServers();
                 }
                 serverBrowser.update();
 			    serverBrowser.draw(batch,shapeRenderer);

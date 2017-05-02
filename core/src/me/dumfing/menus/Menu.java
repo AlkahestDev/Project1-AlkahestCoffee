@@ -74,7 +74,6 @@ public class Menu implements InputProcessor{
     public void addButton(MenuTools.Button btIn){
         this.buttons.add(btIn);
     }
-
     /**
      * Adds a TextField to the menu
      * @param txtIn The TextField object to add to the menu

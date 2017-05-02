@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MenuTools;
+import me.dumfing.maingame.GameState;
 import me.dumfing.maingame.MainGame;
 import me.dumfing.multiplayerTools.MultiplayerTools;
 
@@ -41,6 +42,22 @@ public class ServerBrowser extends Menu{
         super.setBackground(new TextureRegion((Texture) super.getManager().get("tuzki.png")));
         serverList = new ServerBrowserList(880, 0, 400, 2000, super.getFonts(), this.getManager());
         super.addMenuBox(serverList);
+        addRefreshButton();
+        addBackButton();
+    }
+    private void addBackButton(){
+        MenuTools.Button bt = new MenuTools.Button(0,Gdx.graphics.getHeight()-65,60,60);
+        bt.setCallback(new MenuTools.OnClick() {
+            @Override
+            public void action() {
+                MainGame.state = GameState.MAINMENU;
+            }
+        });
+        bt.setPressedTexture(new TextureRegion((Texture)getManager().get("R1.png")));
+        bt.setUnpressedTexture(new TextureRegion((Texture)getManager().get("R2.png")));
+        super.addButton(bt);
+    }
+    private void addRefreshButton(){
         MenuTools.Button refreshServers = new MenuTools.Button(Gdx.graphics.getWidth()-485,Gdx.graphics.getHeight()-85,80,80);
         refreshServers.setCallback(new MenuTools.OnClick() {
             @Override
@@ -53,6 +70,7 @@ public class ServerBrowser extends Menu{
         refreshServers.setPressedTexture(new TextureRegion((Texture)getManager().get("L1.png")));
         refreshServers.setUnpressedTexture(new TextureRegion((Texture)getManager().get("L2.png")));
         super.addButton(refreshServers);
+
     }
         /*serverList = new MenuBox(Gdx.graphics.getWidth()-400,Gdx.graphics.getHeight()-2000,400,2000,super.getFonts());
         final String[] serverNames = {"PARTY SERVER","[RED]SOVIET RUSSIA", "Hei","DumfingServer1"};
@@ -94,7 +112,7 @@ public class ServerBrowser extends Menu{
             this.assets = assets;
         }
         public void refreshServers(final HashMap<String, MultiplayerTools.ServerSummary> serverList){
-            System.out.println(serverList);
+            //System.out.println(serverList);
             int btHeight = 60; //Height of all buttons to be added
             int bNum = 0;
             super.clearButtons();
@@ -117,6 +135,12 @@ public class ServerBrowser extends Menu{
                     @Override
                     public void action() {
                         System.out.println(k);
+                        String svIP = k;
+                        svIP = svIP.replace("/","").substring(0,svIP.indexOf(":")-1); // the received ip is in the form "/ip:port", we only need the ip part so we remove the / and the :port
+                        System.out.println(svIP);
+                        MainGame.player.connectToServer(svIP);
+                        MainGame.state = GameState.CONNECTINGTOSERVER;
+
                     }
                 });
                 super.addQueueText(peopleLimit);

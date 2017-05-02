@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ArtifactManager">
-    <artifact type="jar" name="desktop:jar">
-      <output-path>$PROJECT_DIR$/out/artifacts/desktop_jar</output-path>
+    <artifact type="jar" name="DesktopClient">
+      <output-path>$PROJECT_DIR$/out/artifacts/DesktopClient</output-path>
       <root id="archive" name="desktop.jar">
         <element id="module-output" name="desktop" />
         <element id="module-output" name="core" />
@@ -25,10 +25,11 @@
         <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jcraft/jorbis/0.0.17/8872d22b293e8f5d7d56ff92be966e6dc28ebdc6/jorbis-0.0.17.jar" path-in-jar="/" />
         <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl-platform/2.9.2/d276cdf61fe2b516c7b7f4aa1b8dea91dbdc8d56/lwjgl-platform-2.9.2-natives-linux.jar" path-in-jar="/" />
         <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.java.jutils/jutils/1.0.0/e12fe1fda814bd348c1579329c86943d2cd3c6a6/jutils-1.0.0.jar" path-in-jar="/" />
+        <element id="dir-copy" path="$PROJECT_DIR$/core/assets" />
       </root>
     </artifact>
-    <artifact type="jar" name="core:jar">
-      <output-path>$PROJECT_DIR$/out/artifacts/core_jar</output-path>
+    <artifact type="jar" name="Server">
+      <output-path>$PROJECT_DIR$/out/artifacts/Server</output-path>
       <root id="archive" name="core.jar">
         <element id="module-output" name="core" />
         <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.box2dlights/box2dlights/1.4/3d77ad5b4164fb32fc67e2446e35911bb0aaf0bd/box2dlights-1.4.jar" path-in-jar="/" />
@@ -70,7 +71,7 @@
     <version value="1.0" />
   </component>
   <component name="JavadocGenerationManager">
-    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/../../MultiplayerGameJavadoc" />
+    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/docs/Alkahest-Coffee Javadoc" />
     <option name="OPTION_SCOPE" value="protected" />
     <option name="OPTION_HIERARCHY" value="true" />
     <option name="OPTION_NAVIGATOR" value="true" />

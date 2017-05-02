@@ -3,6 +3,7 @@ package me.dumfing.multiplayerTools;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import me.dumfing.maingame.GameState;
 import me.dumfing.maingame.MainGame;
 
 import java.io.IOException;
@@ -19,12 +20,12 @@ public class MultiplayerClient {
         @Override
         public void run() {
             findingServers = true;
-            serverSummaries = new HashMap<String, MultiplayerTools.ServerSummary>();
-            for(InetAddress addr : findServers()){
+            serverSummaries = new HashMap<String, MultiplayerTools.ServerSummary>(); // set the client's server list to empty
+            for(InetAddress addr : findServers()){ // iterates through the list of servers that the client found running on the designated ports
                 if(!addr.getHostAddress().equals("127.0.0.1")) { //Disallow connecting to localhost to prevent duplicate results if you're hosting on the same computer you're playing on
-                    pingServer(addr.getHostAddress());
+                    pingServer(addr.getHostAddress()); // connect to the server and ask for information about it in return
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(500); // give the server 500 milliseconds to respond before disconnecting to move on to the next server
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -53,6 +54,9 @@ public class MultiplayerClient {
             }
             @Override
             public void disconnected(Connection connection) {
+                if(MainGame.state == GameState.CONNECTINGTOSERVER){ // if you disconnected while connecting,
+                    MainGame.state = GameState.SERVERBROWSER; // go back to the server browser
+                }
                 super.disconnected(connection);
             }
 
@@ -81,7 +85,7 @@ public class MultiplayerClient {
     }
     public void connectToServer(String svIP){
         try {
-            playerClient.connect(3000,svIP,MultiplayerTools.TCPPORT, MultiplayerTools.UDPPORT);
+            playerClient.connect(3000,svIP,MultiplayerTools.TCPPORT, MultiplayerTools.UDPPORT); // connect with 3000ms timeout
         } catch (IOException e) {
             System.err.println("Could not connect to server!");
             e.printStackTrace();
@@ -108,6 +112,11 @@ public class MultiplayerClient {
     public void pingServers(){
         new Thread(findServers).start();
     }
+
+    /**
+     *
+     * @return The ip address of the first server that responds
+     */
     public InetAddress findServer(){
         return playerClient.discoverHost(MultiplayerTools.UDPPORT, 1000);
     }

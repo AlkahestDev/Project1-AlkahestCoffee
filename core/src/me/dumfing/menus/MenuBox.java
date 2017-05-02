@@ -65,6 +65,10 @@ public class MenuBox extends MenuObject{
         btIn.translate(super.getRect().x,super.getRect().y);
         this.buttons.add(btIn);
     }
+    public void addImage(MenuTools.TextureRect textureRectIn){
+        textureRectIn.translate(super.getRect().x,super.getRect().y);
+        this.images.add(textureRectIn);
+    }
     /**
      * Sets the background for the MenuBox
      * @param bg The background to be used
