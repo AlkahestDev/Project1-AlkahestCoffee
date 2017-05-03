@@ -1,4 +1,4 @@
-package me.dumfing.maingame;
+package me.dumfing.client.maingame;
 
 import android.os.Bundle;
 

@@ -37,6 +37,7 @@ public class MultiplayerTools {
             SERVERFULL
         }
         ResponseCode response;
+        public ServerResponse(){}
         public ServerResponse(ResponseCode response){
             this.response = response;
         }

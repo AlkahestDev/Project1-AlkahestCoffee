@@ -1,13 +1,10 @@
-package me.dumfing.gdxtools;
+package me.dumfing.client.gdxtools;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.math.Rectangle;
 
-import java.awt.*;
-
-import static me.dumfing.gdxtools.MenuTools.towardsZero;
+import static me.dumfing.client.gdxtools.MenuTools.towardsZero;
 
 
 /**

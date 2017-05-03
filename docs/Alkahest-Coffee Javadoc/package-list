@@ -1,6 +1,6 @@
-me.dumfing.gdxtools
-me.dumfing.maingame
-me.dumfing.maingame.client
-me.dumfing.maingame.desktop
-me.dumfing.menus
+me.dumfing.client.gdxtools
+me.dumfing.client.maingame
+me.dumfing.client.maingame.client
+me.dumfing.client.maingame.desktop
+me.dumfing.client.menus
 me.dumfing.multiplayerTools

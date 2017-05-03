@@ -1,4 +1,4 @@
-package me.dumfing.menus;
+package me.dumfing.client.menus;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -10,13 +10,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
-import me.dumfing.gdxtools.MenuTools;
-import me.dumfing.maingame.GameState;
-import me.dumfing.maingame.MainGame;
+import me.dumfing.client.gdxtools.MenuTools;
+import me.dumfing.client.maingame.GameState;
+import me.dumfing.client.maingame.MainGame;
 
-import static me.dumfing.maingame.MainGame.DAGGER20;
-import static me.dumfing.maingame.MainGame.DAGGER40;
-import static me.dumfing.maingame.MainGame.DAGGER50;
+import static me.dumfing.client.maingame.MainGame.DAGGER20;
+import static me.dumfing.client.maingame.MainGame.DAGGER40;
+import static me.dumfing.client.maingame.MainGame.DAGGER50;
 
 /**
  * Created by dumpl on 4/20/2017.

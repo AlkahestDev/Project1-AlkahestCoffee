@@ -1,4 +1,4 @@
-package me.dumfing.menus;
+package me.dumfing.client.menus;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;

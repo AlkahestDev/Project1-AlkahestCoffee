@@ -1,4 +1,4 @@
-package me.dumfing.gdxtools;
+package me.dumfing.client.gdxtools;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

@@ -1,4 +1,4 @@
-package me.dumfing.maingame;
+package me.dumfing.client.maingame;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -13,12 +13,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
-import me.dumfing.menus.*;
+import me.dumfing.client.menus.*;
 import me.dumfing.multiplayerTools.MultiplayerClient;
-import me.dumfing.multiplayerTools.MultiplayerTools;
 import me.dumfing.multiplayerTools.PlayerSoldier;
-
-import java.net.InetAddress;
 
 public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static final String versionNumber = "1e-10000000";

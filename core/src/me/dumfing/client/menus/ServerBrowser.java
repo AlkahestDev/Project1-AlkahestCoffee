@@ -1,4 +1,4 @@
-package me.dumfing.menus;
+package me.dumfing.client.menus;
 //FILENAME
 //Aaron Li  4/28/2017
 //EXPLAIN
@@ -12,14 +12,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
-import me.dumfing.gdxtools.MenuTools;
-import me.dumfing.maingame.GameState;
-import me.dumfing.maingame.MainGame;
+import me.dumfing.client.gdxtools.MenuTools;
+import me.dumfing.client.maingame.GameState;
+import me.dumfing.client.maingame.MainGame;
 import me.dumfing.multiplayerTools.MultiplayerTools;
 
 import java.util.HashMap;
 
-import static me.dumfing.maingame.MainGame.*;
+import static me.dumfing.client.maingame.MainGame.*;
 
 public class ServerBrowser extends Menu{
     private ServerBrowserList serverList;

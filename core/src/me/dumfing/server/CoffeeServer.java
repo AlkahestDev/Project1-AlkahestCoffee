@@ -1,4 +1,4 @@
-package me.dumfing.multiplayerTools;
+package me.dumfing.server;
 
 /**
  * Created by dumpl on 4/19/2017.

@@ -1,8 +1,8 @@
-package me.dumfing.maingame.desktop;
+package me.dumfing.client.maingame.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import me.dumfing.maingame.MainGame;
+import me.dumfing.client.maingame.MainGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

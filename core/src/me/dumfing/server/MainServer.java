@@ -1,8 +1,10 @@
-package me.dumfing.multiplayerTools;
+package me.dumfing.server;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import me.dumfing.multiplayerTools.MultiplayerTools;
+import me.dumfing.multiplayerTools.PlayerSoldier;
 
 import java.io.IOException;
 import java.util.HashMap;

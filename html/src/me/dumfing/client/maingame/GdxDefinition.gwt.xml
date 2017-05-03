@@ -6,7 +6,7 @@
 	<inherits name='Box2DLights' />
 
 	<inherits name='MainShooter' />
-	<entry-point class='me.dumfing.maingame.client.HtmlLauncher' />
+	<entry-point class='me.dumfing.client.maingame.client.HtmlLauncher' />
 	<set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
 	<set-configuration-property name="gdx.assetpath" value="../android/assets" />
 </module>

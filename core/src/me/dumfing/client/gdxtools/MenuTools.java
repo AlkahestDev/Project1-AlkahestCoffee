@@ -1,21 +1,17 @@
-package me.dumfing.gdxtools;
+package me.dumfing.client.gdxtools;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import me.dumfing.gdxtools.DrawTools;
-import org.w3c.dom.css.Rect;
 
 import java.util.Arrays;
 
-import static me.dumfing.maingame.MainGame.DAGGER40;
+import static me.dumfing.client.maingame.MainGame.DAGGER40;
 
 /**
  * MenuTools.java

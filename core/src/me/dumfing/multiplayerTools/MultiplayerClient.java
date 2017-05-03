@@ -3,8 +3,9 @@ package me.dumfing.multiplayerTools;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import me.dumfing.maingame.GameState;
-import me.dumfing.maingame.MainGame;
+import me.dumfing.client.maingame.GameState;
+import me.dumfing.client.maingame.MainGame;
+import me.dumfing.multiplayerTools.MultiplayerTools;
 
 import java.io.IOException;
 import java.net.InetAddress;

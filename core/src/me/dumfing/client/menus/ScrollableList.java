@@ -1,16 +1,15 @@
-package me.dumfing.menus;
+package me.dumfing.client.menus;
 //FILENAME
 //Aaron Li  4/28/2017
 //EXPLAIN
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
-import me.dumfing.gdxtools.MenuObject;
-import me.dumfing.gdxtools.MenuTools;
+import me.dumfing.client.gdxtools.MenuObject;
+import me.dumfing.client.gdxtools.MenuTools;
 
-import static me.dumfing.maingame.MainGame.DAGGER40;
+import static me.dumfing.client.maingame.MainGame.DAGGER40;
 
 public class ScrollableList extends MenuObject{
     float scrollHeight = 0;

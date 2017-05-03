@@ -1,4 +1,4 @@
-package me.dumfing.menus;
+package me.dumfing.client.menus;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -8,9 +8,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
-import me.dumfing.gdxtools.DrawTools;
-import me.dumfing.gdxtools.MenuObject;
-import me.dumfing.gdxtools.MenuTools;
+import me.dumfing.client.gdxtools.DrawTools;
+import me.dumfing.client.gdxtools.MenuObject;
+import me.dumfing.client.gdxtools.MenuTools;
 
 import java.util.LinkedList;
 

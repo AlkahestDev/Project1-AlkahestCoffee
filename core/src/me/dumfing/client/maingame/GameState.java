@@ -1,4 +1,4 @@
-package me.dumfing.maingame;
+package me.dumfing.client.maingame;
 
 /**
  * Enum for what state the game is in (which menu is currently open, what's currently happening in the game)
