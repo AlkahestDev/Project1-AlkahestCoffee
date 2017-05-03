@@ -72,8 +72,7 @@ public class MultiplayerClient {
                     MultiplayerTools.ServerResponse temp = (MultiplayerTools.ServerResponse) o;
                     switch (temp.response){
                         case CLIENTCONNECTED:
-                            MultiplayerTools.ClientPlayerInfo clientInfo = new MultiplayerTools.ClientPlayerInfo(MainGame.clientSoldier);
-                            secureSend(clientInfo);
+
                             break;
                         case SERVERFULL:
                             playerClient.close();
@@ -136,7 +135,7 @@ public class MultiplayerClient {
     public void pingServer(String serverIP){
         try {
             playerClient.connect(100,serverIP,MultiplayerTools.TCPPORT, MultiplayerTools.UDPPORT);
-            secureSend(new MultiplayerTools.ServerInfoRequest());
+            secureSend(new MultiplayerTools.ClientInfoRequest());
         } catch (IOException e) {
             System.out.println("Could not connect to "+serverIP);
         }

@@ -16,9 +16,10 @@ public class MultiplayerTools {
         Kryo serializer = endpoint.getKryo();
         serializer.register(ClientPlayerInfo.class);
         serializer.register(ServerSummary.class);
-        serializer.register(ServerInfoRequest.class);
+        serializer.register(ClientInfoRequest.class);
         serializer.register(ServerResponse.class);
         serializer.register(ClientConnectionRequest.class);
+        serializer.register(ServerResponse.ResponseCode.class);
     }
 
     /**
@@ -43,8 +44,8 @@ public class MultiplayerTools {
     /**
      * Sent by the client to tell the server they want basic info about the server
      */
-    public static class ServerInfoRequest{
-        public ServerInfoRequest(){
+    public static class ClientInfoRequest {
+        public ClientInfoRequest(){
 
         }
     }
@@ -122,6 +123,8 @@ public class MultiplayerTools {
      */
     public static class ClientConnectionRequest {
         public String playerName;
+        public ClientConnectionRequest(){
+        }
         public ClientConnectionRequest(String playerName){
             this.playerName = playerName;
         }

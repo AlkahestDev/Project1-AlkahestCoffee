@@ -47,11 +47,12 @@ public class MainServer {
             public void received(Connection connection, Object o) {
                 //We will be using a request and response system rather than periodically broadcasting to all clients as there's no easy way to have the server periodically update the clients
                 System.out.println("Received Object");
-                if(o instanceof MultiplayerTools.ServerInfoRequest){
-                    MultiplayerTools.ServerInfoRequest svir = (MultiplayerTools.ServerInfoRequest) o;
+                if(o instanceof MultiplayerTools.ClientInfoRequest){
+                    System.out.println("received serverInfoRequest");
                     connection.sendTCP(new MultiplayerTools.ServerSummary(0,maxPlayers,connection.getReturnTripTime(),svName.substring(0,Math.min(16,svName.length()))));
                 }
                 else if(o instanceof  MultiplayerTools.ClientConnectionRequest){
+                    System.out.println("received ConnectionRequest");
                     MultiplayerTools.ClientConnectionRequest temp = (MultiplayerTools.ClientConnectionRequest) o;
                     MultiplayerTools.ServerResponse response;
                     if(numPlayers>=maxPlayers){

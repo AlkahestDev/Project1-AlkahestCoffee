@@ -51,6 +51,7 @@ public class MainMenu extends Menu{
             public void action(String sIn) {
                 int gHeight = Gdx.graphics.getHeight();
                 if(sIn.contains(" ")){
+                    Timer.instance().clear(); // prevents the previous timer from clearing this text prematurely
                     userNameError.setText("[RED]Username cannot contain spaces!",MainMenu.super.getFonts());
                     Timer.schedule(new Timer.Task() {
                         @Override
@@ -60,6 +61,7 @@ public class MainMenu extends Menu{
                     },2);
                 }
                 else if(sIn.length() == 0){
+                    Timer.instance().clear(); // prevents the previous timer from clearing this text prematurely
                     userNameError.setText("[RED]Username cannot be empty!",MainMenu.super.getFonts());
                     Timer.schedule(new Timer.Task() {
                         @Override
