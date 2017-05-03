@@ -36,10 +36,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	SettingsMenu settingsMenu;
 	OrthographicCamera camera;
 	Array<BitmapFontCache> fontCaches;
-	public static final int DAGGER40 = 0;
-	public static final int DAGGER20 = 1;
-	public static final int DAGGER50 = 2;
-	public static final int DAGGER30 = 3;
+	public static final int DAGGER20 = 0;
+	public static final int DAGGER30 = 1;
+	public static final int DAGGER40 = 2;
+	public static final int DAGGER50 = 3;
 	@Override
 	public void create () {
 		assetManager = new AssetManager();
@@ -48,19 +48,18 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		camera.translate(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
 		camera.update();
 		fontCaches = new Array<BitmapFontCache>();
-		//TODO: reorder numerically
-		BitmapFont dagger40 = new BitmapFont(Gdx.files.internal("fonts/dagger40.fnt"));
 		BitmapFont dagger20 = new BitmapFont(Gdx.files.internal("fonts/dagger20.fnt"));
-		BitmapFont dagger50 = new BitmapFont(Gdx.files.internal("fonts/dagger50.fnt"));
 		BitmapFont dagger30 = new BitmapFont(Gdx.files.internal("fonts/dagger30.fnt"));
-		dagger40.getData().markupEnabled = true;
+		BitmapFont dagger40 = new BitmapFont(Gdx.files.internal("fonts/dagger40.fnt"));
+		BitmapFont dagger50 = new BitmapFont(Gdx.files.internal("fonts/dagger50.fnt"));
 		dagger20.getData().markupEnabled = true;
-		dagger50.getData().markupEnabled = true;
 		dagger30.getData().markupEnabled = true;
-		fontCaches.add(new BitmapFontCache(dagger40));
+		dagger40.getData().markupEnabled = true;
+		dagger50.getData().markupEnabled = true;
 		fontCaches.add(new BitmapFontCache(dagger20));
-		fontCaches.add(new BitmapFontCache(dagger50));
 		fontCaches.add(new BitmapFontCache(dagger30));
+		fontCaches.add(new BitmapFontCache(dagger40));
+		fontCaches.add(new BitmapFontCache(dagger50));
 		shapeRenderer = new ShapeRenderer();
 		gameMain = new MainMenu(fontCaches,assetManager, camera);
 		loadingMenu = new LoadingMenu(fontCaches, assetManager, camera);

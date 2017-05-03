@@ -30,7 +30,6 @@ public class MenuBox extends MenuObject{
     private LinkedList<MenuTools.ColourRect> colRects;
     private LinkedList<MenuTools.QueueText> textToDraw;
     private Array<BitmapFontCache> fontCaches;
-    private MenuTools.TextField focused; // the textbox that the user will be typing into
     private float vX, vY;
 
     /**

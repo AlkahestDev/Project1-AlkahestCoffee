@@ -68,6 +68,19 @@ public class MultiplayerClient {
                     serverSummaries.put(connection.getRemoteAddressUDP().toString(),temp);
                     connection.close();
                 }
+                else if(o instanceof  MultiplayerTools.ServerResponse){
+                    MultiplayerTools.ServerResponse temp = (MultiplayerTools.ServerResponse) o;
+                    switch (temp.response){
+                        case CLIENTCONNECTED:
+                            MultiplayerTools.ClientPlayerInfo clientInfo = new MultiplayerTools.ClientPlayerInfo(MainGame.clientSoldier);
+                            secureSend(clientInfo);
+                            break;
+                        case SERVERFULL:
+                            playerClient.close();
+                            System.out.println("Server was full");
+                            break;
+                    }
+                }
                 super.received(connection, o);
             }
 
@@ -123,7 +136,7 @@ public class MultiplayerClient {
     public void pingServer(String serverIP){
         try {
             playerClient.connect(100,serverIP,MultiplayerTools.TCPPORT, MultiplayerTools.UDPPORT);
-            playerClient.sendTCP(new MultiplayerTools.ServerInfoRequest());
+            secureSend(new MultiplayerTools.ServerInfoRequest());
         } catch (IOException e) {
             System.out.println("Could not connect to "+serverIP);
         }
@@ -140,7 +153,28 @@ public class MultiplayerClient {
         return serverSummaries;
     }
 
-    public void requestWorld(){ // asks server for world info
-        playerClient.sendUDP(new MultiplayerTools.RequestWorld());
+    /**
+     * Use this to connect to the server when you intend on joining the game
+     * @param serverIP The server's ip
+     */
+    public void connectServerPlay(String serverIP){
+        connectToServer(serverIP);
+        MultiplayerTools.ClientConnectionRequest clientConnectionRequest = new MultiplayerTools.ClientConnectionRequest(MainGame.clientSoldier.getName());
+        secureSend(clientConnectionRequest);
+    }
+    /**
+     * Sends the object over UDP, faster but higher chance of lost information
+     * @param toSend Object to send over UDP
+     */
+    public void quickSend(Object toSend){
+        playerClient.sendUDP(toSend);
+    }
+
+    /**
+     * Sends the object over TCP, slower but smaller chance of lost information
+     * @param toSend Object to send over TCP
+     */
+    public void secureSend(Object toSend){
+        playerClient.sendTCP(toSend);
     }
 }

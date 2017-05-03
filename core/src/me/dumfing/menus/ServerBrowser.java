@@ -139,7 +139,7 @@ public class ServerBrowser extends Menu{
                         String svIP = k;
                         svIP = svIP.replace("/","").substring(0,svIP.indexOf(":")-1); // the received ip is in the form "/ip:port", we only need the ip part so we remove the / and the :port
                         System.out.println(svIP);
-                        MainGame.player.connectToServer(svIP);
+                        MainGame.player.connectServerPlay(k);
                         MainGame.state = GameState.CONNECTINGTOSERVER;
 
                     }

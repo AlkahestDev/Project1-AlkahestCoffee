@@ -51,6 +51,22 @@ public class MainServer {
                     MultiplayerTools.ServerInfoRequest svir = (MultiplayerTools.ServerInfoRequest) o;
                     connection.sendTCP(new MultiplayerTools.ServerSummary(0,maxPlayers,connection.getReturnTripTime(),svName.substring(0,Math.min(16,svName.length()))));
                 }
+                else if(o instanceof  MultiplayerTools.ClientConnectionRequest){
+                    MultiplayerTools.ClientConnectionRequest temp = (MultiplayerTools.ClientConnectionRequest) o;
+                    MultiplayerTools.ServerResponse response;
+                    if(numPlayers>=maxPlayers){
+                        response = new MultiplayerTools.ServerResponse(MultiplayerTools.ServerResponse.ResponseCode.SERVERFULL);
+                    }
+                    else if(false){
+
+                    }
+                    else{
+                        players.put(connection,new PlayerSoldier(0,0,0,temp.playerName));
+                        response = new MultiplayerTools.ServerResponse(MultiplayerTools.ServerResponse.ResponseCode.CLIENTCONNECTED);
+                    }
+                    connection.sendTCP(response);
+                    System.out.println(temp.playerName);
+                }
                 super.received(connection, o);
             }
 

@@ -6,7 +6,7 @@ package me.dumfing.multiplayerTools;
 public class CoffeeServer {
 
     public static void main(String[]args){
-        MainServer server = new MainServer("OOOOOOOOOOOOOOOOOOOOOOOOOO",8);
+        MainServer server = new MainServer("[RED]iaffjoeifjawoipfjapweoijf",8);
         server.start();
 
     }

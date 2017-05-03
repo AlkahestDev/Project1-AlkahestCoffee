@@ -3,7 +3,7 @@ package me.dumfing.multiplayerTools;
 /**
  * Created by dumpl on 4/28/2017.
  */
-public class PlayerSoldier extends MultiplayerTools.PlayerInfo{
+public class PlayerSoldier extends MultiplayerTools.ClientPlayerInfo {
     // a more detailed version of the players that will be sent at the start but won't be sent around as much later
         private int health, maxHealth;
         private float vX, vY;
@@ -24,8 +24,8 @@ public class PlayerSoldier extends MultiplayerTools.PlayerInfo{
         public void setMaxHealth(int maxHealth){
             this.maxHealth = maxHealth;
         }
-        public MultiplayerTools.PlayerInfo getPlayerInfo(){
-            return new MultiplayerTools.PlayerInfo(this); // a stripped down version of this for what other people see
+        public MultiplayerTools.ClientPlayerInfo getPlayerInfo(){
+            return new MultiplayerTools.ClientPlayerInfo(this); // a stripped down version of this for what other people see
         }
         public int getHealth(){
             return super.getHealth();
