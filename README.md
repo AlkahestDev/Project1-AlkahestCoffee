@@ -1,2 +1,3 @@
-# Alkahest-Coffee
-Alkahest 2d PVP multiplayer game
+# AlkahestCoffee
+Alkahest's 2D Online PVP Game  
+[Documentation to use various objects](./Alkahest-Coffee Javadoc/index.html)
