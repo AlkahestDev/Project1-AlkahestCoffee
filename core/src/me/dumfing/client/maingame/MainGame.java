@@ -136,6 +136,39 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	}
 
 	@Override
+	public void dispose () {
+		batch.dispose();
+		player.stopClient();
+	}
+	public void assignValues(){
+		tuzki = assetManager.get("tuzki.png");
+		menuImg = assetManager.get("Desktop.jpg");
+
+		state = GameState.MAINMENU;
+	}
+	public void queueLoading(){ // queue files for assetManager to load
+		//Sticking random things to load into the assetmanager to see how long it'll take to load
+		assetManager.load("tuzki.png",Texture.class);
+		assetManager.load("Desktop.jpg",Texture.class);
+		assetManager.load("4k-image-santiago.jpg",Texture.class);
+		assetManager.load("4914003-galaxy-wallpaper-png.png",Texture.class);
+		assetManager.load("volcano-30238.png",Texture.class);
+		//assetManager.load("fonts/dagger40.fnt",BitmapFont.class);
+		assetManager.load("menubackdrops/canvas.png",Texture.class);
+		for(int i = 1; i<10; i++){
+			assetManager.load(String.format("L%d.png",i),Texture.class);
+			assetManager.load(String.format("R%d.png",i),Texture.class);
+		}
+	}
+	public void setupLoadingMenu(){
+		int numFrames = 39;
+		for(int i = 0; i<numFrames;i++){
+			loadingMenu.addBackground(new TextureRegion(new Texture(Gdx.files.internal(String.format("loading/loadingKnight/loadingKnight%d.png",i)))));
+		}
+		loadingMenu.setFrameTime(25);
+	}
+
+	@Override
 	public boolean keyDown(int keycode) {
 		return false;
 	}
@@ -175,38 +208,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		return false;
 	}
 
-	@Override
-	public void dispose () {
-		batch.dispose();
-		player.stopClient();
-	}
-	public void assignValues(){
-		tuzki = assetManager.get("tuzki.png");
-		menuImg = assetManager.get("Desktop.jpg");
 
-		state = GameState.MAINMENU;
-	}
-	public void queueLoading(){ // queue files for assetManager to load
-		//Sticking random things to load into the assetmanager to see how long it'll take to load
-		assetManager.load("tuzki.png",Texture.class);
-		assetManager.load("Desktop.jpg",Texture.class);
-		assetManager.load("4k-image-santiago.jpg",Texture.class);
-		assetManager.load("4914003-galaxy-wallpaper-png.png",Texture.class);
-		assetManager.load("volcano-30238.png",Texture.class);
-		//assetManager.load("fonts/dagger40.fnt",BitmapFont.class);
-		assetManager.load("menubackdrops/canvas.png",Texture.class);
-		for(int i = 1; i<10; i++){
-			assetManager.load(String.format("L%d.png",i),Texture.class);
-			assetManager.load(String.format("R%d.png",i),Texture.class);
-		}
-	}
-	public void setupLoadingMenu(){
-		int numFrames = 39;
-		for(int i = 0; i<numFrames;i++){
-			loadingMenu.addBackground(new TextureRegion(new Texture(Gdx.files.internal(String.format("loading/loadingKnight/loadingKnight%d.png",i)))));
-		}
-		loadingMenu.setFrameTime(25);
-	}
 	/*public void drawMenu(Menu toDraw){
 		batch.begin();
 			toDraw.spriteDraw(batch);

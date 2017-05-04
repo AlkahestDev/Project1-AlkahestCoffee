@@ -17,6 +17,4 @@ public enum GameState{
 	ROUNDOVER, // end of round, show scoreboard etc.
 	//return to main menu
 	QUIT // exiting game
-	;
-
 }
