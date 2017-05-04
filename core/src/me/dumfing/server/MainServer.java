@@ -90,4 +90,10 @@ public class MainServer {
     public boolean running(){
         return this.isRunning;
     }
+    public HashMap<Connection, PlayerSoldier> getPlayers(){
+        return this.players;
+    }
+    public int getMaxPlayers(){
+        return this.maxPlayers;
+    }
 }

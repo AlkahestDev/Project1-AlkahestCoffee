@@ -10,8 +10,8 @@ import java.util.HashMap;
  * All classes that the server will send will be prefixed with <b>Server</b> and all classes that the client will send will be prefixed with <b>Client</b>
  */
 public class MultiplayerTools {
-    public static final int UDPPORT = 8625;
-    public static final int TCPPORT = 8626;
+    public static final int UDPPORT = 19815;
+    public static final int TCPPORT = 19816;
     public static void register(EndPoint endpoint){
         Kryo serializer = endpoint.getKryo();
         serializer.register(ClientPlayerInfo.class);
