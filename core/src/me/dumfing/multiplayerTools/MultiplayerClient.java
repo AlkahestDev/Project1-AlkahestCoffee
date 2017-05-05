@@ -54,7 +54,10 @@ public class MultiplayerClient {
             }
             @Override
             public void disconnected(Connection connection) {
-                if(GameState.ONLINESTATES.contains(MainGame.state)){ // if you disconnected while connecting,
+                // if you disconnected while doing some server related activity
+                // non server related activity that will trigger the disconnected event
+                // includes pinging servers
+                if(GameState.ONLINESTATES.contains(MainGame.state)){
                     MainGame.state = GameState.State.SERVERBROWSER; // go back to the server browser
                 }
                 super.disconnected(connection);
@@ -72,7 +75,8 @@ public class MultiplayerClient {
                     MultiplayerTools.ServerResponse temp = (MultiplayerTools.ServerResponse) o;
                     switch (temp.response){
                         case CLIENTCONNECTED:
-
+                            //Yay, we now have a spot in the server dedicated to us
+                            //wait for detailed server summary
                             break;
                         case SERVERFULL:
                             playerClient.close();
