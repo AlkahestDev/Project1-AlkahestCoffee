@@ -101,4 +101,15 @@ public class MainServer {
     public int getMaxPlayers(){
         return this.maxPlayers;
     }
+    public void secureSendAll(Object o){
+        //players.keySet is all players that are actually playing the game
+        for(Connection c : players.keySet()){
+            c.sendTCP(o);
+        }
+    }
+    public void quickSendAll(Object o){
+        for(Connection c : players.keySet()){
+            c.sendUDP(o);
+        }
+    }
 }

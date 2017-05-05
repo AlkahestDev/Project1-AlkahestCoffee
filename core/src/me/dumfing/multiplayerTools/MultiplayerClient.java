@@ -89,6 +89,10 @@ public class MultiplayerClient {
                     //get info from temp here
                     MainGame.state = GameState.State.PICKINGTEAM;
                 }
+                else if(o instanceof MultiplayerTools.ServerGameCountdown){
+                    MultiplayerTools.ServerGameCountdown temp = (MultiplayerTools.ServerGameCountdown)o;
+                    System.out.println(temp.seconds);
+                }
                 super.received(connection, o);
             }
 

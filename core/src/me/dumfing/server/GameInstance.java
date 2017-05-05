@@ -9,9 +9,12 @@ import java.util.HashMap;
  * Created by dumpl on 5/4/2017.
  */
 public class GameInstance {
-    HashMap<Connection, PlayerSoldier> players;
-
-    public GameInstance(){
-
+    GameWorld world;
+    public GameInstance(HashMap<Connection,PlayerSoldier> players){
+        world = new GameWorld(players);
+    }
+    public void update(){
+        world.checkCollisions();
+        world.moveAll();
     }
 }

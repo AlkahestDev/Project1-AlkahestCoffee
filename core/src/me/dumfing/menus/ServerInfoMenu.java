@@ -3,11 +3,13 @@ package me.dumfing.menus;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.graphics.Texture;
 import me.dumfing.gdxtools.MenuTools;
+import me.dumfing.multiplayerTools.MultiplayerTools;
+import me.dumfing.server.CoffeeServer;
 import me.dumfing.server.MainServer;
 
 /**
@@ -15,6 +17,8 @@ import me.dumfing.server.MainServer;
  */
 public class ServerInfoMenu extends Menu{
     MenuTools.QueueText peopleConnected;
+    boolean timerStarted = false;
+    int numFrames = 0;
     /**
      * Constructor for the menu
      *
@@ -36,9 +40,19 @@ public class ServerInfoMenu extends Menu{
         super.init();
     }
 
-    @Override
-    public void update() {
-        super.update();
+    public void update(MainServer svIn) {
+        timerStarted = (float)svIn.getPlayers().size()/(float)svIn.getMaxPlayers()>0.6f && !timerStarted;
+        if(timerStarted){
+            numFrames++;
+            if(numFrames % 60 == 0){
+                System.out.println(numFrames);
+                System.out.println("Sent "+(6-(numFrames/60)));
+                svIn.secureSendAll(new MultiplayerTools.ServerGameCountdown(6-(numFrames/60)));
+            }
+            if(numFrames/60 == 6){
+                CoffeeServer.svState = CoffeeServer.ServerState.RUNNINGGAME;
+            }
+        }
     }
     public void updateMenuInfo(MainServer svIn){
         peopleConnected.setText(String.format("%s%d|%d",svIn.getPlayers().size()>=svIn.getMaxPlayers()?"[RED]":"",svIn.getPlayers().size(),svIn.getMaxPlayers()),getFonts());

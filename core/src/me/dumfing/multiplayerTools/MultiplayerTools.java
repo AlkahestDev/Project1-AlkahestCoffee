@@ -22,8 +22,25 @@ public class MultiplayerTools {
         serializer.register(ServerResponse.class);
         serializer.register(ServerResponse.ResponseCode.class);
         serializer.register(ServerDetailedSummary.class);
+        serializer.register(ServerGameCountdown.class);
     }
 
+    /**
+     * used in the lobby when the server is counting down to the actual game
+     */
+    public static class ServerGameCountdown{
+        int seconds;
+        public ServerGameCountdown(){
+
+        }
+
+        public ServerGameCountdown(int seconds) {
+            this.seconds = seconds;
+        }
+        public int getSeconds(){
+            return this.seconds;
+        }
+    }
     /**
      * TODO: determine what info should be sent in the detailed server summary
      */

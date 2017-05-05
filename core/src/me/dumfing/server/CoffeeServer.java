@@ -5,19 +5,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Timer;
+import com.esotericsoftware.kryonet.Connection;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.menus.LoadingMenu;
 import me.dumfing.menus.Menu;
 import me.dumfing.menus.ServerInfoMenu;
+import me.dumfing.menus.ServerRunningGameMenu;
+import me.dumfing.multiplayerTools.MultiplayerTools;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -26,14 +30,15 @@ import java.util.Scanner;
 public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
 
 
-    private enum ServerState{
+    public enum ServerState{
         LOADING,
         SERVERCONFIG,
+        GAMELOBBY,
         RUNNINGGAME;
     }
     MainServer sv;
     Scanner kb = new Scanner(System.in);
-    ServerState svState = ServerState.LOADING;
+    public static ServerState svState = ServerState.LOADING;
     SpriteBatch batch;
     ShapeRenderer shapeRenderer;
     Menu askConfig;
@@ -41,8 +46,9 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
     Array<BitmapFontCache> fonts = new Array<BitmapFontCache>();
     OrthographicCamera camView;
     LoadingMenu loadingMenu;
-    Menu serverRunningMenu;
+    ServerRunningGameMenu serverRunningMenu;
     ServerInfoMenu serverInfo;
+    GameInstance instance;
     @Override
     public void create() {
         batch = new SpriteBatch();
@@ -61,6 +67,7 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
         BitmapFont dagger30 = new BitmapFont(Gdx.files.internal("fonts/dagger30.fnt"));
         dagger30.getData().markupEnabled = true;
         serverInfo = new ServerInfoMenu(fonts,manager,camView);
+        serverRunningMenu = new ServerRunningGameMenu(fonts,manager,camView);
         fonts.add(new BitmapFontCache( dagger30));
     }
 
@@ -78,6 +85,7 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
                     svState = ServerState.SERVERCONFIG;
                     askConfig = createServerForm();
                     serverInfo.init();
+                    serverRunningMenu.init();
                 }
                 loadingMenu.update();
                 loadingMenu.draw(batch,shapeRenderer);
@@ -89,13 +97,25 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
                 askConfig.update();
                 askConfig.draw(batch,shapeRenderer);
                 break;
-            case RUNNINGGAME:
+            case GAMELOBBY:
                 if(Gdx.input.getInputProcessor()!=serverInfo){
                     serverInfo.setInputProcessor();
                 }
+
                 serverInfo.updateMenuInfo(sv);
-                serverInfo.update();
+                serverInfo.update(sv);
                 serverInfo.draw(batch,shapeRenderer);
+                break;
+            case RUNNINGGAME:
+                if(Gdx.input.getInputProcessor() != serverRunningMenu){
+                    serverRunningMenu.setInputProcessor();
+                    instance = new GameInstance(sv.getPlayers());
+                    instance.world.setCollisionBoxes(Gdx.files.internal("pixmapTest.png"));
+                }
+                instance.update();
+                serverRunningMenu.updateMenuInfo(sv);
+                serverRunningMenu.update();
+                serverRunningMenu.draw(batch,shapeRenderer);
                 break;
         }
     }
@@ -174,7 +194,7 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
                     else{
                         sv = new MainServer(serverNameField.getText(),numplayers);
                         sv.start();
-                        svState = ServerState.RUNNINGGAME;
+                        svState = ServerState.GAMELOBBY;
                         Gdx.input.setInputProcessor(null);
                     }
                 }
@@ -206,4 +226,15 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
             }
         },3);
     }
+    private void updateServerInfo(){
+
+    }
+    private HashMap<Connection,MultiplayerTools.ClientPlayerInfo> getPlayerInfo(){
+        HashMap<Connection,MultiplayerTools.ClientPlayerInfo> simpleInfo = new HashMap<Connection, MultiplayerTools.ClientPlayerInfo>();
+        for(Connection c : sv.getPlayers().keySet()){
+            simpleInfo.put(c,sv.getPlayers().get(c));
+        }
+        return simpleInfo;
+    }
+
 }
