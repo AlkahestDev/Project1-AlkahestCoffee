@@ -5,7 +5,6 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import me.dumfing.client.maingame.GameState;
 import me.dumfing.client.maingame.MainGame;
-import me.dumfing.multiplayerTools.MultiplayerTools;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -55,8 +54,8 @@ public class MultiplayerClient {
             }
             @Override
             public void disconnected(Connection connection) {
-                if(MainGame.state == GameState.CONNECTINGTOSERVER){ // if you disconnected while connecting,
-                    MainGame.state = GameState.SERVERBROWSER; // go back to the server browser
+                if(GameState.ONLINESTATES.contains(MainGame.state)){ // if you disconnected while connecting,
+                    MainGame.state = GameState.State.SERVERBROWSER; // go back to the server browser
                 }
                 super.disconnected(connection);
             }
@@ -80,6 +79,11 @@ public class MultiplayerClient {
                             System.out.println("Server was full");
                             break;
                     }
+                }
+                else if(o instanceof MultiplayerTools.ServerDetailedSummary){
+                    MultiplayerTools.ServerDetailedSummary temp = (MultiplayerTools.ServerDetailedSummary)o;
+                    //get info from temp here
+                    MainGame.state = GameState.State.PICKINGTEAM;
                 }
                 super.received(connection, o);
             }

@@ -69,6 +69,7 @@ public class MainServer {
                     }
                     else{
                         players.put(connection,new PlayerSoldier(new Rectangle(0,0,1,2),0,temp.playerName));
+                        connection.sendTCP(new MultiplayerTools.ServerDetailedSummary());
                         response = new MultiplayerTools.ServerResponse(MultiplayerTools.ServerResponse.ResponseCode.CLIENTCONNECTED);
                     }
                     connection.sendTCP(response);

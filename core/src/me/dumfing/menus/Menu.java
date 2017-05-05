@@ -244,7 +244,7 @@ public class Menu implements InputProcessor{
      * Sets the framerate at which to play the background animation
      * @param fps int for the fps of the animation (frames per second) must be less than 60
      */
-    public void setFrameTime(int fps){ // set the framerate of the menu's background
+    public void setFrameRate(int fps){ // set the framerate of the menu's background
         if(fps>60){
             throw new Error("Frame rate must be less than 60fps");
         }

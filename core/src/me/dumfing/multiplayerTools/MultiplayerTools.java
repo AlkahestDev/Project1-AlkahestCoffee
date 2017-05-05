@@ -16,17 +16,18 @@ public class MultiplayerTools {
     public static void register(EndPoint endpoint){
         Kryo serializer = endpoint.getKryo();
         serializer.register(ClientPlayerInfo.class);
-        serializer.register(ServerSummary.class);
         serializer.register(ClientInfoRequest.class);
-        serializer.register(ServerResponse.class);
         serializer.register(ClientConnectionRequest.class);
+        serializer.register(ServerSummary.class);
+        serializer.register(ServerResponse.class);
         serializer.register(ServerResponse.ResponseCode.class);
+        serializer.register(ServerDetailedSummary.class);
     }
 
     /**
      * TODO: determine what info should be sent in the detailed server summary
      */
-    public static class DetailedServerSummary{
+    public static class ServerDetailedSummary {
 
     }
     /**

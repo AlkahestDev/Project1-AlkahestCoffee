@@ -13,8 +13,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Timer;
-import com.esotericsoftware.kryonet.Server;
-import com.sun.corba.se.impl.io.TypeMismatchException;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.menus.LoadingMenu;
 import me.dumfing.menus.Menu;
@@ -196,7 +194,7 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
         for(int i = 0;i<39;i++){
             this.loadingMenu.addBackground(new TextureRegion(new Texture(Gdx.files.internal(String.format("loading/loadingKnight/loadingKnight%d.png",i)))));
         }
-        loadingMenu.setFrameTime(25);
+        loadingMenu.setFrameRate(25);
     }
     private void serverFormError(String message, final MenuTools.QueueText queueText){
         Timer.instance().clear();

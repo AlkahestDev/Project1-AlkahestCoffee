@@ -51,7 +51,7 @@ public class ServerBrowser extends Menu{
         bt.setCallback(new MenuTools.OnClick() {
             @Override
             public void action() {
-                MainGame.state = GameState.MAINMENU;
+                MainGame.state = GameState.State.MAINMENU;
             }
         });
         bt.setPressedTexture(new TextureRegion((Texture)getManager().get("R1.png")));
@@ -140,7 +140,7 @@ public class ServerBrowser extends Menu{
                         svIP = svIP.replace("/","").substring(0,svIP.indexOf(":")-1); // the received ip is in the form "/ip:port", we only need the ip part so we remove the / and the :port
                         System.out.println(svIP);
                         MainGame.player.connectServerPlay(svIP);
-                        MainGame.state = GameState.CONNECTINGTOSERVER;
+                        MainGame.state = GameState.State.CONNECTINGTOSERVER;
 
                     }
                 });

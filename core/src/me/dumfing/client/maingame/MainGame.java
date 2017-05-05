@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.menus.*;
 import me.dumfing.multiplayerTools.MultiplayerClient;
@@ -22,13 +23,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	private float scW, scH;
 	SpriteBatch batch;
 	AssetManager assetManager;
-	public static GameState state;
+	public static GameState.State state;
 	Texture tuzki, menuImg;
 	public static MultiplayerClient player; // public to allow any menu to access easily
 	public static PlayerSoldier clientSoldier; // public to allow any menu to access easily
 	ShapeRenderer shapeRenderer;
 	LoadingMenu loadingMenu;
 	MainMenu gameMain;
+	ConnectingMenu connectingMenu;
 	public static ServerBrowser serverBrowser; // static so I can access the serverList from the findServers runnable in MultiplayerClient
 	SettingsMenu settingsMenu;
 	OrthographicCamera camera;
@@ -60,15 +62,16 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		shapeRenderer = new ShapeRenderer();
 		gameMain = new MainMenu(fontCaches,assetManager, camera);
 		loadingMenu = new LoadingMenu(fontCaches, assetManager, camera);
+		connectingMenu = new ConnectingMenu(fontCaches,assetManager,camera);
 		serverBrowser = new ServerBrowser(fontCaches,assetManager,camera);
 		settingsMenu = new SettingsMenu(fontCaches,assetManager,camera);
 		setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded, background frames are loaded and added to it here
 		scW = Gdx.graphics.getWidth();
 		scH = Gdx.graphics.getHeight();
-		state = GameState.LOADINGGAME;
+		state = GameState.State.LOADINGGAME;
 		batch = new SpriteBatch();
 		player = new MultiplayerClient();
-		clientSoldier = new PlayerSoldier(0,0,0,"");
+		clientSoldier = new PlayerSoldier(new Rectangle(0,0,1,2),0,"");
 		player.startClient();
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		batch.setProjectionMatrix(camera.combined);
@@ -93,6 +96,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					gameMain.init();
 					serverBrowser.init();
 					settingsMenu.init();
+					connectingMenu.init();
 					player.pingServers();
 				}
 				break;
@@ -121,6 +125,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			case STARTSERVER:
 				break;
 			case CONNECTINGTOSERVER:
+				connectingMenu.update();
+				connectingMenu.standardDraw(batch,shapeRenderer);
 				break;
 			case PICKINGTEAM:
 				break;
@@ -144,7 +150,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		tuzki = assetManager.get("tuzki.png");
 		menuImg = assetManager.get("Desktop.jpg");
 
-		state = GameState.MAINMENU;
+		state = GameState.State.MAINMENU;
 	}
 	public void queueLoading(){ // queue files for assetManager to load
 		//Sticking random things to load into the assetmanager to see how long it'll take to load
@@ -159,13 +165,16 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			assetManager.load(String.format("L%d.png",i),Texture.class);
 			assetManager.load(String.format("R%d.png",i),Texture.class);
 		}
+		for(int i = 1; i<15;i++){
+			assetManager.load(String.format("loading/tuzkii/tuzkiii%d.png",i),Texture.class);
+		}
 	}
 	public void setupLoadingMenu(){
 		int numFrames = 39;
 		for(int i = 0; i<numFrames;i++){
 			loadingMenu.addBackground(new TextureRegion(new Texture(Gdx.files.internal(String.format("loading/loadingKnight/loadingKnight%d.png",i)))));
 		}
-		loadingMenu.setFrameTime(25);
+		loadingMenu.setFrameRate(25);
 	}
 
 	@Override

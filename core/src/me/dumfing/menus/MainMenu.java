@@ -108,19 +108,19 @@ public class MainMenu extends Menu{
         playButton.setCallback(new MenuTools.OnClick() {
             @Override
             public void action() {
-                MainGame.state = GameState.SERVERBROWSER;
+                MainGame.state = GameState.State.SERVERBROWSER;
             }
         });
         settingsButton.setCallback(new MenuTools.OnClick() {
             @Override
             public void action() {
-                MainGame.state = GameState.MAINMENUSETTINGS;
+                MainGame.state = GameState.State.MAINMENUSETTINGS;
             }
         });
         quitButton.setCallback(new MenuTools.OnClick() {
             @Override
             public void action() {
-                Gdx.app.exit();
+                MainGame.state = GameState.State.QUIT;
             }
         });
         playButton.setPressedTexture(new TextureRegion((Texture) super.getManager().get("4k-image-santiago.jpg")));
