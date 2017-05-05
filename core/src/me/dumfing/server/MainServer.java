@@ -1,5 +1,6 @@
 package me.dumfing.server;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -42,6 +43,9 @@ public class MainServer {
             @Override
             public void disconnected(Connection connection) {
                 System.out.printf("Client Disconnected %d\n",connection.getID());
+                if(players.containsKey(connection)){
+                    players.remove(connection);
+                }
                 super.disconnected(connection);
             }
 
@@ -64,7 +68,7 @@ public class MainServer {
 
                     }
                     else{
-                        players.put(connection,new PlayerSoldier(0,0,0,temp.playerName));
+                        players.put(connection,new PlayerSoldier(new Rectangle(0,0,1,2),0,temp.playerName));
                         response = new MultiplayerTools.ServerResponse(MultiplayerTools.ServerResponse.ResponseCode.CLIENTCONNECTED);
                     }
                     connection.sendTCP(response);

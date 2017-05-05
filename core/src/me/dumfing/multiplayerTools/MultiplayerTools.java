@@ -1,5 +1,6 @@
 package me.dumfing.multiplayerTools;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
@@ -29,7 +30,7 @@ public class MultiplayerTools {
 
     }
     /**
-     *
+     * The response from the server for if the client has connected as a player or if they aren't allowed on
      */
     public static class ServerResponse{
         public enum ResponseCode{
@@ -72,35 +73,38 @@ public class MultiplayerTools {
     }
 
     public static class ClientPlayerInfo {
-        private Vector2 pPos;
+        private Rectangle playerArea;
         private int team, health;
         private String name;
-        public ClientPlayerInfo(float x, float y, int team, String name){
-            this.pPos = new Vector2(x,y);
+        public ClientPlayerInfo(Rectangle area, int team, String name){
+            this.playerArea = area;
             this.team = team;
             this.name = name;
-            this.health = health;
+            this.health = 100;
         }
-        public ClientPlayerInfo(Vector2 pos, int team, String name, int health){ // a simple version of a player that can be sent back and forth
-            this.pPos = pos;
+        public ClientPlayerInfo(Rectangle area, int team, String name, int health){ // a simple version of a player that can be sent back and forth
+            this.playerArea = area;
             this.team = team;
             this.name = name;
             this.health = health;
         }
         public ClientPlayerInfo(PlayerSoldier sIn){
-            this.pPos = sIn.getPos();
+            this.playerArea = sIn.getRect();
             this.team = sIn.getTeam();
             this.name = sIn.getName();
             this.health = sIn.getHealth();
         }
         public Vector2 getPos(){
-            return this.pPos;
+            return this.playerArea.getPosition(new Vector2());
         }
         public float getX(){
-            return this.pPos.x;
+            return this.playerArea.x;
         }
         public float getY(){
-            return this.pPos.y;
+            return this.playerArea.y;
+        }
+        public Rectangle getRect(){
+            return this.playerArea;
         }
         public int getTeam(){
             return this.team;

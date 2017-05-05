@@ -14,7 +14,6 @@ import me.dumfing.server.MainServer;
  * Created by dumpl on 5/3/2017.
  */
 public class ServerInfoMenu extends Menu{
-    int numConnected = 0;
     MenuTools.QueueText peopleConnected;
     /**
      * Constructor for the menu
@@ -29,7 +28,7 @@ public class ServerInfoMenu extends Menu{
 
     @Override
     public void init() {
-        peopleConnected = new MenuTools.QueueText(5, Gdx.graphics.getHeight()-30,0,0);
+        peopleConnected = new MenuTools.QueueText(5, Gdx.graphics.getHeight()-35,0,0);
         peopleConnected.setFont(0);
         peopleConnected.setText("",super.getFonts());
         super.setBackground(new TextureRegion((Texture)getManager().get("tuzki.png")));
