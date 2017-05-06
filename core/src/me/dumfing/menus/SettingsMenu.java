@@ -2,10 +2,9 @@ package me.dumfing.menus;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import me.dumfing.gdxtools.MenuTools;
 
 /**
  * Created by dumpl on 4/28/2017.
@@ -25,6 +24,6 @@ public class SettingsMenu extends Menu{
     @Override
     public void init() {
         super.init();
-        super.setBackground(new TextureRegion((Texture)getManager().get("4k-image-santiago.jpg")));
+        super.setBackground(MenuTools.mGTR("4k-image-santiago.jpg",getManager()));//new TextureRegion((Texture)getManager().get("4k-image-santiago.jpg")));
     }
 }

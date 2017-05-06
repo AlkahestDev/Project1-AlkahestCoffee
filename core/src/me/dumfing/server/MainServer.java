@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class MainServer {
     private Server server;
     private boolean isRunning;
-    private int maxPlayers;
+    public static int maxPlayers;
     private int numPlayers = 0;
     private String svName;
     HashMap<Connection, PlayerSoldier> players;
@@ -71,6 +71,7 @@ public class MainServer {
                         players.put(connection,new PlayerSoldier(new Rectangle(0,0,1,2),0,temp.playerName));
                         connection.sendTCP(new MultiplayerTools.ServerDetailedSummary());
                         response = new MultiplayerTools.ServerResponse(MultiplayerTools.ServerResponse.ResponseCode.CLIENTCONNECTED);
+                        connection.sendTCP(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeam,CoffeeServer.blueTeam,maxPlayers));
                     }
                     connection.sendTCP(response);
                     System.out.println(temp.playerName);

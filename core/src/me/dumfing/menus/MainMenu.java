@@ -123,12 +123,12 @@ public class MainMenu extends Menu{
                 MainGame.state = GameState.State.QUIT;
             }
         });
-        playButton.setPressedTexture(new TextureRegion((Texture) super.getManager().get("4k-image-santiago.jpg")));
-        playButton.setUnpressedTexture(new TextureRegion((Texture)super.getManager().get("volcano-30238.png")));
-        settingsButton.setPressedTexture(new TextureRegion((Texture) super.getManager().get("4k-image-santiago.jpg")));
-        settingsButton.setUnpressedTexture(new TextureRegion((Texture)super.getManager().get("volcano-30238.png")));
-        quitButton.setPressedTexture(new TextureRegion((Texture) super.getManager().get("4k-image-santiago.jpg")));
-        quitButton.setUnpressedTexture(new TextureRegion((Texture)super.getManager().get("volcano-30238.png")));
+        playButton.setPressedTexture(MenuTools.mGTR("4k-image-santiago.jpg",getManager()));//new TextureRegion((Texture) super.getManager().get("4k-image-santiago.jpg")));
+        playButton.setUnpressedTexture(MenuTools.mGTR("volcano-30238.png",getManager()));//new TextureRegion((Texture)super.getManager().get("volcano-30238.png")));
+        settingsButton.setPressedTexture(MenuTools.mGTR("4k-image-santiago.jpg",getManager()));//new TextureRegion((Texture) super.getManager().get("4k-image-santiago.jpg")));
+        settingsButton.setUnpressedTexture(MenuTools.mGTR("volcano-30238.png",getManager()));//new TextureRegion((Texture)super.getManager().get("volcano-30238.png")));
+        quitButton.setPressedTexture(MenuTools.mGTR("4k-image-santiago.jpg",getManager()));//new TextureRegion((Texture) super.getManager().get("4k-image-santiago.jpg")));
+        quitButton.setUnpressedTexture(MenuTools.mGTR("volcano-30238.png",getManager()));//new TextureRegion((Texture)super.getManager().get("volcano-30238.png")));
         settingsBox.addButton(settingsButton);
         playBox.addButton(playButton);
         quitBox.addButton(quitButton);

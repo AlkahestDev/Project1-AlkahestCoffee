@@ -93,6 +93,11 @@ public class MultiplayerClient {
                     MultiplayerTools.ServerGameCountdown temp = (MultiplayerTools.ServerGameCountdown)o;
                     System.out.println(temp.seconds);
                 }
+                else if(o instanceof MultiplayerTools.ServerDetailedSummary){
+                    MultiplayerTools.ServerDetailedSummary temp = (MultiplayerTools.ServerDetailedSummary)o;
+                    MainGame.state = GameState.State.PICKINGTEAM;
+                    System.out.println(String.format("R: %d/%d B: %d/%d",temp.rTeam,temp.rMax,temp.bTeam,temp.bMax));
+                }
                 super.received(connection, o);
             }
 

@@ -3,6 +3,7 @@ package me.dumfing.server;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.esotericsoftware.kryonet.Connection;
+import me.dumfing.multiplayerTools.MultiplayerTools;
 import me.dumfing.multiplayerTools.PlayerSoldier;
 
 import java.util.HashMap;
@@ -15,19 +16,28 @@ public class GameWorld {
     HashMap<Connection, PlayerSoldier> players;
     public GameWorld(HashMap<Connection, PlayerSoldier> players){
         this.players = players;
+        for(PlayerSoldier playerSoldier : players.values()){
+            playerSoldier.setPos( 2, 5);
+        }
     }
     public void setCollisionBoxes(FileHandle pixMapFile){
         this.worldHitbox = new Pixmap(pixMapFile);
     }
     public void checkCollisions(){
         for(PlayerSoldier player : players.values()){
-            if(worldHitbox.getPixel((int)(player.getX()+player.getvX()),worldHitbox.getHeight()-(int)(player.getY()))==1){
+            System.out.println("0,1: "+(worldHitbox.getPixel(0,1)>>8));
+            System.out.println("0,31: "+(worldHitbox.getPixel(0,31)>>8));
+            System.out.println("player: "+(worldHitbox.getPixel((int)(player.getX()+player.getvX()),worldHitbox.getHeight()-(int)(player.getY()))>>8));
+            if(worldHitbox.getPixel((int)player.getX(),worldHitbox.getHeight()-(int)(player.getY()+player.getvY()))>>8 == 1){
+                System.out.println("hitY");
+                player.setY((int)player.getY()+1);
+            }
+            else{
+                player.setVy(player.getvY()-0.981f);
+            }
+            if(worldHitbox.getPixel((int)(player.getX()+player.getvX()),worldHitbox.getHeight()-(int)(player.getY()))>>8==1){
                 System.out.println("hitX");
                 player.setX((int)player.getX());
-            }
-            if(worldHitbox.getPixel((int)player.getY(),worldHitbox.getHeight()-(    int)(player.getY()+player.getvY())) == 1){
-                System.out.println("hitY");
-                player.setY((int)player.getY());
             }
         }
     }
@@ -35,5 +45,12 @@ public class GameWorld {
         for(PlayerSoldier playerSoldier : players.values()){
             playerSoldier.move();
         }
+    }
+    public HashMap<Connection,MultiplayerTools.ServerPlayerInfo> getSimpleInfo(){
+        HashMap<Connection,MultiplayerTools.ServerPlayerInfo> out = new HashMap<Connection, MultiplayerTools.ServerPlayerInfo>();
+        for(Connection c : players.keySet()){
+            out.put(c,players.get(c).getPlayerInfo());
+        }
+        return out;
     }
 }

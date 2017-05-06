@@ -32,6 +32,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	LoadingMenu loadingMenu;
 	MainMenu gameMain;
 	ConnectingMenu connectingMenu;
+	ClientPickingTeamMenu pickATeam;
 	public static ServerBrowser serverBrowser; // static so I can access the serverList from the findServers runnable in MultiplayerClient
 	SettingsMenu settingsMenu;
 	OrthographicCamera camera;
@@ -66,6 +67,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		connectingMenu = new ConnectingMenu(fontCaches,assetManager,camera);
 		serverBrowser = new ServerBrowser(fontCaches,assetManager,camera);
 		settingsMenu = new SettingsMenu(fontCaches,assetManager,camera);
+		pickATeam = new ClientPickingTeamMenu(fontCaches,assetManager,camera);
 		setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded, background frames are loaded and added to it here
 		scW = Gdx.graphics.getWidth();
 		scH = Gdx.graphics.getHeight();
@@ -99,6 +101,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					serverBrowser.init();
 					settingsMenu.init();
 					connectingMenu.init();
+					pickATeam.init(player);
 					player.pingServers();
 				}
 				break;
@@ -131,6 +134,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				connectingMenu.standardDraw(batch,shapeRenderer);
 				break;
 			case PICKINGTEAM:
+				if(Gdx.input.getInputProcessor() != pickATeam){
+					pickATeam.setInputProcessor();
+				}
+				pickATeam.update();
+				pickATeam.standardDraw(batch,shapeRenderer);
+				System.out.println("PICK A TEAM");
 				break;
 			case PICKINGLOADOUT:
 				break;

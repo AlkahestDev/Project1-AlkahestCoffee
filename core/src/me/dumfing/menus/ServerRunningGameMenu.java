@@ -3,9 +3,7 @@ package me.dumfing.menus;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.server.MainServer;
@@ -32,7 +30,7 @@ public class ServerRunningGameMenu extends Menu{
         numConnected.setFont(0);
         numConnected.setText("",getFonts());
         super.addQueueText(numConnected);
-        super.setBackground(new TextureRegion((Texture)getManager().get("4k-image-santiago.jpg")));
+        super.setBackground(MenuTools.mGTR("4k-image-santiago.jpg",getManager()));//new TextureRegion((Texture)getManager().get("4k-image-santiago.jpg")));
     }
 
     @Override

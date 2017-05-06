@@ -13,15 +13,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
-import com.esotericsoftware.kryonet.Connection;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.menus.LoadingMenu;
 import me.dumfing.menus.Menu;
 import me.dumfing.menus.ServerInfoMenu;
 import me.dumfing.menus.ServerRunningGameMenu;
-import me.dumfing.multiplayerTools.MultiplayerTools;
 
-import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -49,6 +46,8 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
     ServerRunningGameMenu serverRunningMenu;
     ServerInfoMenu serverInfo;
     GameInstance instance;
+    public static int redTeam = 0;
+    public static int blueTeam = 0;
     @Override
     public void create() {
         batch = new SpriteBatch();
@@ -103,7 +102,7 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
                 }
 
                 serverInfo.updateMenuInfo(sv);
-                serverInfo.update(sv);
+                serverInfo.update(sv,redTeam,blueTeam,sv.getMaxPlayers());
                 serverInfo.draw(batch,shapeRenderer);
                 break;
             case RUNNINGGAME:
@@ -112,7 +111,7 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
                     instance = new GameInstance(sv.getPlayers());
                     instance.world.setCollisionBoxes(Gdx.files.internal("pixmapTest.png"));
                 }
-                instance.update();
+                instance.update(sv);
                 serverRunningMenu.updateMenuInfo(sv);
                 serverRunningMenu.update();
                 serverRunningMenu.draw(batch,shapeRenderer);
@@ -229,12 +228,12 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
     private void updateServerInfo(){
 
     }
-    private HashMap<Connection,MultiplayerTools.ClientPlayerInfo> getPlayerInfo(){
-        HashMap<Connection,MultiplayerTools.ClientPlayerInfo> simpleInfo = new HashMap<Connection, MultiplayerTools.ClientPlayerInfo>();
+    /*private HashMap<Connection,MultiplayerTools.ServerPlayerInfo> getPlayerInfo(){
+        HashMap<Connection,MultiplayerTools.ServerPlayerInfo> simpleInfo = new HashMap<Connection, MultiplayerTools.ServerPlayerInfo>();
         for(Connection c : sv.getPlayers().keySet()){
             simpleInfo.put(c,sv.getPlayers().get(c));
         }
         return simpleInfo;
-    }
+    }*/
 
 }

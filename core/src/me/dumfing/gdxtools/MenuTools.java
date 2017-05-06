@@ -1,6 +1,7 @@
 package me.dumfing.gdxtools;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -485,5 +486,16 @@ public class MenuTools {
      */
     public static float textWidth(BitmapFont fntIn, String sIn){
         return new GlyphLayout(fntIn,sIn).width;
+    }
+
+    /**
+     * ManagerGetTextureRegion<br>
+     * Gets a textureregion from an assetmanager
+     * @param fileName The file name of the asset
+     * @param manager The assetmanager to retrieve the file from
+     * @return The textureregion to use
+     */
+    public static TextureRegion mGTR(String fileName, AssetManager manager){
+        return new TextureRegion((Texture)manager.get(fileName));
     }
 }

@@ -3,9 +3,7 @@ package me.dumfing.menus;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.multiplayerTools.MultiplayerTools;
@@ -35,13 +33,12 @@ public class ServerInfoMenu extends Menu{
         peopleConnected = new MenuTools.QueueText(5, Gdx.graphics.getHeight()-35,0,0);
         peopleConnected.setFont(0);
         peopleConnected.setText("",super.getFonts());
-        super.setBackground(new TextureRegion((Texture)getManager().get("tuzki.png")));
+        super.setBackground(MenuTools.mGTR("tuzki.png",getManager()));//new TextureRegion((Texture)getManager().get("tuzki.png")));
         super.addQueueText(peopleConnected);
         super.init();
     }
 
-    public void update(MainServer svIn) {
-        timerStarted = (float)svIn.getPlayers().size()/(float)svIn.getMaxPlayers()>0.6f && !timerStarted;
+    public void update(MainServer svIn, int redTeam, int blueTeam, int maxPlayers) {
         if(timerStarted){
             numFrames++;
             if(numFrames % 60 == 0){
@@ -52,6 +49,14 @@ public class ServerInfoMenu extends Menu{
             if(numFrames/60 == 6){
                 CoffeeServer.svState = CoffeeServer.ServerState.RUNNINGGAME;
             }
+        }
+        else{
+            int blueLimit = maxPlayers/2;
+            int redLimit = maxPlayers - blueLimit;
+            if(blueTeam / blueLimit > 0.6f && redTeam / redLimit > 0.6f){
+                timerStarted = true;
+            }
+            numFrames = 0;
         }
     }
     public void updateMenuInfo(MainServer svIn){

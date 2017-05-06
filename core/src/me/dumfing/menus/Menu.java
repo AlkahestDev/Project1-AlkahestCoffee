@@ -146,8 +146,10 @@ public class Menu implements InputProcessor{
      * Draws all texture related components of the Menu
      * @param sb The SpriteBatch used to draw the Textures
      */
-    public void spriteDraw(SpriteBatch sb){ // draw all SpriteBatch related things
-        sb.draw(background.get(backgroundFrame),0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight()); // draw the appropriate background frame, stretching it if needed
+    public void spriteDraw(SpriteBatch sb) { // draw all SpriteBatch related things
+        if (this.background.size > 0){
+            sb.draw(background.get(backgroundFrame), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); // draw the appropriate background frame, stretching it if needed
+        }
         for(MenuTools.Button bt : this.buttons) { // check all the buttons in the Menu
             if (bt.getClicked()) { // if the button has been clicked
                 sb.draw(bt.getPressed(), bt.getRect().x, bt.getRect().y, bt.getRect().width, bt.getRect().height); // draw the clicked button

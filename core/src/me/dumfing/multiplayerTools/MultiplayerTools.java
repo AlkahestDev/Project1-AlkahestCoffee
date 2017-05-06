@@ -15,16 +15,30 @@ public class MultiplayerTools {
     public static final int TCPPORT = 19816;
     public static void register(EndPoint endpoint){
         Kryo serializer = endpoint.getKryo();
-        serializer.register(ClientPlayerInfo.class);
         serializer.register(ClientInfoRequest.class);
         serializer.register(ClientConnectionRequest.class);
+        serializer.register(ClientPickedTeam.class);
+        serializer.register(ServerPlayerInfo.class);
         serializer.register(ServerSummary.class);
         serializer.register(ServerResponse.class);
         serializer.register(ServerResponse.ResponseCode.class);
         serializer.register(ServerDetailedSummary.class);
         serializer.register(ServerGameCountdown.class);
     }
+    public static class ClientPickedTeam{
+        //Red is 0 Blue is 1
+        int picked; //to prevent creating too many unnecessary enums, I'm using an int here
+        public ClientPickedTeam(){
 
+        }
+        public ClientPickedTeam(int picked){
+            this.picked = picked;
+        }
+
+        public int getPicked() {
+            return picked;
+        }
+    }
     /**
      * used in the lobby when the server is counting down to the actual game
      */
@@ -45,7 +59,16 @@ public class MultiplayerTools {
      * TODO: determine what info should be sent in the detailed server summary
      */
     public static class ServerDetailedSummary {
+        int rTeam, bTeam, rMax,bMax;
+        public ServerDetailedSummary(){
 
+        }
+        public ServerDetailedSummary(int redTeam, int blueTeam,int maxPeople){
+            this.rTeam = redTeam;
+            this.bTeam = blueTeam;
+            bMax = maxPeople/2;
+            rMax = maxPeople - bMax;
+        }
     }
     /**
      * The response from the server for if the client has connected as a player or if they aren't allowed on
@@ -90,23 +113,23 @@ public class MultiplayerTools {
         }
     }
 
-    public static class ClientPlayerInfo {
+    public static class ServerPlayerInfo {
         private Rectangle playerArea;
         private int team, health;
         private String name;
-        public ClientPlayerInfo(Rectangle area, int team, String name){
+        public ServerPlayerInfo(Rectangle area, int team, String name){
             this.playerArea = area;
             this.team = team;
             this.name = name;
             this.health = 100;
         }
-        public ClientPlayerInfo(Rectangle area, int team, String name, int health){ // a simple version of a player that can be sent back and forth
+        public ServerPlayerInfo(Rectangle area, int team, String name, int health){ // a simple version of a player that can be sent back and forth
             this.playerArea = area;
             this.team = team;
             this.name = name;
             this.health = health;
         }
-        public ClientPlayerInfo(PlayerSoldier sIn){
+        public ServerPlayerInfo(PlayerSoldier sIn){
             this.playerArea = sIn.getRect();
             this.team = sIn.getTeam();
             this.name = sIn.getName();

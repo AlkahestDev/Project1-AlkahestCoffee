@@ -41,7 +41,7 @@ public class ServerBrowser extends Menu{
         //super.init();
         super.setBackground(new TextureRegion((Texture) super.getManager().get("tuzki.png")));
         float serverListHeight = 3000;
-        serverList = new ServerBrowserList(880, Gdx.graphics.getHeight() - serverListHeight, 400, serverListHeight, super.getFonts(), this.getManager());
+        serverList = new ServerBrowserList(Gdx.graphics.getWidth()-400, Gdx.graphics.getHeight() - serverListHeight, 400, serverListHeight, super.getFonts(), this.getManager());
         super.addMenuBox(serverList);
         addRefreshButton();
         addBackButton();
@@ -73,27 +73,6 @@ public class ServerBrowser extends Menu{
         super.addButton(refreshServers);
 
     }
-        /*serverList = new MenuBox(Gdx.graphics.getWidth()-400,Gdx.graphics.getHeight()-2000,400,2000,super.getFonts());
-        final String[] serverNames = {"PARTY SERVER","[RED]SOVIET RUSSIA", "Hei","DumfingServer1"};
-        for(int i = 0; i<serverNames.length;i++){
-            MenuTools.Button bt = new MenuTools.Button(0,2000-((i+1)*60),400,60);
-            bt.setPressedTexture(new TextureRegion((Texture) super.getManager().get("Desktop.jpg")));
-            bt.setUnpressedTexture(new TextureRegion((Texture) super.getManager().get("volcano-30238.png")));
-            final int finalI = i;
-            bt.setCallback(new MenuTools.OnClick() {
-                public void action() {
-                    System.out.println(serverNames[finalI]);//new String(serverNames[finalI]));
-                }
-            });
-            serverList.addButton(bt);
-            MenuTools.QueueText qt = new MenuTools.QueueText(5,2000-(i*60+10),0,0);
-            qt.setText(new String(serverNames[finalI]),super.getFonts());
-            qt.setFont(DAGGER20);
-            serverList.addQueueText(qt);
-            super.addMenuBox(serverList);
-        }
-    }
-    */
     public boolean scrolled(int amount) {
         serverList.onScroll(amount);
         return super.scrolled(amount);
@@ -130,8 +109,8 @@ public class ServerBrowser extends Menu{
                 sName.setFont(DAGGER30);
                 peopleLimit.setText(tOut,super.getFontCaches());
                 sName.setText(serverList.get(k).serverName,super.getFontCaches());
-                bt.setPressedTexture(new TextureRegion((Texture)assets.get("4914003-galaxy-wallpaper-png.png")));
-                bt.setUnpressedTexture(new TextureRegion((Texture)assets.get("Desktop.jpg")));
+                bt.setPressedTexture(MenuTools.mGTR("4914003-galaxy-wallpaper-png.png",getManager()));//new TextureRegion((Texture)assets.get("4914003-galaxy-wallpaper-png.png")));
+                bt.setUnpressedTexture(MenuTools.mGTR("Desktop.jpg",getManager()));//new TextureRegion((Texture)assets.get("Desktop.jpg")));
                 bt.setCallback(new MenuTools.OnClick() {
                     @Override
                     public void action() {
