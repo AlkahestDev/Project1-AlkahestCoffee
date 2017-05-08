@@ -13,12 +13,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
+import com.esotericsoftware.kryonet.Connection;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.menus.LoadingMenu;
 import me.dumfing.menus.Menu;
 import me.dumfing.menus.ServerInfoMenu;
 import me.dumfing.menus.ServerRunningGameMenu;
 
+import java.util.HashSet;
 import java.util.Scanner;
 
 /**
@@ -46,8 +48,8 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
     ServerRunningGameMenu serverRunningMenu;
     ServerInfoMenu serverInfo;
     GameInstance instance;
-    public static int redTeam = 0;
-    public static int blueTeam = 0;
+    public static HashSet<Connection> redTeamMembers = new HashSet<Connection>();
+    public static HashSet<Connection> bluTeamMembers = new HashSet<Connection>();
     @Override
     public void create() {
         batch = new SpriteBatch();
@@ -102,7 +104,7 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
                 }
 
                 serverInfo.updateMenuInfo(sv);
-                serverInfo.update(sv,redTeam,blueTeam,sv.getMaxPlayers());
+                serverInfo.update(sv,redTeamMembers.size(),bluTeamMembers.size(),sv.getMaxPlayers());
                 serverInfo.draw(batch,shapeRenderer);
                 break;
             case RUNNINGGAME:

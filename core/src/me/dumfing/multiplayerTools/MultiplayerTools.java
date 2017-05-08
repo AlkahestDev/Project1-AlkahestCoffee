@@ -66,8 +66,8 @@ public class MultiplayerTools {
         public ServerDetailedSummary(int redTeam, int blueTeam,int maxPeople){
             this.rTeam = redTeam;
             this.bTeam = blueTeam;
-            bMax = maxPeople/2;
-            rMax = maxPeople - bMax;
+            this.bMax = maxPeople/2;
+            this.rMax = maxPeople - bMax;
         }
     }
     /**

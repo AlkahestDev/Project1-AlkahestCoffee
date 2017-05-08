@@ -46,6 +46,13 @@ public class MainServer {
                 if(players.containsKey(connection)){
                     players.remove(connection);
                 }
+                if(CoffeeServer.redTeamMembers.contains(connection)){
+                    CoffeeServer.redTeamMembers.remove(connection);
+                }
+                else if(CoffeeServer.bluTeamMembers.contains(connection)){
+                    CoffeeServer.bluTeamMembers.remove(connection);
+                }
+
                 super.disconnected(connection);
             }
 
@@ -55,7 +62,8 @@ public class MainServer {
                 System.out.println("Received Object");
                 if(o instanceof MultiplayerTools.ClientInfoRequest){
                     System.out.println("received serverInfoRequest");
-                    connection.sendTCP(new MultiplayerTools.ServerSummary(0,maxPlayers,connection.getReturnTripTime(),svName.substring(0,Math.min(16,svName.length()))));
+                    connection.sendTCP(new MultiplayerTools.ServerSummary(players.size(),maxPlayers,connection.getReturnTripTime(),svName.substring(0,Math.min(16,svName.length()))));
+                    //connection.sendTCP(new MultiplayerTools.ServerSummary(numPlayers,maxPlayers,connection.getReturnTripTime(),svName.substring(0,Math.min(16,svName.length()))));
                 }
                 else if(o instanceof  MultiplayerTools.ClientConnectionRequest){
                     System.out.println("received ConnectionRequest");
@@ -65,16 +73,21 @@ public class MainServer {
                         response = new MultiplayerTools.ServerResponse(MultiplayerTools.ServerResponse.ResponseCode.SERVERFULL);
                     }
                     else if(false){
-
+                        //just in case anything needs to be added
                     }
                     else{
                         players.put(connection,new PlayerSoldier(new Rectangle(0,0,1,2),0,temp.playerName));
-                        connection.sendTCP(new MultiplayerTools.ServerDetailedSummary());
                         response = new MultiplayerTools.ServerResponse(MultiplayerTools.ServerResponse.ResponseCode.CLIENTCONNECTED);
-                        connection.sendTCP(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeam,CoffeeServer.blueTeam,maxPlayers));
+                        connection.sendTCP(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),maxPlayers));
                     }
                     connection.sendTCP(response);
                     System.out.println(temp.playerName);
+                }
+                else if(o instanceof MultiplayerTools.ClientPickedTeam){
+                    System.out.println("Received ClientPickedTeam");
+                    MultiplayerTools.ClientPickedTeam temp = (MultiplayerTools.ClientPickedTeam)o;
+                    (temp.getPicked()==0?CoffeeServer.redTeamMembers:CoffeeServer.bluTeamMembers).add(connection); // add the player to their selected team
+                    secureSendAll(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),maxPlayers));
                 }
                 super.received(connection, o);
             }

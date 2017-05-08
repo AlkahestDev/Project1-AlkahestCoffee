@@ -137,9 +137,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				if(Gdx.input.getInputProcessor() != pickATeam){
 					pickATeam.setInputProcessor();
 				}
+				pickATeam.updateTeamNumbers(player.getRedTeam(),player.getBlueTeam(),player.getrLimit(),player.getbLimit());
 				pickATeam.update();
 				pickATeam.standardDraw(batch,shapeRenderer);
-				System.out.println("PICK A TEAM");
 				break;
 			case PICKINGLOADOUT:
 				break;

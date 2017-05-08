@@ -11,29 +11,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="28ee9a6b-0dc9-4c9b-8cd5-de0c3fdede1d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/me/dumfing/menus/ClientPickingTeamMenu.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/assets/pixmapTest.png" afterPath="$PROJECT_DIR$/core/assets/pixmapTest.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Multiplayer.iws" afterPath="$PROJECT_DIR$/Multiplayer.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/me/dumfing/client/maingame/MainGame.java" afterPath="$PROJECT_DIR$/core/src/me/dumfing/client/maingame/MainGame.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/me/dumfing/gdxtools/MenuTools.java" afterPath="$PROJECT_DIR$/core/src/me/dumfing/gdxtools/MenuTools.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/me/dumfing/menus/ConnectingMenu.java" afterPath="$PROJECT_DIR$/core/src/me/dumfing/menus/ConnectingMenu.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/me/dumfing/menus/MainMenu.java" afterPath="$PROJECT_DIR$/core/src/me/dumfing/menus/MainMenu.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/me/dumfing/menus/Menu.java" afterPath="$PROJECT_DIR$/core/src/me/dumfing/menus/Menu.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/me/dumfing/menus/ServerBrowser.java" afterPath="$PROJECT_DIR$/core/src/me/dumfing/menus/ServerBrowser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/me/dumfing/menus/ServerInfoMenu.java" afterPath="$PROJECT_DIR$/core/src/me/dumfing/menus/ServerInfoMenu.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/me/dumfing/menus/ServerRunningGameMenu.java" afterPath="$PROJECT_DIR$/core/src/me/dumfing/menus/ServerRunningGameMenu.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/me/dumfing/menus/SettingsMenu.java" afterPath="$PROJECT_DIR$/core/src/me/dumfing/menus/SettingsMenu.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/me/dumfing/menus/ClientPickingTeamMenu.java" afterPath="$PROJECT_DIR$/core/src/me/dumfing/menus/ClientPickingTeamMenu.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/me/dumfing/multiplayerTools/MultiplayerClient.java" afterPath="$PROJECT_DIR$/core/src/me/dumfing/multiplayerTools/MultiplayerClient.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/me/dumfing/multiplayerTools/MultiplayerTools.java" afterPath="$PROJECT_DIR$/core/src/me/dumfing/multiplayerTools/MultiplayerTools.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/me/dumfing/multiplayerTools/PlayerSoldier.java" afterPath="$PROJECT_DIR$/core/src/me/dumfing/multiplayerTools/PlayerSoldier.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/me/dumfing/server/CoffeeServer.java" afterPath="$PROJECT_DIR$/core/src/me/dumfing/server/CoffeeServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/me/dumfing/server/GameInstance.java" afterPath="$PROJECT_DIR$/core/src/me/dumfing/server/GameInstance.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/me/dumfing/server/GameWorld.java" afterPath="$PROJECT_DIR$/core/src/me/dumfing/server/GameWorld.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/me/dumfing/server/MainServer.java" afterPath="$PROJECT_DIR$/core/src/me/dumfing/server/MainServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/desktop/src/me/dumfing/client/maingame/desktop/DesktopLauncher.java" afterPath="$PROJECT_DIR$/desktop/src/me/dumfing/client/maingame/desktop/DesktopLauncher.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/Alkahest-Coffee Javadoc/me/dumfing/multiplayerTools/MultiplayerTools.ClientPlayerInfo.html" afterPath="$PROJECT_DIR$/docs/Alkahest-Coffee Javadoc/me/dumfing/multiplayerTools/MultiplayerTools.ClientPlayerInfo.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/Alkahest-Coffee Javadoc/me/dumfing/multiplayerTools/MultiplayerTools.PlayerInfo.html" afterPath="$PROJECT_DIR$/docs/Alkahest-Coffee Javadoc/me/dumfing/multiplayerTools/MultiplayerTools.PlayerInfo.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/Alkahest-Coffee Javadoc/me/dumfing/multiplayerTools/PlayerSoldier.html" afterPath="$PROJECT_DIR$/docs/Alkahest-Coffee Javadoc/me/dumfing/multiplayerTools/PlayerSoldier.html" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -101,19 +84,13 @@
       <file leaf-file-name="ServerBrowser.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/menus/ServerBrowser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="42" column="38" lean-forward="true" selection-start-line="42" selection-start-column="38" selection-end-line="42" selection-end-column="38" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServerRunningGameMenu.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/menus/ServerRunningGameMenu.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="446">
-              <caret line="39" column="8" lean-forward="false" selection-start-line="39" selection-start-column="8" selection-end-line="41" selection-end-column="28" />
-              <folding />
+            <state relative-caret-position="650">
+              <caret line="42" column="38" lean-forward="false" selection-start-line="42" selection-start-column="38" selection-end-line="42" selection-end-column="38" />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#1890#1891#0" expanded="false" />
+                <element signature="e#1963#1964#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -121,9 +98,28 @@
       <file leaf-file-name="MainGame.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/client/maingame/MainGame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="109" column="49" lean-forward="true" selection-start-line="109" selection-start-column="49" selection-end-line="109" selection-end-column="49" />
+            <state relative-caret-position="164">
+              <caret line="163" column="26" lean-forward="false" selection-start-line="163" selection-start-column="16" selection-end-line="163" selection-end-column="26" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MultiplayerClient.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/multiplayerTools/MultiplayerClient.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="314">
+              <caret line="131" column="43" lean-forward="false" selection-start-line="131" selection-start-column="43" selection-end-line="131" selection-end-column="43" />
+              <folding>
+                <element signature="e#8711#8712#0" expanded="true" />
+                <element signature="e#8741#8742#0" expanded="true" />
+                <element signature="e#8856#8857#0" expanded="true" />
+                <element signature="e#8887#8888#0" expanded="true" />
+                <element signature="e#9013#9014#0" expanded="true" />
+                <element signature="e#9042#9043#0" expanded="true" />
+                <element signature="e#9169#9170#0" expanded="true" />
+                <element signature="e#9198#9199#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -132,7 +128,7 @@
         <entry file="file://$PROJECT_DIR$/desktop/src/me/dumfing/client/maingame/desktop/DesktopLauncher.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="100">
-              <caret line="6" column="30" lean-forward="true" selection-start-line="6" selection-start-column="30" selection-end-line="6" selection-end-column="30" />
+              <caret line="6" column="30" lean-forward="false" selection-start-line="6" selection-start-column="30" selection-end-line="6" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -141,13 +137,16 @@
       <file leaf-file-name="CoffeeServer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/server/CoffeeServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="487">
-              <caret line="104" column="72" lean-forward="false" selection-start-line="104" selection-start-column="72" selection-end-line="104" selection-end-column="72" />
+            <state relative-caret-position="87">
+              <caret line="78" column="9" lean-forward="false" selection-start-line="78" selection-start-column="9" selection-end-line="78" selection-end-column="9" />
               <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1666#1678#0" expanded="true" />
+                <element signature="e#1748#1760#0" expanded="true" />
                 <element signature="method#createServerForm#0;class#CoffeeServer#0" expanded="false" />
                 <element signature="method#readyLoadingBackground#0;class#CoffeeServer#0" expanded="false" />
                 <element signature="method#serverFormError#0;class#CoffeeServer#0" expanded="false" />
-                <marker date="1494034554289" expanded="false" signature="8858:8905" ph="&lt;~&gt;" />
+                <marker date="1494078642142" expanded="false" signature="9052:9099" ph="&lt;~&gt;" />
               </folding>
             </state>
           </provider>
@@ -156,9 +155,22 @@
       <file leaf-file-name="MainServer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/server/MainServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1440">
-              <caret line="75" column="49" lean-forward="true" selection-start-line="75" selection-start-column="49" selection-end-line="75" selection-end-column="49" />
+            <state relative-caret-position="366">
+              <caret line="89" column="20" lean-forward="false" selection-start-line="89" selection-start-column="20" selection-end-line="89" selection-end-column="20" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MultiplayerTools.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/multiplayerTools/MultiplayerTools.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-621">
+              <caret line="27" column="24" lean-forward="false" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
+              <folding>
+                <element signature="e#1517#1518#0" expanded="true" />
+                <element signature="e#1561#1562#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -166,25 +178,11 @@
       <file leaf-file-name="ClientPickingTeamMenu.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/menus/ClientPickingTeamMenu.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="445">
-              <caret line="43" column="42" lean-forward="false" selection-start-line="43" selection-start-column="42" selection-end-line="43" selection-end-column="42" />
+            <state relative-caret-position="166">
+              <caret line="76" column="40" lean-forward="false" selection-start-line="76" selection-start-column="40" selection-end-line="76" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1177#1451#0" expanded="true" />
-                <element signature="e#1450#1451#0" expanded="true" />
-                <element signature="e#1486#1759#0" expanded="true" />
-                <element signature="e#1758#1759#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SettingsMenu.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/menus/SettingsMenu.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="316">
-              <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -192,18 +190,18 @@
       <file leaf-file-name="MenuTools.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/gdxtools/MenuTools.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
+            <state relative-caret-position="521">
               <caret line="498" column="0" lean-forward="false" selection-start-line="498" selection-start-column="0" selection-end-line="498" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServerInfoMenu.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ServerInfoMenu.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/menus/ServerInfoMenu.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="57" column="13" lean-forward="true" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="13" />
+            <state relative-caret-position="796">
+              <caret line="57" column="13" lean-forward="false" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -248,6 +246,8 @@
       <find>System.out.print</find>
       <find>serverRunningMenu</find>
       <find>picking</find>
+      <find>numPl</find>
+      <find>gamestate.</find>
     </findStrings>
     <replaceStrings>
       <replace>getRect</replace>
@@ -295,21 +295,21 @@
         <option value="$PROJECT_DIR$/core/src/me/dumfing/multiplayerTools/PlayerSoldier.java" />
         <option value="$PROJECT_DIR$/core/src/me/dumfing/server/GameWorld.java" />
         <option value="$PROJECT_DIR$/core/src/me/dumfing/server/GameInstance.java" />
-        <option value="$PROJECT_DIR$/core/src/me/dumfing/server/MainServer.java" />
-        <option value="$PROJECT_DIR$/core/src/me/dumfing/multiplayerTools/MultiplayerClient.java" />
         <option value="$PROJECT_DIR$/core/src/me/dumfing/menus/Menu.java" />
-        <option value="$PROJECT_DIR$/core/src/me/dumfing/multiplayerTools/MultiplayerTools.java" />
         <option value="$PROJECT_DIR$/core/src/me/dumfing/gdxtools/MenuTools.java" />
         <option value="$PROJECT_DIR$/core/src/me/dumfing/menus/ConnectingMenu.java" />
         <option value="$PROJECT_DIR$/core/src/me/dumfing/menus/MainMenu.java" />
         <option value="$PROJECT_DIR$/core/src/me/dumfing/menus/ServerRunningGameMenu.java" />
         <option value="$PROJECT_DIR$/core/src/me/dumfing/menus/SettingsMenu.java" />
-        <option value="$PROJECT_DIR$/core/src/me/dumfing/client/maingame/MainGame.java" />
         <option value="$PROJECT_DIR$/desktop/src/me/dumfing/client/maingame/desktop/DesktopLauncher.java" />
         <option value="$PROJECT_DIR$/core/src/me/dumfing/menus/ServerBrowser.java" />
+        <option value="$PROJECT_DIR$/core/src/me/dumfing/menus/ServerInfoMenu.java" />
+        <option value="$PROJECT_DIR$/core/src/me/dumfing/multiplayerTools/MultiplayerTools.java" />
+        <option value="$PROJECT_DIR$/core/src/me/dumfing/client/maingame/MainGame.java" />
+        <option value="$PROJECT_DIR$/core/src/me/dumfing/server/MainServer.java" />
         <option value="$PROJECT_DIR$/core/src/me/dumfing/menus/ClientPickingTeamMenu.java" />
         <option value="$PROJECT_DIR$/core/src/me/dumfing/server/CoffeeServer.java" />
-        <option value="$PROJECT_DIR$/core/src/me/dumfing/menus/ServerInfoMenu.java" />
+        <option value="$PROJECT_DIR$/core/src/me/dumfing/multiplayerTools/MultiplayerClient.java" />
       </list>
     </option>
   </component>
@@ -385,6 +385,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
@@ -709,7 +710,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -725,7 +725,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.import" />
     <property name="device.picker.selection" value="Nexus_6P_API_24" />
-    <property name="SearchEverywhereHistoryKey" value="draw&#9;PSI&#9;JAVA://me.dumfing.menus.Menu#draw&#10;ClientConne&#9;PSI&#9;JAVA://me.dumfing.multiplayerTools.MultiplayerTools.ClientConnectionRequest&#10;Text&#9;PSI&#9;JAVA://me.dumfing.gdxtools.MenuTools.TextField&#10;findServers&#9;PSI&#9;JAVA://me.dumfing.multiplayerTools.MultiplayerClient#findServers&#10;Serve&#9;FILE&#9;file://C:/Users/dumpl/Documents/GitHub/Alkahest-Coffee/core/src/me/dumfing/menus/ServerBrowser.java&#10;MenuBo&#9;FILE&#9;file://C:/Users/dumpl/Documents/GitHub/Alkahest-Coffee/core/src/me/dumfing/menus/MenuBox.java&#10;MenuTool&#9;FILE&#9;file://C:/Users/dumpl/Documents/GitHub/Alkahest-Coffee/core/src/me/dumfing/gdxtools/MenuTools.java&#10;MenuBox&#9;FILE&#9;file://C:/Users/dumpl/Documents/GitHub/Alkahest-Coffee/core/src/me/dumfing/menus/MenuBox.java&#10;Multipl&#9;FILE&#9;file://C:/Users/dumpl/Documents/GitHub/Alkahest-Coffee/core/src/me/dumfing/multiplayerTools/MultiplayerTools.java&#10;loadin&#9;FILE&#9;file://C:/Users/dumpl/Documents/GitHub/Alkahest-Coffee/core/src/me/dumfing/menus/LoadingMenu.java&#10;text&#9;PSI&#9;JAVA://me.dumfing.gdxtools.MenuTools.QueueText&#10;textfield&#9;PSI&#9;JAVA://me.dumfing.gdxtools.MenuTools.TextField&#10;butt&#9;PSI&#9;JAVA://me.dumfing.gdxtools.MenuTools.Button&#10;Qu&#9;PSI&#9;JAVA://me.dumfing.gdxtools.MenuTools.QueueText&#10;TextField&#9;PSI&#9;JAVA://me.dumfing.gdxtools.MenuTools.TextField" />
+    <property name="SearchEverywhereHistoryKey" value="ClientPicke&#9;PSI&#9;JAVA://me.dumfing.multiplayerTools.MultiplayerTools.ClientPickedTeam&#10;draw&#9;PSI&#9;JAVA://me.dumfing.menus.Menu#draw&#10;ClientConne&#9;PSI&#9;JAVA://me.dumfing.multiplayerTools.MultiplayerTools.ClientConnectionRequest&#10;Text&#9;PSI&#9;JAVA://me.dumfing.gdxtools.MenuTools.TextField&#10;findServers&#9;PSI&#9;JAVA://me.dumfing.multiplayerTools.MultiplayerClient#findServers&#10;Serve&#9;FILE&#9;file://C:/Users/dumpl/Documents/GitHub/Alkahest-Coffee/core/src/me/dumfing/menus/ServerBrowser.java&#10;MenuBo&#9;FILE&#9;file://C:/Users/dumpl/Documents/GitHub/Alkahest-Coffee/core/src/me/dumfing/menus/MenuBox.java&#10;MenuTool&#9;FILE&#9;file://C:/Users/dumpl/Documents/GitHub/Alkahest-Coffee/core/src/me/dumfing/gdxtools/MenuTools.java&#10;MenuBox&#9;FILE&#9;file://C:/Users/dumpl/Documents/GitHub/Alkahest-Coffee/core/src/me/dumfing/menus/MenuBox.java&#10;Multipl&#9;FILE&#9;file://C:/Users/dumpl/Documents/GitHub/Alkahest-Coffee/core/src/me/dumfing/multiplayerTools/MultiplayerTools.java&#10;loadin&#9;FILE&#9;file://C:/Users/dumpl/Documents/GitHub/Alkahest-Coffee/core/src/me/dumfing/menus/LoadingMenu.java&#10;text&#9;PSI&#9;JAVA://me.dumfing.gdxtools.MenuTools.QueueText&#10;textfield&#9;PSI&#9;JAVA://me.dumfing.gdxtools.MenuTools.TextField&#10;butt&#9;PSI&#9;JAVA://me.dumfing.gdxtools.MenuTools.Button&#10;Qu&#9;PSI&#9;JAVA://me.dumfing.gdxtools.MenuTools.QueueText&#10;TextField&#9;PSI&#9;JAVA://me.dumfing.gdxtools.MenuTools.TextField" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -1016,7 +1016,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-11" y="-11" width="1942" height="1042" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32818073" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -1033,7 +1033,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936978" sideWeight="0.49783784" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2064865" sideWeight="0.48751485" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21027027" sideWeight="0.48751485" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32699168" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24972972" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1227,7 +1227,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="6" column="10" lean-forward="false" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1276,27 +1275,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/multiplayerTools/MultiplayerClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1304">
-          <caret line="97" column="65" lean-forward="false" selection-start-line="97" selection-start-column="65" selection-end-line="97" selection-end-column="65" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/multiplayerTools/MultiplayerTools.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2100">
-          <caret line="34" column="33" lean-forward="false" selection-start-line="34" selection-start-column="33" selection-end-line="34" selection-end-column="33" />
-          <folding>
-            <element signature="e#1517#1518#0" expanded="true" />
-            <element signature="e#1561#1562#0" expanded="true" />
-            <element signature="e#1595#1596#0" expanded="true" />
-            <element signature="e#1632#1633#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/menus/ConnectingMenu.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="508">
@@ -1312,8 +1290,8 @@
         <state relative-caret-position="523">
           <caret line="130" column="88" lean-forward="false" selection-start-line="130" selection-start-column="88" selection-end-line="130" selection-end-column="88" />
           <folding>
-            <element signature="e#5667#5828#0" expanded="true" />
-            <element signature="e#5827#5828#0" expanded="true" />
+            <element signature="e#5667#5828#0" expanded="false" />
+            <element signature="e#5827#5828#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1336,24 +1314,48 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/menus/SettingsMenu.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="316">
-          <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/gdxtools/MenuTools.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="498" column="0" lean-forward="false" selection-start-line="498" selection-start-column="0" selection-end-line="498" selection-end-column="0" />
+        <state relative-caret-position="575">
+          <caret line="27" column="5" lean-forward="false" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/menus/ServerRunningGameMenu.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="446">
+        <state relative-caret-position="825">
           <caret line="39" column="8" lean-forward="false" selection-start-line="39" selection-start-column="8" selection-end-line="41" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/menus/ServerBrowser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="650">
+          <caret line="42" column="38" lean-forward="false" selection-start-line="42" selection-start-column="38" selection-end-line="42" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1890#1891#0" expanded="false" />
+            <element signature="e#1963#1964#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/menus/ServerInfoMenu.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="796">
+          <caret line="57" column="13" lean-forward="false" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/gdxtools/MenuTools.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="521">
+          <caret line="498" column="0" lean-forward="false" selection-start-line="498" selection-start-column="0" selection-end-line="498" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1361,68 +1363,77 @@
     <entry file="file://$PROJECT_DIR$/desktop/src/me/dumfing/client/maingame/desktop/DesktopLauncher.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="100">
-          <caret line="6" column="30" lean-forward="true" selection-start-line="6" selection-start-column="30" selection-end-line="6" selection-end-column="30" />
+          <caret line="6" column="30" lean-forward="false" selection-start-line="6" selection-start-column="30" selection-end-line="6" selection-end-column="30" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/multiplayerTools/MultiplayerTools.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-621">
+          <caret line="27" column="24" lean-forward="false" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
+          <folding>
+            <element signature="e#1517#1518#0" expanded="true" />
+            <element signature="e#1561#1562#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/menus/ClientPickingTeamMenu.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="445">
-          <caret line="43" column="42" lean-forward="false" selection-start-line="43" selection-start-column="42" selection-end-line="43" selection-end-column="42" />
+        <state relative-caret-position="166">
+          <caret line="76" column="40" lean-forward="false" selection-start-line="76" selection-start-column="40" selection-end-line="76" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1177#1451#0" expanded="true" />
-            <element signature="e#1450#1451#0" expanded="true" />
-            <element signature="e#1486#1759#0" expanded="true" />
-            <element signature="e#1758#1759#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/menus/ServerBrowser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="42" column="38" lean-forward="true" selection-start-line="42" selection-start-column="38" selection-end-line="42" selection-end-column="38" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/client/maingame/MainGame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="109" column="49" lean-forward="true" selection-start-line="109" selection-start-column="49" selection-end-line="109" selection-end-column="49" />
+        <state relative-caret-position="164">
+          <caret line="163" column="26" lean-forward="false" selection-start-line="163" selection-start-column="16" selection-end-line="163" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/server/MainServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1440">
-          <caret line="75" column="49" lean-forward="true" selection-start-line="75" selection-start-column="49" selection-end-line="75" selection-end-column="49" />
+        <state relative-caret-position="366">
+          <caret line="89" column="20" lean-forward="false" selection-start-line="89" selection-start-column="20" selection-end-line="89" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/server/CoffeeServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="487">
-          <caret line="104" column="72" lean-forward="false" selection-start-line="104" selection-start-column="72" selection-end-line="104" selection-end-column="72" />
+        <state relative-caret-position="87">
+          <caret line="78" column="9" lean-forward="false" selection-start-line="78" selection-start-column="9" selection-end-line="78" selection-end-column="9" />
           <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1666#1678#0" expanded="true" />
+            <element signature="e#1748#1760#0" expanded="true" />
             <element signature="method#createServerForm#0;class#CoffeeServer#0" expanded="false" />
             <element signature="method#readyLoadingBackground#0;class#CoffeeServer#0" expanded="false" />
             <element signature="method#serverFormError#0;class#CoffeeServer#0" expanded="false" />
-            <marker date="1494034554289" expanded="false" signature="8858:8905" ph="&lt;~&gt;" />
+            <marker date="1494078642142" expanded="false" signature="9052:9099" ph="&lt;~&gt;" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/menus/ServerInfoMenu.java">
+    <entry file="file://$PROJECT_DIR$/core/src/me/dumfing/multiplayerTools/MultiplayerClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="57" column="13" lean-forward="true" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="13" />
+        <state relative-caret-position="314">
+          <caret line="131" column="43" lean-forward="false" selection-start-line="131" selection-start-column="43" selection-end-line="131" selection-end-column="43" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#8711#8712#0" expanded="true" />
+            <element signature="e#8741#8742#0" expanded="true" />
+            <element signature="e#8856#8857#0" expanded="true" />
+            <element signature="e#8887#8888#0" expanded="true" />
+            <element signature="e#9013#9014#0" expanded="true" />
+            <element signature="e#9042#9043#0" expanded="true" />
+            <element signature="e#9169#9170#0" expanded="true" />
+            <element signature="e#9198#9199#0" expanded="true" />
           </folding>
         </state>
       </provider>

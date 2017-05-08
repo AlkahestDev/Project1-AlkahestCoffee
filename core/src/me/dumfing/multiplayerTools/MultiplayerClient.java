@@ -42,6 +42,10 @@ public class MultiplayerClient {
     private boolean findingServers = false;
     private Client playerClient;
     private HashMap<String, MultiplayerTools.ServerSummary> serverSummaries;
+    private int redTeam = 0;
+    private int blueTeam = 0;
+    private int rLimit = 0;
+    private int bLimit = 0;
     public MultiplayerClient(){
         playerClient = new Client();
         serverSummaries = new HashMap<String, MultiplayerTools.ServerSummary>();
@@ -57,6 +61,7 @@ public class MultiplayerClient {
                 // if you disconnected while doing some server related activity
                 // non server related activity that will trigger the disconnected event
                 // includes pinging servers
+                System.out.println("disconnected "+MainGame.state);
                 if(GameState.ONLINESTATES.contains(MainGame.state)){
                     MainGame.state = GameState.State.SERVERBROWSER; // go back to the server browser
                 }
@@ -65,18 +70,21 @@ public class MultiplayerClient {
 
             @Override
             public void received(Connection connection, Object o) {
-                System.out.println("Got info! "+connection.getID());
+                System.out.print("Got info! "+connection.getID()+" ");
                 if(o instanceof MultiplayerTools.ServerSummary){
+                    System.out.println("ServerSummary");
                     MultiplayerTools.ServerSummary temp = (MultiplayerTools.ServerSummary) o;
                     serverSummaries.put(connection.getRemoteAddressUDP().toString(),temp);
                     connection.close();
                 }
                 else if(o instanceof  MultiplayerTools.ServerResponse){
+                    System.out.println("ServerResponse");
                     MultiplayerTools.ServerResponse temp = (MultiplayerTools.ServerResponse) o;
                     switch (temp.response){
                         case CLIENTCONNECTED:
                             //Yay, we now have a spot in the server dedicated to us
                             //wait for detailed server summary
+                            MainGame.state = GameState.State.PICKINGTEAM;
                             break;
                         case SERVERFULL:
                             playerClient.close();
@@ -84,18 +92,18 @@ public class MultiplayerClient {
                             break;
                     }
                 }
-                else if(o instanceof MultiplayerTools.ServerDetailedSummary){
-                    MultiplayerTools.ServerDetailedSummary temp = (MultiplayerTools.ServerDetailedSummary)o;
-                    //get info from temp here
-                    MainGame.state = GameState.State.PICKINGTEAM;
-                }
                 else if(o instanceof MultiplayerTools.ServerGameCountdown){
+                    System.out.println("ServerGameCountdown");
                     MultiplayerTools.ServerGameCountdown temp = (MultiplayerTools.ServerGameCountdown)o;
                     System.out.println(temp.seconds);
                 }
                 else if(o instanceof MultiplayerTools.ServerDetailedSummary){
+                    System.out.println("deets");
                     MultiplayerTools.ServerDetailedSummary temp = (MultiplayerTools.ServerDetailedSummary)o;
-                    MainGame.state = GameState.State.PICKINGTEAM;
+                    redTeam = temp.rTeam;
+                    blueTeam = temp.bTeam;
+                    rLimit = temp.rMax;
+                    bLimit = temp.bMax;
                     System.out.println(String.format("R: %d/%d B: %d/%d",temp.rTeam,temp.rMax,temp.bTeam,temp.bMax));
                 }
                 super.received(connection, o);
@@ -119,7 +127,9 @@ public class MultiplayerClient {
         } catch (IOException e) {
             System.err.println("Could not connect to server!");
             e.printStackTrace();
+            MainGame.state = GameState.State.SERVERBROWSER;
         }
+        System.out.println(MainGame.state);
     }
     public void connectToServer(InetAddress svIP){
         connectToServer(svIP.getHostAddress());
@@ -193,5 +203,37 @@ public class MultiplayerClient {
      */
     public void secureSend(Object toSend){
         playerClient.sendTCP(toSend);
+    }
+
+    /**
+     * Returns how many people are on the red team
+     * @return
+     */
+    public int getRedTeam() {
+        return redTeam;
+    }
+
+    /**
+     * Returns how many people are on the blue team
+     * @return
+     */
+    public int getBlueTeam() {
+        return blueTeam;
+    }
+
+    /**
+     * Gets the max amount of people that can be on the red team
+     * @return
+     */
+    public int getrLimit() {
+        return rLimit;
+    }
+
+    /**
+     * Gets the max amount of people that can be on the blue team
+     * @return
+     */
+    public int getbLimit() {
+        return bLimit;
     }
 }
