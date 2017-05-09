@@ -108,7 +108,8 @@ public class MultiplayerClient {
                     System.out.println(String.format("R: %d/%d B: %d/%d",temp.rTeam,temp.rMax,temp.bTeam,temp.bMax));
                 }
                 else if(o instanceof MultiplayerTools.ServerSentChatMessage){
-                    if(messages.size()>8){ // keep the linkedlist short
+                    System.out.println("ServerSentChatMessage");
+                    if(messages.size()>9){ // keep the linkedlist short
                         messages.removeLast();
                     }
                     messages.offerFirst(((MultiplayerTools.ServerSentChatMessage) o).message);

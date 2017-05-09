@@ -45,6 +45,15 @@ public class ServerBrowser extends Menu{
         super.addMenuBox(serverList);
         addRefreshButton();
         addBackButton();
+        MenuTools.TextField directConnect = new MenuTools.TextField(5,5,400,40);
+        directConnect.setEnterAction(new MenuTools.OnEnter() {
+            @Override
+            public void action(String sIn) {
+                MainGame.player.connectServerPlay(sIn);
+                MainGame.state = GameState.State.CONNECTINGTOSERVER;
+            }
+        });
+        super.addTextField(directConnect);
     }
     private void addBackButton(){
         MenuTools.Button bt = new MenuTools.Button(0,Gdx.graphics.getHeight()-65,60,60);

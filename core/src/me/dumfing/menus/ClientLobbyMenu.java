@@ -30,7 +30,9 @@ public class ClientLobbyMenu extends Menu{
         sendChatMessage.setEnterAction(new MenuTools.OnEnter() {
             @Override
             public void action(String sIn) {
-                client.quickSend(new MultiplayerTools.ClientSentChatMessage(sIn));
+                if(sIn.replaceAll(" ","").length()>0) {
+                    client.quickSend(new MultiplayerTools.ClientSentChatMessage(sIn));
+                }
             }
         });
         chatBox = new MenuBox(Gdx.graphics.getWidth()-415,5,410,500,getFonts());
