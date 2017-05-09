@@ -107,6 +107,12 @@ public class MultiplayerClient {
                     bLimit = temp.bMax;
                     System.out.println(String.format("R: %d/%d B: %d/%d",temp.rTeam,temp.rMax,temp.bTeam,temp.bMax));
                 }
+                else if(o instanceof MultiplayerTools.ServerSentChatMessage){
+                    if(messages.size()>8){ // keep the linkedlist short
+                        messages.removeLast();
+                    }
+                    messages.offerFirst(((MultiplayerTools.ServerSentChatMessage) o).message);
+                }
                 super.received(connection, o);
             }
 
@@ -236,5 +242,13 @@ public class MultiplayerClient {
      */
     public int getbLimit() {
         return bLimit;
+    }
+
+    /**
+     * Gets the text messages the client contains
+     * @return A LinkedList of messages that have been sent
+     */
+    public LinkedList<String> getMessages(){
+        return this.messages;
     }
 }

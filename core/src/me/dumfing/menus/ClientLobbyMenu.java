@@ -13,6 +13,7 @@ import me.dumfing.multiplayerTools.MultiplayerTools;
  * The Lobby the clients will stay in while waiting for more people to connect
  */
 public class ClientLobbyMenu extends Menu{
+    MenuBox chatBox;
     /**
      * Constructor for the menu
      *
@@ -25,15 +26,27 @@ public class ClientLobbyMenu extends Menu{
     }
 
     public void init(final MultiplayerClient client) {
-        MenuTools.TextField sendChatMessage = new MenuTools.TextField(Gdx.graphics.getWidth()-305,45,400,40);
+        MenuTools.TextField sendChatMessage = new MenuTools.TextField(5,5,400,40);
         sendChatMessage.setEnterAction(new MenuTools.OnEnter() {
             @Override
             public void action(String sIn) {
                 client.quickSend(new MultiplayerTools.ClientSentChatMessage(sIn));
             }
         });
-
-        super.addTextField(sendChatMessage);
+        chatBox = new MenuBox(Gdx.graphics.getWidth()-415,5,410,500,getFonts());
+        chatBox.setBackground(MenuTools.mGTR("menubackdrops/canvas.png",getManager()));
+        super.addMenuBox(chatBox);
+        chatBox.addTextField(sendChatMessage);
+    }
+    public void updateChatBox(MultiplayerClient client){
+        chatBox.clearText();
+        int textLevel = 0;
+        for(String text : client.getMessages()){
+            MenuTools.QueueText tempMessage = new MenuTools.QueueText(5,85+(textLevel*42),0,0);
+            tempMessage.setText(text,getFonts());
+            chatBox.addQueueText(tempMessage);
+            textLevel++;
+        }
     }
 
 }

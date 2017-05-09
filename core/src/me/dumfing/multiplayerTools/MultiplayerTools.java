@@ -18,12 +18,14 @@ public class MultiplayerTools {
         serializer.register(ClientInfoRequest.class);
         serializer.register(ClientConnectionRequest.class);
         serializer.register(ClientPickedTeam.class);
+        serializer.register(ClientSentChatMessage.class);
         serializer.register(ServerPlayerInfo.class);
         serializer.register(ServerSummary.class);
         serializer.register(ServerResponse.class);
         serializer.register(ServerResponse.ResponseCode.class);
         serializer.register(ServerDetailedSummary.class);
         serializer.register(ServerGameCountdown.class);
+        serializer.register(ServerSentChatMessage.class);
     }
 
     /**
@@ -53,7 +55,7 @@ public class MultiplayerTools {
          */
         public ServerSentChatMessage(Object messageIn, Connection sender, HashMap<Connection, PlayerSoldier> players){
             if(messageIn instanceof  ClientSentChatMessage){
-                this.message = String.format("%s: %s",players.get(sender).getName(),((ClientSentChatMessage) messageIn).getMessage());
+                this.message = String.format("%s[BLACK]: %s",players.get(sender).getName(),((ClientSentChatMessage) messageIn).getMessage());
             }
             else{
                 throw new ClassCastException("Object must be an instance of a ClientSentChatMessage");

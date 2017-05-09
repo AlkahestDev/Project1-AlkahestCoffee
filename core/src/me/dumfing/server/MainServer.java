@@ -119,6 +119,7 @@ public class MainServer {
         return this.maxPlayers;
     }
     public void secureSendAll(Object o){
+        //TODO reverse list of players every time to average out delay from sending object to each player
         //players.keySet is all players that are actually playing the game
         for(Connection c : players.keySet()){
             c.sendTCP(o);

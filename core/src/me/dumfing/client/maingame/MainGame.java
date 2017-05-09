@@ -104,7 +104,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					settingsMenu.init();
 					connectingMenu.init();
 					pickATeam.init(player);
-					lobbyMenu.init();
+					lobbyMenu.init(player);
 					player.pingServers();
 				}
 				break;
@@ -135,6 +135,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			case CONNECTINGTOSERVER:
 				connectingMenu.update();
 				connectingMenu.standardDraw(batch,shapeRenderer);
+				break;
+			case GAMELOBBY:
+				if(Gdx.input.getInputProcessor() != lobbyMenu){
+					lobbyMenu.setInputProcessor();
+				}
+				lobbyMenu.updateChatBox(player);
+				lobbyMenu.update();
+				lobbyMenu.draw(batch,shapeRenderer);
 				break;
 			case PICKINGTEAM:
 				if(Gdx.input.getInputProcessor() != pickATeam){
