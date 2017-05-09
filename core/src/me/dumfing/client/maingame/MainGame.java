@@ -33,6 +33,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	MainMenu gameMain;
 	ConnectingMenu connectingMenu;
 	ClientPickingTeamMenu pickATeam;
+	ClientLobbyMenu lobbyMenu;
 	public static ServerBrowser serverBrowser; // static so I can access the serverList from the findServers runnable in MultiplayerClient
 	SettingsMenu settingsMenu;
 	OrthographicCamera camera;
@@ -68,6 +69,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		serverBrowser = new ServerBrowser(fontCaches,assetManager,camera);
 		settingsMenu = new SettingsMenu(fontCaches,assetManager,camera);
 		pickATeam = new ClientPickingTeamMenu(fontCaches,assetManager,camera);
+		lobbyMenu = new ClientLobbyMenu(fontCaches,assetManager,camera);
 		setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded, background frames are loaded and added to it here
 		scW = Gdx.graphics.getWidth();
 		scH = Gdx.graphics.getHeight();
@@ -102,6 +104,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					settingsMenu.init();
 					connectingMenu.init();
 					pickATeam.init(player);
+					lobbyMenu.init();
 					player.pingServers();
 				}
 				break;
@@ -190,6 +193,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 
 	@Override
 	public boolean keyDown(int keycode) {
+
 		return false;
 	}
 

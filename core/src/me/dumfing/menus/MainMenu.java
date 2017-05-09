@@ -27,7 +27,6 @@ public class MainMenu extends Menu{
         super(bmfc,assetManager, camera);
         //this.manager = assetManager;
     }
-
     public void draw(SpriteBatch sb, ShapeRenderer sr) {
         super.draw(sb, sr);
         sb.begin();

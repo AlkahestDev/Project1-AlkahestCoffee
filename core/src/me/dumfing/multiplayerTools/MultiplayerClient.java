@@ -9,6 +9,7 @@ import me.dumfing.client.maingame.MainGame;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -38,7 +39,7 @@ public class MultiplayerClient {
             MainGame.serverBrowser.populateServerList(serverSummaries);
         }
     };
-
+    private LinkedList<String> messages = new LinkedList<String>();
     private boolean findingServers = false;
     private Client playerClient;
     private HashMap<String, MultiplayerTools.ServerSummary> serverSummaries;
@@ -84,7 +85,7 @@ public class MultiplayerClient {
                         case CLIENTCONNECTED:
                             //Yay, we now have a spot in the server dedicated to us
                             //wait for detailed server summary
-                            MainGame.state = GameState.State.PICKINGTEAM;
+                            MainGame.state = GameState.State.GAMELOBBY;
                             break;
                         case SERVERFULL:
                             playerClient.close();

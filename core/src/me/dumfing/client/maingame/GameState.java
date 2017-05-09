@@ -13,7 +13,8 @@ public class GameState{
 			State.PICKINGTEAM,
 			State.PICKINGLOADOUT,
 			State.PLAYINGGAME,
-			State.ROUNDOVER
+			State.ROUNDOVER,
+			State.GAMELOBBY
 	})); // HashSet of all states that involve online interaction with the server
 	public enum State{
 		LOADINGGAME, // loading all assets into the assetmanager and place them into variables
@@ -23,6 +24,7 @@ public class GameState{
 		STARTSERVER, // start your own server on the network
 		CONNECTINGTOSERVER, // currently establishing a connection to the server
 		CONNECTEDTOSERVER, // might not be used
+		GAMELOBBY,
 		PICKINGTEAM, // pick a team to join
 		PICKINGLOADOUT, // pick what class you are
 		PLAYINGGAME, // playing the game

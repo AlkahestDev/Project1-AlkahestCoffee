@@ -78,7 +78,7 @@ public class MainServer {
                     else{
                         players.put(connection,new PlayerSoldier(new Rectangle(0,0,1,2),0,temp.playerName));
                         response = new MultiplayerTools.ServerResponse(MultiplayerTools.ServerResponse.ResponseCode.CLIENTCONNECTED);
-                        connection.sendTCP(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),maxPlayers));
+                        // connection.sendTCP(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),maxPlayers));
                     }
                     connection.sendTCP(response);
                     System.out.println(temp.playerName);
@@ -88,6 +88,9 @@ public class MainServer {
                     MultiplayerTools.ClientPickedTeam temp = (MultiplayerTools.ClientPickedTeam)o;
                     (temp.getPicked()==0?CoffeeServer.redTeamMembers:CoffeeServer.bluTeamMembers).add(connection); // add the player to their selected team
                     secureSendAll(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),maxPlayers));
+                }
+                else if(o instanceof  MultiplayerTools.ClientSentChatMessage){
+                    quickSendAll(new MultiplayerTools.ServerSentChatMessage(o,connection,players));
                 }
                 super.received(connection, o);
             }
