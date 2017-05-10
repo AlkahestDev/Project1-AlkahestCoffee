@@ -35,23 +35,27 @@ public class ClientPickingTeamMenu extends Menu{
         redTeamButton.setCallback(new MenuTools.OnClick() {
             @Override
             public void action() {
-                cl.secureSend(new MultiplayerTools.ClientPickedTeam(0));
-                redTeamButton.setVelocity(-30,0);
-                bluTeamButton.setVelocity(30,0);
-                redTeamNumbers.setVelocity(-30,0);
-                bluTeamNumbers.setVelocity(30,0);
-                inOriginalPosition = false;
+                if(cl.getRedTeam()<cl.getrLimit()) {
+                    cl.secureSend(new MultiplayerTools.ClientPickedTeam(0));
+                    redTeamButton.setVelocity(-30, 0);
+                    bluTeamButton.setVelocity(30, 0);
+                    redTeamNumbers.setVelocity(-30, 0);
+                    bluTeamNumbers.setVelocity(30, 0);
+                    inOriginalPosition = false;
+                }
             }
         });
         bluTeamButton.setCallback(new MenuTools.OnClick(){
             @Override
             public void action() {
-                cl.secureSend(new MultiplayerTools.ClientPickedTeam(1));
-                redTeamButton.setVelocity(-30,0);
-                bluTeamButton.setVelocity(30,0);
-                redTeamNumbers.setVelocity(-30,0);
-                bluTeamNumbers.setVelocity(30,0);
-                inOriginalPosition = false;
+                if(cl.getBlueTeam()<cl.getbLimit()) {
+                    cl.secureSend(new MultiplayerTools.ClientPickedTeam(1));
+                    redTeamButton.setVelocity(-30, 0);
+                    bluTeamButton.setVelocity(30, 0);
+                    redTeamNumbers.setVelocity(-30, 0);
+                    bluTeamNumbers.setVelocity(30, 0);
+                    inOriginalPosition = false;
+                }
             }
         });
         redTeamButton.setPressedTexture(MenuTools.mGTR("Desktop.jpg",getManager()));//new TextureRegion((Texture)getManager().get("desktop.jpg")));
@@ -80,7 +84,7 @@ public class ClientPickingTeamMenu extends Menu{
     }
 
     public void updateTeamNumbers(int redTeam, int blueTeam, int rMax, int bMax){
-        redTeamNumbers.setText(String.format("%d|%d",redTeam,rMax),getFonts());
-        bluTeamNumbers.setText(String.format("%d|%d",blueTeam,bMax),getFonts());
+        redTeamNumbers.setText(String.format("%s%d|%d",redTeam>=rMax?"[RED]":"",redTeam,rMax),getFonts());
+        bluTeamNumbers.setText(String.format("%s%d|%d",blueTeam>=bMax?"[RED]":"",blueTeam,bMax),getFonts());
     }
 }

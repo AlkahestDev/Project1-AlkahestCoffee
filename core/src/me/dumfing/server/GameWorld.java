@@ -20,14 +20,20 @@ public class GameWorld {
             playerSoldier.setPos( 2, 5);
         }
     }
+    public void update(){
+        for(Connection connection: players.keySet()){
+            PlayerSoldier p = players.get(connection);
+            if(CoffeeServer.redTeamMembers.contains(connection) || CoffeeServer.bluTeamMembers.contains(connection)) {
+                System.out.println("Checkkkk");
+                checkCollisions(p);
+            }
+        }
+    }
     public void setCollisionBoxes(FileHandle pixMapFile){
         this.worldHitbox = new Pixmap(pixMapFile);
     }
-    public void checkCollisions(){
-        for(PlayerSoldier player : players.values()){
-            System.out.println("0,1: "+(worldHitbox.getPixel(0,1)>>8));
-            System.out.println("0,31: "+(worldHitbox.getPixel(0,31)>>8));
-            System.out.println("player: "+(worldHitbox.getPixel((int)(player.getX()+player.getvX()),worldHitbox.getHeight()-(int)(player.getY()))>>8));
+    public void checkCollisions(PlayerSoldier player){
+            System.out.println(player.getPos());
             if(worldHitbox.getPixel((int)player.getX(),worldHitbox.getHeight()-(int)(player.getY()+player.getvY()))>>8 == 1){
                 System.out.println("hitY");
                 player.setY((int)player.getY()+1);
@@ -39,11 +45,10 @@ public class GameWorld {
                 System.out.println("hitX");
                 player.setX((int)player.getX());
             }
-        }
     }
     public void moveAll(){
         for(PlayerSoldier playerSoldier : players.values()){
-            playerSoldier.move();
+                playerSoldier.move();
         }
     }
     public HashMap<Integer,MultiplayerTools.ServerPlayerInfo> getSimpleInfo(){

@@ -84,12 +84,16 @@ public class MainServer {
 
                     }
                     connection.sendTCP(response);
+                    if(CoffeeServer.svState == CoffeeServer.ServerState.RUNNINGGAME){
+                        connection.sendTCP(new MultiplayerTools.ServerGameStarted());
+                    }
                     System.out.println(temp.playerName);
                 }
                 else if(o instanceof MultiplayerTools.ClientPickedTeam){
                     System.out.println("Received ClientPickedTeam");
                     MultiplayerTools.ClientPickedTeam temp = (MultiplayerTools.ClientPickedTeam)o;
                     (temp.getPicked()==0?CoffeeServer.redTeamMembers:CoffeeServer.bluTeamMembers).add(connection); // add the player to their selected team
+                    players.get(connection).setTeam(temp.getPicked());
                     secureSendAll(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),getSimplePlayers()));
                 }
                 else if(o instanceof  MultiplayerTools.ClientSentChatMessage){
