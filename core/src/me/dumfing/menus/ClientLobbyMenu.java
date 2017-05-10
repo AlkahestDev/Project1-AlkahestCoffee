@@ -9,11 +9,13 @@ import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.multiplayerTools.MultiplayerClient;
 import me.dumfing.multiplayerTools.MultiplayerTools;
 
+import static me.dumfing.client.maingame.MainGame.DAGGER30;
+
 /**
  * The Lobby the clients will stay in while waiting for more people to connect
  */
 public class ClientLobbyMenu extends Menu{
-    MenuBox chatBox;
+    MenuBox chatBox, connectedPlayers;
     /**
      * Constructor for the menu
      *
@@ -35,20 +37,31 @@ public class ClientLobbyMenu extends Menu{
                 }
             }
         });
-        chatBox = new MenuBox(Gdx.graphics.getWidth()-415,5,410,500,getFonts());
+        chatBox = new MenuBox(Gdx.graphics.getWidth()-415,5,410,480,getFonts());
         chatBox.setBackground(MenuTools.mGTR("menubackdrops/canvas.png",getManager()));
-        super.addMenuBox(chatBox);
         chatBox.addTextField(sendChatMessage);
+        super.addMenuBox(chatBox);
+        connectedPlayers = new MenuBox(5,5,400,660,getFonts());
+        connectedPlayers.setBackground(MenuTools.mGTR("menubackdrops/canvas.png",getManager()));
+        super.addMenuBox(connectedPlayers);
     }
-    public void updateChatBox(MultiplayerClient client){
+    public void update(MultiplayerClient client) {
         chatBox.clearText();
+        connectedPlayers.clearText();
         int textLevel = 0;
         for(String text : client.getMessages()){
-            MenuTools.QueueText tempMessage = new MenuTools.QueueText(5,85+(textLevel*42),0,0);
+            MenuTools.QueueText tempMessage = new MenuTools.QueueText(5,75+(textLevel*32),0,0);
             tempMessage.setText(text,getFonts());
+            tempMessage.setFont(DAGGER30);
             chatBox.addQueueText(tempMessage);
             textLevel++;
         }
+        textLevel = 0;
+        for(MultiplayerTools.ServerPlayerInfo player : client.getPlayers().values()){
+            MenuTools.QueueText tempName = new MenuTools.QueueText(5,5+(textLevel*42),0,0);
+            tempName.setText(player.getName(),getFonts());
+            textLevel++;
+        }
+        super.update();
     }
-
 }

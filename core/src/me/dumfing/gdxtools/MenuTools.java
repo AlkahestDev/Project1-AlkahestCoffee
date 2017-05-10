@@ -56,7 +56,7 @@ public class MenuTools {
             textWidth = 0;
         }
         public void queue(Array<BitmapFontCache> fontCaches){
-            fontCaches.get(preferredFont).addText(this.qText,super.shape.x,super.shape.y,textWidth,0,false);
+            fontCaches.get(preferredFont).addText(this.qText,super.shape.x,super.shape.y,textWidth,Align.left,false);
         }
     }
     /**

@@ -15,6 +15,9 @@ public class MultiplayerTools {
     public static final int TCPPORT = 19816;
     public static void register(EndPoint endpoint){
         Kryo serializer = endpoint.getKryo();
+        //Can't register Connection so will have to switch with Integer
+        serializer.register(HashMap.class);
+        serializer.register(Rectangle.class);
         serializer.register(ClientInfoRequest.class);
         serializer.register(ClientConnectionRequest.class);
         serializer.register(ClientPickedTeam.class);
@@ -113,14 +116,16 @@ public class MultiplayerTools {
      */
     public static class ServerDetailedSummary {
         int rTeam, bTeam, rMax,bMax;
+        HashMap<Integer, MultiplayerTools.ServerPlayerInfo> people;
         public ServerDetailedSummary(){
 
         }
-        public ServerDetailedSummary(int redTeam, int blueTeam,int maxPeople){
+        public ServerDetailedSummary(int redTeam, int blueTeam,HashMap<Integer, MultiplayerTools.ServerPlayerInfo> people){
             this.rTeam = redTeam;
             this.bTeam = blueTeam;
-            this.bMax = maxPeople/2;
-            this.rMax = maxPeople - bMax;
+            this.bMax = people.size()/2;
+            this.rMax = people.size() - bMax;
+            this.people = people;
         }
     }
     /**
@@ -170,6 +175,8 @@ public class MultiplayerTools {
         private Rectangle playerArea;
         private int team, health;
         private String name;
+        public ServerPlayerInfo(){
+        }
         public ServerPlayerInfo(Rectangle area, int team, String name){
             this.playerArea = area;
             this.team = team;

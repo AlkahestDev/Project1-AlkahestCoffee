@@ -140,8 +140,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				if(Gdx.input.getInputProcessor() != lobbyMenu){
 					lobbyMenu.setInputProcessor();
 				}
-				lobbyMenu.updateChatBox(player);
-				lobbyMenu.update();
+				lobbyMenu.update(player);
 				lobbyMenu.draw(batch,shapeRenderer);
 				break;
 			case PICKINGTEAM:
@@ -159,6 +158,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			case ROUNDOVER:
 				break;
 			case QUIT:
+				Gdx.app.exit();
 				break;
 		}
 	}

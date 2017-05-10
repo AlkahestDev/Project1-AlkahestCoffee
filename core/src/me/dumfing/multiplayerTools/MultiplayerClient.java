@@ -40,6 +40,7 @@ public class MultiplayerClient {
         }
     };
     private LinkedList<String> messages = new LinkedList<String>();
+    private HashMap<Integer, MultiplayerTools.ServerPlayerInfo> players = new HashMap<Integer, MultiplayerTools.ServerPlayerInfo>();
     private boolean findingServers = false;
     private Client playerClient;
     private HashMap<String, MultiplayerTools.ServerSummary> serverSummaries;
@@ -105,13 +106,15 @@ public class MultiplayerClient {
                     blueTeam = temp.bTeam;
                     rLimit = temp.rMax;
                     bLimit = temp.bMax;
+                    players = temp.people;
                     System.out.println(String.format("R: %d/%d B: %d/%d",temp.rTeam,temp.rMax,temp.bTeam,temp.bMax));
                 }
                 else if(o instanceof MultiplayerTools.ServerSentChatMessage){
                     System.out.println("ServerSentChatMessage");
-                    if(messages.size()>9){ // keep the linkedlist short
+                    if(messages.size()>12){ // keep the linkedlist short
                         messages.removeLast();
                     }
+                    System.out.println(String.format("'%s'",((MultiplayerTools.ServerSentChatMessage) o).message));
                     messages.offerFirst(((MultiplayerTools.ServerSentChatMessage) o).message);
                 }
                 super.received(connection, o);
@@ -251,5 +254,13 @@ public class MultiplayerClient {
      */
     public LinkedList<String> getMessages(){
         return this.messages;
+    }
+
+    /**
+     * Gets the simple info about the players connected to the server
+     * @return
+     */
+    public HashMap<Integer, MultiplayerTools.ServerPlayerInfo> getPlayers() {
+        return players;
     }
 }
