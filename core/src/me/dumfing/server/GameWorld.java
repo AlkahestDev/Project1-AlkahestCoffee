@@ -46,10 +46,10 @@ public class GameWorld {
             playerSoldier.move();
         }
     }
-    public HashMap<Connection,MultiplayerTools.ServerPlayerInfo> getSimpleInfo(){
-        HashMap<Connection,MultiplayerTools.ServerPlayerInfo> out = new HashMap<Connection, MultiplayerTools.ServerPlayerInfo>();
+    public HashMap<Integer,MultiplayerTools.ServerPlayerInfo> getSimpleInfo(){
+        HashMap<Integer,MultiplayerTools.ServerPlayerInfo> out = new HashMap<Integer, MultiplayerTools.ServerPlayerInfo>();
         for(Connection c : players.keySet()){
-            out.put(c,players.get(c).getPlayerInfo());
+            out.put(c.getID(),players.get(c).getPlayerInfo());
         }
         return out;
     }

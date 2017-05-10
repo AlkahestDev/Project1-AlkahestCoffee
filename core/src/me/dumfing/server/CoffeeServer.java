@@ -102,8 +102,6 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
                 if(Gdx.input.getInputProcessor()!=serverInfo){
                     serverInfo.setInputProcessor();
                 }
-
-                serverInfo.updateMenuInfo(sv);
                 serverInfo.update(sv,redTeamMembers.size(),bluTeamMembers.size(),sv.getMaxPlayers());
                 serverInfo.draw(batch,shapeRenderer);
                 break;

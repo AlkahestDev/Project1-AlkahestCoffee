@@ -48,6 +48,7 @@ public class MultiplayerClient {
     private int blueTeam = 0;
     private int rLimit = 0;
     private int bLimit = 0;
+    private int gameStarted = -1;
     public MultiplayerClient(){
         playerClient = new Client();
         serverSummaries = new HashMap<String, MultiplayerTools.ServerSummary>();
@@ -72,20 +73,19 @@ public class MultiplayerClient {
 
             @Override
             public void received(Connection connection, Object o) {
-                System.out.print("Got info! "+connection.getID()+" ");
+                System.out.println("Got info! "+connection.getID()+" "+o.getClass().getSimpleName());
                 if(o instanceof MultiplayerTools.ServerSummary){
-                    System.out.println("ServerSummary");
                     MultiplayerTools.ServerSummary temp = (MultiplayerTools.ServerSummary) o;
                     serverSummaries.put(connection.getRemoteAddressUDP().toString(),temp);
                     connection.close();
                 }
                 else if(o instanceof  MultiplayerTools.ServerResponse){
-                    System.out.println("ServerResponse");
                     MultiplayerTools.ServerResponse temp = (MultiplayerTools.ServerResponse) o;
                     switch (temp.response){
                         case CLIENTCONNECTED:
                             //Yay, we now have a spot in the server dedicated to us
                             //wait for detailed server summary
+                            gameStarted = -1; //reset gameStarted
                             MainGame.state = GameState.State.GAMELOBBY;
                             break;
                         case SERVERFULL:
@@ -95,13 +95,13 @@ public class MultiplayerClient {
                     }
                 }
                 else if(o instanceof MultiplayerTools.ServerGameCountdown){
-                    System.out.println("ServerGameCountdown");
                     MultiplayerTools.ServerGameCountdown temp = (MultiplayerTools.ServerGameCountdown)o;
+                    gameStarted = temp.getSeconds();
                     System.out.println(temp.seconds);
                 }
                 else if(o instanceof MultiplayerTools.ServerDetailedSummary){
-                    System.out.println("deets");
                     MultiplayerTools.ServerDetailedSummary temp = (MultiplayerTools.ServerDetailedSummary)o;
+                    System.out.println(temp.people.values());
                     redTeam = temp.rTeam;
                     blueTeam = temp.bTeam;
                     rLimit = temp.rMax;
@@ -110,12 +110,16 @@ public class MultiplayerClient {
                     System.out.println(String.format("R: %d/%d B: %d/%d",temp.rTeam,temp.rMax,temp.bTeam,temp.bMax));
                 }
                 else if(o instanceof MultiplayerTools.ServerSentChatMessage){
-                    System.out.println("ServerSentChatMessage");
                     if(messages.size()>12){ // keep the linkedlist short
                         messages.removeLast();
                     }
                     System.out.println(String.format("'%s'",((MultiplayerTools.ServerSentChatMessage) o).message));
                     messages.offerFirst(((MultiplayerTools.ServerSentChatMessage) o).message);
+                }
+                else if(o instanceof MultiplayerTools.ServerPlayerPositions){
+                }
+                else if(o instanceof MultiplayerTools.ServerGameStarted){
+                    MainGame.state = GameState.State.PICKINGTEAM;
                 }
                 super.received(connection, o);
             }
@@ -262,5 +266,13 @@ public class MultiplayerClient {
      */
     public HashMap<Integer, MultiplayerTools.ServerPlayerInfo> getPlayers() {
         return players;
+    }
+
+    /**
+     * Returns how many seconds until the game starts
+     * @return
+     */
+    public int getGameStarted() {
+        return gameStarted;
     }
 }

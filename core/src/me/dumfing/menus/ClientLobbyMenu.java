@@ -10,12 +10,16 @@ import me.dumfing.multiplayerTools.MultiplayerClient;
 import me.dumfing.multiplayerTools.MultiplayerTools;
 
 import static me.dumfing.client.maingame.MainGame.DAGGER30;
+import static me.dumfing.client.maingame.MainGame.DAGGER50;
+import static me.dumfing.client.maingame.MainGame.player;
 
 /**
  * The Lobby the clients will stay in while waiting for more people to connect
  */
 public class ClientLobbyMenu extends Menu{
-    MenuBox chatBox, connectedPlayers;
+    MenuBox chatBox, connectedPlayers, countDownBar;
+    MenuTools.QueueText countdown;
+    boolean barOut = false;
     /**
      * Constructor for the menu
      *
@@ -44,6 +48,12 @@ public class ClientLobbyMenu extends Menu{
         connectedPlayers = new MenuBox(5,5,400,660,getFonts());
         connectedPlayers.setBackground(MenuTools.mGTR("menubackdrops/canvas.png",getManager()));
         super.addMenuBox(connectedPlayers);
+        countDownBar = new MenuBox(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()-60,200,60,getFonts());
+        countDownBar.setBackground(MenuTools.mGTR("4k-image-santiago.jpg",getManager()));
+        countdown = new MenuTools.QueueText(5,50,0,0);
+        countdown.setFont(DAGGER50);
+        countDownBar.addQueueText(countdown);
+        super.addMenuBox(countDownBar);
     }
     public void update(MultiplayerClient client) {
         chatBox.clearText();
@@ -58,9 +68,23 @@ public class ClientLobbyMenu extends Menu{
         }
         textLevel = 0;
         for(MultiplayerTools.ServerPlayerInfo player : client.getPlayers().values()){
-            MenuTools.QueueText tempName = new MenuTools.QueueText(5,5+(textLevel*42),0,0);
+            MenuTools.QueueText tempName = new MenuTools.QueueText(5,45+(textLevel*42),0,0);
             tempName.setText(player.getName(),getFonts());
+            connectedPlayers.addQueueText(tempName);
             textLevel++;
+        }
+        if(client.getGameStarted() > -1){
+            if(barOut){
+                countdown.setText(""+player.getGameStarted(),getFonts());
+            }
+            else{
+                countDownBar.setVelocity(-13.9f,0); // extend bar
+                barOut = true;
+            }
+        }
+        else if(barOut){ // the bar is out but doesn't show any useful info
+            countDownBar.setVelocity(13.9f,0); //retract bar
+            barOut = false;
         }
         super.update();
     }

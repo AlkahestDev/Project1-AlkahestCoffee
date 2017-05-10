@@ -144,12 +144,12 @@ public class MainMenu extends Menu{
         MenuTools.QueueText gameName = new MenuTools.QueueText(-415,Gdx.graphics.getHeight()-30,0,0);
         gameName.setText("[WHITE]Alkahest Coffee Corp",super.getFonts());
         gameName.setFont(DAGGER50);
-        gameName.setVelocity(22.7f,0);
+        gameName.setVelocity(20.3f,0);
         super.addQueueText(gameName);
         MenuTools.QueueText versionNumber = new MenuTools.QueueText(-415, Gdx.graphics.getHeight()-70,0,0);
         versionNumber.setText("[WHITE]Version: "+MainGame.versionNumber,getFonts());
         versionNumber.setFont(DAGGER20);
-        versionNumber.setVelocity(14.6f,0);
+        versionNumber.setVelocity(20.3f,0);
         super.addQueueText(versionNumber);
         playBox.setVelocity(19.862f,0);
         settingsBox.setVelocity(22.21f,0);

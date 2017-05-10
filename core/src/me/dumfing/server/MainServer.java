@@ -80,7 +80,8 @@ public class MainServer {
                         //Successful Connection
                         players.put(connection,new PlayerSoldier(new Rectangle(0,0,1,2),0,temp.playerName));
                         response = new MultiplayerTools.ServerResponse(MultiplayerTools.ServerResponse.ResponseCode.CLIENTCONNECTED);
-                        connection.sendTCP(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),getSimplePlayers()));
+                        quickSendAll(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),getSimplePlayers()));
+
                     }
                     connection.sendTCP(response);
                     System.out.println(temp.playerName);

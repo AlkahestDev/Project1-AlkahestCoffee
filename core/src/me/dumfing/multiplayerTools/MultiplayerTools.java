@@ -29,8 +29,24 @@ public class MultiplayerTools {
         serializer.register(ServerDetailedSummary.class);
         serializer.register(ServerGameCountdown.class);
         serializer.register(ServerSentChatMessage.class);
+        serializer.register(ServerPlayerPositions.class);
+        serializer.register(ServerGameStarted.class);
     }
+    public static class ServerGameStarted{
+        public ServerGameStarted(){}
+    }
+    public static class ServerPlayerPositions{
+        HashMap<Integer, ServerPlayerInfo> players;
+        public ServerPlayerPositions(){
+        }
+        public ServerPlayerPositions(HashMap<Integer, ServerPlayerInfo> players){
+            this.players = players;
+        }
 
+        public HashMap<Integer, ServerPlayerInfo> getPlayers() {
+            return players;
+        }
+    }
     /**
      * Sent by the server to tell all clients that it's received a message
      */
@@ -47,7 +63,7 @@ public class MultiplayerTools {
          * @param players All the connections and their respective playersoldiers
          */
         public ServerSentChatMessage(String message, Connection sender, HashMap<Connection, PlayerSoldier> players) {
-            this.message = String.format("%s: %s",players.get(sender).getName(),message);
+            this.message = String.format("[WHITE]%s[GRAY]:  [BLACK]%s",players.get(sender).getName(),message);
         }
 
         /**
@@ -58,7 +74,7 @@ public class MultiplayerTools {
          */
         public ServerSentChatMessage(Object messageIn, Connection sender, HashMap<Connection, PlayerSoldier> players){
             if(messageIn instanceof  ClientSentChatMessage){
-                this.message = String.format("%s[BLACK]: %s",players.get(sender).getName(),((ClientSentChatMessage) messageIn).getMessage());
+                this.message = String.format("[WHITE]%s[GRAY]:  [BLACK]%s",players.get(sender).getName(),((ClientSentChatMessage) messageIn).getMessage());
             }
             else{
                 throw new ClassCastException("Object must be an instance of a ClientSentChatMessage");
@@ -222,6 +238,16 @@ public class MultiplayerTools {
 
         public int getHealth() {
             return health;
+        }
+
+        @Override
+        public String toString() {
+            return "ServerPlayerInfo{" +
+                    "playerArea=" + playerArea +
+                    ", team=" + team +
+                    ", health=" + health +
+                    ", name='" + name + '\'' +
+                    '}';
         }
     }
     /**
