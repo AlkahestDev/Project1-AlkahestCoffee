@@ -1,6 +1,7 @@
 package me.dumfing.server;
 
 import com.esotericsoftware.kryonet.Connection;
+import me.dumfing.multiplayerTools.MultiplayerTools;
 import me.dumfing.multiplayerTools.PlayerSoldier;
 
 import java.util.HashMap;
@@ -17,9 +18,9 @@ public class GameInstance {
     public void update(MainServer sv){
         world.checkCollisions();
         world.moveAll();
-        if(frameCount == 3){
+        if(frameCount == 60){ // TODO: reduce this to 3 or 4 (20hz or 15hz)
             frameCount = 0;
-            sv.quickSendAll(world.getSimpleInfo());
+            sv.quickSendAll(new MultiplayerTools.ServerPlayerPositions(world.getSimpleInfo()));
         }
         frameCount++;
     }

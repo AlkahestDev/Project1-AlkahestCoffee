@@ -15,15 +15,87 @@ public class MultiplayerTools {
     public static final int TCPPORT = 19816;
     public static void register(EndPoint endpoint){
         Kryo serializer = endpoint.getKryo();
+        //Can't register Connection so will have to switch with Integer
+        serializer.register(HashMap.class);
+        serializer.register(Rectangle.class);
         serializer.register(ClientInfoRequest.class);
         serializer.register(ClientConnectionRequest.class);
         serializer.register(ClientPickedTeam.class);
+        serializer.register(ClientSentChatMessage.class);
         serializer.register(ServerPlayerInfo.class);
         serializer.register(ServerSummary.class);
         serializer.register(ServerResponse.class);
         serializer.register(ServerResponse.ResponseCode.class);
         serializer.register(ServerDetailedSummary.class);
         serializer.register(ServerGameCountdown.class);
+        serializer.register(ServerSentChatMessage.class);
+        serializer.register(ServerPlayerPositions.class);
+        serializer.register(ServerGameStarted.class);
+    }
+    public static class ServerGameStarted{
+        public ServerGameStarted(){}
+    }
+    public static class ServerPlayerPositions{
+        HashMap<Integer, ServerPlayerInfo> players;
+        public ServerPlayerPositions(){
+        }
+        public ServerPlayerPositions(HashMap<Integer, ServerPlayerInfo> players){
+            this.players = players;
+        }
+
+        public HashMap<Integer, ServerPlayerInfo> getPlayers() {
+            return players;
+        }
+    }
+    /**
+     * Sent by the server to tell all clients that it's received a message
+     */
+    public static class ServerSentChatMessage{
+        String message;
+        public ServerSentChatMessage() {
+        }
+
+        /**
+         * Sends the message to all clients, uses a hashmap of all players and a connection so that it'll automatically generate a message with the user's name and the message
+         * without needing you to insert it yourself
+         * @param message The message to be sent
+         * @param sender The connection of the person who sent it
+         * @param players All the connections and their respective playersoldiers
+         */
+        public ServerSentChatMessage(String message, Connection sender, HashMap<Connection, PlayerSoldier> players) {
+            this.message = String.format("[WHITE]%s[GRAY]:  [BLACK]%s",players.get(sender).getName(),message);
+        }
+
+        /**
+         * Similar to ServerSentChatMessage but with an Object so you don't have to convert it yourself
+         * @param messageIn Supposed to be a ClientSentChatMessage object, will throw an error otherwise
+         * @param sender The connection for the person who's sending the message
+         * @param players The hashmap of all players connected
+         */
+        public ServerSentChatMessage(Object messageIn, Connection sender, HashMap<Connection, PlayerSoldier> players){
+            if(messageIn instanceof  ClientSentChatMessage){
+                this.message = String.format("[WHITE]%s[GRAY]:  [BLACK]%s",players.get(sender).getName(),((ClientSentChatMessage) messageIn).getMessage());
+            }
+            else{
+                throw new ClassCastException("Object must be an instance of a ClientSentChatMessage");
+            }
+        }
+    }
+    /**
+     * Sent by the client to tell the server that they've sent a message
+     */
+    public static class ClientSentChatMessage{
+        String message;
+        public ClientSentChatMessage(){
+
+        }
+        public ClientSentChatMessage(String message) {
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
     }
     public static class ClientPickedTeam{
         //Red is 0 Blue is 1
@@ -60,14 +132,16 @@ public class MultiplayerTools {
      */
     public static class ServerDetailedSummary {
         int rTeam, bTeam, rMax,bMax;
+        HashMap<Integer, MultiplayerTools.ServerPlayerInfo> people;
         public ServerDetailedSummary(){
 
         }
-        public ServerDetailedSummary(int redTeam, int blueTeam,int maxPeople){
+        public ServerDetailedSummary(int redTeam, int blueTeam,HashMap<Integer, MultiplayerTools.ServerPlayerInfo> people){
             this.rTeam = redTeam;
             this.bTeam = blueTeam;
-            this.bMax = maxPeople/2;
-            this.rMax = maxPeople - bMax;
+            this.bMax = people.size()/2;
+            this.rMax = people.size() - bMax;
+            this.people = people;
         }
     }
     /**
@@ -117,6 +191,8 @@ public class MultiplayerTools {
         private Rectangle playerArea;
         private int team, health;
         private String name;
+        public ServerPlayerInfo(){
+        }
         public ServerPlayerInfo(Rectangle area, int team, String name){
             this.playerArea = area;
             this.team = team;
@@ -162,6 +238,16 @@ public class MultiplayerTools {
 
         public int getHealth() {
             return health;
+        }
+
+        @Override
+        public String toString() {
+            return "ServerPlayerInfo{" +
+                    "playerArea=" + playerArea +
+                    ", team=" + team +
+                    ", health=" + health +
+                    ", name='" + name + '\'' +
+                    '}';
         }
     }
     /**

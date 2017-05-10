@@ -143,6 +143,14 @@ public class Menu implements InputProcessor{
     }
 
     /**
+     * Returns the currently focused textField
+     * @return The TextField that is currently focused on
+     */
+    public MenuTools.TextField getFocused() {
+        return focused;
+    }
+
+    /**
      * Draws all texture related components of the Menu
      * @param sb The SpriteBatch used to draw the Textures
      */
@@ -343,6 +351,9 @@ public class Menu implements InputProcessor{
         }
         for(MenuBox mb : menuBoxes){
             focused = mb.textFieldsClicked(screenX,screenY);
+            if(focused!=null){
+                break;
+            }
         }
         return true;
     }

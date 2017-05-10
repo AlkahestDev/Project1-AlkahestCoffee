@@ -39,6 +39,13 @@ public class ServerInfoMenu extends Menu{
     }
 
     public void update(MainServer svIn, int redTeam, int blueTeam, int maxPlayers) {
+        updateMenuInfo(svIn);
+        if (maxPlayers == 1) {
+            timerStarted = svIn.getPlayers().size() == 1;
+        }
+        else{
+            timerStarted = svIn.getPlayers().size()/maxPlayers > 0.6;
+        }
         if(timerStarted){
             numFrames++;
             if(numFrames % 60 == 0){
@@ -48,14 +55,10 @@ public class ServerInfoMenu extends Menu{
             }
             if(numFrames/60 == 6){
                 CoffeeServer.svState = CoffeeServer.ServerState.RUNNINGGAME;
+                svIn.secureSendAll(new MultiplayerTools.ServerGameStarted()); // Make sure everyone gets the message
             }
         }
         else{
-            int blueLimit = maxPlayers/2;
-            int redLimit = maxPlayers - blueLimit;
-            if(blueTeam / blueLimit > 0.6f && redTeam / redLimit > 0.6f){
-                timerStarted = true;
-            }
             numFrames = 0;
         }
     }

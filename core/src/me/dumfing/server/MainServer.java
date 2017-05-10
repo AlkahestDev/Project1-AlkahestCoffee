@@ -70,15 +70,18 @@ public class MainServer {
                     MultiplayerTools.ClientConnectionRequest temp = (MultiplayerTools.ClientConnectionRequest) o;
                     MultiplayerTools.ServerResponse response;
                     if(numPlayers>=maxPlayers){
+                        //Too many people
                         response = new MultiplayerTools.ServerResponse(MultiplayerTools.ServerResponse.ResponseCode.SERVERFULL);
                     }
                     else if(false){
                         //just in case anything needs to be added
                     }
                     else{
+                        //Successful Connection
                         players.put(connection,new PlayerSoldier(new Rectangle(0,0,1,2),0,temp.playerName));
                         response = new MultiplayerTools.ServerResponse(MultiplayerTools.ServerResponse.ResponseCode.CLIENTCONNECTED);
-                        connection.sendTCP(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),maxPlayers));
+                        quickSendAll(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),getSimplePlayers()));
+
                     }
                     connection.sendTCP(response);
                     System.out.println(temp.playerName);
@@ -87,7 +90,10 @@ public class MainServer {
                     System.out.println("Received ClientPickedTeam");
                     MultiplayerTools.ClientPickedTeam temp = (MultiplayerTools.ClientPickedTeam)o;
                     (temp.getPicked()==0?CoffeeServer.redTeamMembers:CoffeeServer.bluTeamMembers).add(connection); // add the player to their selected team
-                    secureSendAll(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),maxPlayers));
+                    secureSendAll(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),getSimplePlayers()));
+                }
+                else if(o instanceof  MultiplayerTools.ClientSentChatMessage){
+                    quickSendAll(new MultiplayerTools.ServerSentChatMessage(o,connection,players));
                 }
                 super.received(connection, o);
             }
@@ -112,10 +118,18 @@ public class MainServer {
     public HashMap<Connection, PlayerSoldier> getPlayers(){
         return this.players;
     }
+    public HashMap<Integer, MultiplayerTools.ServerPlayerInfo> getSimplePlayers(){
+        HashMap<Integer, MultiplayerTools.ServerPlayerInfo> simpleInfo = new HashMap<Integer, MultiplayerTools.ServerPlayerInfo>();
+        for(Connection c : this.players.keySet()){
+            simpleInfo.put(new Integer(c.getID()),this.players.get(c).getPlayerInfo());
+        }
+        return simpleInfo;
+    }
     public int getMaxPlayers(){
         return this.maxPlayers;
     }
     public void secureSendAll(Object o){
+        //TODO reverse list of players every time to average out delay from sending object to each player
         //players.keySet is all players that are actually playing the game
         for(Connection c : players.keySet()){
             c.sendTCP(o);
