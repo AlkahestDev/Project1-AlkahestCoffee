@@ -100,6 +100,7 @@ public class MainServer {
                     MultiplayerTools.ClientPickedLoadout temp = (MultiplayerTools.ClientPickedLoadout) o;
                     players.get(connection).setCurrentClass(temp.getLoadout());
                     (players.get(connection).getTeam()==0?CoffeeServer.redTeamMembers:CoffeeServer.bluTeamMembers).add(connection);
+                    connection.sendTCP(new MultiplayerTools.ServerNotifyGame());
                 }
                 else if(o instanceof  MultiplayerTools.ClientSentChatMessage){
                     quickSendAll(new MultiplayerTools.ServerSentChatMessage(o,connection,players));

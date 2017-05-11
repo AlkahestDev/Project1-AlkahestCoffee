@@ -119,7 +119,10 @@ public class MultiplayerClient {
                 else if(o instanceof MultiplayerTools.ServerPlayerPositions){
                 }
                 else if(o instanceof MultiplayerTools.ServerGameStarted){
-                    MainGame.state = GameState.State.PICKINGTEAM;
+                    MainGame.state = GameState.State.PICKINGINFO;
+                }
+                else if(o instanceof MultiplayerTools.ServerNotifyGame){
+                    MainGame.state = GameState.State.PLAYINGGAME;
                 }
                 super.received(connection, o);
             }

@@ -32,6 +32,16 @@ public class MultiplayerTools {
         serializer.register(ServerSentChatMessage.class);
         serializer.register(ServerPlayerPositions.class);
         serializer.register(ServerGameStarted.class);
+        serializer.register(ServerNotifyGame.class);
+    }
+
+    /**
+     * sent to a client to tell them that they can start playing the game
+     */
+    public static class ServerNotifyGame{
+        public ServerNotifyGame(){
+
+        }
     }
     public static class ClientPickedLoadout{
         int loadout;

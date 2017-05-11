@@ -15,8 +15,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import me.dumfing.gdxtools.DrawTools;
 import me.dumfing.menus.*;
 import me.dumfing.multiplayerTools.MultiplayerClient;
+import me.dumfing.multiplayerTools.MultiplayerTools;
 import me.dumfing.multiplayerTools.PlayerSoldier;
 
 public class MainGame extends ApplicationAdapter implements InputProcessor{
@@ -32,7 +34,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	LoadingMenu loadingMenu;
 	MainMenu gameMain;
 	ConnectingMenu connectingMenu;
-	ClientPickingInfoMenu pickATeam;
+	ClientPickingInfoMenu pickingInfoMenu;
 	ClientLobbyMenu lobbyMenu;
 	public static ServerBrowser serverBrowser; // static so I can access the serverList from the findServers runnable in MultiplayerClient
 	SettingsMenu settingsMenu;
@@ -68,7 +70,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		connectingMenu = new ConnectingMenu(fontCaches,assetManager,camera);
 		serverBrowser = new ServerBrowser(fontCaches,assetManager,camera);
 		settingsMenu = new SettingsMenu(fontCaches,assetManager,camera);
-		pickATeam = new ClientPickingInfoMenu(fontCaches,assetManager,camera);
+		pickingInfoMenu = new ClientPickingInfoMenu(fontCaches,assetManager,camera);
 		lobbyMenu = new ClientLobbyMenu(fontCaches,assetManager,camera);
 		setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded, background frames are loaded and added to it here
 		scW = Gdx.graphics.getWidth();
@@ -103,7 +105,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					serverBrowser.init();
 					settingsMenu.init();
 					connectingMenu.init();
-					pickATeam.init(player);
+					pickingInfoMenu.init(player);
 					lobbyMenu.init(player);
 					player.pingServers();
 				}
@@ -143,17 +145,20 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				lobbyMenu.update(player);
 				lobbyMenu.draw(batch,shapeRenderer);
 				break;
-			case PICKINGTEAM:
-				if(Gdx.input.getInputProcessor() != pickATeam){
-					pickATeam.setInputProcessor();
+			case PICKINGINFO:
+				if(Gdx.input.getInputProcessor() != pickingInfoMenu){
+					pickingInfoMenu.setInputProcessor();
 				}
-				pickATeam.updateTeamNumbers(player.getRedTeam(),player.getBlueTeam(),player.getrLimit(),player.getbLimit());
-				pickATeam.update();
-				pickATeam.standardDraw(batch,shapeRenderer);
-				break;
-			case PICKINGLOADOUT:
+				pickingInfoMenu.updateTeamNumbers(player.getRedTeam(),player.getBlueTeam(),player.getrLimit(),player.getbLimit());
+				pickingInfoMenu.update();
+				pickingInfoMenu.standardDraw(batch,shapeRenderer);
 				break;
 			case PLAYINGGAME:
+				shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+				for(MultiplayerTools.ServerPlayerInfo p : player.getPlayers().values()){
+					DrawTools.rec(shapeRenderer,p.getRect());
+				}
+				shapeRenderer.end();
 				break;
 			case ROUNDOVER:
 				break;
