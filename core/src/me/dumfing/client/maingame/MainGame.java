@@ -32,7 +32,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	LoadingMenu loadingMenu;
 	MainMenu gameMain;
 	ConnectingMenu connectingMenu;
-	ClientPickingTeamMenu pickATeam;
+	ClientPickingInfoMenu pickATeam;
 	ClientLobbyMenu lobbyMenu;
 	public static ServerBrowser serverBrowser; // static so I can access the serverList from the findServers runnable in MultiplayerClient
 	SettingsMenu settingsMenu;
@@ -68,7 +68,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		connectingMenu = new ConnectingMenu(fontCaches,assetManager,camera);
 		serverBrowser = new ServerBrowser(fontCaches,assetManager,camera);
 		settingsMenu = new SettingsMenu(fontCaches,assetManager,camera);
-		pickATeam = new ClientPickingTeamMenu(fontCaches,assetManager,camera);
+		pickATeam = new ClientPickingInfoMenu(fontCaches,assetManager,camera);
 		lobbyMenu = new ClientLobbyMenu(fontCaches,assetManager,camera);
 		setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded, background frames are loaded and added to it here
 		scW = Gdx.graphics.getWidth();

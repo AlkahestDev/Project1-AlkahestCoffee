@@ -26,6 +26,7 @@ public class GameWorld {
             if(CoffeeServer.redTeamMembers.contains(connection) || CoffeeServer.bluTeamMembers.contains(connection)) {
                 System.out.println("Checkkkk");
                 checkCollisions(p);
+                p.move();
             }
         }
     }
@@ -46,11 +47,11 @@ public class GameWorld {
                 player.setX((int)player.getX());
             }
     }
-    public void moveAll(){
+    /*public void moveAll(){
         for(PlayerSoldier playerSoldier : players.values()){
                 playerSoldier.move();
         }
-    }
+    }*/
     public HashMap<Integer,MultiplayerTools.ServerPlayerInfo> getSimpleInfo(){
         HashMap<Integer,MultiplayerTools.ServerPlayerInfo> out = new HashMap<Integer, MultiplayerTools.ServerPlayerInfo>();
         for(Connection c : players.keySet()){

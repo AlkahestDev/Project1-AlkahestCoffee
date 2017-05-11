@@ -18,6 +18,7 @@ public class MultiplayerTools {
         //Can't register Connection so will have to switch with Integer
         serializer.register(HashMap.class);
         serializer.register(Rectangle.class);
+        serializer.register(ClientPickedLoadout.class);
         serializer.register(ClientInfoRequest.class);
         serializer.register(ClientConnectionRequest.class);
         serializer.register(ClientPickedTeam.class);
@@ -31,6 +32,23 @@ public class MultiplayerTools {
         serializer.register(ServerSentChatMessage.class);
         serializer.register(ServerPlayerPositions.class);
         serializer.register(ServerGameStarted.class);
+    }
+    public static class ClientPickedLoadout{
+        int loadout;
+        //0 is knight
+        //1 is archer
+        //2 is tank
+        public ClientPickedLoadout(){
+
+        }
+
+        public ClientPickedLoadout(int loadout) {
+            this.loadout = loadout;
+        }
+
+        public int getLoadout() {
+            return loadout;
+        }
     }
     public static class ServerGameStarted{
         public ServerGameStarted(){}

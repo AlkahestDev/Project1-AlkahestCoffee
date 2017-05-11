@@ -92,9 +92,14 @@ public class MainServer {
                 else if(o instanceof MultiplayerTools.ClientPickedTeam){
                     System.out.println("Received ClientPickedTeam");
                     MultiplayerTools.ClientPickedTeam temp = (MultiplayerTools.ClientPickedTeam)o;
-                    (temp.getPicked()==0?CoffeeServer.redTeamMembers:CoffeeServer.bluTeamMembers).add(connection); // add the player to their selected team
+                    //(temp.getPicked()==0?CoffeeServer.redTeamMembers:CoffeeServer.bluTeamMembers).add(connection); // add the player to their selected team
                     players.get(connection).setTeam(temp.getPicked());
                     secureSendAll(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),getSimplePlayers()));
+                }
+                else if(o instanceof MultiplayerTools.ClientPickedLoadout){
+                    MultiplayerTools.ClientPickedLoadout temp = (MultiplayerTools.ClientPickedLoadout) o;
+                    players.get(connection).setCurrentClass(temp.getLoadout());
+                    (players.get(connection).getTeam()==0?CoffeeServer.redTeamMembers:CoffeeServer.bluTeamMembers).add(connection);
                 }
                 else if(o instanceof  MultiplayerTools.ClientSentChatMessage){
                     quickSendAll(new MultiplayerTools.ServerSentChatMessage(o,connection,players));

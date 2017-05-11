@@ -17,7 +17,6 @@ public class GameInstance {
     }
     public void update(MainServer sv){
         world.update();
-        world.moveAll();
         if(frameCount == 60){ // TODO: reduce this to 3 or 4 (20hz or 15hz)
             frameCount = 0;
             sv.quickSendAll(new MultiplayerTools.ServerPlayerPositions(world.getSimpleInfo()));

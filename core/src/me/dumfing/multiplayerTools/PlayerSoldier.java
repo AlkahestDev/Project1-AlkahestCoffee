@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
  */
 public class PlayerSoldier extends MultiplayerTools.ServerPlayerInfo {
 // a more detailed version of the players that will be sent at the start but won't be sent around as much later
-    private int health, maxHealth;
+    private int health, maxHealth, currentClass;
     private float vX, vY;
     public PlayerSoldier(Rectangle playerRect, int team){
         super(playerRect,team,null);
@@ -67,5 +67,13 @@ public class PlayerSoldier extends MultiplayerTools.ServerPlayerInfo {
     }
     public void setPos(float x, float y){
         this.getRect().setPosition(x,y);
+    }
+
+    public void setCurrentClass(int currentClass) {
+        this.currentClass = currentClass;
+    }
+
+    public int getCurrentClass() {
+        return currentClass;
     }
 }
