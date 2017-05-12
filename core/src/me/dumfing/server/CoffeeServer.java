@@ -204,8 +204,8 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
             }
         });
         out.addQueueText(errorText);
-        out.addTextField(maxPlayersField);
         out.addTextField(serverNameField);
+        out.addTextField(maxPlayersField);
         out.addButton(submitInfo);
         return out;
     }

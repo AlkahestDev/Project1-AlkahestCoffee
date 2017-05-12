@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
-import static me.dumfing.gdxtools.MenuTools.towardsZero;
+import static me.dumfing.gdxtools.MathTools.towardsZero;
 
 
 /**
@@ -49,8 +49,8 @@ public class MenuObject {
      */
     public void update(){
         this.translate(vX,vY);
-        this.vX = towardsZero(vX);
-        this.vY = towardsZero(vY);
+        this.vX = towardsZero(vX,0.5f);
+        this.vY = towardsZero(vY,0.5f);
     }
     public float getvX(){
         return this.vX;

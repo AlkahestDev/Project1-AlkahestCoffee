@@ -121,6 +121,7 @@ public class MultiplayerClient {
                     messages.offerFirst(((MultiplayerTools.ServerSentChatMessage) o).message);
                 }
                 else if(o instanceof MultiplayerTools.ServerPlayerPositions){
+                    players = ((MultiplayerTools.ServerPlayerPositions) o).getPlayers();
                 }
                 else if(o instanceof MultiplayerTools.ServerGameStarted){
                     MainGame.state = GameState.State.PICKINGINFO;

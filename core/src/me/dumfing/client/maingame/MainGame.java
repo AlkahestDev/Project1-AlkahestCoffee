@@ -97,23 +97,15 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				System.out.println("zoomin");
 				zoomCamera(0.05f);
 				zoomedIn = true;
-				//camera.zoom = 10;
-				//camera.zoom =  MathUtils.clamp(camera.zoom, 0.1f, 100/camera.viewportWidth);
 			}
 		}
 		else{
 			if(zoomedIn){
-				//camera.zoom = 1;
-				System.out.println("camZoom "+camera.zoom);
+				camera.position.set(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2,0);
+				zoomCamera(1);
 				//camera.update();
 				//shapeRenderer.setProjectionMatrix(camera.combined);
 				//batch.setProjectionMatrix(camera.combined);
-				System.out.println("zoomout");
-				zoomCamera(1);
-				camera.position.set(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2,0);
-				camera.update();
-				shapeRenderer.setProjectionMatrix(camera.combined);
-				batch.setProjectionMatrix(camera.combined);
 				zoomedIn = false;
 			}
 		}
@@ -185,6 +177,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				camera.position.set(0,0,0);
 				camera.update();
 				shapeRenderer.setProjectionMatrix(camera.combined);
+				batch.setProjectionMatrix(camera.combined);
 				shapeRenderer.setColor(Color.RED);
 				clientGameWorld.update();
 				clientGameWorld.draw(batch,shapeRenderer);

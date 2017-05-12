@@ -1,8 +1,11 @@
 package me.dumfing.client.maingame;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import me.dumfing.gdxtools.DrawTools;
 import me.dumfing.multiplayerTools.MultiplayerClient;
@@ -16,6 +19,7 @@ import java.util.Arrays;
 public class ClientGameWorld implements InputProcessor{
     private MultiplayerClient infoClient;
     private boolean[] keysDown;
+    private TextureRegion temp = new TextureRegion(new Texture(Gdx.files.internal("pixmapVisual.png")));
     private boolean keyUpdate = false;
     public ClientGameWorld(MultiplayerClient cl){
         this.infoClient = cl;
@@ -27,17 +31,28 @@ public class ClientGameWorld implements InputProcessor{
             infoClient.quickSend(new MultiplayerTools.ClientKeysUpdate(keysDown));
             keyUpdate=false;
         }
+        for(MultiplayerTools.ServerPlayerInfo p : infoClient.getPlayers().values()){
+            System.out.println(p.getvX()+" "+p.getvY());
+            movePlayer(p);
+        }
     }
     public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer){
         batch.begin();
+        batch.draw(temp,0,0);
         batch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            for(MultiplayerTools.ServerPlayerInfo p : infoClient.getPlayers().values()){
-                DrawTools.rec(shapeRenderer,p.getRect());
-            }
+        for(MultiplayerTools.ServerPlayerInfo p : infoClient.getPlayers().values()){
+            DrawTools.rec(shapeRenderer,p.getRect());
+        }
         shapeRenderer.end();
     }
-
+    private void movePlayer(MultiplayerTools.ServerPlayerInfo p){
+        //p.translateX(p.getvX());
+        p.translate(p.getvX(),p.getvY());
+        if(p.getvY()>0){
+            p.setvY(p.getvY()+MultiplayerTools.GRAVITY);
+        }
+    }
     @Override
     public boolean keyDown(int keycode) {
         switch (keycode){

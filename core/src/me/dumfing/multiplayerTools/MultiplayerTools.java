@@ -14,6 +14,7 @@ import java.util.HashMap;
 public class MultiplayerTools {
     public static final int UDPPORT = 19815;
     public static final int TCPPORT = 19816;
+    public static final float GRAVITY = -0.981f;
     public static class Keys{
         public static final int W = 0;
         public static final int A = 1;
@@ -30,6 +31,8 @@ public class MultiplayerTools {
         //Can't register Connection so will have to switch with Integer
         serializer.register(HashMap.class);
         serializer.register(Rectangle.class);
+        serializer.register(boolean[].class);
+        serializer.register(ClientKeysUpdate.class);
         serializer.register(ClientPickedLoadout.class);
         serializer.register(ClientInfoRequest.class);
         serializer.register(ClientConnectionRequest.class);
@@ -58,6 +61,9 @@ public class MultiplayerTools {
             this.keys = keys;
         }
 
+        public boolean[] getKeys() {
+            return keys;
+        }
     }
     /**
      * sent to a client to tell them that they can start playing the game
@@ -248,6 +254,7 @@ public class MultiplayerTools {
 
     public static class ServerPlayerInfo {
         private Rectangle playerArea;
+        private float vX, vY;
         private int team, health, pickedClass;
         private String name;
         public ServerPlayerInfo(){
@@ -295,6 +302,37 @@ public class MultiplayerTools {
         }
         public void setTeam(int team) {
             this.team = team;
+        }
+        public void translateX(float xAmount){
+            this.playerArea.x+=xAmount;
+        }
+        public void translateY(float yAmount){
+            this.playerArea.y+=yAmount;
+        }
+        public void translate(float xAmount, float yAmount){
+            translateX(xAmount);
+            translateY(yAmount);
+        }
+        public void setX(float x){
+            this.playerArea.x = x;
+        }
+        public void setY(float y){
+            this.playerArea.y = y;
+        }
+        public void setvX(float vX) {
+            this.vX = vX;
+        }
+
+        public void setvY(float vY) {
+            this.vY = vY;
+        }
+
+        public float getvX() {
+            return vX;
+        }
+
+        public float getvY() {
+            return vY;
         }
 
         public int getPickedClass() {

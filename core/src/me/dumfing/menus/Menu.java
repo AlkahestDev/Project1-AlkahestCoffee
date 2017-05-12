@@ -1,6 +1,7 @@
 package me.dumfing.menus;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -303,6 +304,14 @@ public class Menu implements InputProcessor{
         if(focused!=null) { // if there is a focused textBox
             focused.keyDown(keycode); // tell the TextField that a key has been pressed
         }
+        if(keycode == Input.Keys.TAB){ // TODO: allow tabbing on MenuBoxes
+            if(focused == null && this.textFields.size()>0){
+                focused = textFields.getFirst();
+            }
+            else if(focused !=null && this.textFields.size()>0){
+                focused = textFields.get((textFields.indexOf(focused)+1)%textFields.size());
+            }
+        }
         return true;
     }
 
@@ -376,6 +385,7 @@ public class Menu implements InputProcessor{
             }
         }
         for(MenuBox mb : menuBoxes){
+            mb.checkButtonsPressed(screenX,screenY);
             mb.checkButtonsPressed(screenX,screenY);
         }
         return true;

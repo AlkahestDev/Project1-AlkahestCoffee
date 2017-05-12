@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.DrawTools;
+import me.dumfing.gdxtools.MathTools;
 import me.dumfing.gdxtools.MenuObject;
 import me.dumfing.gdxtools.MenuTools;
 
@@ -81,8 +82,8 @@ public class MenuBox extends MenuObject{
      */
     public void update(MenuTools.TextField focused){
         super.translate(this.vX,this.vY);
-        vX = MenuTools.towardsZero(vX);
-        vY = MenuTools.towardsZero(vY);
+        vX = MathTools.towardsZero(vX,0.5f);
+        vY = MathTools.towardsZero(vY,0.5f);
         for(MenuTools.Button bt : buttons){ //check all the buttons if they're currently pressed and the mouse is hovering over them
             bt.setPressed(bt.collidepoint(Gdx.input.getX(),Gdx.graphics.getHeight()-Gdx.input.getY()) && Gdx.input.isButtonPressed(0)); // if the button is colliding with the mouse and the mouse is left clicking, make it look like it's pressed
             bt.update();
