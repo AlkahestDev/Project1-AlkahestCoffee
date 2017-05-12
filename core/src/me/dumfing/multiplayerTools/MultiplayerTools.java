@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class MultiplayerTools {
     public static final int UDPPORT = 19815;
     public static final int TCPPORT = 19816;
-    public static final float GRAVITY = -0.868f;
+    public static final float GRAVITY = -0.981f;
     public static class Keys{
         public static final int W = 0;
         public static final int A = 1;

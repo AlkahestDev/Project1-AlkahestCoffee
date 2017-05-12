@@ -48,10 +48,10 @@ public class ClientGameWorld implements InputProcessor{
     }
     private void movePlayer(MultiplayerTools.ServerPlayerInfo p){
         //p.translateX(p.getvX());
+        p.translate(p.getvX(),p.getvY());
         if(p.getvY()>0){
             p.setvY(p.getvY()+MultiplayerTools.GRAVITY);
         }
-        p.translate(p.getvX(),p.getvY());
     }
     @Override
     public boolean keyDown(int keycode) {
