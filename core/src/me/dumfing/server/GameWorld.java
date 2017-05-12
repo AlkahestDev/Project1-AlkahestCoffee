@@ -48,7 +48,7 @@ public class GameWorld {
                 player.setvY(player.getvY()+MultiplayerTools.GRAVITY);
                 player.setCanJump(false);
             }
-            if(worldHitbox.getPixel((int)(player.getX()+player.getvX()),worldHitbox.getHeight()-(int)(player.getY()))>>8==1){
+            if(worldHitbox.getPixel((int)(player.getX()+player.getvX()),worldHitbox.getHeight()-(int)(player.getY())-1)>>8==1){
                 System.out.println("hitX");
                 player.setX((int)player.getX());
                 player.setvX(0);
