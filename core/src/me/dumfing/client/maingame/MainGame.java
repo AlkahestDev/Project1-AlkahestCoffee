@@ -4,10 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -32,12 +29,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	LoadingMenu loadingMenu;
 	MainMenu gameMain;
 	ConnectingMenu connectingMenu;
-	ClientPickingInfoMenu pickATeam;
+	ClientPickingInfoMenu pickingInfoMenu;
 	ClientLobbyMenu lobbyMenu;
 	public static ServerBrowser serverBrowser; // static so I can access the serverList from the findServers runnable in MultiplayerClient
 	SettingsMenu settingsMenu;
 	OrthographicCamera camera;
+	ClientGameWorld clientGameWorld;
 	Array<BitmapFontCache> fontCaches;
+	boolean zoomedIn = false;
 	public static final int DAGGER20 = 0;
 	public static final int DAGGER30 = 1;
 	public static final int DAGGER40 = 2;
@@ -68,7 +67,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		connectingMenu = new ConnectingMenu(fontCaches,assetManager,camera);
 		serverBrowser = new ServerBrowser(fontCaches,assetManager,camera);
 		settingsMenu = new SettingsMenu(fontCaches,assetManager,camera);
-		pickATeam = new ClientPickingInfoMenu(fontCaches,assetManager,camera);
+		pickingInfoMenu = new ClientPickingInfoMenu(fontCaches,assetManager,camera);
 		lobbyMenu = new ClientLobbyMenu(fontCaches,assetManager,camera);
 		setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded, background frames are loaded and added to it here
 		scW = Gdx.graphics.getWidth();
@@ -81,6 +80,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		player.startClient();
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		batch.setProjectionMatrix(camera.combined);
+		clientGameWorld = new ClientGameWorld(player);
 		Gdx.input.setInputProcessor(this);
 	}
 
@@ -90,6 +90,24 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		for(BitmapFontCache bmfc : fontCaches) {
 			bmfc.clear(); // clear bitmap font cache because it doesn't clear itself upon drawing (grumble grumble)
+		}
+		if(state == GameState.State.PLAYINGGAME){
+			if(!zoomedIn){
+				System.out.println("CameraZoom "+camera.zoom);
+				System.out.println("zoomin");
+				zoomCamera(0.05f);
+				zoomedIn = true;
+			}
+		}
+		else{
+			if(zoomedIn){
+				camera.position.set(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2,0);
+				zoomCamera(1);
+				//camera.update();
+				//shapeRenderer.setProjectionMatrix(camera.combined);
+				//batch.setProjectionMatrix(camera.combined);
+				zoomedIn = false;
+			}
 		}
 		switch(state){
 			case LOADINGGAME: // we shouldn't ever be going back to LOADINGGAME
@@ -103,7 +121,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					serverBrowser.init();
 					settingsMenu.init();
 					connectingMenu.init();
-					pickATeam.init(player);
+					pickingInfoMenu.init(player);
 					lobbyMenu.init(player);
 					player.pingServers();
 				}
@@ -143,17 +161,31 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				lobbyMenu.update(player);
 				lobbyMenu.draw(batch,shapeRenderer);
 				break;
-			case PICKINGTEAM:
-				if(Gdx.input.getInputProcessor() != pickATeam){
-					pickATeam.setInputProcessor();
+			case PICKINGINFO:
+				if(Gdx.input.getInputProcessor() != pickingInfoMenu){
+					pickingInfoMenu.setInputProcessor();
 				}
-				pickATeam.updateTeamNumbers(player.getRedTeam(),player.getBlueTeam(),player.getrLimit(),player.getbLimit());
-				pickATeam.update();
-				pickATeam.standardDraw(batch,shapeRenderer);
-				break;
-			case PICKINGLOADOUT:
+				pickingInfoMenu.updateTeamNumbers(player.getRedTeam(),player.getBlueTeam(),player.getrLimit(),player.getbLimit());
+				pickingInfoMenu.update();
+				pickingInfoMenu.standardDraw(batch,shapeRenderer);
 				break;
 			case PLAYINGGAME:
+				//camera.setToOrtho(true,900,450);
+				if(Gdx.input.getInputProcessor() != clientGameWorld){
+					Gdx.input.setInputProcessor(clientGameWorld);
+				}
+				camera.position.set(0,0,0);
+				camera.update();
+				shapeRenderer.setProjectionMatrix(camera.combined);
+				batch.setProjectionMatrix(camera.combined);
+				shapeRenderer.setColor(Color.RED);
+				clientGameWorld.update();
+				clientGameWorld.draw(batch,shapeRenderer);
+				/*shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+				for(MultiplayerTools.ServerPlayerInfo p : player.getPlayers().values()){
+					DrawTools.rec(shapeRenderer,p.getRect());
+				}
+				shapeRenderer.end();*/
 				break;
 			case ROUNDOVER:
 				break;
@@ -240,18 +272,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		return false;
 	}
 
+	private void zoomCamera(float amount){
+		camera.zoom =  amount;//MathUtils.clamp(amount, 0.1f,100);// 100/camera.viewportWidth);
+		camera.update();
+		shapeRenderer.setProjectionMatrix(camera.combined);
+		batch.setProjectionMatrix(camera.combined);
+	}
 
-	/*public void drawMenu(Menu toDraw){
-		batch.begin();
-			toDraw.spriteDraw(batch);
-		batch.end();
-		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-			toDraw.shapeDraw(shapeRenderer);
-		shapeRenderer.end();
-		batch.begin();
-			for(BitmapFontCache bmfc : fontCaches){
-				bmfc.draw(batch);
-			}
-		batch.end();
-	}*/
 }

@@ -10,8 +10,7 @@ public class GameState{
 	public static HashSet<State> ONLINESTATES= new HashSet<State>(Arrays.asList(new State[]{
 			State.CONNECTINGTOSERVER,
 			State.CONNECTEDTOSERVER,
-			State.PICKINGTEAM,
-			State.PICKINGLOADOUT,
+			State.PICKINGINFO,
 			State.PLAYINGGAME,
 			State.ROUNDOVER,
 			State.GAMELOBBY
@@ -25,8 +24,7 @@ public class GameState{
 		CONNECTINGTOSERVER, // currently establishing a connection to the server
 		CONNECTEDTOSERVER, // might not be used
 		GAMELOBBY,
-		PICKINGTEAM, // pick a team to join
-		PICKINGLOADOUT, // pick what class you are
+		PICKINGINFO, // pick a team to join
 		PLAYINGGAME, // playing the game
 		ROUNDOVER, // end of round, show scoreboard etc.
 		//return to main menu

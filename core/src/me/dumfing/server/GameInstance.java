@@ -17,7 +17,7 @@ public class GameInstance {
     }
     public void update(MainServer sv){
         world.update();
-        if(frameCount == 60){ // TODO: reduce this to 3 or 4 (20hz or 15hz)
+        if(frameCount == 5){ // 2 gets an interesting 30hz
             frameCount = 0;
             sv.quickSendAll(new MultiplayerTools.ServerPlayerPositions(world.getSimpleInfo()));
         }

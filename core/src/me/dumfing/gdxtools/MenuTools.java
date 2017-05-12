@@ -313,7 +313,7 @@ public class MenuTools {
         public void update(Array<BitmapFontCache> bmfc, boolean focused){
             handleHeldKeys();
             bmfc.get(fontId).setColor(Color.BLACK);
-            bmfc.get(fontId).addText(this.sOut.toString(),super.shape.getX()+3,super.shape.getY()+super.shape.getHeight() - 7,0,this.sOut.length(),super.shape.getWidth(), Align.left,false,"");
+            bmfc.get(fontId).addText(this.sOut.toString(),super.shape.getX()+3,super.shape.getY()+super.shape.getHeight() - 7,0,this.sOut.length(),super.shape.getWidth(), Align.left,false);
             if(focused){
                 this.frameCount++; // Integer.MAX_VALUE frames is around 414 days to overflow, if a user has the text box open for 414 days, the game probably won't be worth keeping open
             }
@@ -460,24 +460,6 @@ public class MenuTools {
             return this.sOut.toString();
         }
     }
-
-    /**
-     * Will increase or decrease a number towards 0 by steps of 0.5
-     * @param numIn The number to be modified
-     * @return The number 0.5 units closer to 0
-     */
-    public static float towardsZero(float numIn){
-        if(numIn > 0) {
-            return Math.max(0, numIn - 0.5f);
-        }
-        else if(numIn < 0){
-            return Math.min(0, numIn + 0.5f);
-        }
-        else{
-            return numIn;
-        }
-    }
-
     /**
      * Returns the length of text with a given font
      * @param fntIn The font to use

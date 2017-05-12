@@ -8,19 +8,20 @@ import com.badlogic.gdx.math.Rectangle;
  */
 public class PlayerSoldier extends MultiplayerTools.ServerPlayerInfo {
 // a more detailed version of the players that will be sent at the start but won't be sent around as much later
-    private int health, maxHealth, currentClass;
-    private float vX, vY;
+    private int health, maxHealth;
+    private boolean canJump;
+    private boolean[] keysHeld = new boolean[8];
     public PlayerSoldier(Rectangle playerRect, int team){
-        super(playerRect,team,null);
-        this.vX = 0;
-        this.vY = 0;
+        super(playerRect,team,null,0);
+        super.setvX(0);
+        super.setvY(0);
         this.health = 100;
         this.maxHealth = 100;
     }
     public PlayerSoldier(Rectangle player, int team, String name){
-        super(player, team, name);
-        this.vX = 0;
-        this.vY = 0;
+        super(player, team, name,0);
+        super.setvX(0);
+        super.setvY(0);
         this.health = 100;
         this.maxHealth = 100;
     }
@@ -28,8 +29,29 @@ public class PlayerSoldier extends MultiplayerTools.ServerPlayerInfo {
         this.maxHealth = maxHealth;
     }
     public MultiplayerTools.ServerPlayerInfo getPlayerInfo(){
-        return new MultiplayerTools.ServerPlayerInfo(this); // a stripped down version of this for what other people see
+        //TODO: make a constructor that includes the vx and vy
+        MultiplayerTools.ServerPlayerInfo temp = new MultiplayerTools.ServerPlayerInfo(this); // a stripped down version of this for what other people see
+        temp.setvX(this.getvX());
+        temp.setvY(this.getvY());
+        return temp;
     }
+
+    public void setKeysHeld(boolean[] keysHeld) {
+        this.keysHeld = keysHeld;
+    }
+
+    public boolean[] getKeysHeld() {
+        return keysHeld;
+    }
+
+    public void setCanJump(boolean canJump) {
+        this.canJump = canJump;
+    }
+
+    public boolean isCanJump() {
+        return canJump;
+    }
+
     public int getHealth(){
         return super.getHealth();
     }
@@ -37,28 +59,10 @@ public class PlayerSoldier extends MultiplayerTools.ServerPlayerInfo {
         return this.maxHealth;
     }
     public void move(){
-        System.out.println("before moving "+super.getPos()+" "+this.vY);
-        super.getRect().x+=this.getvX();
-        super.getRect().y+=this.getvY();
+        super.getRect().x+=super.getvX();
+        super.getRect().y+=super.getvY();
         System.out.println("after moving "+super.getPos());
     }
-    public float getvY() {
-        return vY;
-    }
-
-    public float getvX() {
-
-        return vX;
-    }
-
-    public void setVx(float vX) {
-        this.vX = vX;
-    }
-
-    public void setVy(float vY) {
-        this.vY = vY;
-    }
-
     public void setX(float x){
             this.getRect().setX(x);
     }
@@ -69,11 +73,12 @@ public class PlayerSoldier extends MultiplayerTools.ServerPlayerInfo {
         this.getRect().setPosition(x,y);
     }
 
+
     public void setCurrentClass(int currentClass) {
-        this.currentClass = currentClass;
+        super.setPickedClass(currentClass);
     }
 
     public int getCurrentClass() {
-        return currentClass;
+        return super.getPickedClass();
     }
 }
