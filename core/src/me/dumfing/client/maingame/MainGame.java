@@ -4,10 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -154,6 +151,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				pickingInfoMenu.standardDraw(batch,shapeRenderer);
 				break;
 			case PLAYINGGAME:
+				//camera.setToOrtho(true,900,450);
+				camera.position.set(0,0,0);//new Vector2(-Gdx.graphics.getWidth()/2,-Gdx.graphics.getHeight()/2),0);
+				camera.update();
+				shapeRenderer.setProjectionMatrix(camera.combined);
+				shapeRenderer.setColor(Color.RED);
 				shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 				for(MultiplayerTools.ServerPlayerInfo p : player.getPlayers().values()){
 					DrawTools.rec(shapeRenderer,p.getRect());

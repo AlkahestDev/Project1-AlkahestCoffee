@@ -59,6 +59,10 @@ public class ServerInfoMenu extends Menu{
             }
         }
         else{
+            if(numFrames!=0){
+                // reset the countdown if a player disconnects and there are not enough players to play
+                svIn.secureSendAll(new MultiplayerTools.ServerGameCountdown(-1));
+            }
             numFrames = 0;
         }
     }

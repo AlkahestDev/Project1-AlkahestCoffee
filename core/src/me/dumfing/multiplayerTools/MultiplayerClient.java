@@ -49,6 +49,8 @@ public class MultiplayerClient {
     private int rLimit = 0;
     private int bLimit = 0;
     private int gameStarted = -1;
+    private int connectionID = 0; // the id of the connection between the client and the server
+    private int worldNum = -1;
     public MultiplayerClient(){
         playerClient = new Client();
         serverSummaries = new HashMap<String, MultiplayerTools.ServerSummary>();
@@ -64,6 +66,7 @@ public class MultiplayerClient {
                 // if you disconnected while doing some server related activity
                 // non server related activity that will trigger the disconnected event
                 // includes pinging servers
+                connectionID = -1;
                 System.out.println("disconnected "+MainGame.state);
                 if(GameState.ONLINESTATES.contains(MainGame.state)){
                     MainGame.state = GameState.State.SERVERBROWSER; // go back to the server browser
@@ -73,7 +76,7 @@ public class MultiplayerClient {
 
             @Override
             public void received(Connection connection, Object o) {
-                System.out.println("Got info! "+connection.getID()+" "+o.getClass().getSimpleName());
+                System.out.println(String.format("Received %-20s from connection %d",o.getClass().getSimpleName(),connection.getID()));
                 if(o instanceof MultiplayerTools.ServerSummary){
                     MultiplayerTools.ServerSummary temp = (MultiplayerTools.ServerSummary) o;
                     serverSummaries.put(connection.getRemoteAddressUDP().toString(),temp);
@@ -86,6 +89,7 @@ public class MultiplayerClient {
                             //Yay, we now have a spot in the server dedicated to us
                             //wait for detailed server summary
                             gameStarted = -1; //reset gameStarted
+                            connectionID = connection.getID();
                             MainGame.state = GameState.State.GAMELOBBY;
                             break;
                         case SERVERFULL:
@@ -113,7 +117,7 @@ public class MultiplayerClient {
                     if(messages.size()>12){ // keep the linkedlist short
                         messages.removeLast();
                     }
-                    System.out.println(String.format("'%s'",((MultiplayerTools.ServerSentChatMessage) o).message));
+                    System.out.println(String.format("Message: '%s'",((MultiplayerTools.ServerSentChatMessage) o).message));
                     messages.offerFirst(((MultiplayerTools.ServerSentChatMessage) o).message);
                 }
                 else if(o instanceof MultiplayerTools.ServerPlayerPositions){

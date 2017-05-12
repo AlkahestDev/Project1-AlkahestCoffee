@@ -45,6 +45,7 @@ public class MainServer {
                 System.out.printf("Client Disconnected %d\n",connection.getID());
                 if(players.containsKey(connection)){
                     players.remove(connection);
+                    secureSendAll(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),getSimplePlayers()));
                 }
                 if(CoffeeServer.redTeamMembers.contains(connection)){
                     CoffeeServer.redTeamMembers.remove(connection);
@@ -100,7 +101,7 @@ public class MainServer {
                     MultiplayerTools.ClientPickedLoadout temp = (MultiplayerTools.ClientPickedLoadout) o;
                     players.get(connection).setCurrentClass(temp.getLoadout());
                     (players.get(connection).getTeam()==0?CoffeeServer.redTeamMembers:CoffeeServer.bluTeamMembers).add(connection);
-                    connection.sendTCP(new MultiplayerTools.ServerNotifyGame());
+                    connection.sendTCP(new MultiplayerTools.ServerNotifyGame(0)); // tell the client which world is being used and what their ID is
                 }
                 else if(o instanceof  MultiplayerTools.ClientSentChatMessage){
                     quickSendAll(new MultiplayerTools.ServerSentChatMessage(o,connection,players));

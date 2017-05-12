@@ -12,14 +12,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
-import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.client.maingame.GameState;
 import me.dumfing.client.maingame.MainGame;
+import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.multiplayerTools.MultiplayerTools;
 
 import java.util.HashMap;
 
-import static me.dumfing.client.maingame.MainGame.*;
+import static me.dumfing.client.maingame.MainGame.DAGGER30;
+import static me.dumfing.client.maingame.MainGame.player;
 
 public class ServerBrowser extends Menu{
     private ServerBrowserList serverList;
@@ -123,12 +124,12 @@ public class ServerBrowser extends Menu{
                 bt.setCallback(new MenuTools.OnClick() {
                     @Override
                     public void action() {
-                        System.out.println(k);
-                        String svIP = k;
-                        svIP = svIP.replace("/","").substring(0,svIP.indexOf(":")-1); // the received ip is in the form "/ip:port", we only need the ip part so we remove the / and the :port
-                        System.out.println(svIP);
-                        MainGame.player.connectServerPlay(svIP);
-                        MainGame.state = GameState.State.CONNECTINGTOSERVER;
+                            System.out.println(k);
+                            String svIP = k;
+                            svIP = svIP.replace("/", "").substring(0, svIP.indexOf(":") - 1); // the received ip is in the form "/ip:port", we only need the ip part so we remove the / and the :port
+                            System.out.println(svIP);
+                            MainGame.player.connectServerPlay(svIP);
+                            MainGame.state = GameState.State.CONNECTINGTOSERVER;
 
                     }
                 });

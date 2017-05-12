@@ -313,7 +313,7 @@ public class MenuTools {
         public void update(Array<BitmapFontCache> bmfc, boolean focused){
             handleHeldKeys();
             bmfc.get(fontId).setColor(Color.BLACK);
-            bmfc.get(fontId).addText(this.sOut.toString(),super.shape.getX()+3,super.shape.getY()+super.shape.getHeight() - 7,0,this.sOut.length(),super.shape.getWidth(), Align.left,false,"");
+            bmfc.get(fontId).addText(this.sOut.toString(),super.shape.getX()+3,super.shape.getY()+super.shape.getHeight() - 7,0,this.sOut.length(),super.shape.getWidth(), Align.left,false);
             if(focused){
                 this.frameCount++; // Integer.MAX_VALUE frames is around 414 days to overflow, if a user has the text box open for 414 days, the game probably won't be worth keeping open
             }

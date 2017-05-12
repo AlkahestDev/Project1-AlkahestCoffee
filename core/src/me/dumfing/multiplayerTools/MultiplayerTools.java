@@ -39,8 +39,15 @@ public class MultiplayerTools {
      * sent to a client to tell them that they can start playing the game
      */
     public static class ServerNotifyGame{
+        private int worldNum;
         public ServerNotifyGame(){
 
+        }
+        public ServerNotifyGame(int worldNum){
+            this.worldNum = worldNum;
+        }
+        public int getWorldNum() {
+            return worldNum;
         }
     }
     public static class ClientPickedLoadout{
