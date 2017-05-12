@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
+
 import java.util.HashMap;
 /**
  * Objects that will be sent between the client and server as well as useful variables like ports<br>
@@ -13,6 +14,17 @@ import java.util.HashMap;
 public class MultiplayerTools {
     public static final int UDPPORT = 19815;
     public static final int TCPPORT = 19816;
+    public static class Keys{
+        public static final int W = 0;
+        public static final int A = 1;
+        public static final int S = 2;
+        public static final int D = 3;
+        public static final int LMB = 4;
+        public static final int RMB = 5;
+        public static final int SPACE = 6;
+        public static final int SHIFT = 7;
+        public static final int CONTROL = 8;
+    }
     public static void register(EndPoint endpoint){
         Kryo serializer = endpoint.getKryo();
         //Can't register Connection so will have to switch with Integer
@@ -23,6 +35,7 @@ public class MultiplayerTools {
         serializer.register(ClientConnectionRequest.class);
         serializer.register(ClientPickedTeam.class);
         serializer.register(ClientSentChatMessage.class);
+        serializer.register(ClientKeysUpdate.class);
         serializer.register(ServerPlayerInfo.class);
         serializer.register(ServerSummary.class);
         serializer.register(ServerResponse.class);
@@ -35,6 +48,17 @@ public class MultiplayerTools {
         serializer.register(ServerNotifyGame.class);
     }
 
+    /**
+     *
+     */
+    public static class ClientKeysUpdate{
+        boolean[] keys;
+        public ClientKeysUpdate(){}
+        public ClientKeysUpdate(boolean[] keys){
+            this.keys = keys;
+        }
+
+    }
     /**
      * sent to a client to tell them that they can start playing the game
      */
@@ -224,21 +248,23 @@ public class MultiplayerTools {
 
     public static class ServerPlayerInfo {
         private Rectangle playerArea;
-        private int team, health;
+        private int team, health, pickedClass;
         private String name;
         public ServerPlayerInfo(){
         }
-        public ServerPlayerInfo(Rectangle area, int team, String name){
+        public ServerPlayerInfo(Rectangle area, int team, String name, int pickedClass){
             this.playerArea = area;
             this.team = team;
             this.name = name;
             this.health = 100;
+            this.pickedClass = pickedClass;
         }
-        public ServerPlayerInfo(Rectangle area, int team, String name, int health){ // a simple version of a player that can be sent back and forth
+        public ServerPlayerInfo(Rectangle area, int team, String name, int health, int pickedClass){ // a simple version of a player that can be sent back and forth
             this.playerArea = area;
             this.team = team;
             this.name = name;
             this.health = health;
+            this.pickedClass = pickedClass;
         }
         public ServerPlayerInfo(PlayerSoldier sIn){
             this.playerArea = sIn.getRect();
@@ -269,6 +295,14 @@ public class MultiplayerTools {
         }
         public void setTeam(int team) {
             this.team = team;
+        }
+
+        public int getPickedClass() {
+            return pickedClass;
+        }
+
+        public void setPickedClass(int pickedClass) {
+            this.pickedClass = pickedClass;
         }
 
         public int getHealth() {

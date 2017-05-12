@@ -12,10 +12,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import me.dumfing.gdxtools.DrawTools;
 import me.dumfing.menus.*;
 import me.dumfing.multiplayerTools.MultiplayerClient;
-import me.dumfing.multiplayerTools.MultiplayerTools;
 import me.dumfing.multiplayerTools.PlayerSoldier;
 
 public class MainGame extends ApplicationAdapter implements InputProcessor{
@@ -36,7 +34,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static ServerBrowser serverBrowser; // static so I can access the serverList from the findServers runnable in MultiplayerClient
 	SettingsMenu settingsMenu;
 	OrthographicCamera camera;
+	ClientGameWorld clientGameWorld;
 	Array<BitmapFontCache> fontCaches;
+	boolean zoomedIn = false;
 	public static final int DAGGER20 = 0;
 	public static final int DAGGER30 = 1;
 	public static final int DAGGER40 = 2;
@@ -80,6 +80,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		player.startClient();
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		batch.setProjectionMatrix(camera.combined);
+		clientGameWorld = new ClientGameWorld(player);
 		Gdx.input.setInputProcessor(this);
 	}
 
@@ -89,6 +90,32 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		for(BitmapFontCache bmfc : fontCaches) {
 			bmfc.clear(); // clear bitmap font cache because it doesn't clear itself upon drawing (grumble grumble)
+		}
+		if(state == GameState.State.PLAYINGGAME){
+			if(!zoomedIn){
+				System.out.println("CameraZoom "+camera.zoom);
+				System.out.println("zoomin");
+				zoomCamera(0.05f);
+				zoomedIn = true;
+				//camera.zoom = 10;
+				//camera.zoom =  MathUtils.clamp(camera.zoom, 0.1f, 100/camera.viewportWidth);
+			}
+		}
+		else{
+			if(zoomedIn){
+				//camera.zoom = 1;
+				System.out.println("camZoom "+camera.zoom);
+				//camera.update();
+				//shapeRenderer.setProjectionMatrix(camera.combined);
+				//batch.setProjectionMatrix(camera.combined);
+				System.out.println("zoomout");
+				zoomCamera(1);
+				camera.position.set(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2,0);
+				camera.update();
+				shapeRenderer.setProjectionMatrix(camera.combined);
+				batch.setProjectionMatrix(camera.combined);
+				zoomedIn = false;
+			}
 		}
 		switch(state){
 			case LOADINGGAME: // we shouldn't ever be going back to LOADINGGAME
@@ -152,15 +179,20 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				break;
 			case PLAYINGGAME:
 				//camera.setToOrtho(true,900,450);
-				camera.position.set(0,0,0);//new Vector2(-Gdx.graphics.getWidth()/2,-Gdx.graphics.getHeight()/2),0);
+				if(Gdx.input.getInputProcessor() != clientGameWorld){
+					Gdx.input.setInputProcessor(clientGameWorld);
+				}
+				camera.position.set(0,0,0);
 				camera.update();
 				shapeRenderer.setProjectionMatrix(camera.combined);
 				shapeRenderer.setColor(Color.RED);
-				shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+				clientGameWorld.update();
+				clientGameWorld.draw(batch,shapeRenderer);
+				/*shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 				for(MultiplayerTools.ServerPlayerInfo p : player.getPlayers().values()){
 					DrawTools.rec(shapeRenderer,p.getRect());
 				}
-				shapeRenderer.end();
+				shapeRenderer.end();*/
 				break;
 			case ROUNDOVER:
 				break;
@@ -247,18 +279,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		return false;
 	}
 
+	private void zoomCamera(float amount){
+		camera.zoom =  amount;//MathUtils.clamp(amount, 0.1f,100);// 100/camera.viewportWidth);
+		camera.update();
+		shapeRenderer.setProjectionMatrix(camera.combined);
+		batch.setProjectionMatrix(camera.combined);
+	}
 
-	/*public void drawMenu(Menu toDraw){
-		batch.begin();
-			toDraw.spriteDraw(batch);
-		batch.end();
-		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-			toDraw.shapeDraw(shapeRenderer);
-		shapeRenderer.end();
-		batch.begin();
-			for(BitmapFontCache bmfc : fontCaches){
-				bmfc.draw(batch);
-			}
-		batch.end();
-	}*/
 }
