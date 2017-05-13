@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.DrawTools;
-import me.dumfing.gdxtools.MathTools;
 import me.dumfing.gdxtools.MenuObject;
 import me.dumfing.gdxtools.MenuTools;
 
@@ -31,7 +30,6 @@ public class MenuBox extends MenuObject{
     private LinkedList<MenuTools.ColourRect> colRects;
     private LinkedList<MenuTools.QueueText> textToDraw;
     private Array<BitmapFontCache> fontCaches;
-    private float vX, vY;
 
     /**
      * Constructor method for the MenuBox
@@ -50,8 +48,6 @@ public class MenuBox extends MenuObject{
         this.textToDraw = new LinkedList<MenuTools.QueueText>();
         this.fontCaches = bmfc;
         this.background = new TextureRegion(new Texture(0,0, Pixmap.Format.RGBA8888));
-        this.vX = 0;
-        this.vY = 0;
     }
     public void addTextField(MenuTools.TextField tfIn){
         tfIn.translate(super.getRect().x,super.getRect().y);
@@ -81,9 +77,7 @@ public class MenuBox extends MenuObject{
      * Updates all elements in the MenuBox that need to be updated
      */
     public void update(MenuTools.TextField focused){
-        super.translate(this.vX,this.vY);
-        vX = MathTools.towardsZero(vX,0.5f);
-        vY = MathTools.towardsZero(vY,0.5f);
+        super.update();
         for(MenuTools.Button bt : buttons){ //check all the buttons if they're currently pressed and the mouse is hovering over them
             bt.setPressed(bt.collidepoint(Gdx.input.getX(),Gdx.graphics.getHeight()-Gdx.input.getY()) && Gdx.input.isButtonPressed(0)); // if the button is colliding with the mouse and the mouse is left clicking, make it look like it's pressed
             bt.update();
@@ -96,6 +90,9 @@ public class MenuBox extends MenuObject{
         }
         for(MenuTools.QueueText qt : textToDraw){
             qt.update();
+        }
+        for(MenuTools.TextureRect im : images){
+            im.update();
         }
     }
 
@@ -110,7 +107,7 @@ public class MenuBox extends MenuObject{
             cR.draw(sr);
         }
         for(MenuTools.TextField tb : textFields){ // TextBoxes look like two rectangles drawn on eachother
-            tb.shapeDraw(sr, fontCaches,tb == focused); // draw the textBox, if it's the focused one then it'll have the cursor being drawn
+            tb.shapeDraw(sr, fontCaches,tb==focused); // draw the textBox, if it's the focused one then it'll have the cursor being drawn
         }
         for(MenuTools.QueueText qt : this.textToDraw){
             qt.queue(fontCaches);
@@ -148,7 +145,7 @@ public class MenuBox extends MenuObject{
         }
         return null;
     }
-    public void setVelocity(float x, float y){
+    /*public void setVelocity(float x, float y){
         this.vX = x;
         this.vY = y;
         for(MenuTools.TextField tf: textFields){
@@ -166,7 +163,7 @@ public class MenuBox extends MenuObject{
         for(MenuTools.QueueText qt : textToDraw){
             qt.setVelocity(x,y);
         }
-    }
+    }*/
 
     /**
      * Allow the Buttons contained within the MenuBox to know if they've been clicked or not
@@ -185,23 +182,22 @@ public class MenuBox extends MenuObject{
 
     public void translate(float x, float y) {
         super.translate(x, y);
-        for(MenuTools.TextField tf: textFields){
-            tf.translate(x,y);
+        for (MenuTools.TextField tf : textFields) {
+            tf.translate(x, y);
         }
-        for(MenuTools.Button bt : buttons){
+        for (MenuTools.Button bt : buttons) {
             bt.translate(x, y);
         }
-        for(MenuTools.TextureRect sp : images){
-            sp.translate(x,y);
+        for (MenuTools.TextureRect sp : images) {
+            sp.translate(x, y);
         }
-        for(MenuTools.ColourRect cr : colRects){
-            cr.translate(x,y);
+        for (MenuTools.ColourRect cr : colRects) {
+            cr.translate(x, y);
         }
-        for(MenuTools.QueueText qt : textToDraw){
-            qt.translate(x,y);
+        for (MenuTools.QueueText qt : textToDraw) {
+            qt.translate(x, y);
         }
     }
-
     /**
      * Checks if a point is within the bounds of this MenuBox
      * @param mx

@@ -5,18 +5,14 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
-import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.client.maingame.GameState;
 import me.dumfing.client.maingame.MainGame;
+import me.dumfing.gdxtools.MenuTools;
 
-import static me.dumfing.client.maingame.MainGame.DAGGER20;
-import static me.dumfing.client.maingame.MainGame.DAGGER40;
-import static me.dumfing.client.maingame.MainGame.DAGGER50;
+import static me.dumfing.client.maingame.MainGame.*;
 
 /**
  * Created by dumpl on 4/20/2017.
@@ -27,7 +23,7 @@ public class MainMenu extends Menu{
         super(bmfc,assetManager, camera);
         //this.manager = assetManager;
     }
-    public void draw(SpriteBatch sb, ShapeRenderer sr) {
+    /*public void draw(SpriteBatch sb, ShapeRenderer sr) {
         super.draw(sb, sr);
         sb.begin();
             this.spriteDraw(sb);
@@ -38,7 +34,7 @@ public class MainMenu extends Menu{
         sb.begin();
             this.fontDraw(sb);
         sb.end();
-    }
+    }*/
 
     public void init(){
         this.setBackground(new TextureRegion((Texture)super.getManager().get("4914003-galaxy-wallpaper-png.png")));
@@ -75,6 +71,7 @@ public class MainMenu extends Menu{
                         vY = -(20f + (gHeight - 660) / 60f);
                     }
                     askUserNameBox.setVelocity(0, vY);
+                    //askUserNameBox.moveTo(950,-20);
                     askUserNameField.setEnterAction(new MenuTools.OnEnter() {
                         public void action(String sIn) {
                         }
@@ -157,5 +154,12 @@ public class MainMenu extends Menu{
         super.addMenuBox(settingsBox);
         super.addMenuBox(playBox);
         super.addMenuBox(quitBox);
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        super.touchDown(screenX, screenY, pointer, button);
+        System.out.println(super.getFocused());
+        return true;
     }
 }

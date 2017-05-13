@@ -35,6 +35,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	SettingsMenu settingsMenu;
 	OrthographicCamera camera;
 	ClientGameWorld clientGameWorld;
+	UniversalClientMenu menu;
 	Array<BitmapFontCache> fontCaches;
 	boolean zoomedIn = false;
 	public static final int DAGGER20 = 0;
@@ -81,6 +82,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		batch.setProjectionMatrix(camera.combined);
 		clientGameWorld = new ClientGameWorld(player);
+		menu = new UniversalClientMenu(fontCaches,assetManager,camera);
 		Gdx.input.setInputProcessor(this);
 	}
 
@@ -123,15 +125,18 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					connectingMenu.init();
 					pickingInfoMenu.init(player);
 					lobbyMenu.init(player);
+					menu.init();
 					player.pingServers();
 				}
 				break;
 			case MAINMENU:
-				if(Gdx.input.getInputProcessor() != gameMain ){
-					gameMain.setInputProcessor();
+				if(Gdx.input.getInputProcessor() != menu ){
+					menu.setInputProcessor();
 				}
-				gameMain.update();
-				gameMain.standardDraw(batch,shapeRenderer);
+				menu.update();
+				menu.standardDraw(batch,shapeRenderer);
+				//gameMain.update();
+				//gameMain.standardDraw(batch,shapeRenderer);
 				break;
 			case MAINMENUSETTINGS:
 				if(Gdx.input.getInputProcessor() != settingsMenu){
