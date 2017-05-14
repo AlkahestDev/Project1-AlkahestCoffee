@@ -124,17 +124,23 @@ public class UniversalClientMenu extends Menu{
         MenuTools.QueueText exitText = new MenuTools.QueueText(200- MenuTools.textWidth(super.getFonts().get(DAGGER40).getFont(),"Quit")/2,75,0,0);
         playButton.setPressedTexture(MenuTools.mGTR("volcano-30238.png",getManager()));
         playButton.setUnpressedTexture(MenuTools.mGTR("4k-image-santiago.jpg",getManager()));
-        playText.setText("Play",getFonts());
+        playText.setText("[WHITE]Play",getFonts());
         playBox.addButton(playButton);
         playBox.addQueueText(playText);
         settingsButton.setPressedTexture(MenuTools.mGTR("volcano-30238.png",getManager()));
         settingsButton.setUnpressedTexture(MenuTools.mGTR("4k-image-santiago.jpg",getManager()));
-        settingsText.setText("Settings",getFonts());
+        settingsText.setText("[WHITE]Settings",getFonts());
         settingsBox.addButton(settingsButton);
         settingsBox.addQueueText(settingsText);
         exitButton.setPressedTexture(MenuTools.mGTR("volcano-30238.png",getManager()));
         exitButton.setUnpressedTexture(MenuTools.mGTR("4k-image-santiago.jpg",getManager()));
-        exitText.setText("Quit",getFonts());
+        exitText.setText("[WHITE]Quit",getFonts());
+        exitButton.setCallback(new MenuTools.OnClick() {
+            @Override
+            public void action() {
+                Gdx.app.exit();
+            }
+        });
         exitBox.addButton(exitButton);
         exitBox.addQueueText(exitText);
         super.addMenuBox(playBox);
