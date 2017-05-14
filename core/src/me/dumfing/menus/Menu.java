@@ -186,7 +186,6 @@ public class Menu implements InputProcessor{
             cR.draw(sr);
         }
         for(MenuTools.TextField tb : textFields){ // TextBoxes look like two rectangles drawn on eachother
-            System.out.println(focused+" "+tb);
             tb.shapeDraw(sr,fontCaches,tb == focused); // draw the textBox, if it's the focused one then it'll have the cursor being drawn
         }
         for(MenuBox mb : menuBoxes){
