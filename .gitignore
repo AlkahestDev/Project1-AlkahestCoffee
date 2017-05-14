@@ -65,3 +65,6 @@ build/
 ## OS Specific
 .DS_Store
 Thumbs.db
+*.iws
+*.iws
+Multiplayer.iws

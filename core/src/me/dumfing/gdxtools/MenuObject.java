@@ -14,6 +14,8 @@ public class MenuObject {
     Rectangle shape;
     float vX = 0;
     float vY = 0;
+    boolean executed = true;
+    Runnable onDoneMoving;
     public MenuObject(float x, float y, float w, float h){
         shape = new Rectangle(x,y,w,h);
     }
@@ -49,8 +51,13 @@ public class MenuObject {
      */
     public void update(){
         this.translate(vX,vY);
-        this.vX = towardsZero(vX,0.5f);
-        this.vY = towardsZero(vY,0.5f);
+        //System.out.println(this.vX+" "+this.vY);
+        this.vX = towardsZero(vX, 0.5f);
+        this.vY = towardsZero(vY, 0.5f);
+        if(this.vX+this.vY == 0 && this.onDoneMoving!=null && !executed){
+            this.onDoneMoving.run();
+            executed = true;
+        }
     }
     public float getvX(){
         return this.vX;
@@ -77,6 +84,12 @@ public class MenuObject {
         this.shape.x+=x;
         this.shape.y+=y;
     }
+
+    public void setOnDoneMoving(Runnable onDoneMoving) {
+        this.onDoneMoving = onDoneMoving;
+        executed = false;
+    }
+
     public Rectangle getRect(){
         return this.shape;
     }
