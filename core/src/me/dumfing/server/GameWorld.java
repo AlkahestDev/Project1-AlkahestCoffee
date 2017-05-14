@@ -14,17 +14,23 @@ import java.util.HashMap;
  */
 public class GameWorld {
     Pixmap worldHitbox;
-    HashMap<Connection, PlayerSoldier> players;
-    public GameWorld(HashMap<Connection, PlayerSoldier> players){
-        this.players = players;
+    HashMap<Integer, PlayerSoldier> players = new HashMap<Integer, PlayerSoldier>();
+    public GameWorld(HashMap<Connection, PlayerSoldier> playersIn){
+        for(Connection c : playersIn.keySet()) {
+            //System.out.println(c.getID());
+            this.players.put(c.getID(),playersIn.get(c)); // preserving the player object throuhgout the MainServer, CoffeeServer, GameInstance, and GameWorld allows us to handle input and positions on all levels synchronously
+        }
         for(PlayerSoldier playerSoldier : players.values()){
             playerSoldier.setPos( 2, 5);
         }
     }
     public void update(){
-        for(Connection connection: players.keySet()){
-            PlayerSoldier p = players.get(connection);
-            if(CoffeeServer.redTeamMembers.contains(connection) || CoffeeServer.bluTeamMembers.contains(connection)) {
+
+    }
+    public void serverUpdate(){
+        for(Integer playerID: players.keySet()){
+            PlayerSoldier p = players.get(playerID);
+            if(CoffeeServer.teamContainsID(CoffeeServer.redTeamMembers,playerID) || CoffeeServer.teamContainsID(CoffeeServer.bluTeamMembers,playerID)) {
                 //System.out.println("Checkkkk");
                 handleInput(p);
                 checkCollisions(p);
@@ -56,8 +62,8 @@ public class GameWorld {
     }
     public HashMap<Integer,MultiplayerTools.ServerPlayerInfo> getSimpleInfo(){
         HashMap<Integer,MultiplayerTools.ServerPlayerInfo> out = new HashMap<Integer, MultiplayerTools.ServerPlayerInfo>();
-        for(Connection c : players.keySet()){
-            out.put(c.getID(),players.get(c).getPlayerInfo());
+        for(Integer pID : players.keySet()){
+            out.put(pID,players.get(pID).getPlayerInfo());
         }
         return out;
     }

@@ -19,6 +19,7 @@ import me.dumfing.menus.LoadingMenu;
 import me.dumfing.menus.Menu;
 import me.dumfing.menus.ServerInfoMenu;
 import me.dumfing.menus.ServerRunningGameMenu;
+import me.dumfing.multiplayerTools.PlayerSoldier;
 
 import java.util.HashSet;
 import java.util.Scanner;
@@ -227,6 +228,14 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
     }
     private void updateServerInfo(){
 
+    }
+    public static boolean teamContainsID(HashSet<Connection> team, Integer connectionId){
+        for(Connection c : team){
+            if(c.getID() == connectionId.intValue()){
+                return true;
+            }
+        }
+        return false;
     }
     /*private HashMap<Connection,MultiplayerTools.ServerPlayerInfo> getPlayerInfo(){
         HashMap<Connection,MultiplayerTools.ServerPlayerInfo> simpleInfo = new HashMap<Connection, MultiplayerTools.ServerPlayerInfo>();

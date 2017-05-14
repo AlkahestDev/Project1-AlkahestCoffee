@@ -16,7 +16,7 @@ public class GameInstance {
         world = new GameWorld(players);
     }
     public void update(MainServer sv){
-        world.update();
+        world.serverUpdate();
         if(frameCount == 5){ // 2 gets an interesting 30hz
             frameCount = 0;
             sv.quickSendAll(new MultiplayerTools.ServerPlayerPositions(world.getSimpleInfo()));
