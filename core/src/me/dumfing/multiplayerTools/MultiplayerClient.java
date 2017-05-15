@@ -40,7 +40,7 @@ public class MultiplayerClient {
         }
     };
     private LinkedList<String> messages = new LinkedList<String>();
-    private HashMap<Integer, MultiplayerTools.ServerPlayerInfo> players = new HashMap<Integer, MultiplayerTools.ServerPlayerInfo>();
+    private HashMap<Integer, PlayerSoldier> players = new HashMap<Integer, PlayerSoldier>();
     private boolean findingServers = false;
     private Client playerClient;
     private HashMap<String, MultiplayerTools.ServerSummary> serverSummaries;
@@ -272,7 +272,7 @@ public class MultiplayerClient {
      * Gets the simple info about the players connected to the server
      * @return
      */
-    public HashMap<Integer, MultiplayerTools.ServerPlayerInfo> getPlayers() {
+    public HashMap<Integer, PlayerSoldier> getPlayers() {
         return players;
     }
 

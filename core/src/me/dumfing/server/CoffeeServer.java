@@ -13,13 +13,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
-import com.esotericsoftware.kryonet.Connection;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.menus.LoadingMenu;
 import me.dumfing.menus.Menu;
 import me.dumfing.menus.ServerInfoMenu;
 import me.dumfing.menus.ServerRunningGameMenu;
-import me.dumfing.multiplayerTools.PlayerSoldier;
 
 import java.util.HashSet;
 import java.util.Scanner;
@@ -48,9 +46,9 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
     LoadingMenu loadingMenu;
     ServerRunningGameMenu serverRunningMenu;
     ServerInfoMenu serverInfo;
-    GameInstance instance;
-    public static HashSet<Connection> redTeamMembers = new HashSet<Connection>();
-    public static HashSet<Connection> bluTeamMembers = new HashSet<Connection>();
+    ServerGameInstance instance;
+    public static HashSet<Integer> redTeamMembers = new HashSet<Integer>();
+    public static HashSet<Integer> bluTeamMembers = new HashSet<Integer>();
     @Override
     public void create() {
         batch = new SpriteBatch();
@@ -78,7 +76,7 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
         for(BitmapFontCache bmfc : fonts){
             bmfc.clear();
         }
-        switch (this.svState){
+        switch (svState){
             case LOADING:
                 if(Gdx.input.getInputProcessor() != loadingMenu){
                     loadingMenu.setInputProcessor();
@@ -109,7 +107,7 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
             case RUNNINGGAME:
                 if(Gdx.input.getInputProcessor() != serverRunningMenu){
                     serverRunningMenu.setInputProcessor();
-                    instance = new GameInstance(sv.getPlayers());
+                    instance = new ServerGameInstance(sv.getPlayers());
                     instance.world.setCollisionBoxes(Gdx.files.internal("pixmapTest.png"));
                 }
                 instance.update(sv);
@@ -229,9 +227,9 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
     private void updateServerInfo(){
 
     }
-    public static boolean teamContainsID(HashSet<Connection> team, Integer connectionId){
-        for(Connection c : team){
-            if(c.getID() == connectionId.intValue()){
+    public static boolean teamContainsID(HashSet<Integer> team, Integer connectionId){
+        for(Integer cID : team){
+            if(cID == connectionId.intValue()){
                 return true;
             }
         }

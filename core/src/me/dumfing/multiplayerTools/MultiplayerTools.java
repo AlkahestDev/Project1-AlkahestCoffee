@@ -1,7 +1,6 @@
 package me.dumfing.multiplayerTools;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
@@ -32,6 +31,7 @@ public class MultiplayerTools {
         serializer.register(HashMap.class);
         serializer.register(Rectangle.class);
         serializer.register(boolean[].class);
+        serializer.register(PlayerSoldier.class);
         serializer.register(ClientKeysUpdate.class);
         serializer.register(ClientPickedLoadout.class);
         serializer.register(ClientInfoRequest.class);
@@ -39,7 +39,6 @@ public class MultiplayerTools {
         serializer.register(ClientPickedTeam.class);
         serializer.register(ClientSentChatMessage.class);
         serializer.register(ClientKeysUpdate.class);
-        serializer.register(ServerPlayerInfo.class);
         serializer.register(ServerSummary.class);
         serializer.register(ServerResponse.class);
         serializer.register(ServerResponse.ResponseCode.class);
@@ -101,14 +100,14 @@ public class MultiplayerTools {
         public ServerGameStarted(){}
     }
     public static class ServerPlayerPositions{
-        HashMap<Integer, ServerPlayerInfo> players;
+        HashMap<Integer, PlayerSoldier> players;
         public ServerPlayerPositions(){
         }
-        public ServerPlayerPositions(HashMap<Integer, ServerPlayerInfo> players){
+        public ServerPlayerPositions(HashMap<Integer, PlayerSoldier> players){
             this.players = players;
         }
 
-        public HashMap<Integer, ServerPlayerInfo> getPlayers() {
+        public HashMap<Integer, PlayerSoldier> getPlayers() {
             return players;
         }
     }
@@ -127,8 +126,8 @@ public class MultiplayerTools {
          * @param sender The connection of the person who sent it
          * @param players All the connections and their respective playersoldiers
          */
-        public ServerSentChatMessage(String message, Connection sender, HashMap<Connection, PlayerSoldier> players) {
-            this.message = String.format("[WHITE]%s[GRAY]:  [BLACK]%s",players.get(sender).getName(),message);
+        public ServerSentChatMessage(String message, Connection sender, HashMap<Integer, PlayerSoldier> players) {
+            this.message = String.format("[WHITE]%s[GRAY]:  [BLACK]%s",players.get(sender.getID()),message);
         }
 
         /**
@@ -137,7 +136,7 @@ public class MultiplayerTools {
          * @param sender The connection for the person who's sending the message
          * @param players The hashmap of all players connected
          */
-        public ServerSentChatMessage(Object messageIn, Connection sender, HashMap<Connection, PlayerSoldier> players){
+        public ServerSentChatMessage(Object messageIn, Connection sender, HashMap<Integer, PlayerSoldier> players){
             if(messageIn instanceof  ClientSentChatMessage){
                 this.message = String.format("[WHITE]%s[GRAY]:  [BLACK]%s",players.get(sender).getName(),((ClientSentChatMessage) messageIn).getMessage());
             }
@@ -197,11 +196,11 @@ public class MultiplayerTools {
      */
     public static class ServerDetailedSummary {
         int rTeam, bTeam, rMax,bMax;
-        HashMap<Integer, MultiplayerTools.ServerPlayerInfo> people;
+        HashMap<Integer, PlayerSoldier> people;
         public ServerDetailedSummary(){
 
         }
-        public ServerDetailedSummary(int redTeam, int blueTeam,HashMap<Integer, MultiplayerTools.ServerPlayerInfo> people){
+        public ServerDetailedSummary(int redTeam, int blueTeam,HashMap<Integer, PlayerSoldier> people){
             this.rTeam = redTeam;
             this.bTeam = blueTeam;
             this.bMax = people.size()/2;
@@ -252,111 +251,6 @@ public class MultiplayerTools {
         }
     }
 
-    public static class ServerPlayerInfo {
-        private Rectangle playerArea;
-        private float vX, vY;
-        private int team, health, pickedClass;
-        private String name;
-        public ServerPlayerInfo(){
-        }
-        public ServerPlayerInfo(Rectangle area, int team, String name, int pickedClass){
-            this.playerArea = area;
-            this.team = team;
-            this.name = name;
-            this.health = 100;
-            this.pickedClass = pickedClass;
-        }
-        public ServerPlayerInfo(Rectangle area, int team, String name, int health, int pickedClass){ // a simple version of a player that can be sent back and forth
-            this.playerArea = area;
-            this.team = team;
-            this.name = name;
-            this.health = health;
-            this.pickedClass = pickedClass;
-        }
-        public ServerPlayerInfo(PlayerSoldier sIn){
-            this.playerArea = sIn.getRect();
-            this.team = sIn.getTeam();
-            this.name = sIn.getName();
-            this.health = sIn.getHealth();
-        }
-        public Vector2 getPos(){
-            return this.playerArea.getPosition(new Vector2());
-        }
-        public float getX(){
-            return this.playerArea.x;
-        }
-        public float getY(){
-            return this.playerArea.y;
-        }
-        public Rectangle getRect(){
-            return this.playerArea;
-        }
-        public int getTeam(){
-            return this.team;
-        }
-        public String getName(){
-            return this.name;
-        }
-        public void setName(String name){
-            this.name = name;
-        }
-        public void setTeam(int team) {
-            this.team = team;
-        }
-        public void translateX(float xAmount){
-            this.playerArea.x+=xAmount;
-        }
-        public void translateY(float yAmount){
-            this.playerArea.y+=yAmount;
-        }
-        public void translate(float xAmount, float yAmount){
-            translateX(xAmount);
-            translateY(yAmount);
-        }
-        public void setX(float x){
-            this.playerArea.x = x;
-        }
-        public void setY(float y){
-            this.playerArea.y = y;
-        }
-        public void setvX(float vX) {
-            this.vX = vX;
-        }
-
-        public void setvY(float vY) {
-            this.vY = vY;
-        }
-
-        public float getvX() {
-            return vX;
-        }
-
-        public float getvY() {
-            return vY;
-        }
-
-        public int getPickedClass() {
-            return pickedClass;
-        }
-
-        public void setPickedClass(int pickedClass) {
-            this.pickedClass = pickedClass;
-        }
-
-        public int getHealth() {
-            return health;
-        }
-
-        @Override
-        public String toString() {
-            return "ServerPlayerInfo{" +
-                    "playerArea=" + playerArea +
-                    ", team=" + team +
-                    ", health=" + health +
-                    ", name='" + name + '\'' +
-                    '}';
-        }
-    }
     /**
      * Sent by the client when they wish to connect to the server to play
      */

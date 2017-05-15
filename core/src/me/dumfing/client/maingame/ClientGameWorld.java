@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import me.dumfing.gdxtools.DrawTools;
 import me.dumfing.multiplayerTools.MultiplayerClient;
 import me.dumfing.multiplayerTools.MultiplayerTools;
+import me.dumfing.multiplayerTools.PlayerSoldier;
 
 import java.util.Arrays;
 
@@ -31,7 +32,7 @@ public class ClientGameWorld implements InputProcessor{
             infoClient.quickSend(new MultiplayerTools.ClientKeysUpdate(keysDown));
             keyUpdate=false;
         }
-        for(MultiplayerTools.ServerPlayerInfo p : infoClient.getPlayers().values()){
+        for(PlayerSoldier p : infoClient.getPlayers().values()){
             System.out.println(p.getvX()+" "+p.getvY());
             movePlayer(p);
         }
@@ -41,14 +42,14 @@ public class ClientGameWorld implements InputProcessor{
         batch.draw(temp,0,0);
         batch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        for(MultiplayerTools.ServerPlayerInfo p : infoClient.getPlayers().values()){
+        for(PlayerSoldier p : infoClient.getPlayers().values()){
             DrawTools.rec(shapeRenderer,p.getRect());
         }
         shapeRenderer.end();
     }
-    private void movePlayer(MultiplayerTools.ServerPlayerInfo p){
+    private void movePlayer(PlayerSoldier p){
         //p.translateX(p.getvX());
-        p.translate(p.getvX(),p.getvY());
+        p.move();
         if(p.getvY()>0){
             p.setvY(p.getvY()+MultiplayerTools.GRAVITY);
         }

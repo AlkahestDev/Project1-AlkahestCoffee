@@ -2,7 +2,6 @@ package me.dumfing.server;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.esotericsoftware.kryonet.Connection;
 import me.dumfing.gdxtools.MathTools;
 import me.dumfing.multiplayerTools.MultiplayerTools;
 import me.dumfing.multiplayerTools.PlayerSoldier;
@@ -15,10 +14,10 @@ import java.util.HashMap;
 public class GameWorld {
     Pixmap worldHitbox;
     HashMap<Integer, PlayerSoldier> players = new HashMap<Integer, PlayerSoldier>();
-    public GameWorld(HashMap<Connection, PlayerSoldier> playersIn){
-        for(Connection c : playersIn.keySet()) {
+    public GameWorld(HashMap<Integer, PlayerSoldier> playersIn){
+        for(Integer cID : playersIn.keySet()) {
             //System.out.println(c.getID());
-            this.players.put(c.getID(),playersIn.get(c)); // preserving the player object throuhgout the MainServer, CoffeeServer, GameInstance, and GameWorld allows us to handle input and positions on all levels synchronously
+            this.players.put(cID,playersIn.get(cID)); // preserving the player object throuhgout the MainServer, CoffeeServer, ServerGameInstance, and GameWorld allows us to handle input and positions on all levels synchronously
         }
         for(PlayerSoldier playerSoldier : players.values()){
             playerSoldier.setPos( 2, 5);
@@ -59,13 +58,6 @@ public class GameWorld {
                 player.setX((int)player.getX());
                 player.setvX(0);
             }
-    }
-    public HashMap<Integer,MultiplayerTools.ServerPlayerInfo> getSimpleInfo(){
-        HashMap<Integer,MultiplayerTools.ServerPlayerInfo> out = new HashMap<Integer, MultiplayerTools.ServerPlayerInfo>();
-        for(Integer pID : players.keySet()){
-            out.put(pID,players.get(pID).getPlayerInfo());
-        }
-        return out;
     }
     public void handleInput(PlayerSoldier p){
         boolean keys[] = p.getKeysHeld();

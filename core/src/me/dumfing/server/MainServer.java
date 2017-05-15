@@ -9,6 +9,7 @@ import me.dumfing.multiplayerTools.PlayerSoldier;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * Created by dumpl on 4/18/2017.
@@ -19,11 +20,12 @@ public class MainServer {
     public static int maxPlayers;
     private int numPlayers = 0;
     private String svName;
-    HashMap<Connection, PlayerSoldier> players;
+    HashMap<Integer, PlayerSoldier> players;
+    LinkedList<Connection> validConnections = new LinkedList<Connection>();
     public MainServer(final String svName, final int maxPlayers){
         this.maxPlayers = maxPlayers;
         this.svName = svName;
-        this.players = new HashMap<Connection, PlayerSoldier>();
+        this.players = new HashMap<Integer, PlayerSoldier>();
         this.server = new Server();
         MultiplayerTools.register(this.server);
         try {
@@ -43,15 +45,16 @@ public class MainServer {
             @Override
             public void disconnected(Connection connection) {
                 System.out.printf("Client Disconnected %d\n",connection.getID());
-                if(players.containsKey(connection)){
-                    players.remove(connection);
-                    secureSendAll(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),getSimplePlayers()));
+                if(validConnections.contains(connection)){
+                    validConnections.remove(connection);
+                    players.remove(connection.getID());
+                    secureSendAll(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),players));
                 }
-                if(CoffeeServer.redTeamMembers.contains(connection)){
-                    CoffeeServer.redTeamMembers.remove(connection);
+                if(CoffeeServer.redTeamMembers.contains(connection.getID())){
+                    CoffeeServer.redTeamMembers.remove(connection.getID());
                 }
-                else if(CoffeeServer.bluTeamMembers.contains(connection)){
-                    CoffeeServer.bluTeamMembers.remove(connection);
+                else if(CoffeeServer.bluTeamMembers.contains(connection.getID())){
+                    CoffeeServer.bluTeamMembers.remove(connection.getID());
                 }
 
                 super.disconnected(connection);
@@ -79,9 +82,10 @@ public class MainServer {
                     }
                     else{
                         //Successful Connection
-                        players.put(connection,new PlayerSoldier(new Rectangle(0,0,1,2),0,temp.playerName));
+                        validConnections.add(connection);
+                        players.put(connection.getID(),new PlayerSoldier(new Rectangle(0,0,1,2),0,temp.playerName));
                         response = new MultiplayerTools.ServerResponse(MultiplayerTools.ServerResponse.ResponseCode.CLIENTCONNECTED);
-                        quickSendAll(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),getSimplePlayers()));
+                        quickSendAll(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),players));
 
                     }
                     connection.sendTCP(response);
@@ -94,21 +98,21 @@ public class MainServer {
                     System.out.println("Received ClientPickedTeam");
                     MultiplayerTools.ClientPickedTeam temp = (MultiplayerTools.ClientPickedTeam)o;
                     //(temp.getPicked()==0?CoffeeServer.redTeamMembers:CoffeeServer.bluTeamMembers).add(connection); // add the player to their selected team
-                    players.get(connection).setTeam(temp.getPicked());
-                    secureSendAll(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),getSimplePlayers()));
+                    players.get(connection.getID()).setTeam(temp.getPicked());
+                    secureSendAll(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),players));
                 }
                 else if(o instanceof MultiplayerTools.ClientPickedLoadout){
                     MultiplayerTools.ClientPickedLoadout temp = (MultiplayerTools.ClientPickedLoadout) o;
-                    players.get(connection).setCurrentClass(temp.getLoadout());
-                    players.get(connection).setPos(2,5);
-                    (players.get(connection).getTeam()==0?CoffeeServer.redTeamMembers:CoffeeServer.bluTeamMembers).add(connection);
+                    players.get(connection.getID()).setCurrentClass(temp.getLoadout());
+                    players.get(connection.getID()).setPos(2,5);
+                    (players.get(connection.getID()).getTeam()==0?CoffeeServer.redTeamMembers:CoffeeServer.bluTeamMembers).add(connection.getID()); // the client needs to be in a team to start being simulated
                     connection.sendTCP(new MultiplayerTools.ServerNotifyGame(0)); // tell the client which world is being used and what their ID is
                 }
                 else if(o instanceof  MultiplayerTools.ClientSentChatMessage){
                     quickSendAll(new MultiplayerTools.ServerSentChatMessage(o,connection,players));
                 }
                 else if(o instanceof MultiplayerTools.ClientKeysUpdate){
-                    players.get(connection).setKeysHeld(((MultiplayerTools.ClientKeysUpdate) o).getKeys());
+                    players.get(connection.getID()).setKeysHeld(((MultiplayerTools.ClientKeysUpdate) o).getKeys());
                 }
                 super.received(connection, o);
             }
@@ -130,15 +134,8 @@ public class MainServer {
     public boolean running(){
         return this.isRunning;
     }
-    public HashMap<Connection, PlayerSoldier> getPlayers(){
+    public HashMap<Integer, PlayerSoldier> getPlayers(){
         return this.players;
-    }
-    public HashMap<Integer, MultiplayerTools.ServerPlayerInfo> getSimplePlayers(){
-        HashMap<Integer, MultiplayerTools.ServerPlayerInfo> simpleInfo = new HashMap<Integer, MultiplayerTools.ServerPlayerInfo>();
-        for(Connection c : this.players.keySet()){
-            simpleInfo.put(new Integer(c.getID()),this.players.get(c).getPlayerInfo());
-        }
-        return simpleInfo;
     }
     public int getMaxPlayers(){
         return this.maxPlayers;
@@ -146,12 +143,12 @@ public class MainServer {
     public void secureSendAll(Object o){
         //TODO reverse list of players every time to average out delay from sending object to each player
         //players.keySet is all players that are actually playing the game
-        for(Connection c : players.keySet()){
+        for(Connection c : validConnections){
             c.sendTCP(o);
         }
     }
     public void quickSendAll(Object o){
-        for(Connection c : players.keySet()){
+        for(Connection c : validConnections){
             c.sendUDP(o);
         }
     }

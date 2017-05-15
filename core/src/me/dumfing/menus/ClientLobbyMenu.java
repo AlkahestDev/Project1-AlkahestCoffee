@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.multiplayerTools.MultiplayerClient;
 import me.dumfing.multiplayerTools.MultiplayerTools;
+import me.dumfing.multiplayerTools.PlayerSoldier;
 
 import static me.dumfing.client.maingame.MainGame.DAGGER30;
 import static me.dumfing.client.maingame.MainGame.DAGGER50;
@@ -67,7 +68,7 @@ public class ClientLobbyMenu extends Menu{
             textLevel++;
         }
         textLevel = 0;
-        for(MultiplayerTools.ServerPlayerInfo player : client.getPlayers().values()){
+        for(PlayerSoldier player : client.getPlayers().values()){
             MenuTools.QueueText tempName = new MenuTools.QueueText(5,45+(textLevel*42),0,0);
             tempName.setText(player.getName(),getFonts());
             connectedPlayers.addQueueText(tempName);
