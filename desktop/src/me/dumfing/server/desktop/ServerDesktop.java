@@ -11,6 +11,6 @@ import me.dumfing.server.CoffeeServer;
 public class ServerDesktop {
     public static void main(String[]args){
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        LwjglApplication svDesktop = new LwjglApplication(new CoffeeServer(),config);
+        new LwjglApplication(new CoffeeServer(),config);
     }
 }
