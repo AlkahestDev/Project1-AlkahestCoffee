@@ -5,10 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
@@ -42,6 +39,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static final int DAGGER30 = 1;
 	public static final int DAGGER40 = 2;
 	public static final int DAGGER50 = 3;
+
+	// TextureAtlas Stuff
+	TextureAtlas textureAtlas;
+	Sprite sprite;
+	TextureRegion textureRegion;
+
+
 	@Override
 	public void create () {
 		assetManager = new AssetManager();
@@ -84,6 +88,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		clientGameWorld = new ClientGameWorld(player);
 		menu = new UniversalClientMenu(fontCaches,assetManager,camera);
 		Gdx.input.setInputProcessor(this);
+
+		// TextureAtlas Stuff
+		textureAtlas = new TextureAtlas(Gdx.files.internal("SpriteSheets/KnightSprites.atlas"));
+		textureRegion = textureAtlas.findRegion("KnightWalk_0");
+		sprite = new Sprite(textureRegion);
+		sprite.setPosition(0, 0);
+
 	}
 
 	@Override
@@ -189,6 +200,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				shapeRenderer.setColor(Color.RED);
 				clientGameWorld.update();
 				clientGameWorld.draw(batch,shapeRenderer);
+				// sprite.draw(batch);
 				/*shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 				for(MultiplayerTools.ServerPlayerInfo p : player.getPlayers().values()){
 					DrawTools.rec(shapeRenderer,p.getRect());
