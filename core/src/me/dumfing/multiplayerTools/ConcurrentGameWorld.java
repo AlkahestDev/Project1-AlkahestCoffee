@@ -22,7 +22,7 @@ public class ConcurrentGameWorld {
             handleKeyInput(p);
             handleCollisions(p);
             p.move();
-            System.out.println(p);
+            //System.out.println(p);
         }
     }
 
@@ -46,10 +46,15 @@ public class ConcurrentGameWorld {
         else{
             playerSoldier.setvY(playerSoldier.getvY()+MultiplayerTools.GRAVITY);
         }
-        if(map.getPosId((int)(playerSoldier.getX()+playerSoldier.getvX()),(int)(playerSoldier.getY())+1)==1){
+        //TODO: horizontal collisions
+        if((map.getPosId((int)(playerSoldier.getX()+1),(int)(playerSoldier.getY()+1))==1)){ //right side
             System.out.println("hitX");
             playerSoldier.setX(Math.round(playerSoldier.getX()));
             playerSoldier.setvX(0);
+        }
+        if((map.getPosId((int)(playerSoldier.getX()),(int)(playerSoldier.getY()+1))==1)){ // left side
+            playerSoldier.setX(Math.round(playerSoldier.getX()));
+            playerSoldier.setvX(Math.min(playerSoldier.getvX(),0));
         }
     }
     public void updatePlayerKeys(Integer cID, boolean[] keys){

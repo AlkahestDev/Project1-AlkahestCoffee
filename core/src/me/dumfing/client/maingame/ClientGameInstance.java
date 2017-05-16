@@ -16,7 +16,7 @@ import java.util.HashMap;
  * Created by dumpl on 5/15/2017.
  */
 public class ClientGameInstance implements InputProcessor{
-    private boolean[] keysDown = new boolean[7];
+    private boolean[] keysDown = new boolean[8];
     private boolean keyUpdate = false;
     MultiplayerClient gameClient;
     private ConcurrentGameWorld playWorld;
@@ -31,13 +31,16 @@ public class ClientGameInstance implements InputProcessor{
             keyUpdate = false;
         }
         if(gameClient.isHasNewPlayerInfo()) {
-            System.out.println("new player info");
+            System.out.println("new client info");
             System.out.println(gameClient.getPlayers().values());
             playWorld.updatePlayers(gameClient.getPlayers());
         }
         playWorld.updatePlayerKeys(gameClient.getConnectionID(),keysDown);
         //System.out.println("updateplayworld");
         playWorld.update();
+    }
+    public PlayerSoldier getPlayer(int connectionID){
+        return playWorld.getPlayers().get(connectionID);
     }
     public void draw(SpriteBatch batch, ShapeRenderer renderer){
         batch.begin();

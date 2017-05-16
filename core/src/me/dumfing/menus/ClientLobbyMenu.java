@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.utils.Array;
+import me.dumfing.client.maingame.MainGame;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.multiplayerTools.MultiplayerClient;
 import me.dumfing.multiplayerTools.MultiplayerTools;
@@ -12,7 +13,6 @@ import me.dumfing.multiplayerTools.PlayerSoldier;
 
 import static me.dumfing.client.maingame.MainGame.DAGGER30;
 import static me.dumfing.client.maingame.MainGame.DAGGER50;
-import static me.dumfing.client.maingame.MainGame.player;
 
 /**
  * The Lobby the clients will stay in while waiting for more people to connect
@@ -76,7 +76,7 @@ public class ClientLobbyMenu extends Menu{
         }
         if(client.getGameStarted() > -1){
             if(barOut){
-                countdown.setText(""+player.getGameStarted(),getFonts());
+                countdown.setText(""+ MainGame.client.getGameStarted(),getFonts());
             }
             else{
                 countDownBar.setVelocity(-13.9f,0); // extend bar

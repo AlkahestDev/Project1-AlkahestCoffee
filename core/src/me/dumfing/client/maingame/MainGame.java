@@ -25,7 +25,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	AssetManager assetManager;
 	public static GameState.State state;
 	Texture tuzki, menuImg;
-	public static MultiplayerClient player; // public to allow any menu to access easily
+	public static MultiplayerClient client; // public to allow any menu to access easily
 	public static PlayerSoldier clientSoldier; // public to allow any menu to access easily
 	ShapeRenderer shapeRenderer;
 	LoadingMenu loadingMenu;
@@ -81,12 +81,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		System.out.println(new Pixmap(Gdx.files.internal("pixmapTest.png")).getPixel(0,0)>>8);//since gimp doesn't do alpha in a friendly way, I'll bitshift right 8 bits to ignore alpha
 		state = GameState.State.LOADINGGAME;
 		batch = new SpriteBatch();
-		player = new MultiplayerClient();
+		client = new MultiplayerClient();
 		clientSoldier = new PlayerSoldier(new Rectangle(0,0,1,2),0,"");
-		player.startClient();
+		client.startClient();
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		batch.setProjectionMatrix(camera.combined);
-		clientGameWorld = new ClientGameWorld(player);
+		clientGameWorld = new ClientGameWorld(client);
 		menu = new UniversalClientMenu(fontCaches,assetManager,camera);
 		Gdx.input.setInputProcessor(this);
 	}
@@ -128,11 +128,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					serverBrowser.init();
 					settingsMenu.init();
 					connectingMenu.init();
-					pickingInfoMenu.init(player);
-					lobbyMenu.init(player);
+					pickingInfoMenu.init(client);
+					lobbyMenu.init(client);
 					menu.init();
 					createWorlds();
-					player.pingServers();
+					client.pingServers();
 				}
 				break;
 			case MAINMENU:
@@ -172,35 +172,54 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				if(Gdx.input.getInputProcessor() != lobbyMenu){
 					lobbyMenu.setInputProcessor();
 				}
-				lobbyMenu.update(player);
+				lobbyMenu.update(client);
 				lobbyMenu.draw(batch,shapeRenderer);
 				break;
 			case PICKINGINFO:
 				if(Gdx.input.getInputProcessor() != pickingInfoMenu){
 					pickingInfoMenu.setInputProcessor();
 				}
-				pickingInfoMenu.updateTeamNumbers(player.getRedTeam(),player.getBlueTeam(),player.getrLimit(),player.getbLimit());
+				pickingInfoMenu.updateTeamNumbers(client.getRedTeam(), client.getBlueTeam(), client.getrLimit(), client.getbLimit());
 				pickingInfoMenu.update();
 				pickingInfoMenu.standardDraw(batch,shapeRenderer);
 				break;
 			case PLAYINGGAME:
 				//camera.setToOrtho(true,900,450);
 				if(Gdx.input.getInputProcessor() != gameInstance){
-					gameInstance = new ClientGameInstance(player,player.getPlayers());
+					gameInstance = new ClientGameInstance(client, client.getPlayers());
 					gameInstance.pickWorld(DEBUGWORLD);
 					Gdx.input.setInputProcessor(gameInstance);
 				}
-				camera.position.set(0,0,0);
+				gameInstance.update();
+
+				PlayerSoldier clientSoldierTemp = gameInstance.getPlayer(client.getConnectionID());
+				float deltaX = camera.position.x-clientSoldierTemp.getX();
+				float deltaY = camera.position.y-clientSoldierTemp.getY();
+				System.out.println(deltaX);
+				if(deltaX<-5){ // player on right side of camera
+					camera.position.x+=Math.min(Math.abs(deltaX)/5f,Math.abs(deltaX)-5);
+					//camera.position.x=clientSoldierTemp.getX()-5;
+				}
+				else if(deltaX>5){
+					camera.position.x-=Math.min(Math.abs(deltaX)/5f,Math.abs(deltaX)-5);
+					//camera.position.x=clientSoldierTemp.getX()+5;
+				}
+				if(deltaY<-2f){
+					camera.position.y+=Math.min(Math.abs(deltaY)/5f,Math.abs(deltaY));
+				}
+				else if(deltaY>2f){
+					camera.position.y-=Math.min(Math.abs(deltaY)/5f,Math.abs(deltaY));
+				}
 				camera.update();
 				shapeRenderer.setProjectionMatrix(camera.combined);
 				batch.setProjectionMatrix(camera.combined);
 				shapeRenderer.setColor(Color.BLUE);
-				gameInstance.update();
+				System.out.println(camera.position);
 				gameInstance.draw(batch,shapeRenderer);
 				//clientGameWorld.update();
 				//clientGameWorld.draw(batch,shapeRenderer);
 				/*shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-				for(MultiplayerTools.ServerPlayerInfo p : player.getPlayers().values()){
+				for(MultiplayerTools.ServerPlayerInfo p : client.getPlayers().values()){
 					DrawTools.rec(shapeRenderer,p.getRect());
 				}
 				shapeRenderer.end();*/
@@ -216,7 +235,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	@Override
 	public void dispose () {
 		batch.dispose();
-		player.stopClient();
+		client.stopClient();
 	}
 	public void assignValues(){
 		tuzki = assetManager.get("tuzki.png");

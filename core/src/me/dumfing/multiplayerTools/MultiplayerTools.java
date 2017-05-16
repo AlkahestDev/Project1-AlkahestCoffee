@@ -209,7 +209,7 @@ public class MultiplayerTools {
         }
     }
     /**
-     * The response from the server for if the client has connected as a player or if they aren't allowed on
+     * The response from the server for if the client has connected as a client or if they aren't allowed on
      */
     public static class ServerResponse{
         public enum ResponseCode{

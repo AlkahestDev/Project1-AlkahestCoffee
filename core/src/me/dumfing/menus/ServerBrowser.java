@@ -20,7 +20,7 @@ import me.dumfing.multiplayerTools.MultiplayerTools;
 import java.util.HashMap;
 
 import static me.dumfing.client.maingame.MainGame.DAGGER30;
-import static me.dumfing.client.maingame.MainGame.player;
+import static me.dumfing.client.maingame.MainGame.client;
 
 public class ServerBrowser extends Menu{
     private ServerBrowserList serverList;
@@ -50,7 +50,7 @@ public class ServerBrowser extends Menu{
         directConnect.setEnterAction(new MenuTools.OnEnter() {
             @Override
             public void action(String sIn) {
-                MainGame.player.connectServerPlay(sIn);
+                MainGame.client.connectServerPlay(sIn);
                 MainGame.state = GameState.State.CONNECTINGTOSERVER;
             }
         });
@@ -73,8 +73,8 @@ public class ServerBrowser extends Menu{
         refreshServers.setCallback(new MenuTools.OnClick() {
             @Override
             public void action() {
-                if(!player.isFindingServers()) {
-                    MainGame.player.pingServers();
+                if(!client.isFindingServers()) {
+                    MainGame.client.pingServers();
                 }
             }
         });
@@ -128,7 +128,7 @@ public class ServerBrowser extends Menu{
                             String svIP = k;
                             svIP = svIP.replace("/", "").substring(0, svIP.indexOf(":") - 1); // the received ip is in the form "/ip:port", we only need the ip part so we remove the / and the :port
                             System.out.println(svIP);
-                            MainGame.player.connectServerPlay(svIP);
+                            MainGame.client.connectServerPlay(svIP);
                             MainGame.state = GameState.State.CONNECTINGTOSERVER;
 
                     }

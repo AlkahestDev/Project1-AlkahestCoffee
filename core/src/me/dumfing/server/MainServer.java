@@ -97,7 +97,7 @@ public class MainServer {
                 else if(o instanceof MultiplayerTools.ClientPickedTeam){
                     System.out.println("Received ClientPickedTeam");
                     MultiplayerTools.ClientPickedTeam temp = (MultiplayerTools.ClientPickedTeam)o;
-                    //(temp.getPicked()==0?CoffeeServer.redTeamMembers:CoffeeServer.bluTeamMembers).add(connection); // add the player to their selected team
+                    //(temp.getPicked()==0?CoffeeServer.redTeamMembers:CoffeeServer.bluTeamMembers).add(connection); // add the client to their selected team
                     players.get(connection.getID()).setTeam(temp.getPicked());
                     secureSendAll(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),players));
                 }
@@ -141,7 +141,7 @@ public class MainServer {
         return this.maxPlayers;
     }
     public void secureSendAll(Object o){
-        //TODO reverse list of players every time to average out delay from sending object to each player
+        //TODO reverse list of players every time to average out delay from sending object to each client
         //players.keySet is all players that are actually playing the game
         for(Connection c : validConnections){
             c.sendTCP(o);
