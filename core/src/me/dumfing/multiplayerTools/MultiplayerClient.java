@@ -51,7 +51,6 @@ public class MultiplayerClient {
     private int gameStarted = -1;
     private int connectionID = 0; // the id of the connection between the client and the server
     private int worldNum = -1;
-    boolean hasNewPlayerInfo = false;
     public MultiplayerClient(){
         playerClient = new Client();
         serverSummaries = new HashMap<String, MultiplayerTools.ServerSummary>();
@@ -123,7 +122,6 @@ public class MultiplayerClient {
                 }
                 else if(o instanceof MultiplayerTools.ServerPlayerPositions){
                     players = ((MultiplayerTools.ServerPlayerPositions) o).getPlayers();
-                    hasNewPlayerInfo = true;
                 }
                 else if(o instanceof MultiplayerTools.ServerGameStarted){
                     MainGame.state = GameState.State.PICKINGINFO;
@@ -279,24 +277,10 @@ public class MultiplayerClient {
     }
 
     /**
-     * gets whether or not info about the players has been read
-     * @return
-     */
-    public boolean isHasNewPlayerInfo() {
-        boolean ogOut = hasNewPlayerInfo;
-        hasNewPlayerInfo = false;
-        return ogOut;
-    }
-
-    /**
      * Returns how many seconds until the game starts
      * @return
      */
     public int getGameStarted() {
         return gameStarted;
-    }
-
-    public int getConnectionID() {
-        return connectionID;
     }
 }

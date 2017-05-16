@@ -1,9 +1,7 @@
 package me.dumfing.server;
 
-import me.dumfing.multiplayerTools.ConcurrentGameWorld;
 import me.dumfing.multiplayerTools.MultiplayerTools;
 import me.dumfing.multiplayerTools.PlayerSoldier;
-import me.dumfing.multiplayerTools.WorldMap;
 
 import java.util.HashMap;
 
@@ -12,20 +10,16 @@ import java.util.HashMap;
  */
 public class ServerGameInstance {
     int frameCount = 0;
-    ConcurrentGameWorld world;
+    GameWorld world;
     public ServerGameInstance(HashMap<Integer, PlayerSoldier> players){
-        world = new ConcurrentGameWorld(players);
+        world = new GameWorld(players);
     }
     public void update(MainServer sv){
-        world.update();
-        if(frameCount == 4){ // 2 gets an interesting 30hz
+        world.serverUpdate();
+        if(frameCount == 5){ // 2 gets an interesting 30hz
             frameCount = 0;
-            sv.quickSendAll(new MultiplayerTools.ServerPlayerPositions(world.getPlayers()));
+            sv.quickSendAll(new MultiplayerTools.ServerPlayerPositions(world.players));
         }
-
         frameCount++;
-    }
-    public void setWorldMap(WorldMap map){
-        world.setWorld(map);
     }
 }

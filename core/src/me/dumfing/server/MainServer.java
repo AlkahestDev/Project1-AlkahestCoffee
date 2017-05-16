@@ -63,7 +63,7 @@ public class MainServer {
             @Override
             public void received(Connection connection, Object o) {
                 //We will be using a request and response system rather than periodically broadcasting to all clients as there's no easy way to have the server periodically update the clients
-                System.out.println("Received "+o.getClass().getSimpleName());
+                System.out.println("Received Object");
                 if(o instanceof MultiplayerTools.ClientInfoRequest){
                     System.out.println("received serverInfoRequest");
                     connection.sendTCP(new MultiplayerTools.ServerSummary(players.size(),maxPlayers,connection.getReturnTripTime(),svName.substring(0,Math.min(16,svName.length()))));
@@ -83,7 +83,7 @@ public class MainServer {
                     else{
                         //Successful Connection
                         validConnections.add(connection);
-                        players.put(connection.getID(),new PlayerSoldier(new Rectangle(2,5,1,2),0,temp.playerName));
+                        players.put(connection.getID(),new PlayerSoldier(new Rectangle(0,0,1,2),0,temp.playerName));
                         response = new MultiplayerTools.ServerResponse(MultiplayerTools.ServerResponse.ResponseCode.CLIENTCONNECTED);
                         quickSendAll(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),players));
 
