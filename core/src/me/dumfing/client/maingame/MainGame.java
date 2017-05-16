@@ -198,17 +198,17 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				float deltaY = camera.position.y-clientSoldierTemp.getY();
 				System.out.println(deltaX);
 				if(deltaX<-5){ // player on right side of camera
-					camera.position.x+=Math.min(Math.abs(deltaX)/5f,Math.abs(deltaX)-5);
+					camera.position.x+=Math.min(Math.abs(deltaX)/4f,Math.abs(deltaX)-5);
 					//camera.position.x=clientSoldierTemp.getX()-5;
 				}
 				else if(deltaX>5){
-					camera.position.x-=Math.min(Math.abs(deltaX)/5f,Math.abs(deltaX)-5);
+					camera.position.x-=Math.min(Math.abs(deltaX)/4f,Math.abs(deltaX)-5);
 					//camera.position.x=clientSoldierTemp.getX()+5;
 				}
-				if(deltaY<-2f){
+				if(deltaY<-3f){
 					camera.position.y+=Math.min(Math.abs(deltaY)/5f,Math.abs(deltaY));
 				}
-				else if(deltaY>2f){
+				else if(deltaY>3f){
 					camera.position.y-=Math.min(Math.abs(deltaY)/5f,Math.abs(deltaY));
 				}
 				camera.update();

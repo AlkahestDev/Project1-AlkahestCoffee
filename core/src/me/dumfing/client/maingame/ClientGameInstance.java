@@ -44,8 +44,10 @@ public class ClientGameInstance implements InputProcessor{
     }
     public void draw(SpriteBatch batch, ShapeRenderer renderer){
         batch.begin();
-        batch.draw(playWorld.getMap().getVisualComponent(),0,0);
+        //batch.draw(playWorld.getMap().getVisualComponent(),0,0);
         batch.end();
+        playWorld.update();
+        playWorld.getMap().draw(batch);
         renderer.begin(ShapeRenderer.ShapeType.Line);
         for(PlayerSoldier p : playWorld.getPlayers().values()){
             DrawTools.rec(renderer,p.getRect());
