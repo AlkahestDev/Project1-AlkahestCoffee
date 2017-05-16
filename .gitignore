@@ -5,9 +5,6 @@
 *.ear
 hs_err_pid*
 
-## Robovm
-robovm-build/
-
 ## GWT
 war/
 html/war/gwt_bree/
@@ -23,12 +20,13 @@ www-test/
 ## Android Studio and Intellij and Android in general
 android/libs/armeabi/
 android/libs/armeabi-v7a/
-android/libs/arm64-v8a/
 android/libs/x86/
-android/libs/x86_64/
 android/gen/
 .idea/
-.iws
+*.ipr
+*.iws
+*.iml
+out/
 com_crashlytics_export_strings.xml
 
 ## Eclipse
@@ -64,7 +62,3 @@ build/
 
 ## OS Specific
 .DS_Store
-Thumbs.db
-*.iws
-*.iws
-Multiplayer.iws
