@@ -18,6 +18,7 @@ import me.dumfing.menus.LoadingMenu;
 import me.dumfing.menus.Menu;
 import me.dumfing.menus.ServerInfoMenu;
 import me.dumfing.menus.ServerRunningGameMenu;
+import me.dumfing.multiplayerTools.WorldMap;
 
 import java.util.HashSet;
 import java.util.Scanner;
@@ -64,6 +65,8 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
         manager.load("volcano-30238.png",Texture.class);
         manager.load("4k-image-santiago.jpg",Texture.class);
         manager.load("4914003-galaxy-wallpaper-png.png",Texture.class);
+        manager.load("pixmapTest.png",Texture.class);
+        manager.load("pixmapVisual.png",Texture.class);
         BitmapFont dagger30 = new BitmapFont(Gdx.files.internal("fonts/dagger30.fnt"));
         dagger30.getData().markupEnabled = true;
         serverInfo = new ServerInfoMenu(fonts,manager,camView);
@@ -108,7 +111,8 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
                 if(Gdx.input.getInputProcessor() != serverRunningMenu){
                     serverRunningMenu.setInputProcessor();
                     instance = new ServerGameInstance(sv.getPlayers());
-                    instance.world.setCollisionBoxes(Gdx.files.internal("pixmapTest.png"));
+                    instance.setWorldMap(new WorldMap(MenuTools.mGTR("pixmapTest.png",manager),MenuTools.mGTR("pixmapVisual.png",manager)));
+                    //instance.world.setCollisionBoxes(Gdx.files.internal("pixmapTest.png"));
                 }
                 instance.update(sv);
                 serverRunningMenu.updateMenuInfo(sv);

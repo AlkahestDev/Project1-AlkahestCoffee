@@ -12,9 +12,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.menus.*;
 import me.dumfing.multiplayerTools.MultiplayerClient;
 import me.dumfing.multiplayerTools.PlayerSoldier;
+import me.dumfing.multiplayerTools.WorldMap;
 
 public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static final String versionNumber = "1e-10000000";
@@ -42,6 +44,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static final int DAGGER30 = 1;
 	public static final int DAGGER40 = 2;
 	public static final int DAGGER50 = 3;
+	public static WorldMap[] worldMaps;
+	public static final int DEBUGWORLD = 0;
+	ClientGameInstance gameInstance;
 	@Override
 	public void create () {
 		assetManager = new AssetManager();
@@ -126,6 +131,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					pickingInfoMenu.init(player);
 					lobbyMenu.init(player);
 					menu.init();
+					createWorlds();
 					player.pingServers();
 				}
 				break;
@@ -179,16 +185,20 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				break;
 			case PLAYINGGAME:
 				//camera.setToOrtho(true,900,450);
-				if(Gdx.input.getInputProcessor() != clientGameWorld){
-					Gdx.input.setInputProcessor(clientGameWorld);
+				if(Gdx.input.getInputProcessor() != gameInstance){
+					gameInstance = new ClientGameInstance(player,player.getPlayers());
+					gameInstance.pickWorld(DEBUGWORLD);
+					Gdx.input.setInputProcessor(gameInstance);
 				}
 				camera.position.set(0,0,0);
 				camera.update();
 				shapeRenderer.setProjectionMatrix(camera.combined);
 				batch.setProjectionMatrix(camera.combined);
-				shapeRenderer.setColor(Color.RED);
-				clientGameWorld.update();
-				clientGameWorld.draw(batch,shapeRenderer);
+				shapeRenderer.setColor(Color.BLUE);
+				gameInstance.update();
+				gameInstance.draw(batch,shapeRenderer);
+				//clientGameWorld.update();
+				//clientGameWorld.draw(batch,shapeRenderer);
 				/*shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 				for(MultiplayerTools.ServerPlayerInfo p : player.getPlayers().values()){
 					DrawTools.rec(shapeRenderer,p.getRect());
@@ -223,6 +233,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		assetManager.load("volcano-30238.png",Texture.class);
 		//assetManager.load("fonts/dagger40.fnt",BitmapFont.class);
 		assetManager.load("menubackdrops/canvas.png",Texture.class);
+		assetManager.load("pixmapTest.png",Texture.class);
+		assetManager.load("pixmapVisual.png",Texture.class);
 		for(int i = 1; i<10; i++){
 			assetManager.load(String.format("L%d.png",i),Texture.class);
 			assetManager.load(String.format("R%d.png",i),Texture.class);
@@ -285,6 +297,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		camera.update();
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		batch.setProjectionMatrix(camera.combined);
+	}
+	public void createWorlds(){
+		WorldMap debugWorld = new WorldMap(MenuTools.mGTR("pixmapTest.png",assetManager),MenuTools.mGTR("pixmapVisual.png",assetManager));
+		worldMaps = new WorldMap[]{debugWorld};
 	}
 
 }
