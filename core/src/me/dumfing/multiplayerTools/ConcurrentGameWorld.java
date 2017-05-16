@@ -46,15 +46,15 @@ public class ConcurrentGameWorld {
         else{
             playerSoldier.setvY(playerSoldier.getvY()+MultiplayerTools.GRAVITY);
         }
-        //TODO: horizontal collisions
+        //TODO: vertical Collisions
         if((map.getPosId((int)(playerSoldier.getX()+1),(int)(playerSoldier.getY()+1))==1)){ //right side
             System.out.println("hitX");
             playerSoldier.setX(Math.round(playerSoldier.getX()));
-            playerSoldier.setvX(0);
+            playerSoldier.setvX(Math.min(playerSoldier.getvX(),0));
         }
         if((map.getPosId((int)(playerSoldier.getX()),(int)(playerSoldier.getY()+1))==1)){ // left side
             playerSoldier.setX(Math.round(playerSoldier.getX()));
-            playerSoldier.setvX(Math.min(playerSoldier.getvX(),0));
+            playerSoldier.setvX(Math.max(playerSoldier.getvX(),0));
         }
     }
     public void updatePlayerKeys(Integer cID, boolean[] keys){
