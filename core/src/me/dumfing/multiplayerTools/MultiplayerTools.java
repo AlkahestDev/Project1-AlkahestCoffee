@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class MultiplayerTools {
     public static final int UDPPORT = 19815;
     public static final int TCPPORT = 19816;
-    public static final float GRAVITY = -0.981f;
+    public static final float GRAVITY = -0.7f;
     public static class Keys{
         public static final int W = 0;
         public static final int A = 1;
@@ -138,7 +138,7 @@ public class MultiplayerTools {
          */
         public ServerSentChatMessage(Object messageIn, Connection sender, HashMap<Integer, PlayerSoldier> players){
             if(messageIn instanceof  ClientSentChatMessage){
-                this.message = String.format("[WHITE]%s[GRAY]:  [BLACK]%s",players.get(sender).getName(),((ClientSentChatMessage) messageIn).getMessage());
+                this.message = String.format("[WHITE]%s[GRAY]:  [BLACK]%s",players.get(sender.getID()).getName(),((ClientSentChatMessage) messageIn).getMessage());
             }
             else{
                 throw new ClassCastException("Object must be an instance of a ClientSentChatMessage");

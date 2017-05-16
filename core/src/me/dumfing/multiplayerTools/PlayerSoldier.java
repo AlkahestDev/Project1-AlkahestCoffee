@@ -3,6 +3,8 @@ package me.dumfing.multiplayerTools;
 
 import com.badlogic.gdx.math.Rectangle;
 
+import java.util.Arrays;
+
 /**
  * Created by dumpl on 4/28/2017.
  */
@@ -119,5 +121,21 @@ public class PlayerSoldier {
 
     public float getvY() {
         return vY;
+    }
+
+    @Override
+    public String toString() {
+        return "PlayerSoldier{" +
+                "health=" + health +
+                ", maxHealth=" + maxHealth +
+                ", canJump=" + canJump +
+                ", keysHeld=" + Arrays.toString(keysHeld) +
+                ", playerArea=" + playerArea +
+                ", vX=" + vX +
+                ", vY=" + vY +
+                ", team=" + team +
+                ", pickedClass=" + pickedClass +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
