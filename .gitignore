@@ -114,6 +114,5 @@ gradle-app.setting
 Thumbs.db
 
 *.iml
-core/core.iml
+*.iml
 *.properties
-*.gradle
