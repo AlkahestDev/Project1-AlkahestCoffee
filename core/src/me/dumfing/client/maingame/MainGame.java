@@ -139,11 +139,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				if(Gdx.input.getInputProcessor() != gameMain){
 					gameMain.setInputProcessor();
 				}
-				//if(Gdx.input.getInputProcessor() != menu ){
-				//	menu.setInputProcessor();
-				//}
-				//menu.update();
-				//menu.standardDraw(batch,shapeRenderer);
+				/*
+				if(Gdx.input.getInputProcessor() != menu ){
+					menu.setInputProcessor();
+				}
+				menu.update();
+				menu.standardDraw(batch,shapeRenderer);*/
 				gameMain.update();
 				gameMain.standardDraw(batch,shapeRenderer);
 				break;

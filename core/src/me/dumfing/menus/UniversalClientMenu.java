@@ -19,7 +19,7 @@ public class UniversalClientMenu extends Menu{
     //MAINMENU objects
     MenuBox askUsernameBox, playBox, settingsBox, exitBox;
     MenuTools.TextField askUsernameField;
-    MenuTools.QueueText userNameError;
+    MenuTools.QueueText userNameError, gameVersion, gameName;
     boolean menuButtonsOut = false;
     /**
      * Constructor for the menu
@@ -146,5 +146,8 @@ public class UniversalClientMenu extends Menu{
         super.addMenuBox(playBox);
         super.addMenuBox(settingsBox);
         super.addMenuBox(exitBox);
+    }
+    public void setupServerBrowserButtons(){
+
     }
 }
