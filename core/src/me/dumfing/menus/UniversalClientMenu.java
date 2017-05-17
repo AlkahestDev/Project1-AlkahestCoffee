@@ -12,10 +12,9 @@ import me.dumfing.gdxtools.MenuTools;
 import static me.dumfing.client.maingame.MainGame.DAGGER20;
 import static me.dumfing.client.maingame.MainGame.DAGGER40;
 
-/**
- * Created by dumpl on 5/12/2017.
- */
+
 public class UniversalClientMenu extends Menu{
+
     //MAINMENU objects
     MenuBox askUsernameBox, playBox, settingsBox, exitBox;
     MenuTools.TextField askUsernameField;
