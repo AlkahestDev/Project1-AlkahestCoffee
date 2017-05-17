@@ -113,6 +113,6 @@ gradle-app.setting
 .DS_Store
 Thumbs.db
 
-*.iml
-*.iml
-*.properties
+core/core.iml
+core/core.iml
+desktop/desktop.iml
