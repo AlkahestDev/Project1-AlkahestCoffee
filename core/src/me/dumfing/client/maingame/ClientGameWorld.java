@@ -33,7 +33,7 @@ public class ClientGameWorld implements InputProcessor{
             keyUpdate=false;
         }
         for(PlayerSoldier p : infoClient.getPlayers().values()){
-            System.out.println(p.getvX()+" "+p.getvY());
+            //System.out.println(p.getvX()+" "+p.getvY());
             movePlayer(p);
         }
     }

@@ -78,7 +78,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded, background frames are loaded and added to it here
 		scW = Gdx.graphics.getWidth();
 		scH = Gdx.graphics.getHeight();
-		System.out.println(new Pixmap(Gdx.files.internal("pixmapTest.png")).getPixel(0,0)>>8);//since gimp doesn't do alpha in a friendly way, I'll bitshift right 8 bits to ignore alpha
+		//System.out.println(new Pixmap(Gdx.files.internal("pixmapTest.png")).getPixel(0,0)>>8);//since gimp doesn't do alpha in a friendly way, I'll bitshift right 8 bits to ignore alpha
 		state = GameState.State.LOADINGGAME;
 		batch = new SpriteBatch();
 		client = new MultiplayerClient();
@@ -192,18 +192,16 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					Gdx.input.setInputProcessor(gameInstance);
 				}
 				gameInstance.update();
-
+				shapeRenderer.setColor(Color.BLUE);
 				PlayerSoldier clientSoldierTemp = gameInstance.getPlayer(client.getConnectionID());
+				System.out.println("before "+clientSoldierTemp.getX());
 				float deltaX = camera.position.x-clientSoldierTemp.getX();
 				float deltaY = camera.position.y-clientSoldierTemp.getY();
-				System.out.println(deltaX);
-				if(deltaX<-5){ // player on right side of camera
-					camera.position.x+=Math.min(Math.abs(deltaX)/4f,Math.abs(deltaX)-5);
-					//camera.position.x=clientSoldierTemp.getX()-5;
+				if(deltaX<=-5){ // player on right side of camera
+					camera.position.x = clientSoldierTemp.getX()-5;
 				}
-				else if(deltaX>5){
-					camera.position.x-=Math.min(Math.abs(deltaX)/4f,Math.abs(deltaX)-5);
-					//camera.position.x=clientSoldierTemp.getX()+5;
+				else if(deltaX>=5){
+					camera.position.x = clientSoldierTemp.getX()+5;//-=Math.abs(deltaX)/5f;
 				}
 				if(deltaY<-3f){
 					camera.position.y+=Math.min(Math.abs(deltaY)/5f,Math.abs(deltaY));
@@ -211,19 +209,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				else if(deltaY>3f){
 					camera.position.y-=Math.min(Math.abs(deltaY)/5f,Math.abs(deltaY));
 				}
+				//camera.position.x = clientSoldierTemp.getX();
+				System.out.println("camera update");
 				camera.update();
 				shapeRenderer.setProjectionMatrix(camera.combined);
 				batch.setProjectionMatrix(camera.combined);
-				shapeRenderer.setColor(Color.BLUE);
-				System.out.println(camera.position);
 				gameInstance.draw(batch,shapeRenderer);
-				//clientGameWorld.update();
-				//clientGameWorld.draw(batch,shapeRenderer);
-				/*shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-				for(MultiplayerTools.ServerPlayerInfo p : client.getPlayers().values()){
-					DrawTools.rec(shapeRenderer,p.getRect());
-				}
-				shapeRenderer.end();*/
+				System.out.println("after "+clientSoldierTemp.getX());
 				break;
 			case ROUNDOVER:
 				break;

@@ -31,8 +31,9 @@ public class ClientGameInstance implements InputProcessor{
             keyUpdate = false;
         }
         if(gameClient.isHasNewPlayerInfo()) {
-            System.out.println("new client info");
-            System.out.println(gameClient.getPlayers().values());
+            //System.out.println("new client info");
+            //System.out.println(gameClient.getPlayers().values());
+            System.out.println("receive info");
             playWorld.updatePlayers(gameClient.getPlayers());
         }
         playWorld.updatePlayerKeys(gameClient.getConnectionID(),keysDown);
@@ -46,7 +47,6 @@ public class ClientGameInstance implements InputProcessor{
         batch.begin();
         //batch.draw(playWorld.getMap().getVisualComponent(),0,0);
         batch.end();
-        playWorld.update();
         playWorld.getMap().draw(batch);
         renderer.begin(ShapeRenderer.ShapeType.Line);
         for(PlayerSoldier p : playWorld.getPlayers().values()){

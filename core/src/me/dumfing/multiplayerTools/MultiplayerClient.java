@@ -77,7 +77,7 @@ public class MultiplayerClient {
 
             @Override
             public void received(Connection connection, Object o) {
-                System.out.println(String.format("Received %-20s from connection %d",o.getClass().getSimpleName(),connection.getID()));
+                //System.out.println(String.format("Received %-20s from connection %d",o.getClass().getSimpleName(),connection.getID()));
                 if(o instanceof MultiplayerTools.ServerSummary){
                     MultiplayerTools.ServerSummary temp = (MultiplayerTools.ServerSummary) o;
                     serverSummaries.put(connection.getRemoteAddressUDP().toString(),temp);
