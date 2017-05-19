@@ -194,28 +194,41 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				gameInstance.update();
 				shapeRenderer.setColor(Color.BLUE);
 				PlayerSoldier clientSoldierTemp = gameInstance.getPlayer(client.getConnectionID());
-				System.out.println("before "+clientSoldierTemp.getX());
+				//System.out.println("before "+clientSoldierTemp.getX());
 				float deltaX = camera.position.x-clientSoldierTemp.getX();
 				float deltaY = camera.position.y-clientSoldierTemp.getY();
-				if(deltaX<=-5){ // player on right side of camera
-					camera.position.x = clientSoldierTemp.getX()-5;
+				if(deltaX<-5){ // player on right side of camera
+					//camera.position.x = clientSoldierTemp.getX()-5;
+					if(Math.abs(deltaX)<6){
+						camera.position.x = clientSoldierTemp.getX()-5;
+					}
+					else {
+						camera.position.x += Math.abs(deltaX) / 5f;
+					}
 				}
-				else if(deltaX>=5){
-					camera.position.x = clientSoldierTemp.getX()+5;//-=Math.abs(deltaX)/5f;
+				else if(deltaX>5){
+					//camera.position.x = clientSoldierTemp.getX()+5;//-=Math.abs(deltaX)/5f;
+					if(Math.abs(deltaX)<6){
+						camera.position.x = clientSoldierTemp.getX()+5;
+					}
+					else {
+						camera.position.x -= Math.abs(deltaX / 5f);
+					}
 				}
 				if(deltaY<-3f){
-					camera.position.y+=Math.min(Math.abs(deltaY)/5f,Math.abs(deltaY));
+					camera.position.y+=Math.abs(deltaY)/5f;//Math.min(Math.abs(deltaY)/5f,Math.abs(deltaY));
 				}
 				else if(deltaY>3f){
-					camera.position.y-=Math.min(Math.abs(deltaY)/5f,Math.abs(deltaY));
+					camera.position.y-=Math.abs(deltaY)/5f;//Math.min(Math.abs(deltaY)/5f,Math.abs(deltaY));
 				}
 				//camera.position.x = clientSoldierTemp.getX();
-				System.out.println("camera update");
+				//System.out.println("camera update");
+				System.out.println(camera.position.x-clientSoldierTemp.getX()+" "+deltaX);
 				camera.update();
 				shapeRenderer.setProjectionMatrix(camera.combined);
 				batch.setProjectionMatrix(camera.combined);
 				gameInstance.draw(batch,shapeRenderer);
-				System.out.println("after "+clientSoldierTemp.getX());
+				//System.out.println("after "+clientSoldierTemp.getX());
 				break;
 			case ROUNDOVER:
 				break;
