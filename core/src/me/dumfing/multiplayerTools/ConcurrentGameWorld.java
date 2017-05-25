@@ -1,5 +1,6 @@
 package me.dumfing.multiplayerTools;
 
+import com.badlogic.gdx.Gdx;
 import me.dumfing.gdxtools.MathTools;
 
 import java.util.HashMap;
@@ -19,7 +20,8 @@ public class ConcurrentGameWorld {
     }
     public void update(){
         for(PlayerSoldier p : players.values()){
-            handleKeyInput(p);
+            p.update(Gdx.graphics.getDeltaTime());
+            p.setAnimationID(handleKeyInput(p));
             handleCollisions(p);
             p.move();
             //System.out.println(p);
@@ -64,22 +66,35 @@ public class ConcurrentGameWorld {
     public void updatePlayers(HashMap<Integer, PlayerSoldier> newInfo){
         this.players = newInfo;
     }
-    public void handleKeyInput(PlayerSoldier pIn){
+    public int handleKeyInput(PlayerSoldier pIn){
         boolean[] keys = pIn.getKeysHeld();
+        int animation = 0;
         if(keys[MultiplayerTools.Keys.W]){
             if(pIn.isCanJump()) {
-                pIn.setvY(4);
+                pIn.setvY(2.5f);
                 pIn.setCanJump(false);
+                animation+=PlayerAnimations.JUMP;
             }
+        }
+        if(!pIn.isCanJump() && pIn.getvX()<0){ // if player is not on ground and player is descending
+            animation+=PlayerAnimations.FALL;
         }
         if(keys[MultiplayerTools.Keys.S]){
 
         }
         if(keys[MultiplayerTools.Keys.A]){
-            pIn.setvX(-0.5f);
+            pIn.setvX(-0.3f);
+            animation+=PlayerAnimations.WALK;
+            pIn.setFacingDirection(0);
         }
         else if(keys[MultiplayerTools.Keys.D]){
-            pIn.setvX(0.5f);
+            pIn.setvX(0.3f);
+            animation+=PlayerAnimations.WALK;
+            pIn.setFacingDirection(1);
         }
+        if(animation+pIn.getFacingDirection()!=pIn.getAnimationID()){
+            pIn.setAnimationTime(0);
+        }
+        return animation;
     }
 }

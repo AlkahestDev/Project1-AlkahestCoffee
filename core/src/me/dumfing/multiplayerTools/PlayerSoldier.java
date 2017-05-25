@@ -1,6 +1,9 @@
 package me.dumfing.multiplayerTools;
 
 
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
 import java.util.Arrays;
@@ -9,13 +12,12 @@ import java.util.Arrays;
  * Created by dumpl on 4/28/2017.
  */
 public class PlayerSoldier {
-// a more detailed version of the players that will be sent at the start but won't be sent around as much later
-    private int health, maxHealth;
+    private int health, maxHealth, animationID, team, pickedClass,facingDirection; // animationID is an int describing the direction the player is facing and what animation they're doing
+    private float animationTime; // Amount of time the PlayerSoldier has been on an animation
     private boolean canJump;
     private boolean[] keysHeld = new boolean[8];
     private Rectangle playerArea;
     private float vX, vY;
-    private int team, pickedClass;
     private String name;
     public PlayerSoldier(){}
     public PlayerSoldier(Rectangle playerRect, int team){
@@ -36,12 +38,24 @@ public class PlayerSoldier {
         this.health = 100;
         this.maxHealth = 100;
     }
+    public void update(float deltaTime){
+        this.animationTime+=deltaTime;
+    }
     public void setMaxHealth(int maxHealth){
         this.maxHealth = maxHealth;
     }
     public String getName(){return this.name;}
     public void setKeysHeld(boolean[] keysHeld) {
         this.keysHeld = keysHeld;
+    }
+
+    public void setAnimationID(int animationID) {
+        //this.animationTime = 0;
+        this.animationID = animationID;
+    }
+
+    public int getAnimationID() {
+        return animationID+this.facingDirection;
     }
 
     public void setName(String name) {
@@ -64,6 +78,14 @@ public class PlayerSoldier {
         return canJump;
     }
 
+    public int getFacingDirection() {
+        return facingDirection;
+    }
+
+    public void setFacingDirection(int facingDirection) {
+        this.facingDirection = facingDirection;
+    }
+
     public int getHealth(){
         return this.health;
     }
@@ -74,6 +96,47 @@ public class PlayerSoldier {
         playerArea.x+=this.vX;
         playerArea.y+=this.vY;
         //System.out.println("after moving "+super.getPos());
+    }
+
+    /**
+     * Draws the PlayerSoldier
+     * @param batch
+     * @param isPlayer If this PlayerSoldier is the PlayerSoldier the client is viewing
+     */
+    public void draw(SpriteBatch batch, boolean isPlayer){
+        TextureRegion drawFrame;
+        Animation[][] animationSet;
+        if(isPlayer) {
+            if (this.getTeam() == 0) { // red
+                animationSet = PlayerAnimations.redPlayer;
+            } else { // blu
+                animationSet = PlayerAnimations.bluPlayer;
+            }
+        }
+        else{
+            if (this.getTeam() == 0) { // red
+                animationSet = PlayerAnimations.redNonPlayer;
+            } else { // blu
+                animationSet = PlayerAnimations.bluNonPlayer;
+            }
+        }
+        //System.out.println(this.animationTime);
+        if((this.getAnimationID()&PlayerAnimations.ISWALKING) == PlayerAnimations.WALK){
+            drawFrame = (TextureRegion) animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][0].getKeyFrame(this.animationTime);
+        }
+        else if((this.getAnimationID()&PlayerAnimations.ISFALLING) == PlayerAnimations.FALL){
+            drawFrame = (TextureRegion) animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][0].getKeyFrame(this.animationTime); //TODO: change to 1 when falling sprites are added
+        }
+        else if((this.getAnimationID()&PlayerAnimations.ISJUMPING) == PlayerAnimations.JUMP){
+            drawFrame = (TextureRegion) animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][0].getKeyFrame(this.animationTime); //TODO: change to 2 when jumping sprites are added
+        }
+        else if((this.getAnimationID()&PlayerAnimations.ISATTACK) == PlayerAnimations.ATTACK){
+            drawFrame = (TextureRegion) animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][0].getKeyFrame(this.animationTime); //TODO: change to 3 when attacking sprites are added
+        }
+        else { // idling
+            drawFrame = (TextureRegion) animationSet[this.getAnimationID() & PlayerAnimations.DIRECTION][4].getKeyFrame(this.animationTime);
+        }
+        batch.draw(drawFrame,this.getX(),this.getY(),1,2);
     }
     public void setX(float x){
             this.playerArea.setX(x);
@@ -121,6 +184,14 @@ public class PlayerSoldier {
 
     public float getvY() {
         return vY;
+    }
+
+    public float getAnimationTime() {
+        return animationTime;
+    }
+
+    public void setAnimationTime(float animationTime) {
+        this.animationTime = animationTime;
     }
 
     @Override

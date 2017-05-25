@@ -1,0 +1,5 @@
+0 Walking
+1 Jumping
+2 Falling
+3 Attacking
+4 Idle

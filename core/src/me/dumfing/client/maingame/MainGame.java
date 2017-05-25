@@ -36,7 +36,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static ServerBrowser serverBrowser; // static so I can access the serverList from the findServers runnable in MultiplayerClient
 	SettingsMenu settingsMenu;
 	OrthographicCamera camera;
-	ClientGameWorld clientGameWorld;
 	UniversalClientMenu menu;
 	Array<BitmapFontCache> fontCaches;
 	boolean zoomedIn = false;
@@ -86,7 +85,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		client.startClient();
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		batch.setProjectionMatrix(camera.combined);
-		clientGameWorld = new ClientGameWorld(client);
 		menu = new UniversalClientMenu(fontCaches,assetManager,camera);
 		Gdx.input.setInputProcessor(this);
 	}
@@ -102,7 +100,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			if(!zoomedIn){
 				System.out.println("CameraZoom "+camera.zoom);
 				System.out.println("zoomin");
-				zoomCamera(0.05f);
+				zoomCamera(0.025f);
 				zoomedIn = true;
 			}
 		}
@@ -223,7 +221,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				}
 				//camera.position.x = clientSoldierTemp.getX();
 				//System.out.println("camera update");
-				System.out.println(camera.position.x-clientSoldierTemp.getX()+" "+deltaX);
+				//System.out.println(camera.position.x-clientSoldierTemp.getX()+" "+deltaX);
 				camera.update();
 				shapeRenderer.setProjectionMatrix(camera.combined);
 				batch.setProjectionMatrix(camera.combined);
