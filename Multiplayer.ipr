@@ -250,19 +250,62 @@
     <library name="gdx-1.9.5">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-1.9.5.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="gdx-backend-lwjgl-1.9.5">
+      <CLASSES>
         <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-backend-lwjgl-1.9.5.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
+    <library name="gdx-backend-lwjgl-1.9.5-sources">
+      <CLASSES />
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-backend-lwjgl-1.9.5-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="gdx-platform-1.9.5-natives-arm64-v8a">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-arm64-v8a.jar!/" />
-        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-armeabi-v7a.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="gdx-platform-1.9.5-natives-armeabi">
+      <CLASSES>
         <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-armeabi.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="gdx-platform-1.9.5-natives-armeabi-v7a">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-armeabi-v7a.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="gdx-platform-1.9.5-natives-desktop">
+      <CLASSES>
         <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-desktop.jar!/" />
-        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-x86_64.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="gdx-platform-1.9.5-natives-x86">
+      <CLASSES>
         <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-x86.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="gdx-platform-1.9.5-natives-x86_64">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-x86_64.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />

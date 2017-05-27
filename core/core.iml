@@ -45,5 +45,12 @@
     <orderEntry type="library" name="kryonet-2.21-all" level="project" />
     <orderEntry type="library" name="gdx-1.9.5" level="project" />
     <orderEntry type="library" name="gdx-platform-1.9.5-natives-arm64-v8a" level="project" />
+    <orderEntry type="library" name="gdx-platform-1.9.5-natives-armeabi-v7a" level="project" />
+    <orderEntry type="library" name="gdx-platform-1.9.5-natives-armeabi" level="project" />
+    <orderEntry type="library" name="gdx-platform-1.9.5-natives-desktop" level="project" />
+    <orderEntry type="library" name="gdx-platform-1.9.5-natives-x86" level="project" />
+    <orderEntry type="library" name="gdx-platform-1.9.5-natives-x86_64" level="project" />
+    <orderEntry type="library" name="gdx-backend-lwjgl-1.9.5-sources" level="project" />
+    <orderEntry type="library" name="gdx-backend-lwjgl-1.9.5" level="project" />
   </component>
 </module>
