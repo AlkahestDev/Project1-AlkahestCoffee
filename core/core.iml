@@ -43,5 +43,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="kryonet-2.21-all" level="project" />
+    <orderEntry type="library" name="gdx-1.9.5" level="project" />
+    <orderEntry type="library" name="gdx-platform-1.9.5-natives-arm64-v8a" level="project" />
   </component>
 </module>

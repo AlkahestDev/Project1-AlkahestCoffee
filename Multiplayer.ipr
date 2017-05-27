@@ -247,6 +247,26 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
   </component>
   <component name="libraryTable">
+    <library name="gdx-1.9.5">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-1.9.5.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-backend-lwjgl-1.9.5.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="gdx-platform-1.9.5-natives-arm64-v8a">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-arm64-v8a.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-armeabi-v7a.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-armeabi.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-desktop.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-x86_64.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-x86.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
     <library name="kryonet-2.21-all">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/core/assets/javalibs/kryonet-2.21-all.jar!/" />
