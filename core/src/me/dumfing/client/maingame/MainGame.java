@@ -195,19 +195,19 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				//System.out.println("before "+clientSoldierTemp.getX());
 				float deltaX = camera.position.x-clientSoldierTemp.getX();
 				float deltaY = camera.position.y-clientSoldierTemp.getY();
-				if(deltaX<-5){ // player on right side of camera
+				if(deltaX<-3){ // player on right side of camera
 					//camera.position.x = clientSoldierTemp.getX()-5;
 					if(Math.abs(deltaX)<6){
-						camera.position.x = clientSoldierTemp.getX()-5;
+						camera.position.x = clientSoldierTemp.getX()-3;
 					}
 					else {
 						camera.position.x += Math.abs(deltaX) / 5f;
 					}
 				}
-				else if(deltaX>5){
+				else if(deltaX>3){
 					//camera.position.x = clientSoldierTemp.getX()+5;//-=Math.abs(deltaX)/5f;
 					if(Math.abs(deltaX)<6){
-						camera.position.x = clientSoldierTemp.getX()+5;
+						camera.position.x = clientSoldierTemp.getX()+3;
 					}
 					else {
 						camera.position.x -= Math.abs(deltaX / 5f);

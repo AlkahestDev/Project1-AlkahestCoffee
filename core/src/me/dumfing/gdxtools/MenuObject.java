@@ -90,6 +90,14 @@ public class MenuObject {
         executed = false;
     }
 
+    public boolean isExecuted() {
+        return executed;
+    }
+
+    public void setExecuted(boolean executed) {
+        this.executed = executed;
+    }
+
     public Rectangle getRect(){
         return this.shape;
     }

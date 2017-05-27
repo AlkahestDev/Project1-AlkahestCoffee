@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class PlayerAnimations {
     private static final TextureAtlas playerSprites = new TextureAtlas(Gdx.files.internal("SpriteSheets/SoldierSprites.atlas"));
-    private static final float WALKINGFRAMETIME = 0.08f;
+    private static final float WALKINGFRAMETIME = 0.07f;
     private static final float IDLEFRAMETIME = 0.3f;
     //file names are in format adct
     //a is the animation (walk, jump, fall, etc.)

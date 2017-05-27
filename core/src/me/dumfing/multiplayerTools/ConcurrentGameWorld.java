@@ -1,9 +1,12 @@
 package me.dumfing.multiplayerTools;
 
 import com.badlogic.gdx.Gdx;
+import com.sun.org.apache.xpath.internal.operations.Mult;
 import me.dumfing.gdxtools.MathTools;
 
 import java.util.HashMap;
+
+import static me.dumfing.multiplayerTools.MultiplayerTools.WALKSPEED;
 
 /**
  * A new version of the gameworld that is designed to be used on both the client and serverside for better
@@ -21,9 +24,12 @@ public class ConcurrentGameWorld {
     public void update(){
         for(PlayerSoldier p : players.values()){
             p.update(Gdx.graphics.getDeltaTime());
+            System.out.print(p.getvY()+" ");
             p.setAnimationID(handleKeyInput(p));
+            System.out.print(p.getvY()+" ");
             handleCollisions(p);
             p.move();
+            System.out.println(p.getvY());
             //System.out.println(p);
         }
     }
@@ -37,6 +43,9 @@ public class ConcurrentGameWorld {
     public void handleCollisions(PlayerSoldier playerSoldier){
         if(playerSoldier.isCanJump()) {
             playerSoldier.setvX(MathTools.towardsZero(playerSoldier.getvX(), 0.1f));
+        }
+        else { // air friction
+            playerSoldier.setvX(MathTools.towardsZero(playerSoldier.getvX(), 0.001f));
         }
         //System.out.println(map.getPosId((int)(playerSoldier.getX()),(int)(playerSoldier.getY()+playerSoldier.getvY())));
         if(map.getPosId((int)(playerSoldier.getX()),(int)(playerSoldier.getY()+playerSoldier.getvY()))==1){
@@ -56,7 +65,7 @@ public class ConcurrentGameWorld {
         }
         if((map.getPosId((int)(playerSoldier.getX()),(int)(playerSoldier.getY()+1))==1)){ // left side
             System.out.println("hitXL");
-            playerSoldier.setX(Math.round(playerSoldier.getX()));
+            playerSoldier.setX(Math.round(playerSoldier.getX())-1);
             playerSoldier.setvX(Math.max(playerSoldier.getvX(),0));
         }
     }
@@ -71,25 +80,37 @@ public class ConcurrentGameWorld {
         int animation = 0;
         if(keys[MultiplayerTools.Keys.W]){
             if(pIn.isCanJump()) {
-                pIn.setvY(2.5f);
+                pIn.setvY(MultiplayerTools.JUMPPOWER);
                 pIn.setCanJump(false);
-                animation+=PlayerAnimations.JUMP;
             }
         }
         if(!pIn.isCanJump() && pIn.getvX()<0){ // if player is not on ground and player is descending
             animation+=PlayerAnimations.FALL;
         }
+        else if(!pIn.isCanJump() && pIn.getvX()>0){
+            animation+=PlayerAnimations.JUMP;
+        }
         if(keys[MultiplayerTools.Keys.S]){
 
         }
         if(keys[MultiplayerTools.Keys.A]){
-            pIn.setvX(-0.3f);
-            animation+=PlayerAnimations.WALK;
+            if(pIn.isCanJump()) {
+                pIn.setvX(-WALKSPEED);
+                animation += PlayerAnimations.WALK;
+            }
+            else{
+                pIn.setvX(-WALKSPEED/2f);
+            }
             pIn.setFacingDirection(0);
         }
         else if(keys[MultiplayerTools.Keys.D]){
-            pIn.setvX(0.3f);
-            animation+=PlayerAnimations.WALK;
+            if(pIn.isCanJump()) {
+                pIn.setvX(WALKSPEED);
+                animation += PlayerAnimations.WALK;
+            }
+            else{
+                pIn.setvX(WALKSPEED/2f);
+            }
             pIn.setFacingDirection(1);
         }
         if(animation+pIn.getFacingDirection()!=pIn.getAnimationID()){
