@@ -12,6 +12,7 @@ import me.dumfing.cleanMenu.*;
 public class fakeMainGame extends ApplicationAdapter {
 
 
+
     SpriteBatch batch;
     Texture img;
     CleanMenu menu = new CleanMenu();
@@ -23,6 +24,7 @@ public class fakeMainGame extends ApplicationAdapter {
 
         // Creating the menu
         menu.create(MenuState.MAIN);
+        Gdx.input.setInputProcessor(menu);
 
     }
 
@@ -38,7 +40,7 @@ public class fakeMainGame extends ApplicationAdapter {
         // Rendering Menu
         for (String key : menu.items.keySet()){
             MenuItem item = menu.items.get(key);
-            batch.draw(item.texture, item.x, item.y);
+            batch.draw(item.mainTexture, item.x, item.y);
         }
         menu.update();
 

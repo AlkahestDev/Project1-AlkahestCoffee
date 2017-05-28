@@ -8,22 +8,22 @@ public class MenuItem {
 
     ItemType type;
 
-    public Texture texture;
+    public Texture mainTexture;
     public float x;
     public float y;
 
+    // Button Stuff
     public boolean pressed;
+    public Texture texture;
     public Texture texture2;
     OnClick action;
-    public interface OnClick{
-        void action();
-    }
+    public interface OnClick{void action();}
 
     // Image Constructor
     MenuItem(ItemType type, Texture texture, float x, float y){
 
         this.type = type;
-        this.texture = texture;
+        this.mainTexture = texture;
         this.x = x;
         this.y = y;
 
@@ -35,6 +35,7 @@ public class MenuItem {
         this.type = type;
         this.texture = texture;
         this.texture2 = texture2;
+        mainTexture = this.texture;
         this.x = x;
         this.y = y;
         pressed = false;

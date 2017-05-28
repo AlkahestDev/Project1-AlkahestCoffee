@@ -2,7 +2,6 @@ package me.dumfing;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import me.dumfing.client.maingame.MainGame;
 
 public class tester {
     public static void main (String [] arg) {
