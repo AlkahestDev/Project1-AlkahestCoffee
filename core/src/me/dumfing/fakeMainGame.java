@@ -1,5 +1,7 @@
 package me.dumfing;
 
+// A class just to test stuff out in, without having to worry about loading things up etc, before they go in the actual game.
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,17 +14,15 @@ public class fakeMainGame extends ApplicationAdapter {
 
     SpriteBatch batch;
     Texture img;
-
     CleanMenu menu = new CleanMenu();
-
 
     @Override
     public void create () {
         batch = new SpriteBatch();
         img = new Texture("badAlkahest.png");
 
+        // Creating the menu
         menu.create(MenuState.MAIN);
-
 
     }
 
@@ -34,9 +34,13 @@ public class fakeMainGame extends ApplicationAdapter {
 
         batch.draw(img, 0, 0);
 
-        for (MenuItem item : menu.menuItems){
+
+        // Rendering Menu
+        for (String key : menu.items.keySet()){
+            MenuItem item = menu.items.get(key);
             batch.draw(item.texture, item.x, item.y);
         }
+        menu.update();
 
         batch.end();
     }
