@@ -185,7 +185,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			case PLAYINGGAME:
 				//camera.setToOrtho(true,900,450);
 				if(Gdx.input.getInputProcessor() != gameInstance){
-					gameInstance = new ClientGameInstance(client, client.getPlayers());
+					gameInstance = new ClientGameInstance(client, client.getPlayers(),camera);
 					gameInstance.pickWorld(DEBUGWORLD);
 					Gdx.input.setInputProcessor(gameInstance);
 				}

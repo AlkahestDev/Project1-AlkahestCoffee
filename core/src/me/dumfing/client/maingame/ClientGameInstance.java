@@ -2,6 +2,7 @@ package me.dumfing.client.maingame;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -21,9 +22,11 @@ public class ClientGameInstance implements InputProcessor{
     private boolean keyUpdate = false;
     MultiplayerClient gameClient;
     private ConcurrentGameWorld playWorld;
-    public ClientGameInstance(MultiplayerClient gameClient, HashMap<Integer, PlayerSoldier> players){
+    private OrthographicCamera camera;
+    public ClientGameInstance(MultiplayerClient gameClient, HashMap<Integer, PlayerSoldier> players, OrthographicCamera camera){
         this.gameClient = gameClient;
         this.playWorld = new ConcurrentGameWorld(players);
+        this.camera=camera;
     }
     public void update(){
         if(keyUpdate){
@@ -34,7 +37,7 @@ public class ClientGameInstance implements InputProcessor{
         if(gameClient.isHasNewPlayerInfo()) {
             //System.out.println("new client info");
             //System.out.println(gameClient.getPlayers().values());
-            System.out.println("receive info");
+            //System.out.println("receive info");
             playWorld.updatePlayers(gameClient.getPlayers());
         }
         playWorld.updatePlayerKeys(gameClient.getConnectionID(),keysDown);
@@ -137,6 +140,9 @@ public class ClientGameInstance implements InputProcessor{
             keysDown[MultiplayerTools.Keys.RMB] = true;
             keyUpdate = true;
         }
+        float mouseX = camera.position.x+screenX;// the mouses x position in the world //-playWorld.getPlayers().get(gameClient.getConnectionID()).getX();
+        float mouseY = camera.position.y+screenY;
+        System.out.println(mouseX+" "+mouseY);
         return false;
     }
 

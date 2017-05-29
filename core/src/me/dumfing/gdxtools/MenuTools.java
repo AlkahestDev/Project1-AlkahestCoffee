@@ -313,7 +313,8 @@ public class MenuTools {
         public void update(Array<BitmapFontCache> bmfc, boolean focused){
             handleHeldKeys();
             bmfc.get(fontId).setColor(Color.BLACK);
-            bmfc.get(fontId).addText(this.sOut.toString(),super.shape.getX()+3,super.shape.getY()+super.shape.getHeight() - 7,0,this.sOut.length(),super.shape.getWidth(), Align.left,false);
+            String cutString = cutToSize(this.sOut.toString(),super.shape.width,bmfc.get(fontId).getFont());
+            bmfc.get(fontId).addText(cutString,super.shape.getX()+3,super.shape.getY()+super.shape.getHeight() - 7,0,cutString.length(),super.shape.getWidth(), Align.left,false);
             if(focused){
                 this.frameCount++; // Integer.MAX_VALUE frames is around 414 days to overflow, if a user has the text box open for 414 days, the game probably won't be worth keeping open
             }
@@ -479,5 +480,23 @@ public class MenuTools {
      */
     public static TextureRegion mGTR(String fileName, AssetManager manager){
         return new TextureRegion((Texture)manager.get(fileName));
+    }
+
+    /**
+     * Cuts the string so it'll fit into the target width
+     * @param textIn The text you wish to cut
+     * @param targetWidth The target width you want the text to be cut into
+     * @param fontIn The font to base the widths off of
+     * @return A string that will be within the target width when rendered with the given font
+     */
+    public static String cutToSize(String textIn, float targetWidth, BitmapFont fontIn){
+        String out=textIn;
+        for(int i = textIn.length();i>0;i--) {
+            String cutText = out.substring(0, i);
+            if (textWidth(fontIn, cutText) <= targetWidth) {
+                return cutText;
+            }
+        }
+        return "";
     }
 }
