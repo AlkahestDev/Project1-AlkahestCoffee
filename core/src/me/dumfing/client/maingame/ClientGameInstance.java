@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import me.dumfing.gdxtools.DrawTools;
 import me.dumfing.multiplayerTools.ConcurrentGameWorld;
 import me.dumfing.multiplayerTools.MultiplayerClient;
@@ -52,8 +53,11 @@ public class ClientGameInstance implements InputProcessor{
         //batch.draw(playWorld.getMap().getVisualComponent(),0,0);
         batch.end();
         playWorld.getMap().draw(batch);
-        //renderer.begin(ShapeRenderer.ShapeType.Line);
-        //renderer.end();
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
+            for(PlayerSoldier playerSoldier :gameClient.getPlayers().values()) {
+                DrawTools.rec(renderer, new Rectangle((int) (playerSoldier.getX()), (int) (playerSoldier.getY() + playerSoldier.getvY()), 1, 1));
+            }
+        renderer.end();
     }
     public void pickWorld(int worldID){
         playWorld.setWorld(MainGame.worldMaps[MainGame.DEBUGWORLD]);

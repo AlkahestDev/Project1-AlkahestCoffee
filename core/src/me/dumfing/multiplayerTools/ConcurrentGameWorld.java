@@ -47,8 +47,8 @@ public class ConcurrentGameWorld {
             playerSoldier.setvX(MathTools.towardsZero(playerSoldier.getvX(), 0.001f));
         }
         //System.out.println(map.getPosId((int)(playerSoldier.getX()),(int)(playerSoldier.getY()+playerSoldier.getvY())));
-        if(map.getPosId((int)(playerSoldier.getX()),(int)(playerSoldier.getY()+playerSoldier.getvY()))==1){
-            System.out.println("hitY");
+        if(map.getPosId((int)(playerSoldier.getX()), Math.round(playerSoldier.getY()+playerSoldier.getvY()))==1){
+            System.out.printf("%d %d %f\n",(int)(playerSoldier.getX()),(int)(playerSoldier.getY()+playerSoldier.getvY()), playerSoldier.getvY());
             playerSoldier.setvY(0);
             playerSoldier.setY((int)playerSoldier.getY()+0.001f);
             playerSoldier.setCanJump(true);
