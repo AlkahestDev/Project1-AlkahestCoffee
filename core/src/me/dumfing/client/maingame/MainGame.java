@@ -2,6 +2,7 @@ package me.dumfing.client.maingame;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.*;
@@ -48,6 +49,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	ClientGameInstance gameInstance;
 	@Override
 	public void create () {
+	    Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("mouseCursorTemp.png")),0,0));
 		assetManager = new AssetManager();
 		queueLoading();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());

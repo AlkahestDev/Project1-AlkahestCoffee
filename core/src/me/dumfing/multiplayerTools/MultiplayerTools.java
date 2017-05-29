@@ -15,7 +15,7 @@ public class MultiplayerTools {
     public static final int TCPPORT = 19816;
     public static final float GRAVITY = -0.05f;
     public static final float WALKSPEED = 0.22f;
-    public static final float JUMPPOWER = 0.8f; //TODO: fix physics so jumping works
+    public static final float JUMPPOWER = 0.8f;
     public static class Keys{
         public static final int W = 0;
         public static final int A = 1;

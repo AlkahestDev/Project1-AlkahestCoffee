@@ -117,7 +117,7 @@ public class Menu implements InputProcessor{
      */
     public void update(){
         for(MenuTools.Button bt : buttons){ //check all the buttons if they're currently pressed and the mouse is hovering over them
-            bt.setPressed(bt.collidepoint(Gdx.input.getX(),Gdx.graphics.getHeight()-Gdx.input.getY()) && Gdx.input.isButtonPressed(0)); // if the button is colliding with the mouse and the mouse is left clicking, make it look like it's pressed
+            bt.setPressed(bt.collidepoint(Gdx.input.getX(),Gdx.graphics.getHeight()-Gdx.input.getY()) && (Gdx.input.isButtonPressed(0)||Gdx.input.isButtonPressed(1))); // if the button is colliding with the mouse and the mouse is left clicking, make it look like it's pressed
             bt.update();
         }
         if(this.animatedBackground){ // if this Menu has a non-static background

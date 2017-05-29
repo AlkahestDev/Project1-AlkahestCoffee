@@ -85,7 +85,7 @@ public class MenuBox extends MenuObject{
     public void update(MenuTools.TextField focused){
         super.update();
         for(MenuTools.Button bt : buttons){ //check all the buttons if they're currently pressed and the mouse is hovering over them
-            bt.setPressed(bt.collidepoint(Gdx.input.getX(),Gdx.graphics.getHeight()-Gdx.input.getY()) && Gdx.input.isButtonPressed(0)); // if the button is colliding with the mouse and the mouse is left clicking, make it look like it's pressed
+            bt.setPressed(bt.collidepoint(Gdx.input.getX(),Gdx.graphics.getHeight()-Gdx.input.getY()) && (Gdx.input.isButtonPressed(0)||Gdx.input.isButtonPressed(1))); // if the button is colliding with the mouse and the mouse is left clicking, make it look like it's pressed
             bt.update();
         }
         for(MenuTools.TextField tb : textFields){ // go through all TextBoxes in the Menu
