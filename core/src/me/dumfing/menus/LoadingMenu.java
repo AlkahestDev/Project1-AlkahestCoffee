@@ -12,9 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.GifDecoder;
 
-/**
- * Created by dumpl on 4/21/2017.
- */
+@Deprecated
 public class LoadingMenu extends Menu {
     //Refer to commented out sections for how to use the GifDecoder
     //AssetManager manager;

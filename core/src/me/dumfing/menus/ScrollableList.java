@@ -1,7 +1,4 @@
 package me.dumfing.menus;
-//FILENAME
-//Aaron Li  4/28/2017
-//EXPLAIN
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,6 +8,7 @@ import me.dumfing.gdxtools.MenuTools;
 
 import static me.dumfing.client.maingame.MainGame.DAGGER40;
 
+@Deprecated
 public class ScrollableList extends MenuObject{
     float scrollHeight = 0;
     int font = DAGGER40;

@@ -8,9 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.server.MainServer;
 
-/**
- * Created by dumpl on 5/5/2017.
- */
+@Deprecated
 public class ServerRunningGameMenu extends Menu{
     MenuTools.QueueText numConnected;
     /**

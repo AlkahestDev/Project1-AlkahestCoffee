@@ -10,9 +10,7 @@ import me.dumfing.multiplayerTools.MultiplayerTools;
 import me.dumfing.server.CoffeeServer;
 import me.dumfing.server.MainServer;
 
-/**
- * Created by dumpl on 5/3/2017.
- */
+@Deprecated
 public class ServerInfoMenu extends Menu{
     MenuTools.QueueText peopleConnected;
     boolean timerStarted = false;

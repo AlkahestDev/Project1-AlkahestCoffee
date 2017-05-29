@@ -14,9 +14,7 @@ import me.dumfing.gdxtools.MenuTools;
 
 import static me.dumfing.client.maingame.MainGame.*;
 
-/**
- * Created by dumpl on 4/20/2017.
- */
+@Deprecated
 public class MainMenu extends Menu{
     //private AssetManager manager;
     public MainMenu(Array<BitmapFontCache> bmfc, AssetManager assetManager, OrthographicCamera camera) {

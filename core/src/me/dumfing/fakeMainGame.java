@@ -7,12 +7,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import me.dumfing.cleanMenu.*;
 
 public class fakeMainGame extends ApplicationAdapter {
 
 
-
+    Viewport viewport;
     SpriteBatch batch;
     Texture img;
     CleanMenu menu = new CleanMenu();
@@ -47,9 +48,18 @@ public class fakeMainGame extends ApplicationAdapter {
         batch.end();
     }
 
+    // @Override
+    // public void resize(int width, int height) {
+    //     // Called when the viewport is scaled
+    //     viewport.update(width, height);
+    // }
+
     @Override
     public void dispose () {
         batch.dispose();
         img.dispose();
     }
+
+
+
 }

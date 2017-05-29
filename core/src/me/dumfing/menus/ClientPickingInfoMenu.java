@@ -13,6 +13,7 @@ import me.dumfing.multiplayerTools.MultiplayerTools;
  * TODO: it is currently possible to bypass the team picking lock[1] by picking a team at the same time as the other person<br>1. If client knows that there are too many people on one team it will block you from joining that team
  *
  */
+@Deprecated
 public class ClientPickingInfoMenu extends Menu{
     MenuTools.QueueText redTeamNumbers;
     MenuTools.QueueText bluTeamNumbers;

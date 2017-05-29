@@ -22,6 +22,7 @@ import java.util.HashMap;
 import static me.dumfing.client.maingame.MainGame.DAGGER30;
 import static me.dumfing.client.maingame.MainGame.client;
 
+@Deprecated
 public class ServerBrowser extends Menu{
     private ServerBrowserList serverList;
     /**
@@ -139,6 +140,7 @@ public class ServerBrowser extends Menu{
                 bNum++;
             }
         }
+
         public void onScroll(int amount){
             System.out.println(this.getRect()+" "+amount);
             if(amount>0){

@@ -6,9 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MenuTools;
 
-/**
- * Created by dumpl on 4/28/2017.
- */
+@Deprecated
 public class SettingsMenu extends Menu{
     /**
      * Constructor for the menu
