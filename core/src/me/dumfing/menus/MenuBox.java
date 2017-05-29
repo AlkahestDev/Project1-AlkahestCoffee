@@ -21,6 +21,7 @@ import java.util.LinkedList;
  * Works like a menu but has the ability to be added to a menu to be drawn and can move around
  * will have it's own sprites, textboxes, buttons, etc.
  * Won't have animated image backgrounds
+ * Can also have MenuBoxes on it (though this is still testing)
  */
 public class MenuBox extends MenuObject{
     private LinkedList<MenuTools.Button> buttons;
@@ -30,7 +31,7 @@ public class MenuBox extends MenuObject{
     private LinkedList<MenuTools.ColourRect> colRects;
     private LinkedList<MenuTools.QueueText> textToDraw;
     private Array<BitmapFontCache> fontCaches;
-
+    private LinkedList<MenuBox> menuBoxes;
     /**
      * Constructor method for the MenuBox
      * @param x The x position of the MenuBox
@@ -46,6 +47,7 @@ public class MenuBox extends MenuObject{
         this.textFields = new LinkedList<MenuTools.TextField>();
         this.colRects = new LinkedList<MenuTools.ColourRect>();
         this.textToDraw = new LinkedList<MenuTools.QueueText>();
+        this.menuBoxes = new LinkedList<MenuBox>();
         this.fontCaches = bmfc;
         this.background = new TextureRegion(new Texture(0,0, Pixmap.Format.RGBA8888));
     }
@@ -64,6 +66,10 @@ public class MenuBox extends MenuObject{
     public void addImage(MenuTools.TextureRect textureRectIn){
         textureRectIn.translate(super.getRect().x,super.getRect().y);
         this.images.add(textureRectIn);
+    }
+    public void addMenuBox(MenuBox menuBox){
+        menuBox.translate(super.getRect().x,super.getRect().y);
+        this.menuBoxes.add(menuBox);
     }
     /**
      * Sets the background for the MenuBox
@@ -94,6 +100,9 @@ public class MenuBox extends MenuObject{
         for(MenuTools.TextureRect im : images){
             im.update();
         }
+        for(MenuBox mb : menuBoxes){
+            mb.update(focused);
+        }
     }
 
     /**
@@ -112,6 +121,9 @@ public class MenuBox extends MenuObject{
         for(MenuTools.QueueText qt : this.textToDraw){
             qt.queue(fontCaches);
         }
+        for(MenuBox mb : menuBoxes){
+            mb.shapeDraw(sr,focused);
+        }
     }
 
     /**
@@ -129,6 +141,9 @@ public class MenuBox extends MenuObject{
         for(MenuTools.TextureRect sp : images){ // draw all Sprites in the Menu
             sp.spriteDraw(sb);
         }
+        for(MenuBox mb: menuBoxes){
+            mb.spriteDraw(sb);
+        }
     }
 
     /**
@@ -143,28 +158,11 @@ public class MenuBox extends MenuObject{
                 return tf;
             }
         }
+        for(MenuBox mb :menuBoxes){
+            return mb.textFieldsClicked(mX,mY);
+        }
         return null;
     }
-    /*public void setVelocity(float x, float y){
-        this.vX = x;
-        this.vY = y;
-        for(MenuTools.TextField tf: textFields){
-            tf.setVelocity(x,y);
-        }
-        for(MenuTools.Button bt : buttons){
-            bt.setVelocity(x, y);
-        }
-        for(MenuTools.TextureRect sp : images){
-            sp.setVelocity(x,y);
-        }
-        for(MenuTools.ColourRect cr : colRects){
-            cr.setVelocity(x,y);
-        }
-        for(MenuTools.QueueText qt : textToDraw){
-            qt.setVelocity(x,y);
-        }
-    }*/
-
     /**
      * Allow the Buttons contained within the MenuBox to know if they've been clicked or not
      * @param mx X position of mouse
@@ -177,6 +175,9 @@ public class MenuBox extends MenuObject{
                 bt.activate();
                 return;
             }
+        }
+        for(MenuBox mb : menuBoxes){
+            mb.checkButtonsPressed(mx,my);
         }
     }
 
@@ -196,6 +197,9 @@ public class MenuBox extends MenuObject{
         }
         for (MenuTools.QueueText qt : textToDraw) {
             qt.translate(x, y);
+        }
+        for(MenuBox mb : menuBoxes){
+            mb.translate(x, y);
         }
     }
     /**

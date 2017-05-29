@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import me.dumfing.menus.MenuBox;
 
 import java.util.Arrays;
 
@@ -17,11 +18,11 @@ import static me.dumfing.client.maingame.MainGame.DAGGER40;
 /**
  * MenuTools.java
  * Various elements used in menus
- * So far there is a button and textbox(WIP)
+ * TODO: polygons
+ *
  */
 public class MenuTools {
     public static final int keyTime = 7; // number of frames before a key is registered again
-    //private static final String legalChars = " `~1!2@3#4$5%6^7&8*9(0)-_=+qwertyuiopasdfghjklzxcvbnm,<.>/?;:'\"\\|][}{";
     public interface OnClick{
         void action();
     }
@@ -65,8 +66,6 @@ public class MenuTools {
     public static class TextureRect extends MenuObject {
         private Rectangle rectShape;
         private TextureRegion rectTexture;
-        private float vX = 0;
-        private float vY = 0;
 
         /**
          * Constructor for TextureRect
@@ -99,9 +98,7 @@ public class MenuTools {
      * A Rectangular area that can be drawn with a ShapeRenderer
      */
     public static class ColourRect extends MenuObject{
-        private Rectangle rectShape;
         private Color rectColor;
-        private float vX, vY;
         /**
          * The constructor for the ColourRect
          * @param x The X position of the Rectangle
@@ -123,15 +120,6 @@ public class MenuTools {
             sr.setColor(this.rectColor);
             DrawTools.rec(sr,super.shape);
         }
-
-
-        /**
-         * Returns the rectangular area of the ColourRect
-         * @return The Rectangle object used to draw the ColourRect
-         */
-        public Rectangle getRectShape(){
-            return super.shape;
-        }
     }
 
     /**
@@ -142,8 +130,6 @@ public class MenuTools {
         private TextureRegion unpressed, pressed; // how the button looks when it's held down and when it's not held down
         boolean isPressed = false;
         OnClick callback;
-        float vX = 0;
-        float vY = 0;
         /**
          * Constructor for the Button
          * @param x The X position of the Button
@@ -153,6 +139,21 @@ public class MenuTools {
          */
         public Button(float x, float y, float width, float height){
             super(x,y,width,height);
+        }
+
+        /**
+         * Constructor for the Button
+         * @param pressedTexture The texture for the button when it's pressed, the width and height of the button are derived by this texture's size
+         * @param unpressedTexture The texture for the button when it's not pressed
+         * @param x The x position of the button
+         * @param y The y position of the button
+         * @param action The action for the button to run when it's clicked
+         */
+        public Button(TextureRegion pressedTexture, TextureRegion unpressedTexture, float x, float y, OnClick action){
+            super(x,y,pressedTexture.getRegionWidth(),pressedTexture.getRegionHeight());
+            this.pressed = pressedTexture;
+            this.unpressed = unpressedTexture;
+            this.callback = action;
         }
         public void setCallback(OnClick callback){
             this.callback = callback;
@@ -211,13 +212,10 @@ public class MenuTools {
             }
             else{
                 if(this.isPressed){
-                    //batch.draw(pressed,super.getRect().getX(),super.getRect().getY(),super.getRect().getWidth(),super.getRect().getHeight());
                     DrawTools.textureRect(batch,super.getRect(),pressed);
                 }
                 else{
-                    //System.out.println(super.vX);
                     DrawTools.textureRect(batch,super.getRect(),unpressed);
-                    //batch.draw(unpressed,super.getRect().getX(),super.getRect().getY(),super.getR);
                 }
             }
         }
@@ -271,13 +269,13 @@ public class MenuTools {
             this.draw(null,batch,false);
         }
 
+
     }
 
     /**
      * TextField for getting String input from the user
      */
     public static class TextField extends MenuObject{
-        float vX,vY;
         Rectangle boxShape;
         StringBuilder sOut;
         int curPos, frameCount, fontId;
@@ -313,7 +311,8 @@ public class MenuTools {
         public void update(Array<BitmapFontCache> bmfc, boolean focused){
             handleHeldKeys();
             bmfc.get(fontId).setColor(Color.BLACK);
-            bmfc.get(fontId).addText(this.sOut.toString(),super.shape.getX()+3,super.shape.getY()+super.shape.getHeight() - 7,0,this.sOut.length(),super.shape.getWidth(), Align.left,false);
+            String cutString = cutToSize(this.sOut.toString(),super.shape.width,bmfc.get(fontId).getFont());
+            bmfc.get(fontId).addText(cutString,super.shape.getX()+3,super.shape.getY()+super.shape.getHeight() - 7,0,cutString.length(),super.shape.getWidth(), Align.left,false);
             if(focused){
                 this.frameCount++; // Integer.MAX_VALUE frames is around 414 days to overflow, if a user has the text box open for 414 days, the game probably won't be worth keeping open
             }
@@ -372,7 +371,6 @@ public class MenuTools {
         private void initVars(){
             this.sOut = new StringBuilder();
             this.curPos = this.frameCount = 0;
-            this.vX = this.vY = 0;
             this.heldKeys = new int[257];
             this.showCursor = false;
             this.fontId = DAGGER40;
@@ -471,6 +469,15 @@ public class MenuTools {
     }
 
     /**
+     * Returns the height of the text with a given font
+     * @param fntIn The font to use
+     * @param sIn The text to check the height of
+     * @return The height the text will take up
+     */
+    public static float textHeight(BitmapFont fntIn, String sIn){
+        return new GlyphLayout(fntIn,sIn).height;
+    }
+    /**
      * ManagerGetTextureRegion<br>
      * Gets a textureregion from an assetmanager
      * @param fileName The file name of the asset
@@ -479,5 +486,50 @@ public class MenuTools {
      */
     public static TextureRegion mGTR(String fileName, AssetManager manager){
         return new TextureRegion((Texture)manager.get(fileName));
+    }
+
+    /**
+     * Cuts the string so it'll fit into the target width
+     * @param textIn The text you wish to cut
+     * @param targetWidth The target width you want the text to be cut into
+     * @param fontIn The font to base the widths off of
+     * @return A string that will be within the target width when rendered with the given font
+     */
+    public static String cutToSize(String textIn, float targetWidth, BitmapFont fontIn){
+        String out=textIn;
+        for(int i = textIn.length();i>0;i--) {
+            String cutText = out.substring(0, i);
+            if (textWidth(fontIn, cutText) <= targetWidth) {
+                return cutText;
+            }
+        }
+        return "";
+    }
+
+    /**
+     * Creates a MenuBox that has a button and queue text centered over it
+     * @param btX The x of the button
+     * @param btY The y of the button
+     * @param btW The width of the button
+     * @param btH The height of the button
+     * @param text The label for the butotn
+     * @param btAction The action the button executes when it's clicked
+     * @param pressed The pressed texture for the button
+     * @param unpressed The unpressed texture for the button
+     * @param fontCaches The font caches to use
+     * @param pickedFont The font to draw with
+     * @return A menubox with the button and label
+     */
+    public static MenuBox createLabelledButton(float btX, float btY, float btW, float btH, String text, OnClick btAction, TextureRegion pressed, TextureRegion unpressed, Array<BitmapFontCache> fontCaches, int pickedFont){
+        MenuBox out = new MenuBox(btX,btY,btW,btH,fontCaches);
+        Button actionButton = new Button(0,0,btW,btH);
+        actionButton.setCallback(btAction);
+        actionButton.setPressedTexture(pressed);
+        actionButton.setUnpressedTexture(unpressed);
+        out.addButton(actionButton);
+        QueueText textLabel = new QueueText((btW/2)-(textWidth(fontCaches.get(pickedFont).getFont(),text)/2),(btH/2)+(textHeight(fontCaches.get(pickedFont).getFont(),text)/2),0,0);
+        textLabel.setText(text,fontCaches);
+        out.addQueueText(textLabel);
+        return out;
     }
 }

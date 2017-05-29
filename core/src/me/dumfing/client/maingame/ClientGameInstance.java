@@ -2,8 +2,10 @@ package me.dumfing.client.maingame;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import me.dumfing.gdxtools.DrawTools;
 import me.dumfing.multiplayerTools.ConcurrentGameWorld;
 import me.dumfing.multiplayerTools.MultiplayerClient;
@@ -20,9 +22,11 @@ public class ClientGameInstance implements InputProcessor{
     private boolean keyUpdate = false;
     MultiplayerClient gameClient;
     private ConcurrentGameWorld playWorld;
-    public ClientGameInstance(MultiplayerClient gameClient, HashMap<Integer, PlayerSoldier> players){
+    private OrthographicCamera camera;
+    public ClientGameInstance(MultiplayerClient gameClient, HashMap<Integer, PlayerSoldier> players, OrthographicCamera camera){
         this.gameClient = gameClient;
         this.playWorld = new ConcurrentGameWorld(players);
+        this.camera=camera;
     }
     public void update(){
         if(keyUpdate){
@@ -33,7 +37,7 @@ public class ClientGameInstance implements InputProcessor{
         if(gameClient.isHasNewPlayerInfo()) {
             //System.out.println("new client info");
             //System.out.println(gameClient.getPlayers().values());
-            System.out.println("receive info");
+            //System.out.println("receive info");
             playWorld.updatePlayers(gameClient.getPlayers());
         }
         playWorld.updatePlayerKeys(gameClient.getConnectionID(),keysDown);
@@ -52,8 +56,11 @@ public class ClientGameInstance implements InputProcessor{
         //batch.draw(playWorld.getMap().getVisualComponent(),0,0);
         batch.end();
         playWorld.getMap().draw(batch);
-        //renderer.begin(ShapeRenderer.ShapeType.Line);
-        //renderer.end();
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
+            for(PlayerSoldier playerSoldier :gameClient.getPlayers().values()) {
+                DrawTools.rec(renderer, new Rectangle((int) (playerSoldier.getX()), (int) (playerSoldier.getY() + playerSoldier.getvY()), 1, 1));
+            }
+        renderer.end();
     }
     public void pickWorld(int worldID){
         playWorld.setWorld(MainGame.worldMaps[MainGame.DEBUGWORLD]);
@@ -133,6 +140,9 @@ public class ClientGameInstance implements InputProcessor{
             keysDown[MultiplayerTools.Keys.RMB] = true;
             keyUpdate = true;
         }
+        float mouseX = camera.position.x+screenX;// the mouses x position in the world //-playWorld.getPlayers().get(gameClient.getConnectionID()).getX();
+        float mouseY = camera.position.y+screenY;
+        System.out.println(mouseX+" "+mouseY);
         return false;
     }
 

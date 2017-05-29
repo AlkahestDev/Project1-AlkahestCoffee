@@ -263,34 +263,6 @@
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="gdx-backend-lwjgl-1.9.5-sources">
-      <CLASSES />
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-backend-lwjgl-1.9.5-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="gdx-platform-1.9.5-natives-arm64-v8a">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-arm64-v8a.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="gdx-platform-1.9.5-natives-armeabi">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-armeabi.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="gdx-platform-1.9.5-natives-armeabi-v7a">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-armeabi-v7a.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
     <library name="gdx-platform-1.9.5-natives-desktop">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-desktop.jar!/" />
@@ -298,16 +270,39 @@
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="gdx-platform-1.9.5-natives-x86">
+    <library name="jinput-2.0.5">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-x86.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/lwjgl/jinput-2.0.5.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="gdx-platform-1.9.5-natives-x86_64">
+    <library name="jinput-platform-2.0.5-natives-all">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-x86_64.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/lwjgl/jinput-platform-2.0.5-natives-osx.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/lwjgl/jinput-platform-2.0.5-natives-windows.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/lwjgl/jinput-platform-2.0.5-natives-linux.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="jlayer-1.0.1-gdx">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/lwjgl/jlayer-1.0.1-gdx.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="jorbis-0.0.17">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/lwjgl/jorbis-0.0.17.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="jutils-1.0.0">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/lwjgl/jutils-1.0.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -315,6 +310,29 @@
     <library name="kryonet-2.21-all">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/core/assets/javalibs/kryonet-2.21-all.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="lwjgl-2.9.2">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/lwjgl/lwjgl-2.9.2.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="lwjgl-platform-2.9.2-natives-all">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/lwjgl/lwjgl-platform-2.9.2-natives-linux.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/lwjgl/lwjgl-platform-2.9.2-natives-osx.jar!/" />
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/lwjgl/lwjgl-platform-2.9.2-natives-windows.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="lwjgl_util-2.9.2">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/lwjgl/lwjgl_util-2.9.2.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />

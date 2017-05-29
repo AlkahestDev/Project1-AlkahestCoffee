@@ -23,12 +23,12 @@ public class ConcurrentGameWorld {
     public void update(){
         for(PlayerSoldier p : players.values()){
             p.update(Gdx.graphics.getDeltaTime());
-            System.out.print(p.getvY()+" ");
+            //System.out.print(p.getvY()+" ");
             p.setAnimationID(handleKeyInput(p));
-            System.out.print(p.getvY()+" ");
+            //System.out.print(p.getvY()+" ");
             handleCollisions(p);
             p.move();
-            System.out.println(p.getvY());
+            //System.out.println(p.getvY());
             //System.out.println(p);
         }
     }
@@ -47,8 +47,8 @@ public class ConcurrentGameWorld {
             playerSoldier.setvX(MathTools.towardsZero(playerSoldier.getvX(), 0.001f));
         }
         //System.out.println(map.getPosId((int)(playerSoldier.getX()),(int)(playerSoldier.getY()+playerSoldier.getvY())));
-        if(map.getPosId((int)(playerSoldier.getX()),(int)(playerSoldier.getY()+playerSoldier.getvY()))==1){
-            System.out.println("hitY");
+        if(map.getPosId((int)(playerSoldier.getX()), Math.round(playerSoldier.getY()+playerSoldier.getvY()))==1){
+            //System.out.printf("%d %d %f\n",(int)(playerSoldier.getX()),(int)(playerSoldier.getY()+playerSoldier.getvY()), playerSoldier.getvY());
             playerSoldier.setvY(0);
             playerSoldier.setY((int)playerSoldier.getY()+0.001f);
             playerSoldier.setCanJump(true);
