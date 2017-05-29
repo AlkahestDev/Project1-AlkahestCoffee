@@ -95,49 +95,24 @@ public class MainMenu extends Menu{
     }
 
     private void addMenuButtons(){
-        MenuBox playBox = new MenuBox(-400,Gdx.graphics.getHeight()/2+85,400,150,super.getFonts());
-        MenuBox settingsBox = new MenuBox(-500,Gdx.graphics.getHeight()/2-75,400,150,super.getFonts());
-        MenuBox quitBox = new MenuBox(-600,Gdx.graphics.getHeight()/2-235,400,150,super.getFonts());
-        MenuTools.Button playButton = new MenuTools.Button(0,0,400,150);
-        MenuTools.Button settingsButton = new MenuTools.Button(0, 0, 400, 150);
-        MenuTools.Button quitButton = new MenuTools.Button(0, 0,400,150);
-        playButton.setCallback(new MenuTools.OnClick() {
+        MenuBox playBox = MenuTools.createLabelledButton(-400,Gdx.graphics.getHeight()/2+85,400,150,"[WHITE]Play",new MenuTools.OnClick() {
             @Override
             public void action() {
                 MainGame.state = GameState.State.SERVERBROWSER;
             }
-        });
-        settingsButton.setCallback(new MenuTools.OnClick() {
+        },MenuTools.mGTR("4k-image-santiago.jpg",getManager()),MenuTools.mGTR("volcano-30238.png",getManager()),getFonts(),DAGGER40);
+        MenuBox settingsBox = MenuTools.createLabelledButton(-500, Gdx.graphics.getHeight() / 2 - 75, 400, 150, "[WHITE]Settings", new MenuTools.OnClick() {
             @Override
             public void action() {
                 MainGame.state = GameState.State.MAINMENUSETTINGS;
             }
-        });
-        quitButton.setCallback(new MenuTools.OnClick() {
+        },MenuTools.mGTR("4k-image-santiago.jpg",getManager()),MenuTools.mGTR("volcano-30238.png",getManager()),getFonts(),DAGGER40);//new MenuBox(-500,Gdx.graphics.getHeight()/2-75,400,150,super.getFonts());
+        MenuBox quitBox = MenuTools.createLabelledButton(-600,Gdx.graphics.getHeight()/2-235,400,150,"[WHITE]Quit",new MenuTools.OnClick() {
             @Override
             public void action() {
                 MainGame.state = GameState.State.QUIT;
             }
-        });
-        playButton.setPressedTexture(MenuTools.mGTR("4k-image-santiago.jpg",getManager()));//new TextureRegion((Texture) super.getManager().get("4k-image-santiago.jpg")));
-        playButton.setUnpressedTexture(MenuTools.mGTR("volcano-30238.png",getManager()));//new TextureRegion((Texture)super.getManager().get("volcano-30238.png")));
-        settingsButton.setPressedTexture(MenuTools.mGTR("4k-image-santiago.jpg",getManager()));//new TextureRegion((Texture) super.getManager().get("4k-image-santiago.jpg")));
-        settingsButton.setUnpressedTexture(MenuTools.mGTR("volcano-30238.png",getManager()));//new TextureRegion((Texture)super.getManager().get("volcano-30238.png")));
-        quitButton.setPressedTexture(MenuTools.mGTR("4k-image-santiago.jpg",getManager()));//new TextureRegion((Texture) super.getManager().get("4k-image-santiago.jpg")));
-        quitButton.setUnpressedTexture(MenuTools.mGTR("volcano-30238.png",getManager()));//new TextureRegion((Texture)super.getManager().get("volcano-30238.png")));
-        settingsBox.addButton(settingsButton);
-        playBox.addButton(playButton);
-        quitBox.addButton(quitButton);
-        MenuTools.QueueText playText, settingsText, quitText;
-        playText = new MenuTools.QueueText(200- MenuTools.textWidth(super.getFonts().get(DAGGER40).getFont(),"Play")/2,75,0,0);
-        settingsText = new MenuTools.QueueText(200-MenuTools.textWidth(super.getFonts().get(DAGGER40).getFont(),"Settings")/2,75,0,0);
-        quitText = new MenuTools.QueueText(200-MenuTools.textWidth(super.getFonts().get(DAGGER40).getFont(),"Quit")/2,75,0,0);
-        playText.setText("[WHITE]Play",getFonts());
-        settingsText.setText("[WHITE]Settings",getFonts());
-        quitText.setText("[WHITE]Quit",getFonts());
-        playBox.addQueueText(playText);
-        settingsBox.addQueueText(settingsText);
-        quitBox.addQueueText(quitText);
+        },MenuTools.mGTR("4k-image-santiago.jpg",getManager()),MenuTools.mGTR("volcano-30238.png",getManager()),getFonts(),DAGGER40);
         MenuTools.QueueText gameName = new MenuTools.QueueText(-415,Gdx.graphics.getHeight()-30,0,0);
         gameName.setText("[WHITE]Alkahest Coffee Corp",super.getFonts());
         gameName.setFont(DAGGER50);
@@ -159,7 +134,7 @@ public class MainMenu extends Menu{
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         super.touchDown(screenX, screenY, pointer, button);
-        System.out.println(super.getFocused());
+        //System.out.println(super.getFocused());
         return true;
     }
 }
