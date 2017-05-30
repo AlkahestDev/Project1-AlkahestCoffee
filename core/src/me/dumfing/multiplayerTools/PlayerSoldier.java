@@ -1,6 +1,8 @@
 package me.dumfing.multiplayerTools;
 
 
+import com.badlogic.gdx.assets.loaders.SynchronousAssetLoader;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -13,13 +15,14 @@ import java.util.Arrays;
  */
 public class PlayerSoldier {
     private int health, maxHealth, animationID, team, pickedClass,facingDirection; // animationID is an int describing the direction the player is facing and what animation they're doing
-    private float animationTime; // Amount of time the PlayerSoldier has been on an animation
     private boolean canJump;
-    private boolean[] keysHeld = new boolean[8];
+    private MultiplayerTools.ClientControlObject[] keysHeld = new MultiplayerTools.ClientControlObject[10];
     private Rectangle playerArea;
-    private float vX, vY;
+    private float vX, vY, animationTime;
     private String name;
-    public PlayerSoldier(){}
+    public PlayerSoldier(){
+        fillKeys();
+    }
     public PlayerSoldier(Rectangle playerRect, int team){
         this.playerArea = playerRect;
         this.team = team;
@@ -28,6 +31,7 @@ public class PlayerSoldier {
         vY = 0;
         this.health = 100;
         this.maxHealth = 100;
+        fillKeys();
     }
     public PlayerSoldier(Rectangle player, int team, String name){
         this.playerArea = player;
@@ -37,6 +41,12 @@ public class PlayerSoldier {
         this.vY = 0;
         this.health = 100;
         this.maxHealth = 100;
+        fillKeys();
+    }
+    private void fillKeys(){
+        for(int i = 0; i<keysHeld.length;i++){
+            keysHeld[i] = new MultiplayerTools.ClientControlObject();
+        }
     }
     public void update(float deltaTime){
         this.animationTime+=deltaTime;
@@ -45,7 +55,7 @@ public class PlayerSoldier {
         this.maxHealth = maxHealth;
     }
     public String getName(){return this.name;}
-    public void setKeysHeld(boolean[] keysHeld) {
+    public void setKeysHeld(MultiplayerTools.ClientControlObject[] keysHeld) {
         this.keysHeld = keysHeld;
     }
 
@@ -66,7 +76,7 @@ public class PlayerSoldier {
         this.team = team;
     }
 
-    public boolean[] getKeysHeld() {
+    public MultiplayerTools.ClientControlObject[] getKeysHeld() {
         return keysHeld;
     }
 
@@ -85,7 +95,12 @@ public class PlayerSoldier {
     public void setFacingDirection(int facingDirection) {
         this.facingDirection = facingDirection;
     }
-
+    public float getMouseAngle(){
+        if(keysHeld[MultiplayerTools.Keys.ANGLE]==null){
+            return 0;
+        }
+        return this.keysHeld[MultiplayerTools.Keys.ANGLE].angle;
+    }
     public int getHealth(){
         return this.health;
     }

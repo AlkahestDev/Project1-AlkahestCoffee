@@ -69,7 +69,7 @@ public class ConcurrentGameWorld {
     //         playerSoldier.setvX(Math.max(playerSoldier.getvX(),0));
     //     }
     // }
-    public void updatePlayerKeys(Integer cID, boolean[] keys){
+    public void updatePlayerKeys(Integer cID, MultiplayerTools.ClientControlObject[] keys){
         players.get(cID).setKeysHeld(keys);
     }
     public void updatePlayers(HashMap<Integer, PlayerSoldier> newInfo){
@@ -79,9 +79,9 @@ public class ConcurrentGameWorld {
 
 
     public int handleKeyInput(PlayerSoldier pIn){
-        boolean[] keys = pIn.getKeysHeld();
+        MultiplayerTools.ClientControlObject[] keys = pIn.getKeysHeld();
         int animation = 0;
-        if(keys[MultiplayerTools.Keys.W]){
+        if(keys[MultiplayerTools.Keys.W] != null && keys[MultiplayerTools.Keys.W].type==1 && keys[MultiplayerTools.Keys.W].isDown){
             if(pIn.isCanJump()) {
                 pIn.setvY(MultiplayerTools.JUMPPOWER);
                 pIn.setCanJump(false);
@@ -93,10 +93,10 @@ public class ConcurrentGameWorld {
         else if(!pIn.isCanJump() && pIn.getvX()>0){
             animation+=PlayerAnimations.JUMP;
         }
-        if(keys[MultiplayerTools.Keys.S]){
+        if(keys[MultiplayerTools.Keys.S] !=null && keys[MultiplayerTools.Keys.S].type==1 && keys[MultiplayerTools.Keys.S].isDown){
 
         }
-        if(keys[MultiplayerTools.Keys.A]){
+        if(keys[MultiplayerTools.Keys.A] !=null && keys[MultiplayerTools.Keys.A].type==1 && keys[MultiplayerTools.Keys.A].isDown){
             if(pIn.isCanJump()) {
                 pIn.setvX(-WALKSPEED);
                 animation += PlayerAnimations.WALK;
@@ -106,7 +106,7 @@ public class ConcurrentGameWorld {
             }
             pIn.setFacingDirection(0);
         }
-        else if(keys[MultiplayerTools.Keys.D]){
+        else if(keys[MultiplayerTools.Keys.D]!=null && keys[MultiplayerTools.Keys.D].type==1 && keys[MultiplayerTools.Keys.D].isDown){
             if(pIn.isCanJump()) {
                 pIn.setvX(WALKSPEED);
                 animation += PlayerAnimations.WALK;

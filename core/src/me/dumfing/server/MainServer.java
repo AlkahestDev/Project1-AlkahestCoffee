@@ -115,6 +115,7 @@ public class MainServer {
                 }
                 else if(o instanceof MultiplayerTools.ClientKeysUpdate){
                     players.get(connection.getID()).setKeysHeld(((MultiplayerTools.ClientKeysUpdate) o).getKeys());
+                    System.out.println(players.get(connection.getID()).getMouseAngle());
                 }
                 super.received(connection, o);
             }

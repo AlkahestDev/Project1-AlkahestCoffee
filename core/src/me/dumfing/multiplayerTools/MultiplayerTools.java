@@ -26,13 +26,15 @@ public class MultiplayerTools {
         public static final int SPACE = 6;
         public static final int SHIFT = 7;
         public static final int CONTROL = 8;
+        public static final int ANGLE = 9;
     }
     public static void register(EndPoint endpoint){
         Kryo serializer = endpoint.getKryo();
         //Can't register Connection so will have to switch with Integer
         serializer.register(HashMap.class);
         serializer.register(Rectangle.class);
-        serializer.register(boolean[].class);
+        serializer.register(ClientControlObject[].class);
+        serializer.register(ClientControlObject.class);
         serializer.register(PlayerSoldier.class);
         serializer.register(ClientKeysUpdate.class);
         serializer.register(ClientPickedLoadout.class);
@@ -53,16 +55,46 @@ public class MultiplayerTools {
     }
 
     /**
+     * An object that can either hold a boolean or float for a key's state or the mouse's angle
+     */
+    public static class ClientControlObject{
+        //object types
+        //0 - not assigned
+        //1 - boolean
+        //2 - float
+        float angle = 0;
+        boolean isDown = false;
+        int type = 0;
+        public ClientControlObject(){}
+        public ClientControlObject(float angle){
+            this.angle = angle;
+            this.type = 2;
+        }
+        public ClientControlObject(boolean isDown){
+            this.isDown = isDown;
+            this.type = 1;
+        }
+        public float getAngle(){
+            return angle;
+        }
+        public boolean getIsDown(){
+            return isDown;
+        }
+        public int getType(){
+            return type;
+        }
+    }
+    /**
      *
      */
     public static class ClientKeysUpdate{
-        boolean[] keys;
+        ClientControlObject[] keys;
         public ClientKeysUpdate(){}
-        public ClientKeysUpdate(boolean[] keys){
+        public ClientKeysUpdate(ClientControlObject[] keys){
             this.keys = keys;
         }
 
-        public boolean[] getKeys() {
+        public ClientControlObject[] getKeys() {
             return keys;
         }
     }
