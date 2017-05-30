@@ -22,6 +22,7 @@ public class MainServer {
     private String svName;
     HashMap<Integer, PlayerSoldier> players;
     LinkedList<Connection> validConnections = new LinkedList<Connection>();
+    LinkedList<ServerEvent> events = new LinkedList<ServerEvent>();
     public MainServer(final String svName, final int maxPlayers){
         this.maxPlayers = maxPlayers;
         this.svName = svName;
@@ -84,6 +85,7 @@ public class MainServer {
                         //Successful Connection
                         validConnections.add(connection);
                         players.put(connection.getID(),new PlayerSoldier(new Rectangle(2,5,1,2),0,temp.playerName));
+                        events.add(new ServerEvent(ServerEvent.EventType.PLAYERCONNECTED,connection.getID()));
                         response = new MultiplayerTools.ServerResponse(MultiplayerTools.ServerResponse.ResponseCode.CLIENTCONNECTED);
                         quickSendAll(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),players));
 

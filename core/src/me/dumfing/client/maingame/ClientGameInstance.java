@@ -144,7 +144,7 @@ public class ClientGameInstance implements InputProcessor{
             keyUpdate = true;
         }
         //The problem with figuring out the angles is that the player's x and y are on the scale of 1 = playerwidth while the display is usually in the thousands for width
-
+        //a simple fix would be having the camera be centered on the player
         return false;
     }
 
