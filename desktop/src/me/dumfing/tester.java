@@ -9,8 +9,8 @@ public class tester {
 
         new LwjglApplication(new fakeMainGame(), config);
 
-        config.width = 1800;
-        config.height = 900;
+        config.width = 1080;
+        config.height = 720;
 
     }
 }

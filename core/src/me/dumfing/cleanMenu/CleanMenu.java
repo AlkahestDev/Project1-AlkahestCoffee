@@ -3,6 +3,8 @@ package me.dumfing.cleanMenu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
+import org.lwjgl.Sys;
+
 import java.util.*;
 
 public class CleanMenu implements InputProcessor{
@@ -89,6 +91,9 @@ public class CleanMenu implements InputProcessor{
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         screenY = Gdx.graphics.getHeight() - screenY; // invert screenY because screenY is from top of screen
+
+        System.out.println("" + Gdx.input.getX() + ", " + Gdx.input.getY());
+
         for (String key : items.keySet()){
             MenuItem item = items.get(key);
             if (item.type == ItemType.BUTTON){

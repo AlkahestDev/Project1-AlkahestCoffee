@@ -13,6 +13,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.menus.*;
 import me.dumfing.multiplayerTools.MultiplayerClient;
@@ -22,6 +24,7 @@ import me.dumfing.multiplayerTools.WorldMap;
 public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static final String versionNumber = "1e-10000000";
 	private float scW, scH;
+	private Viewport viewport;
 	SpriteBatch batch;
 	AssetManager assetManager;
 	public static GameState.State state;
@@ -49,6 +52,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	ClientGameInstance gameInstance;
 	@Override
 	public void create () {
+		viewport = new FitViewport(1080, 720, new PerspectiveCamera());
 	    Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("mouseCursorTemp.png")),0,0));
 		assetManager = new AssetManager();
 		queueLoading();
@@ -236,6 +240,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				Gdx.app.exit();
 				break;
 		}
+	}
+
+	@Override
+	public void resize(int width, int height){
+		// Called when the viewport is scaled
+		viewport.update(width, height);
 	}
 
 	@Override
