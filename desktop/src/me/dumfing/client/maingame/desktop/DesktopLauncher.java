@@ -19,6 +19,5 @@ public class DesktopLauncher {
         config.addIcon("badAlkahest.png", Files.FileType.Internal);
         new LwjglApplication(new MainGame(), config);
 
-
 	}
 }
