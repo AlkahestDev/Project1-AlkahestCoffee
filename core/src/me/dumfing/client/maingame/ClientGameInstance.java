@@ -1,5 +1,6 @@
 package me.dumfing.client.maingame;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -132,6 +133,8 @@ public class ClientGameInstance implements InputProcessor{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        PlayerSoldier clientPlayer = getPlayer(gameClient.getConnectionID());
+        screenY = Gdx.graphics.getHeight()-screenY;
         if(button == 0){
             keysDown[MultiplayerTools.Keys.LMB] = true;
             keyUpdate = true;
@@ -140,9 +143,8 @@ public class ClientGameInstance implements InputProcessor{
             keysDown[MultiplayerTools.Keys.RMB] = true;
             keyUpdate = true;
         }
-        float mouseX = camera.position.x+screenX;// the mouses x position in the world //-playWorld.getPlayers().get(gameClient.getConnectionID()).getX();
-        float mouseY = camera.position.y+screenY;
-        System.out.println(mouseX+" "+mouseY);
+        //The problem with figuring out the angles is that the player's x and y are on the scale of 1 = playerwidth while the display is usually in the thousands for width
+
         return false;
     }
 

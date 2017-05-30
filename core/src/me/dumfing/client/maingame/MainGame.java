@@ -24,7 +24,7 @@ import me.dumfing.multiplayerTools.WorldMap;
 public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static final String versionNumber = "1e-10000000";
 	private float scW, scH;
-	private Viewport viewport;
+	//private Viewport viewport;
 	SpriteBatch batch;
 	AssetManager assetManager;
 	public static GameState.State state;
@@ -52,15 +52,15 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	ClientGameInstance gameInstance;
 	@Override
 	public void create () {
-		viewport = new FitViewport(1080, 720, new PerspectiveCamera());
-	    Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("mouseCursorTemp.png")),0,0));
-		assetManager = new AssetManager();
-		queueLoading();
-		camera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-		camera.translate(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
-		camera.update();
-		fontCaches = new Array<BitmapFontCache>();
-		BitmapFont dagger20 = new BitmapFont(Gdx.files.internal("fonts/dagger20.fnt"));
+        Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("mouseCursorTemp.png")),0,0));
+        assetManager = new AssetManager();
+        queueLoading();
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        camera.translate(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
+        camera.update();
+        //viewport = new FitViewport(1920, 1080, camera);
+        fontCaches = new Array<BitmapFontCache>();
+        BitmapFont dagger20 = new BitmapFont(Gdx.files.internal("fonts/dagger20.fnt"));
 		BitmapFont dagger30 = new BitmapFont(Gdx.files.internal("fonts/dagger30.fnt"));
 		BitmapFont dagger40 = new BitmapFont(Gdx.files.internal("fonts/dagger40.fnt"));
 		BitmapFont dagger50 = new BitmapFont(Gdx.files.internal("fonts/dagger50.fnt"));
@@ -245,7 +245,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	@Override
 	public void resize(int width, int height){
 		// Called when the viewport is scaled
-		viewport.update(width, height);
+		//viewport.update(width, height);
 	}
 
 	@Override

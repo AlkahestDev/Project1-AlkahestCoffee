@@ -9,13 +9,16 @@ import me.dumfing.client.maingame.MainGame;
 public class DesktopLauncher {
 	public static void main (String [] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.fullscreen = false;
 		config.title="Alkahest Coffee Corporation";
-		config.width=99; //TODO: make a better way of fullscreening : i made one in fakeMainGame, but the hitboxes dont work :/
-		config.height=99;
+        /*config.fullscreen = true;
+        config.width=999999; //TODO: make a better way of fullscreening : i made one in fakeMainGame, but the hitboxes dont work :/
+        config.height=999999;*/
+        config.width=1280;
+        config.height=720;
+        config.resizable=false;
+        config.addIcon("badAlkahest.png", Files.FileType.Internal);
         new LwjglApplication(new MainGame(), config);
 
-		config.addIcon("badAlkahest.png", Files.FileType.Internal);
 
 	}
 }
