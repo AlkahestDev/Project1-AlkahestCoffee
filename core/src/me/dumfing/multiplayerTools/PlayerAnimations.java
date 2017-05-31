@@ -18,23 +18,23 @@ public class PlayerAnimations {
     //d is the direction (left, right)
     //c is the colour (red, blue)
     //t is the type (player, nonplayer)
-    private static final Animation<TextureRegion> redNonPlayerWalkLeft = new Animation<TextureRegion>(WALKINGFRAMETIME,playerSprites.findRegions("walk/wlrn"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> redNonPlayerWalkRight = new Animation<TextureRegion>(WALKINGFRAMETIME,playerSprites.findRegions("walk/wrrn"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> bluNonPlayerWalkLeft = new Animation<TextureRegion>(WALKINGFRAMETIME,playerSprites.findRegions("walk/wlbn"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> bluNonPlayerWalkRight = new Animation<TextureRegion>(WALKINGFRAMETIME,playerSprites.findRegions("walk/wrbn"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> redPlayerWalkRight = new Animation<TextureRegion>(WALKINGFRAMETIME,playerSprites.findRegions("walk/wrrp"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> redPlayerWalkLeft = new Animation<TextureRegion>(WALKINGFRAMETIME, playerSprites.findRegions("walk/wlrp"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> bluPlayerWalkRight = new Animation<TextureRegion>(WALKINGFRAMETIME,playerSprites.findRegions("walk/wrbp"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> bluPlayerWalkLeft = new Animation<TextureRegion>(WALKINGFRAMETIME,playerSprites.findRegions("walk/wlbp"), Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> redNonPlayerWalkLeft = new Animation<TextureRegion>(WALKINGFRAMETIME,playerSprites.findRegions("walk/wlrnk"), Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> redNonPlayerWalkRight = new Animation<TextureRegion>(WALKINGFRAMETIME,playerSprites.findRegions("walk/wrrnk"), Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> bluNonPlayerWalkLeft = new Animation<TextureRegion>(WALKINGFRAMETIME,playerSprites.findRegions("walk/wlbnk"), Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> bluNonPlayerWalkRight = new Animation<TextureRegion>(WALKINGFRAMETIME,playerSprites.findRegions("walk/wrbnk"), Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> redPlayerWalkRight = new Animation<TextureRegion>(WALKINGFRAMETIME,playerSprites.findRegions("walk/wrrpk"), Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> redPlayerWalkLeft = new Animation<TextureRegion>(WALKINGFRAMETIME, playerSprites.findRegions("walk/wlrpk"), Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> bluPlayerWalkRight = new Animation<TextureRegion>(WALKINGFRAMETIME,playerSprites.findRegions("walk/wrbpk"), Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> bluPlayerWalkLeft = new Animation<TextureRegion>(WALKINGFRAMETIME,playerSprites.findRegions("walk/wlbpk"), Animation.PlayMode.LOOP);
 
-    private static final Animation<TextureRegion> redNonPlayerIdleLeft = new Animation<TextureRegion>(IDLEFRAMETIME,playerSprites.findRegions("idle/ilrn"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> redNonPlayerIdleRight = new Animation<TextureRegion>(IDLEFRAMETIME,playerSprites.findRegions("idle/irrn"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> bluNonPlayerIdleLeft = new Animation<TextureRegion>(IDLEFRAMETIME,playerSprites.findRegions("idle/ilbn"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> bluNonPlayerIdleRight = new Animation<TextureRegion>(IDLEFRAMETIME,playerSprites.findRegions("idle/irbn"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> redPlayerIdleLeft = new Animation<TextureRegion>(IDLEFRAMETIME,playerSprites.findRegions("idle/ilrp"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> redPlayerIdleRight = new Animation<TextureRegion>(IDLEFRAMETIME,playerSprites.findRegions("idle/irrp"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> bluPlayerIdleLeft = new Animation<TextureRegion>(IDLEFRAMETIME,playerSprites.findRegions("idle/ilbp"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> bluPlayerIdleRight = new Animation<TextureRegion>(IDLEFRAMETIME,playerSprites.findRegions("idle/irbp"), Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> redNonPlayerIdleLeft = new Animation<TextureRegion>(IDLEFRAMETIME,playerSprites.findRegions("idle/ilrnk"), Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> redNonPlayerIdleRight = new Animation<TextureRegion>(IDLEFRAMETIME,playerSprites.findRegions("idle/irrnk"), Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> bluNonPlayerIdleLeft = new Animation<TextureRegion>(IDLEFRAMETIME,playerSprites.findRegions("idle/ilbnk"), Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> bluNonPlayerIdleRight = new Animation<TextureRegion>(IDLEFRAMETIME,playerSprites.findRegions("idle/irbnk"), Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> redPlayerIdleLeft = new Animation<TextureRegion>(IDLEFRAMETIME,playerSprites.findRegions("idle/ilrpk"), Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> redPlayerIdleRight = new Animation<TextureRegion>(IDLEFRAMETIME,playerSprites.findRegions("idle/irrpk"), Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> bluPlayerIdleLeft = new Animation<TextureRegion>(IDLEFRAMETIME,playerSprites.findRegions("idle/ilbpk"), Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> bluPlayerIdleRight = new Animation<TextureRegion>(IDLEFRAMETIME,playerSprites.findRegions("idle/irbpk"), Animation.PlayMode.LOOP);
     //animations will be accessed with redPlayer[direction][animationID]
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
