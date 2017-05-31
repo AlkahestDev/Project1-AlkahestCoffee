@@ -20,6 +20,8 @@ public class PlayerSoldier {
     private Rectangle playerArea;
     private float vX, vY, animationTime;
     private String name;
+    public static final float width = 1;
+    public static final float height = 2;
     public PlayerSoldier(){
         fillKeys();
     }
@@ -151,7 +153,7 @@ public class PlayerSoldier {
         else { // idling
             drawFrame = (TextureRegion) animationSet[this.getAnimationID() & PlayerAnimations.DIRECTION][4].getKeyFrame(this.animationTime);
         }
-        batch.draw(drawFrame,this.getX(),this.getY(),1,2);
+        batch.draw(drawFrame,this.getX(),this.getY(),this.getWidth(),this.getHeight());
     }
     public void setX(float x){
             this.playerArea.setX(x);
@@ -159,7 +161,12 @@ public class PlayerSoldier {
     public void setY(float y){
         this.playerArea.setY(y);
     }
-
+    public float getWidth(){
+        return this.width;
+    }
+    public float getHeight(){
+        return this.height;
+    }
     public void setvX(float vX) {
         this.vX = vX;
     }
@@ -208,7 +215,12 @@ public class PlayerSoldier {
     public void setAnimationTime(float animationTime) {
         this.animationTime = animationTime;
     }
-
+    public float getCenterX(){
+        return (this.width/2f)+this.getX();
+    }
+    public float getCenterY(){
+        return (this.height/2f)+this.getY();
+    }
     @Override
     public String toString() {
         return "PlayerSoldier{" +

@@ -59,12 +59,16 @@ public class ClientGameInstance implements InputProcessor{
         batch.end();
         playWorld.getMap().draw(batch);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
-            for(PlayerSoldier playerSoldier :gameClient.getPlayers().values()) {
-                System.out.println(playerSoldier.getMouseAngle());
-                renderer.line(playerSoldier.getX(),playerSoldier.getY(),playerSoldier.getX()+(5*(float)Math.cos(Math.toRadians(playerSoldier.getMouseAngle()))),playerSoldier.getY()+(5*(float)Math.sin(Math.toRadians(playerSoldier.getMouseAngle()))));
-                DrawTools.rec(renderer, new Rectangle((int) (playerSoldier.getX()), (int) (playerSoldier.getY() + playerSoldier.getvY()), 1, 1));
-            }
+        for(PlayerSoldier playerSoldier :gameClient.getPlayers().values()) {
+            System.out.println(playerSoldier.getX()-playerSoldier.getCenterX());//playerSoldier.getMouseAngle());
             renderer.setColor(Color.RED);
+            renderer.line(playerSoldier.getCenterX(),
+                    playerSoldier.getCenterY(),
+                    playerSoldier.getCenterX()+(5*(float)Math.cos(Math.toRadians(playerSoldier.getMouseAngle()))),
+                    playerSoldier.getCenterY()+(5*(float)Math.sin(Math.toRadians(playerSoldier.getMouseAngle()))));
+            renderer.setColor(Color.BLUE);
+            DrawTools.rec(renderer, new Rectangle((int) (playerSoldier.getX()), (int) (playerSoldier.getY() + playerSoldier.getvY()), 1, 1));
+        }
         renderer.end();
     }
     public void pickWorld(int worldID){
@@ -147,10 +151,7 @@ public class ClientGameInstance implements InputProcessor{
             keysDown[MultiplayerTools.Keys.RMB] = new MultiplayerTools.ClientControlObject(true);
             keyUpdate = true;
         }
-        float xLeg = screenX-getPlayerOnscreenX();
-        float yLeg = screenY-getPlayerOnscreenY();
-        float mAngle=(float)Math.toDegrees(Math.atan2(yLeg,xLeg));
-        keysDown[MultiplayerTools.Keys.ANGLE] = new MultiplayerTools.ClientControlObject(mAngle);
+        keysDown[MultiplayerTools.Keys.ANGLE] = new MultiplayerTools.ClientControlObject(getPointerAngle(screenX,screenY));
         return false;
     }
 
@@ -170,6 +171,9 @@ public class ClientGameInstance implements InputProcessor{
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+        screenY=Gdx.graphics.getHeight()-screenY;
+        keysDown[MultiplayerTools.Keys.ANGLE] = new MultiplayerTools.ClientControlObject(getPointerAngle(screenX,screenY));
+        keyUpdate=true;
         return false;
     }
 
@@ -182,7 +186,11 @@ public class ClientGameInstance implements InputProcessor{
     public boolean scrolled(int amount) {
         return false;
     }
-
+    public float getPointerAngle(float screenX, float screenY){
+        float xLeg = screenX-(getPlayerOnscreenX()+(playWorld.getPlayers().get(gameClient.getConnectionID()).getWidth()/2));
+        float yLeg = screenY-(getPlayerOnscreenY()+(playWorld.getPlayers().get(gameClient.getConnectionID()).getHeight()/2));
+        return (float)Math.toDegrees(Math.atan2(yLeg,xLeg));
+    }
     /**
      * Gets the client's player x coordinate relative to the bottom left of the screen
      * @return
