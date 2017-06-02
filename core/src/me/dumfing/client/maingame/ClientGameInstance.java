@@ -59,7 +59,7 @@ public class ClientGameInstance implements InputProcessor{
         batch.end();
         playWorld.getMap().draw(batch);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
-        for(PlayerSoldier playerSoldier :gameClient.getPlayers().values()) {
+        /*for(PlayerSoldier playerSoldier :gameClient.getPlayers().values()) {
             System.out.println(playerSoldier.getX()-playerSoldier.getCenterX());//playerSoldier.getMouseAngle());
             renderer.setColor(Color.RED);
             renderer.line(playerSoldier.getCenterX(),
@@ -68,7 +68,7 @@ public class ClientGameInstance implements InputProcessor{
                     playerSoldier.getCenterY()+(5*(float)Math.sin(Math.toRadians(playerSoldier.getMouseAngle()))));
             renderer.setColor(Color.BLUE);
             DrawTools.rec(renderer, new Rectangle((int) (playerSoldier.getX()), (int) (playerSoldier.getY() + playerSoldier.getvY()), 1, 1));
-        }
+        }*/
         renderer.end();
     }
     public void pickWorld(int worldID){
