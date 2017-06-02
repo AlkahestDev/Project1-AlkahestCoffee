@@ -34,6 +34,7 @@ public class ClientPickingInfoMenu extends Menu{
         redTeamButton  =new MenuTools.Button(5,5, Gdx.graphics.getWidth()/2-10,Gdx.graphics.getHeight()-10);
         bluTeamButton = new MenuTools.Button(Gdx.graphics.getWidth()/2+5,5,Gdx.graphics.getWidth()/2-10,Gdx.graphics.getHeight()-10);
         knightButton = new MenuTools.Button(5,Gdx.graphics.getHeight(),Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight()/2);
+        archerButton = new MenuTools.Button(10+Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight(),Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight()/2);
         redTeamButton.setCallback(new MenuTools.OnClick() {
             @Override
             public void action() {
@@ -44,6 +45,7 @@ public class ClientPickingInfoMenu extends Menu{
                     redTeamNumbers.setVelocity(-30, 0);
                     bluTeamNumbers.setVelocity(30, 0);
                     knightButton.setVelocity(0,-20);
+                    archerButton.setVelocity(0,-20);
                     inOriginalPosition = false;
                 }
             }
@@ -58,6 +60,7 @@ public class ClientPickingInfoMenu extends Menu{
                     redTeamNumbers.setVelocity(-30, 0);
                     bluTeamNumbers.setVelocity(30, 0);
                     knightButton.setVelocity(0,-20);
+                    archerButton.setVelocity(0,-20);
                     inOriginalPosition = false;
                 }
             }
@@ -70,14 +73,22 @@ public class ClientPickingInfoMenu extends Menu{
         bluTeamNumbers = new MenuTools.QueueText(Gdx.graphics.getWidth()/2+10,Gdx.graphics.getHeight()-10,0,0);
         redTeamNumbers.setFont(0);
         bluTeamNumbers.setFont(0);
-        knightButton.setPressedTexture(MenuTools.mGTR("L1.png",getManager()));
-        knightButton.setUnpressedTexture(MenuTools.mGTR("R1.png",getManager()));
+        knightButton.setPressedTexture(MenuTools.mGTR("archive/L1.png",getManager()));
+        knightButton.setUnpressedTexture(MenuTools.mGTR("archive/R1.png",getManager()));
         knightButton.setCallback(new MenuTools.OnClick() {
             @Override
             public void action() {
                 cl.secureSend(new MultiplayerTools.ClientPickedLoadout(0));
             }
         });
+        archerButton.setPressedTexture(MenuTools.mGTR("archive/L2.png",getManager()));
+        archerButton.setUnpressedTexture(MenuTools.mGTR("archive/R2.png",getManager()));
+        archerButton.setCallback(new MenuTools.OnClick() {
+            public void action() {
+                cl.secureSend(new MultiplayerTools.ClientPickedLoadout(1));
+            }
+        });
+        super.addButton(archerButton);
         super.addButton(knightButton);
         super.addQueueText(redTeamNumbers);
         super.addQueueText(bluTeamNumbers);
@@ -93,6 +104,7 @@ public class ClientPickingInfoMenu extends Menu{
             redTeamNumbers.setVelocity(30, 0);
             bluTeamNumbers.setVelocity(-30, 0);
             knightButton.setVelocity(0,20);
+            archerButton.setVelocity(0,20);
             inOriginalPosition = true;
         }
         super.setInputProcessor();

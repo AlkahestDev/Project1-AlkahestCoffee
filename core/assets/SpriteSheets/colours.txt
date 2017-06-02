@@ -1,0 +1,4 @@
+blue player = 0,64,168
+blue non player = 92,0,168
+red player = 111,0,0
+red non player = 168,95,0

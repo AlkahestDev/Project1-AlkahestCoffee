@@ -65,8 +65,8 @@ public class ServerBrowser extends Menu{
                 MainGame.state = GameState.State.MAINMENU;
             }
         });
-        bt.setPressedTexture(new TextureRegion((Texture)getManager().get("R1.png")));
-        bt.setUnpressedTexture(new TextureRegion((Texture)getManager().get("R2.png")));
+        bt.setPressedTexture(new TextureRegion((Texture)getManager().get("archive/R1.png")));
+        bt.setUnpressedTexture(new TextureRegion((Texture)getManager().get("archive/R2.png")));
         super.addButton(bt);
     }
     private void addRefreshButton(){
@@ -79,8 +79,8 @@ public class ServerBrowser extends Menu{
                 }
             }
         });
-        refreshServers.setPressedTexture(new TextureRegion((Texture)getManager().get("L1.png")));
-        refreshServers.setUnpressedTexture(new TextureRegion((Texture)getManager().get("L2.png")));
+        refreshServers.setPressedTexture(new TextureRegion((Texture)getManager().get("archive/L1.png")));
+        refreshServers.setUnpressedTexture(new TextureRegion((Texture)getManager().get("archive/L2.png")));
         super.addButton(refreshServers);
 
     }
