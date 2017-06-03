@@ -6,15 +6,23 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.DrawTools;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.multiplayerTools.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import static me.dumfing.client.maingame.MainGame.DAGGER20S;
+import static me.dumfing.client.maingame.MainGame.DAGGER30;
+import static me.dumfing.client.maingame.MainGame.client;
 
 /**
  * Created by dumpl on 5/15/2017.
@@ -27,8 +35,10 @@ public class ClientGameInstance implements InputProcessor{
     private OrthographicCamera camera;
     private AssetManager manager;
     private TextureRegion arrowTexture;
-    public ClientGameInstance(MultiplayerClient gameClient, HashMap<Integer, PlayerSoldier> players, OrthographicCamera camera, AssetManager manager){
+    private Array<BitmapFontCache> fonts;
+    public ClientGameInstance(MultiplayerClient gameClient, HashMap<Integer, PlayerSoldier> players, OrthographicCamera camera, AssetManager manager, Array<BitmapFontCache> fonts){
         this.gameClient = gameClient;
+        this.fonts = fonts;
         this.playWorld = new ConcurrentGameWorld(players);
         this.camera=camera;
         this.manager = manager;
@@ -56,11 +66,11 @@ public class ClientGameInstance implements InputProcessor{
     public PlayerSoldier getPlayer(int connectionID){
         return playWorld.getPlayers().get(connectionID);
     }
-    public void draw(SpriteBatch batch, ShapeRenderer renderer){
+    public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer, SpriteBatch uiBatch, ShapeRenderer uiShapeRenderer){
         batch.begin();
         for(PlayerSoldier p : playWorld.getPlayers().values()){
             //DrawTools.rec(renderer,p.getRect());
-            p.draw(batch,playWorld.getPlayers().get(gameClient.getConnectionID()).equals(p));
+            p.draw(batch,clientSoldier().equals(p));
         }
         for(Projectile proj : playWorld.getProjectiles()){
             switch (proj.getProjectileType()){
@@ -71,8 +81,17 @@ public class ClientGameInstance implements InputProcessor{
         }
         //batch.draw(playWorld.getMap().getVisualComponent(),0,0);
         batch.end();
+        uiBatch.begin();
+        drawHud(uiBatch,uiShapeRenderer, clientSoldier());
+        for(BitmapFontCache bmfc : fonts){
+            bmfc.draw(uiBatch);
+        }
+        uiBatch.end();
         playWorld.getMap().draw(batch);
-        renderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        for(PlayerSoldier playerSoldier : gameClient.getPlayers().values()){
+            DrawTools.rec(shapeRenderer,playerSoldier.getRect());
+        }
         /*for(PlayerSoldier playerSoldier :gameClient.getPlayers().values()) {
             System.out.println(playerSoldier.getX()-playerSoldier.getCenterX());//playerSoldier.getMouseAngle());
             renderer.setColor(Color.RED);
@@ -83,7 +102,7 @@ public class ClientGameInstance implements InputProcessor{
             renderer.setColor(Color.BLUE);
             DrawTools.rec(renderer, new Rectangle((int) (playerSoldier.getX()), (int) (playerSoldier.getY() + playerSoldier.getvY()), 1, 1));
         }*/
-        renderer.end();
+        shapeRenderer.end();
     }
     public void pickWorld(int worldID){
         playWorld.setWorld(MainGame.worldMaps[MainGame.DEBUGWORLD]);
@@ -201,8 +220,8 @@ public class ClientGameInstance implements InputProcessor{
         return false;
     }
     public float getPointerAngle(float screenX, float screenY){
-        float xLeg = screenX-(getPlayerOnscreenX()+(playWorld.getPlayers().get(gameClient.getConnectionID()).getWidth()/2));
-        float yLeg = screenY-(getPlayerOnscreenY()+(playWorld.getPlayers().get(gameClient.getConnectionID()).getHeight()/2));
+        float xLeg = screenX-(getPlayerOnscreenX()+(clientSoldier().getWidth()/2));
+        float yLeg = screenY-(getPlayerOnscreenY()+(clientSoldier().getHeight()/2));
         return (float)Math.toDegrees(Math.atan2(yLeg,xLeg));
     }
     /**
@@ -210,7 +229,7 @@ public class ClientGameInstance implements InputProcessor{
      * @return
      */
     public float getPlayerOnscreenX(){
-        float playerScX = camera.viewportWidth/2-((camera.position.x-playWorld.getPlayers().get(gameClient.getConnectionID()).getX())/camera.zoom);
+        float playerScX = camera.viewportWidth/2-((camera.position.x-clientSoldier().getX())/camera.zoom);
         return playerScX;
     }
 
@@ -219,7 +238,14 @@ public class ClientGameInstance implements InputProcessor{
      * @return
      */
     public float getPlayerOnscreenY(){
-        float playerScY = camera.viewportHeight/2-((camera.position.y-playWorld.getPlayers().get(gameClient.getConnectionID()).getY())/camera.zoom);
+        float playerScY = camera.viewportHeight/2-((camera.position.y-clientSoldier().getY())/camera.zoom);
         return playerScY;
+    }
+    private void drawHud(Batch batch, ShapeRenderer shapeRenderer, PlayerSoldier center){
+        fonts.get(DAGGER30).addText(center.getName(),5,Gdx.graphics.getHeight()-30);
+        fonts.get(DAGGER30).addText(String.format("%2.2f %2.2f",center.getX(),center.getY()),5,Gdx.graphics.getHeight()-55);
+    }
+    private PlayerSoldier clientSoldier(){ // I can't be sure the pointer is always the same since the hashmap is always being updated from the server
+        return playWorld.getPlayers().get(client.getConnectionID());
     }
 }

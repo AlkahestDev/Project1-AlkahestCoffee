@@ -3,6 +3,7 @@ package me.dumfing.multiplayerTools;
 
 
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -157,6 +158,7 @@ public class PlayerSoldier {
         }
         batch.draw(drawFrame,this.getX(),this.getY(),this.getWidth(),this.getHeight());
     }
+
     public void setX(float x){
             this.playerArea.setX(x);
     }

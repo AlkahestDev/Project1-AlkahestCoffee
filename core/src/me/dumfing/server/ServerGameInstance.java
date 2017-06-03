@@ -24,9 +24,7 @@ public class ServerGameInstance {
                 case PLAYERPICKEDTEAM:
                     PlayerSoldier plr = world.getPlayers().get(svEvent.getConnectionID());
                     GridPoint2 spawnPos = plr.getTeam()==MultiplayerTools.REDTEAM?world.getMap().getRedSpawn():world.getMap().getBluSpawn();
-                    System.out.println("spawn pos: "+spawnPos);
-                    plr.setPos(spawnPos.x,spawnPos.y);
-                    System.out.printf("%f %f\n",plr.getX(),world.getPlayers().get(svEvent.getConnectionID()).getX());
+                    world.setPlayerPos(svEvent.getConnectionID(),spawnPos.x,spawnPos.y);
                     break;
             }
         }

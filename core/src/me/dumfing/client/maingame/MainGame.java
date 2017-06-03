@@ -2,7 +2,6 @@ package me.dumfing.client.maingame;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.*;
@@ -13,8 +12,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.menus.*;
 import me.dumfing.multiplayerTools.MultiplayerClient;
@@ -25,13 +22,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static final String versionNumber = "1e-10000000";
 	private float scW, scH;
 	//private Viewport viewport;
-	SpriteBatch batch;
+	SpriteBatch batch, uiBatch; //uiBatch and uiShapeRenderer are not attached to the camera and can be used for the ui
 	AssetManager assetManager;
 	public static GameState.State state;
 	Texture tuzki, menuImg;
 	public static MultiplayerClient client; // public to allow any menu to access easily
 	public static PlayerSoldier clientSoldier; // public to allow any menu to access easily
-	ShapeRenderer shapeRenderer;
+	ShapeRenderer shapeRenderer, uiShapeRenderer;
 	LoadingMenu loadingMenu;
 	MainMenu gameMain;
 	ConnectingMenu connectingMenu;
@@ -47,6 +44,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static final int DAGGER30 = 1;
 	public static final int DAGGER40 = 2;
 	public static final int DAGGER50 = 3;
+	public static final int DAGGER20S = 4;
 	public static WorldMap[] worldMaps;
 	public static final int DEBUGWORLD = 0;
 	ClientGameInstance gameInstance;
@@ -64,15 +62,20 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		BitmapFont dagger30 = new BitmapFont(Gdx.files.internal("fonts/dagger30.fnt"));
 		BitmapFont dagger40 = new BitmapFont(Gdx.files.internal("fonts/dagger40.fnt"));
 		BitmapFont dagger50 = new BitmapFont(Gdx.files.internal("fonts/dagger50.fnt"));
+		BitmapFont dagger20Small = new BitmapFont(Gdx.files.internal("fonts/dagger20.fnt"));
 		dagger20.getData().markupEnabled = true;
 		dagger30.getData().markupEnabled = true;
 		dagger40.getData().markupEnabled = true;
 		dagger50.getData().markupEnabled = true;
+		dagger20Small.getData().markupEnabled = true;
+		dagger20Small.getData().setScale(0.07f);
 		fontCaches.add(new BitmapFontCache(dagger20));
 		fontCaches.add(new BitmapFontCache(dagger30));
 		fontCaches.add(new BitmapFontCache(dagger40));
 		fontCaches.add(new BitmapFontCache(dagger50));
+		fontCaches.add(new BitmapFontCache(dagger20Small));
 		shapeRenderer = new ShapeRenderer();
+		uiShapeRenderer = new ShapeRenderer();
 		gameMain = new MainMenu(fontCaches,assetManager, camera);
 		loadingMenu = new LoadingMenu(fontCaches, assetManager, camera);
 		connectingMenu = new ConnectingMenu(fontCaches,assetManager,camera);
@@ -86,6 +89,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		//System.out.println(new Pixmap(Gdx.files.internal("pixmapTest.png")).getPixel(0,0)>>8);//since gimp doesn't do alpha in a friendly way, I'll bitshift right 8 bits to ignore alpha
 		state = GameState.State.LOADINGGAME;
 		batch = new SpriteBatch();
+		uiBatch = new SpriteBatch();
 		client = new MultiplayerClient();
 		clientSoldier = new PlayerSoldier(new Rectangle(0,0,1,2),0,"");
 		client.startClient();
@@ -124,7 +128,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			case LOADINGGAME: // we shouldn't ever be going back to LOADINGGAME
                 //LOADINGGAME just needs to call assetManager.update(), then assign the values
 				loadingMenu.update();
-				loadingMenu.draw(batch,shapeRenderer);
+				loadingMenu.draw(uiBatch,uiShapeRenderer);
 				if(loadingMenu.doneLoading()) { // returns true if done loading
 					//assets are assigned to variables here
 					assignValues();
@@ -150,14 +154,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				menu.update();
 				menu.standardDraw(batch,shapeRenderer);*/
 				gameMain.update();
-				gameMain.standardDraw(batch,shapeRenderer);
+				gameMain.standardDraw(uiBatch,uiShapeRenderer);
 				break;
 			case MAINMENUSETTINGS:
 				if(Gdx.input.getInputProcessor() != settingsMenu){
 					settingsMenu.setInputProcessor();
 				}
 				settingsMenu.update();
-				settingsMenu.standardDraw(batch,shapeRenderer);
+				settingsMenu.standardDraw(uiBatch,uiShapeRenderer);
 				break;
 			case SERVERBROWSER:
 			    if(Gdx.input.getInputProcessor()!=serverBrowser){
@@ -165,20 +169,20 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			        System.out.println("RUN!");
                 }
                 serverBrowser.update();
-			    serverBrowser.draw(batch,shapeRenderer);
+			    serverBrowser.draw(uiBatch,uiShapeRenderer);
 				break;
 			case STARTSERVER:
 				break;
 			case CONNECTINGTOSERVER:
 				connectingMenu.update();
-				connectingMenu.standardDraw(batch,shapeRenderer);
+				connectingMenu.standardDraw(uiBatch,uiShapeRenderer);
 				break;
 			case GAMELOBBY:
 				if(Gdx.input.getInputProcessor() != lobbyMenu){
 					lobbyMenu.setInputProcessor();
 				}
 				lobbyMenu.update(client);
-				lobbyMenu.draw(batch,shapeRenderer);
+				lobbyMenu.draw(uiBatch,uiShapeRenderer);
 				break;
 			case PICKINGINFO:
 				if(Gdx.input.getInputProcessor() != pickingInfoMenu){
@@ -186,12 +190,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				}
 				pickingInfoMenu.updateTeamNumbers(client.getRedTeam(), client.getBlueTeam(), client.getrLimit(), client.getbLimit());
 				pickingInfoMenu.update();
-				pickingInfoMenu.standardDraw(batch,shapeRenderer);
+				pickingInfoMenu.standardDraw(uiBatch,uiShapeRenderer);
 				break;
 			case PLAYINGGAME:
 				//camera.setToOrtho(true,900,450);
 				if(Gdx.input.getInputProcessor() != gameInstance){
-					gameInstance = new ClientGameInstance(client, client.getPlayers(),camera,assetManager);
+					gameInstance = new ClientGameInstance(client, client.getPlayers(),camera,assetManager,fontCaches);
 					gameInstance.pickWorld(DEBUGWORLD);
 					Gdx.input.setInputProcessor(gameInstance);
 				}
@@ -231,7 +235,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				camera.update();
 				shapeRenderer.setProjectionMatrix(camera.combined);
 				batch.setProjectionMatrix(camera.combined);
-				gameInstance.draw(batch,shapeRenderer);
+				gameInstance.draw(batch,shapeRenderer,uiBatch,uiShapeRenderer);
 				//System.out.println("after "+clientSoldierTemp.getX());
 				break;
 			case ROUNDOVER:

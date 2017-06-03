@@ -13,7 +13,8 @@ import static me.dumfing.multiplayerTools.MultiplayerTools.REDTEAM;
  * Created by aaronli on 2017-06-02.
  */
 public class Projectile {
-    private static final float CHECKRES = 0.1f;
+    private static final float CHECKRES = 0.01f;
+    public static final int MAXLIFETIME = 240;
     private float x,y;
     private float vX = 0;
     private float vY = 0;
@@ -67,8 +68,13 @@ public class Projectile {
             }
         }
         else {
-            this.vX = players.get(physicsParent).getvX();
-            this.vY = players.get(physicsParent).getvY();
+            if(players.get(physicsParent) == null){
+                this.timeAlive = MAXLIFETIME;
+            }
+            else {
+                this.vX = players.get(physicsParent).getvX();
+                this.vY = players.get(physicsParent).getvY();
+            }
         }
         this.move(); // if it hit nothing then move it to the intended destination
         if(!isHit) {

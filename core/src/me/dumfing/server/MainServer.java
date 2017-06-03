@@ -107,7 +107,6 @@ public class MainServer {
                 else if(o instanceof MultiplayerTools.ClientPickedLoadout){
                     MultiplayerTools.ClientPickedLoadout temp = (MultiplayerTools.ClientPickedLoadout) o;
                     players.get(connection.getID()).setCurrentClass(temp.getLoadout());
-                    players.get(connection.getID()).setPos(2,5);
                     events.add(new ServerEvent(ServerEvent.EventType.PLAYERPICKEDCLASS,connection.getID()));
                     (players.get(connection.getID()).getTeam()==0?CoffeeServer.redTeamMembers:CoffeeServer.bluTeamMembers).add(connection.getID()); // the client needs to be in a team to start being simulated
                     connection.sendTCP(new MultiplayerTools.ServerNotifyGame(0)); // tell the client which world is being used and what their ID is

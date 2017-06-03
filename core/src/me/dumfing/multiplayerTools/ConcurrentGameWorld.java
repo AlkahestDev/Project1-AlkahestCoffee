@@ -15,9 +15,9 @@ import static me.dumfing.multiplayerTools.PlayerSoldier.KNIGHT;
  * simulation of how the server's world is working
  */
 public class ConcurrentGameWorld {
-    HashMap<Integer, PlayerSoldier> players;
-    WorldMap map;
-    LinkedList<Projectile> projectiles = new LinkedList<Projectile>();
+    private HashMap<Integer, PlayerSoldier> players;
+    private WorldMap map;
+    private LinkedList<Projectile> projectiles = new LinkedList<Projectile>();
     public ConcurrentGameWorld(HashMap<Integer, PlayerSoldier> initialPlayers){
         this.players = initialPlayers;
     }
@@ -36,7 +36,7 @@ public class ConcurrentGameWorld {
             proj.checkCollisions(new LinkedList<PlayerSoldier>(players.values()),map);
         }
         for(int i = projectiles.size()-1;i>-1;i--){
-            if(projectiles.get(i).getTimeAlive() >= 240){
+            if(projectiles.get(i).getTimeAlive() >= Projectile.MAXLIFETIME){
                 projectiles.remove(i);
             }
         }
@@ -144,7 +144,7 @@ public class ConcurrentGameWorld {
                 case ARCHER:
                     //System.out.println("add projectile");
                     if(projectiles.size()<20) {
-                        projectiles.add(new Projectile(pIn.getX(), pIn.getY(), 1.5f, pIn.getMouseAngle(), 0, pIn.getTeam()));
+                        projectiles.add(new Projectile(pIn.getX(), pIn.getY(), 2f, pIn.getMouseAngle(), 0, pIn.getTeam()));
                     }
                     break;
             }
@@ -153,5 +153,8 @@ public class ConcurrentGameWorld {
             pIn.setAnimationTime(0);
         }
         return animation;
+    }
+    public void setPlayerPos(int playerID, float posX, float posY){
+        players.get(playerID).setPos(posX,posY);
     }
 }
