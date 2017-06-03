@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import me.dumfing.gdxtools.MathTools;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import static me.dumfing.multiplayerTools.MultiplayerTools.WALKSPEED;
 
@@ -14,6 +15,7 @@ import static me.dumfing.multiplayerTools.MultiplayerTools.WALKSPEED;
 public class ConcurrentGameWorld {
     HashMap<Integer, PlayerSoldier> players;
     WorldMap map;
+    LinkedList<Projectile> projectiles = new LinkedList<Projectile>();
     public ConcurrentGameWorld(HashMap<Integer, PlayerSoldier> initialPlayers){
         this.players = initialPlayers;
     }
@@ -115,6 +117,9 @@ public class ConcurrentGameWorld {
                 pIn.setvX(WALKSPEED/2f);
             }
             pIn.setFacingDirection(1);
+        }
+        else if(keys[MultiplayerTools.Keys.LMB] !=null && keys[MultiplayerTools.Keys.LMB].type==0 && keys[MultiplayerTools.Keys.LMB].isDown){
+
         }
         if(animation+pIn.getFacingDirection()!=pIn.getAnimationID()){
             pIn.setAnimationTime(0);

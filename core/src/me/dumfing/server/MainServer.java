@@ -136,6 +136,11 @@ public class MainServer {
         this.server.stop();
         this.isRunning = false;
     }
+    public LinkedList<ServerEvent> getEvents(){
+        LinkedList<ServerEvent> temp = new LinkedList<ServerEvent>(events);
+        events.clear();
+        return temp;
+    }
     public boolean running(){
         return this.isRunning;
     }

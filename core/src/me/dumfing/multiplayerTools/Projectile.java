@@ -11,17 +11,17 @@ public class Projectile {
     private float x,y;
     private float vX = 0;
     private float vY = 0;
-    private TextureRegion textureRegion;
-    public Projectile(float x, float y,float speed, float angle){
+    private boolean isHit = false;
+    int projectileType = 0;
+    //0 for arrow
+    public Projectile(float x, float y,float speed, float angle, int type){
         this.x = x;
         this.y = y;
         this.vX = speed*(float) Math.cos(Math.toRadians(angle));
         this.vY = speed*(float) Math.sin(Math.toRadians(angle));
+        this.projectileType = type;
     }
-    public void setImage(TextureRegion graphic){
-        textureRegion = graphic;
-    }
-    public boolean checkCollisions(PlayerSoldier[] players, WorldMap world){
+    public void checkCollisions(PlayerSoldier[] players, WorldMap world){
         float hyp = (float)Math.hypot(this.vX,this.vY);
         float xAmt = this.vX/hyp;
         float yAmt = this.vY/hyp;
@@ -30,19 +30,29 @@ public class Projectile {
             float checkY = yAmt*i;
             for(PlayerSoldier player : players){
                 if(player.getRect().contains(checkX,checkY)){
-
+                    this.x = checkX;
+                    this.y = checkY;
+                    isHit = true;
+                    break;
                 }
             }
-            if(world.getPosId((int)checkX,(int)checkY) == 1){
+            if(!isHit && world.getPosId((int)checkX,(int)checkY) == 1){
                 //TODO: action when collided
+                this.x = checkX;
+                this.y = checkY;
+                isHit = true;
+                break;
             }
         }
-        return false;
+        this.move(); // if it hit nothing then move it to the intended destination
     }
     public void move(){
-
+        if(!isHit){
+            this.x+=vX;
+            this.y+=vY;
+        }
     }
-    public void draw(SpriteBatch batch){
+    public void draw(SpriteBatch batch, TextureRegion textureRegion){
         float angle = (float) Math.toDegrees(Math.atan2(this.vY,this.vX));
         batch.draw(textureRegion,this.x,this.y,0.25f,0.1f,0.5f,0.2f,0.5f,0.2f,angle);
     }
