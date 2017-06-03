@@ -24,7 +24,7 @@ public class WorldMap {
         collisionMap = colMap.getTexture().getTextureData().consumePixmap();
         visualComponent = new Array<TextureRegion>();
         visualComponent.add(visComp);
-        redSpawn = findColour(255<<16);
+        redSpawn = findColour(-65536);
         bluSpawn = findColour(255);
     }
     public void draw(SpriteBatch batch){
@@ -72,6 +72,7 @@ public class WorldMap {
         for(int x = 0; x<collisionMap.getWidth();x++){
             for(int y = 0; y<collisionMap.getWidth();y++){
                 if(getPosId(x,y)==id) {
+                    System.out.println("spawn: "+x+" "+y+" "+id);
                     return new GridPoint2(x, y);
                 }
             }

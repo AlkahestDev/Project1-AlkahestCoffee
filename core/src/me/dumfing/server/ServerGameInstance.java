@@ -1,5 +1,6 @@
 package me.dumfing.server;
 
+import com.badlogic.gdx.math.GridPoint2;
 import me.dumfing.multiplayerTools.ConcurrentGameWorld;
 import me.dumfing.multiplayerTools.MultiplayerTools;
 import me.dumfing.multiplayerTools.PlayerSoldier;
@@ -18,9 +19,19 @@ public class ServerGameInstance {
     }
     public void update(MainServer sv){
         world.update();
+        for(ServerEvent svEvent : sv.getEvents()){
+            switch (svEvent.getEventType()){
+                case PLAYERPICKEDTEAM:
+                    PlayerSoldier plr = world.getPlayers().get(svEvent.getConnectionID());
+                    GridPoint2 spawnPos = plr.getTeam()==MultiplayerTools.REDTEAM?world.getMap().getRedSpawn():world.getMap().getBluSpawn();
+                    System.out.println("spawn pos: "+spawnPos);
+                    plr.setPos(spawnPos.x,spawnPos.y);
+                    System.out.printf("%f %f\n",plr.getX(),world.getPlayers().get(svEvent.getConnectionID()).getX());
+                    break;
+            }
+        }
         if(frameCount == 3){ // 2 gets an interesting 30hz
             frameCount = 0;
-            System.out.println(world.getProjectiles().size());
             sv.quickSendAll(new MultiplayerTools.ServerPlayerPositions(world.getPlayers()));
             sv.quickSendAll(new MultiplayerTools.ServerProjectilePositions(world.getProjectiles()));
         }
