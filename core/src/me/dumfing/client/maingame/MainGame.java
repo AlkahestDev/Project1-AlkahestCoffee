@@ -191,7 +191,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			case PLAYINGGAME:
 				//camera.setToOrtho(true,900,450);
 				if(Gdx.input.getInputProcessor() != gameInstance){
-					gameInstance = new ClientGameInstance(client, client.getPlayers(),camera);
+					gameInstance = new ClientGameInstance(client, client.getPlayers(),camera,assetManager);
 					gameInstance.pickWorld(DEBUGWORLD);
 					Gdx.input.setInputProcessor(gameInstance);
 				}
@@ -270,6 +270,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		assetManager.load("menubackdrops/canvas.png",Texture.class);
 		assetManager.load("pixmapTest.png",Texture.class);
 		assetManager.load("pixmapVisual.png",Texture.class);
+		assetManager.load("projectiles/arrow.png",Texture.class);
 		for(int i = 1; i<10; i++){
 			assetManager.load(String.format("archive/L%d.png",i),Texture.class);
 			assetManager.load(String.format("archive/R%d.png",i),Texture.class);

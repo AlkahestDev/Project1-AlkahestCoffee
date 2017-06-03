@@ -3,16 +3,16 @@ package me.dumfing.client.maingame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import me.dumfing.gdxtools.DrawTools;
-import me.dumfing.multiplayerTools.ConcurrentGameWorld;
-import me.dumfing.multiplayerTools.MultiplayerClient;
-import me.dumfing.multiplayerTools.MultiplayerTools;
-import me.dumfing.multiplayerTools.PlayerSoldier;
+import me.dumfing.gdxtools.MenuTools;
+import me.dumfing.multiplayerTools.*;
 
 import java.util.HashMap;
 
@@ -25,10 +25,14 @@ public class ClientGameInstance implements InputProcessor{
     MultiplayerClient gameClient;
     private ConcurrentGameWorld playWorld;
     private OrthographicCamera camera;
-    public ClientGameInstance(MultiplayerClient gameClient, HashMap<Integer, PlayerSoldier> players, OrthographicCamera camera){
+    private AssetManager manager;
+    private TextureRegion arrowTexture;
+    public ClientGameInstance(MultiplayerClient gameClient, HashMap<Integer, PlayerSoldier> players, OrthographicCamera camera, AssetManager manager){
         this.gameClient = gameClient;
         this.playWorld = new ConcurrentGameWorld(players);
         this.camera=camera;
+        this.manager = manager;
+        this.arrowTexture = MenuTools.mGTR("projectiles/arrow.png",manager);
     }
     public void update(){
         if(keyUpdate){
@@ -42,6 +46,9 @@ public class ClientGameInstance implements InputProcessor{
             //System.out.println("receive info");
             playWorld.updatePlayers(gameClient.getPlayers());
         }
+        if(gameClient.isHasNewProjectileInfo()){
+            playWorld.updateProjectiles(gameClient.getProjectiles());
+        }
         playWorld.updatePlayerKeys(gameClient.getConnectionID(),keysDown);
         //System.out.println("updateplayworld");
         playWorld.update();
@@ -54,6 +61,13 @@ public class ClientGameInstance implements InputProcessor{
         for(PlayerSoldier p : playWorld.getPlayers().values()){
             //DrawTools.rec(renderer,p.getRect());
             p.draw(batch,playWorld.getPlayers().get(gameClient.getConnectionID()).equals(p));
+        }
+        for(Projectile proj : playWorld.getProjectiles()){
+            switch (proj.getProjectileType()){
+                case 0:
+                    proj.draw(batch,arrowTexture);
+                    break;
+            }
         }
         //batch.draw(playWorld.getMap().getVisualComponent(),0,0);
         batch.end();

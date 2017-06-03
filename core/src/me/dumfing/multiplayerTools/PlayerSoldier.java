@@ -1,8 +1,7 @@
 package me.dumfing.multiplayerTools;
 
 
-import com.badlogic.gdx.assets.loaders.SynchronousAssetLoader;
-import com.badlogic.gdx.graphics.Cursor;
+
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -22,6 +21,8 @@ public class PlayerSoldier {
     private String name;
     public static final float width = 1;
     public static final float height = 2;
+    public static final int KNIGHT = 0;
+    public static final int ARCHER = 1;
     public PlayerSoldier(){
         fillKeys();
     }
@@ -138,7 +139,7 @@ public class PlayerSoldier {
             }
         }
         //System.out.println(this.animationTime);
-        System.out.println(this.getAnimationID());
+        //System.out.println(this.getAnimationID());
         if((this.getAnimationID()&PlayerAnimations.ISWALKING) == PlayerAnimations.WALK){
             drawFrame = (TextureRegion) animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][0][this.getCurrentClass()].getKeyFrame(this.animationTime);
         }

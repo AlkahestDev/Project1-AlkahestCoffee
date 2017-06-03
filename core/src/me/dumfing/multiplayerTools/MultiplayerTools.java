@@ -6,6 +6,8 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+
 /**
  * Objects that will be sent between the client and server as well as useful variables like ports<br>
  * All classes that the server will send will be prefixed with <b>Server</b> and all classes that the client will send will be prefixed with <b>Client</b>
@@ -16,6 +18,8 @@ public class MultiplayerTools {
     public static final float GRAVITY = -0.05f;
     public static final float WALKSPEED = 0.22f;
     public static final float JUMPPOWER = 0.8f;
+    public static final int REDTEAM = 0;
+    public static final int BLUTEAM = 1;
     public static class Keys{
         public static final int W = 0;
         public static final int A = 1;
@@ -32,10 +36,13 @@ public class MultiplayerTools {
         Kryo serializer = endpoint.getKryo();
         //Can't register Connection so will have to switch with Integer
         serializer.register(HashMap.class);
+        serializer.register(LinkedList.class);
         serializer.register(Rectangle.class);
+        serializer.register(PlayerSoldier.class);
+        serializer.register(Projectile.class);
+        serializer.register(ServerProjectilePositions.class);
         serializer.register(ClientControlObject[].class);
         serializer.register(ClientControlObject.class);
-        serializer.register(PlayerSoldier.class);
         serializer.register(ClientKeysUpdate.class);
         serializer.register(ClientPickedLoadout.class);
         serializer.register(ClientInfoRequest.class);
@@ -143,6 +150,20 @@ public class MultiplayerTools {
 
         public HashMap<Integer, PlayerSoldier> getPlayers() {
             return players;
+        }
+    }
+    public static class ServerProjectilePositions{
+        private LinkedList<Projectile> projectiles;
+
+        public ServerProjectilePositions() {
+        }
+
+        public ServerProjectilePositions(LinkedList<Projectile> projectiles) {
+            this.projectiles = projectiles;
+        }
+
+        public LinkedList<Projectile> getProjectiles() {
+            return projectiles;
         }
     }
     /**

@@ -9,6 +9,9 @@ import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.multiplayerTools.MultiplayerClient;
 import me.dumfing.multiplayerTools.MultiplayerTools;
 
+import static me.dumfing.multiplayerTools.PlayerSoldier.ARCHER;
+import static me.dumfing.multiplayerTools.PlayerSoldier.KNIGHT;
+
 /**
  * TODO: it is currently possible to bypass the team picking lock[1] by picking a team at the same time as the other person<br>1. If client knows that there are too many people on one team it will block you from joining that team
  *
@@ -78,14 +81,14 @@ public class ClientPickingInfoMenu extends Menu{
         knightButton.setCallback(new MenuTools.OnClick() {
             @Override
             public void action() {
-                cl.secureSend(new MultiplayerTools.ClientPickedLoadout(0));
+                cl.secureSend(new MultiplayerTools.ClientPickedLoadout(KNIGHT));
             }
         });
         archerButton.setPressedTexture(MenuTools.mGTR("archive/L2.png",getManager()));
         archerButton.setUnpressedTexture(MenuTools.mGTR("archive/R2.png",getManager()));
         archerButton.setCallback(new MenuTools.OnClick() {
             public void action() {
-                cl.secureSend(new MultiplayerTools.ClientPickedLoadout(1));
+                cl.secureSend(new MultiplayerTools.ClientPickedLoadout(ARCHER));
             }
         });
         super.addButton(archerButton);

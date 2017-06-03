@@ -40,6 +40,7 @@ public class MultiplayerClient {
         }
     };
     private LinkedList<String> messages = new LinkedList<String>();
+    LinkedList<Projectile> projectiles = new LinkedList<Projectile>();
     private HashMap<Integer, PlayerSoldier> players = new HashMap<Integer, PlayerSoldier>();
     private boolean findingServers = false;
     private Client playerClient;
@@ -51,7 +52,8 @@ public class MultiplayerClient {
     private int gameStarted = -1;
     private int connectionID = 0; // the id of the connection between the client and the server
     private int worldNum = -1;
-    boolean hasNewPlayerInfo = false;
+    private boolean hasNewPlayerInfo = false;
+    private boolean hasNewProjectileInfo = false;
     public MultiplayerClient(){
         playerClient = new Client();
         serverSummaries = new HashMap<String, MultiplayerTools.ServerSummary>();
@@ -130,6 +132,10 @@ public class MultiplayerClient {
                 }
                 else if(o instanceof MultiplayerTools.ServerNotifyGame){
                     MainGame.state = GameState.State.PLAYINGGAME;
+                }
+                else if(o instanceof  MultiplayerTools.ServerProjectilePositions){
+                    projectiles = ((MultiplayerTools.ServerProjectilePositions) o).getProjectiles();
+                    hasNewProjectileInfo = true;
                 }
                 super.received(connection, o);
             }
@@ -286,6 +292,16 @@ public class MultiplayerClient {
         boolean ogOut = hasNewPlayerInfo;
         hasNewPlayerInfo = false;
         return ogOut;
+    }
+
+    public boolean isHasNewProjectileInfo() {
+        boolean ogOut = hasNewProjectileInfo;
+        hasNewProjectileInfo = false;
+        return ogOut;
+    }
+
+    public LinkedList<Projectile> getProjectiles() {
+        return projectiles;
     }
 
     /**

@@ -17,7 +17,7 @@ import java.util.LinkedList;
 public class MainServer {
     private Server server;
     private boolean isRunning;
-    public static int maxPlayers;
+    private int maxPlayers;
     private int numPlayers = 0;
     private String svName;
     HashMap<Integer, PlayerSoldier> players;

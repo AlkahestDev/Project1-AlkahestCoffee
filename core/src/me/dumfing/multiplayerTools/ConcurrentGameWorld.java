@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import static me.dumfing.multiplayerTools.MultiplayerTools.WALKSPEED;
+import static me.dumfing.multiplayerTools.PlayerSoldier.ARCHER;
+import static me.dumfing.multiplayerTools.PlayerSoldier.KNIGHT;
 
 /**
  * A new version of the gameworld that is designed to be used on both the client and serverside for better
@@ -23,17 +25,31 @@ public class ConcurrentGameWorld {
         this.map = wmIn;
     }
     public void update(){
+        //System.out.println(projectiles);
         for(PlayerSoldier p : players.values()){
             p.update(Gdx.graphics.getDeltaTime());
             p.setAnimationID(handleKeyInput(p));
             handleCollisions(p);
             p.move();
         }
+        for(Projectile proj : projectiles){
+            proj.checkCollisions(new LinkedList<PlayerSoldier>(players.values()),map);
+        }
+        for(int i = projectiles.size()-1;i>-1;i--){
+            if(projectiles.get(i).getTimeAlive() >= 240){
+                projectiles.remove(i);
+            }
+        }
     }
 
     public HashMap<Integer, PlayerSoldier> getPlayers() {
         return players;
     }
+
+    public LinkedList<Projectile> getProjectiles() {
+        return projectiles;
+    }
+
     public WorldMap getMap() {
         return map;
     }
@@ -78,7 +94,9 @@ public class ConcurrentGameWorld {
         this.players = newInfo;
     }
 
-
+    public void updateProjectiles(LinkedList<Projectile> projectiles) {
+        this.projectiles = projectiles;
+    }
 
     public int handleKeyInput(PlayerSoldier pIn){
         MultiplayerTools.ClientControlObject[] keys = pIn.getKeysHeld();
@@ -118,8 +136,18 @@ public class ConcurrentGameWorld {
             }
             pIn.setFacingDirection(1);
         }
-        else if(keys[MultiplayerTools.Keys.LMB] !=null && keys[MultiplayerTools.Keys.LMB].type==0 && keys[MultiplayerTools.Keys.LMB].isDown){
+        else if(keys[MultiplayerTools.Keys.LMB] !=null && keys[MultiplayerTools.Keys.LMB].type==1 && keys[MultiplayerTools.Keys.LMB].isDown){
+            switch (pIn.getCurrentClass()){
+                case KNIGHT:
 
+                    break;
+                case ARCHER:
+                    //System.out.println("add projectile");
+                    if(projectiles.size()<20) {
+                        projectiles.add(new Projectile(pIn.getX(), pIn.getY(), 1.5f, pIn.getMouseAngle(), 0, pIn.getTeam()));
+                    }
+                    break;
+            }
         }
         if(animation+pIn.getFacingDirection()!=pIn.getAnimationID()){
             pIn.setAnimationTime(0);
