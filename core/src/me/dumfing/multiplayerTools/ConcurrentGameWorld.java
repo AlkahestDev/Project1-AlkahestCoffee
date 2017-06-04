@@ -29,7 +29,7 @@ public class ConcurrentGameWorld {
         for(PlayerSoldier p : players.values()){
             p.update(Gdx.graphics.getDeltaTime());
             p.setAnimationID(handleKeyInput(p));
-            handleCollisions(p);
+            detectCollisions(p);
             p.move();
         }
         for(Projectile proj : projectiles){
@@ -54,7 +54,27 @@ public class ConcurrentGameWorld {
         return map;
     }
 
-    public void handleCollisions(PlayerSoldier playerSoldier){
+    public void detectCollisions(PlayerSoldier playerSoldier){
+
+        // Colliding Right [4]
+        if ((map.getPosId((int)(playerSoldier.getX() + 1), (int)(playerSoldier.getY() + 1)) == 1)){
+            playerSoldier.collisions[4] = true;
+        }
+
+        // Colliding Left [3]
+        if ((map.getPosId((int)(playerSoldier.getX() - 1), (int)(playerSoldier.getY() + 1)) == 1)){
+            playerSoldier.collisions[3] = true;
+        }
+
+        // Colliding Top [1]
+        if ((map.getPosId((int)(playerSoldier.getX()), (int)(playerSoldier.getY() + playerSoldier.getHeight())) == 1)){
+            playerSoldier.collisions[1] = true;
+        }
+
+        // Colliding Bottom [2]
+        if ((map.getPosId((int)(playerSoldier.getX()), (int)(playerSoldier.getY())) == 1)){
+            playerSoldier.collisions[2] = true;
+        }
 
     }
 

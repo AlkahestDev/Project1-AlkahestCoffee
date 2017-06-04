@@ -1,32 +1,46 @@
 package me.dumfing.multiplayerTools;
 
-
-
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
-import java.util.Arrays;
 
-/**
- * Created by dumpl on 4/28/2017.
- */
+import java.util.ArrayList;
+import java.util.*;
+
 public class PlayerSoldier {
+
     private int health, maxHealth, animationID, team, pickedClass,facingDirection; // animationID is an int describing the direction the player is facing and what animation they're doing
     private boolean canJump;
+
     private MultiplayerTools.ClientControlObject[] keysHeld = new MultiplayerTools.ClientControlObject[10];
+
     private Rectangle playerArea;
+
     private float vX, vY, animationTime;
+
     private String name;
+
     public static final float width = 1;
     public static final float height = 2;
     public static final int KNIGHT = 0;
     public static final int ARCHER = 1;
+
+
+    public static final int UP = 1;
+    public static final int DOWN = 2;
+    public static final int LEFT = 3;
+    public static final int RIGHT = 4;
+
+    public boolean [] collisions; // Keeps tracks of all current collision. 1-Top, 2-Down, 3-Left, 4-Right
+
+
+
     public PlayerSoldier(){
         fillKeys();
     }
+
     public PlayerSoldier(Rectangle playerRect, int team){
         this.playerArea = playerRect;
         this.team = team;
@@ -37,6 +51,7 @@ public class PlayerSoldier {
         this.maxHealth = 100;
         fillKeys();
     }
+
     public PlayerSoldier(Rectangle player, int team, String name){
         this.playerArea = player;
         this.team = team;
@@ -46,19 +61,30 @@ public class PlayerSoldier {
         this.health = 100;
         this.maxHealth = 100;
         fillKeys();
+        collisions = new boolean[4];
+
+        for (int i = 0; i<4; i++){
+            collisions[i] = false;
+        }
+
     }
+
     private void fillKeys(){
         for(int i = 0; i<keysHeld.length;i++){
             keysHeld[i] = new MultiplayerTools.ClientControlObject();
         }
     }
+
     public void update(float deltaTime){
         this.animationTime+=deltaTime;
     }
+
     public void setMaxHealth(int maxHealth){
         this.maxHealth = maxHealth;
     }
+
     public String getName(){return this.name;}
+
     public void setKeysHeld(MultiplayerTools.ClientControlObject[] keysHeld) {
         this.keysHeld = keysHeld;
     }
@@ -92,6 +118,10 @@ public class PlayerSoldier {
         return canJump;
     }
 
+    public boolean canMove(int direction){
+        return !collisions[direction - 1];
+    }
+
     public int getFacingDirection() {
         return facingDirection;
     }
@@ -111,6 +141,7 @@ public class PlayerSoldier {
     public int getMaxHealth(){
         return this.maxHealth;
     }
+
     public void move(){
         playerArea.x+=this.vX;
         playerArea.y+=this.vY;

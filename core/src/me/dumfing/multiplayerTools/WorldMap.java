@@ -10,6 +10,7 @@ import org.lwjgl.util.Point;
 /**
  * An object that links the visual componenets and functional components of a map together
  */
+
 public class WorldMap {
     Pixmap collisionMap;
     Array<TextureRegion> visualComponent = new Array<TextureRegion>();
@@ -17,6 +18,7 @@ public class WorldMap {
     int currentFrame = 0;
     int frameCount = 0;
     int frameTime;
+
     public WorldMap(TextureRegion colMap,TextureRegion visComp){
         if(!colMap.getTexture().getTextureData().isPrepared()){
             colMap.getTexture().getTextureData().prepare();
@@ -27,6 +29,7 @@ public class WorldMap {
         redSpawn = findColour(-65536);
         bluSpawn = findColour(255);
     }
+
     public void draw(SpriteBatch batch){
         batch.begin();
         batch.draw(visualComponent.get(currentFrame),0,0,collisionMap.getWidth(),collisionMap.getHeight());
@@ -42,6 +45,7 @@ public class WorldMap {
         }
         frameCount++;
     }
+
     public int getPosId(int x, int y){
         return collisionMap.getPixel(x,collisionMap.getHeight()-y)>>8;
     }

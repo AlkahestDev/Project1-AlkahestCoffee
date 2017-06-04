@@ -59,6 +59,7 @@ public class MultiplayerTools {
         serializer.register(ServerPlayerPositions.class);
         serializer.register(ServerGameStarted.class);
         serializer.register(ServerNotifyGame.class);
+        // serializer.register(Boolean[].class);
     }
 
     /**

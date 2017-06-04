@@ -12,5 +12,9 @@ public class tester {
         config.width = 1080;
         config.height = 720;
 
+        boolean [] collisions = new boolean[4]; // Keeps tracks of all current collision. 1-Top, 2-Down, 3-Left, 4-Right
+
+        System.out.println(collisions[3]);
+
     }
 }
