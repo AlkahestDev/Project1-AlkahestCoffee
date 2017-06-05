@@ -90,7 +90,7 @@ public class ClientGameInstance implements InputProcessor{
         playWorld.getMap().draw(batch);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for(PlayerSoldier playerSoldier : gameClient.getPlayers().values()){
-            DrawTools.rec(shapeRenderer,playerSoldier.getRect());
+            //DrawTools.rec(shapeRenderer,playerSoldier.getRect());
         }
         /*for(PlayerSoldier playerSoldier :gameClient.getPlayers().values()) {
             System.out.println(playerSoldier.getX()-playerSoldier.getCenterX());//playerSoldier.getMouseAngle());

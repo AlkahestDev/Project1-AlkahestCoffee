@@ -50,6 +50,7 @@ public class PlayerSoldier {
         this.health = 100;
         this.maxHealth = 100;
         fillKeys();
+        collisions = new boolean[4];
     }
 
     public PlayerSoldier(Rectangle player, int team, String name){
@@ -62,11 +63,6 @@ public class PlayerSoldier {
         this.maxHealth = 100;
         fillKeys();
         collisions = new boolean[4];
-
-        for (int i = 0; i<4; i++){
-            collisions[i] = false;
-        }
-
     }
 
     private void fillKeys(){

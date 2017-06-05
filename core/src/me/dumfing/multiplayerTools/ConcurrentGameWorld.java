@@ -3,9 +3,11 @@ package me.dumfing.multiplayerTools;
 import com.badlogic.gdx.Gdx;
 import me.dumfing.gdxtools.MathTools;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import static me.dumfing.multiplayerTools.MultiplayerTools.GRAVITY;
 import static me.dumfing.multiplayerTools.MultiplayerTools.WALKSPEED;
 import static me.dumfing.multiplayerTools.PlayerSoldier.ARCHER;
 import static me.dumfing.multiplayerTools.PlayerSoldier.KNIGHT;
@@ -30,6 +32,7 @@ public class ConcurrentGameWorld {
             p.update(Gdx.graphics.getDeltaTime());
             p.setAnimationID(handleKeyInput(p));
             detectCollisions(p);
+            handleCollisions(p);
             p.move();
         }
         for(Projectile proj : projectiles){
@@ -54,30 +57,47 @@ public class ConcurrentGameWorld {
         return map;
     }
 
-    public void detectCollisions(PlayerSoldier playerSoldier){
-
+    private void detectCollisions(PlayerSoldier playerSoldier){
+        Arrays.fill(playerSoldier.collisions,false);
         // Colliding Right [4]
-        if ((map.getPosId((int)(playerSoldier.getX() + 1), (int)(playerSoldier.getY() + 1)) == 1)){
-            playerSoldier.collisions[4] = true;
-        }
-
-        // Colliding Left [3]
-        if ((map.getPosId((int)(playerSoldier.getX() - 1), (int)(playerSoldier.getY() + 1)) == 1)){
+        if ((map.getPosId((int)(playerSoldier.getX()-1), (int)(playerSoldier.getY() + 1)) == 1)){
             playerSoldier.collisions[3] = true;
         }
 
-        // Colliding Top [1]
-        if ((map.getPosId((int)(playerSoldier.getX()), (int)(playerSoldier.getY() + playerSoldier.getHeight())) == 1)){
-            playerSoldier.collisions[1] = true;
-        }
-
-        // Colliding Bottom [2]
-        if ((map.getPosId((int)(playerSoldier.getX()), (int)(playerSoldier.getY())) == 1)){
+        // Colliding Left [3]
+        if ((map.getPosId((int)(playerSoldier.getX()+1), (int)(playerSoldier.getY() + 1)) == 1)){
+            playerSoldier.setX((int)playerSoldier.getX());
             playerSoldier.collisions[2] = true;
         }
 
-    }
+        // Colliding Top [1]
+        if ((map.getPosId(Math.round(playerSoldier.getX()), (int)(playerSoldier.getY() + playerSoldier.getHeight())) == 1)){
+            playerSoldier.collisions[0] = true;
+        }
 
+        // Colliding Bottom [2]
+        if ((map.getPosId(Math.round(playerSoldier.getX()), (int)(playerSoldier.getY())) == 1)){
+            playerSoldier.setY((int)playerSoldier.getY());
+            playerSoldier.collisions[1] = true;
+        }
+
+    }
+    private void handleCollisions(PlayerSoldier playerSoldier){
+        playerSoldier.setvY(playerSoldier.getvY()+GRAVITY);
+        if(playerSoldier.collisions[0]){ //top
+            playerSoldier.setvY(Math.min(0,playerSoldier.getvY()));
+        }
+        if(playerSoldier.collisions[1]){ //bottom
+            playerSoldier.setCanJump(true);
+            playerSoldier.setvY(Math.max(0,playerSoldier.getvY()));
+        }
+        if(playerSoldier.collisions[2]){ //left
+            playerSoldier.setvX(Math.min(0,playerSoldier.getvX()));
+        }
+        if(playerSoldier.collisions[3]){ //right
+            playerSoldier.setvX(Math.max(0,playerSoldier.getvX()));
+        }
+    }
     // private void handleCollisions(PlayerSoldier playerSoldier){
     //     if(playerSoldier.isCanJump()) {
     //         playerSoldier.setvX(MathTools.towardsZero(playerSoldier.getvX(), 0.1f));
@@ -121,7 +141,7 @@ public class ConcurrentGameWorld {
     public int handleKeyInput(PlayerSoldier pIn){
         MultiplayerTools.ClientControlObject[] keys = pIn.getKeysHeld();
         int animation = 0;
-        if(keys[MultiplayerTools.Keys.W] != null && keys[MultiplayerTools.Keys.W].type==1 && keys[MultiplayerTools.Keys.W].isDown){
+        if(keyDown(keys,MultiplayerTools.Keys.W)){
             if(pIn.isCanJump()) {
                 pIn.setvY(MultiplayerTools.JUMPPOWER);
                 pIn.setCanJump(false);
@@ -133,10 +153,10 @@ public class ConcurrentGameWorld {
         else if(!pIn.isCanJump() && pIn.getvX()>0){
             animation+=PlayerAnimations.JUMP;
         }
-        if(keys[MultiplayerTools.Keys.S] !=null && keys[MultiplayerTools.Keys.S].type==1 && keys[MultiplayerTools.Keys.S].isDown){
+        if(keyDown(keys,MultiplayerTools.Keys.S)){
 
         }
-        if(keys[MultiplayerTools.Keys.A] !=null && keys[MultiplayerTools.Keys.A].type==1 && keys[MultiplayerTools.Keys.A].isDown){
+        if(keyDown(keys,MultiplayerTools.Keys.A)){
             if(pIn.isCanJump()) {
                 pIn.setvX(-WALKSPEED);
                 animation += PlayerAnimations.WALK;
@@ -146,7 +166,7 @@ public class ConcurrentGameWorld {
             }
             pIn.setFacingDirection(0);
         }
-        else if(keys[MultiplayerTools.Keys.D]!=null && keys[MultiplayerTools.Keys.D].type==1 && keys[MultiplayerTools.Keys.D].isDown){
+        else if(keyDown(keys,MultiplayerTools.Keys.D)){
             if(pIn.isCanJump()) {
                 pIn.setvX(WALKSPEED);
                 animation += PlayerAnimations.WALK;
@@ -156,7 +176,7 @@ public class ConcurrentGameWorld {
             }
             pIn.setFacingDirection(1);
         }
-        else if(keys[MultiplayerTools.Keys.LMB] !=null && keys[MultiplayerTools.Keys.LMB].type==1 && keys[MultiplayerTools.Keys.LMB].isDown){
+        else if(keyDown(keys,MultiplayerTools.Keys.LMB)){
             switch (pIn.getCurrentClass()){
                 case KNIGHT:
 
@@ -176,5 +196,8 @@ public class ConcurrentGameWorld {
     }
     public void setPlayerPos(int playerID, float posX, float posY){
         players.get(playerID).setPos(posX,posY);
+    }
+    private boolean keyDown(MultiplayerTools.ClientControlObject[] keys, int key){
+        return keys[key]!=null && keys[key].type == 1 && keys[key].isDown;
     }
 }
