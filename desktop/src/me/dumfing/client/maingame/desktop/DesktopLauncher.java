@@ -11,7 +11,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title="Alkahest Coffee Corporation";
         /*config.fullscreen = true;
-        config.width=999999; //TODO: make a better way of fullscreening : i made one in fakeMainGame, but the hitboxes dont work :/
+        config.width=999999;
         config.height=999999;*/
         config.width=1280;
         config.height=720;
