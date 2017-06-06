@@ -29,8 +29,8 @@ public class ConcurrentGameWorld {
     public void update(){
         //System.out.println(projectiles);
         for(PlayerSoldier p : players.values()){
-            p.update(Gdx.graphics.getDeltaTime());
             p.setAnimationID(handleKeyInput(p));
+            p.update(Gdx.graphics.getDeltaTime());
             detectCollisions(p);
             handleCollisions(p);
             p.move();
@@ -59,48 +59,48 @@ public class ConcurrentGameWorld {
 
     private void detectCollisions(PlayerSoldier playerSoldier){
         Arrays.fill(playerSoldier.collisions,false);
-        // Colliding Right [3]
-        if ((map.getPosId((int)(playerSoldier.getX()-1), (int)(playerSoldier.getY() + 1)) == 1)){
-            playerSoldier.collisions[3] = true;
-        }
-
-        // Colliding Left [2]
-        if ((map.getPosId((int)(playerSoldier.getX()+1), (int)(playerSoldier.getY() + 1)) == 1)){
-            playerSoldier.setX((int)playerSoldier.getX());
-            playerSoldier.collisions[2] = true;
-        }
-
+        playerSoldier.setvY(playerSoldier.getvY()+GRAVITY);  // Making the player fall down
         // Colliding Top [0]
         if ((map.getPosId(Math.round(playerSoldier.getX()), (int)(playerSoldier.getY() + playerSoldier.getHeight())) == 1)){
             playerSoldier.collisions[0] = true;
         }
 
         // Colliding Bottom [1]
-        if ((map.getPosId(Math.round(playerSoldier.getX()), (int)(playerSoldier.getY())) == 1)){
-            playerSoldier.setY((int)playerSoldier.getY());
+        if ((map.getPosId(Math.round(playerSoldier.getX()), Math.round(playerSoldier.getY())) == 1)){
+            playerSoldier.setY(Math.round(playerSoldier.getY()));
             playerSoldier.collisions[1] = true;
         }
+        // Colliding Left [3]
+        if ((map.getPosId((int)(playerSoldier.getX()), (int)(playerSoldier.getY() + 1)) == 1)){
+            playerSoldier.setX((int)playerSoldier.getX()+1);
+            playerSoldier.collisions[3] = true;
+        }
+
+        // Colliding Right [2]
+        if ((map.getPosId((int)(playerSoldier.getX()+1), (int)(playerSoldier.getY() + 1)) == 1)){
+            playerSoldier.setX((int)playerSoldier.getX());
+            playerSoldier.collisions[2] = true;
+        }
+
 
     }
     private void handleCollisions(PlayerSoldier playerSoldier){
-
-        playerSoldier.setvY(playerSoldier.getvY()+GRAVITY);  // Making the player fall down
 
         if(playerSoldier.collisions[0]){ //top
             playerSoldier.setvY(Math.min(0,playerSoldier.getvY()));
         }
 
         if(playerSoldier.collisions[1]){ //bottom
-            playerSoldier.setCanJump(true);
+            System.out.println("hit bottom");
             playerSoldier.setvY(Math.max(0,playerSoldier.getvY()));
             playerSoldier.setvX(MathTools.towardsZero(playerSoldier.getvX(), 0.1f));
         }
 
-        if(playerSoldier.collisions[2]){ //left
+        if(playerSoldier.collisions[2]){ //right
             playerSoldier.setvX(Math.min(0,playerSoldier.getvX()));
         }
 
-        if(playerSoldier.collisions[3]){ //right
+        if(playerSoldier.collisions[3]){ //left
             playerSoldier.setvX(Math.max(0,playerSoldier.getvX()));
         }
 
@@ -151,7 +151,7 @@ public class ConcurrentGameWorld {
         MultiplayerTools.ClientControlObject[] keys = pIn.getKeysHeld();
         int animation = 0;
         if(keyDown(keys,MultiplayerTools.Keys.W) || keyDown(keys,MultiplayerTools.Keys.SPACE)){
-            if(pIn.isCanJump()){  // canJump can be replaced by pIn.collisions[1]
+            if(pIn.collisions[1]){  // canJump can be replaced by pIn.collisions[1]
                 pIn.setvY(MultiplayerTools.JUMPPOWER);
                 pIn.setCanJump(false);
             }
@@ -166,7 +166,7 @@ public class ConcurrentGameWorld {
             // ToDo: Crouching Animation
         }
         if(keyDown(keys,MultiplayerTools.Keys.A)){
-            if(pIn.isCanJump()) {
+            if(pIn.collisions[1]) {
                 pIn.setvX(-WALKSPEED);
                 animation += PlayerAnimations.WALK;
             }
@@ -176,7 +176,7 @@ public class ConcurrentGameWorld {
             pIn.setFacingDirection(0);
         }
         else if(keyDown(keys,MultiplayerTools.Keys.D)){
-            if(pIn.isCanJump()) {
+            if(pIn.collisions[1]) {
                 pIn.setvX(WALKSPEED);
                 animation += PlayerAnimations.WALK;
             }
