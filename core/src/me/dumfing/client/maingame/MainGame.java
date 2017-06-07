@@ -94,7 +94,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		batch = new SpriteBatch();
 		uiBatch = new SpriteBatch();
 		client = new MultiplayerClient();
-		clientSoldier = new PlayerSoldier(new Rectangle(0,0,1,2),0,"");
+		clientSoldier = new PlayerSoldier(new Rectangle(0,0,1,2),0);
 		client.startClient();
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		batch.setProjectionMatrix(camera.combined);
@@ -148,7 +148,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					//menu.init();
 					createWorlds();
 					client.pingServers();
-					//state = GameState.State.OFFLINEDEBUG;
+					state = GameState.State.OFFLINEDEBUG;
 
 				}
 				break;

@@ -18,7 +18,7 @@ public class MultiplayerTools {
 
     public static final float GRAVITY = -0.05f;
     public static final float WALKSPEED = 0.22f;
-    public static final float JUMPPOWER = 0.8f;
+    public static final float JUMPPOWER = 0.6f;
 
     public static final int REDTEAM = 0;
     public static final int BLUTEAM = 1;

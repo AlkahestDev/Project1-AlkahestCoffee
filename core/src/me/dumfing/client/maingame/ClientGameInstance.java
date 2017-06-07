@@ -189,7 +189,7 @@ public class ClientGameInstance implements InputProcessor{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        PlayerSoldier clientPlayer = getPlayer(gameClient.getConnectionID());
+        PlayerSoldier clientPlayer = getPlayer(onlineMode?gameClient.getConnectionID():0);
         screenY = Gdx.graphics.getHeight()-screenY;
         if(button == 0){
             keysDown[MultiplayerTools.Keys.LMB] = new MultiplayerTools.ClientControlObject(true);
