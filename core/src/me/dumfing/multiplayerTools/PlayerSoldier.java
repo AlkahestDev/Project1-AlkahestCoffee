@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-
+import me.dumfing.multiplayerTools.*;
 
 import java.util.ArrayList;
 import java.util.*;
@@ -63,6 +63,7 @@ public class PlayerSoldier {
         this.maxHealth = 100;
         fillKeys();
         collisions = new boolean[4];
+        Arrays.fill(collisions,false);
     }
 
     private void fillKeys(){
@@ -139,8 +140,10 @@ public class PlayerSoldier {
     }
 
     public void move(){
-        playerArea.x+=this.vX;
+
+        // playerArea.x+=this.vX;
         playerArea.y+=this.vY;
+
         //System.out.println("after moving "+super.getPos());
     }
 
