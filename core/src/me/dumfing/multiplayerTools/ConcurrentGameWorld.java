@@ -107,26 +107,78 @@ public class ConcurrentGameWorld {
 
 
     }
-    private void handleCollisions(PlayerSoldier playerSoldier) {
+    private void handleCollisions(PlayerSoldier playerSoldier){
 
         // Vertical collisions:
 
         // If the player is not on the floor, gravity will act upon it.
-        if (!playerSoldier.collisions[1]) {
+        if (!playerSoldier.collisions[1]){
             playerSoldier.setvY(playerSoldier.getvY() + GRAVITY);
         }
 
         // If the player collides with the ground or a ceiling, velocity is lost.
-        if (playerSoldier.collisions[0]) {
+        if(playerSoldier.collisions[0]){
             playerSoldier.setY((playerSoldier.getY() - 1));
             playerSoldier.setvY(0);
         }
-        if (playerSoldier.collisions[1]) {
+        if (playerSoldier.collisions[1]){
             // playerSoldier.setY(Math.round(playerSoldier.getY()));
             playerSoldier.setvY(0);
         }
 
+
+        // ToDo: Have a way to handle situations where the physics glitches and the player is trapped in the ground.
+
+        // if(playerSoldier.collisions[0]){ //top
+        //     playerSoldier.setvY(Math.min(0,playerSoldier.getvY()));
+        // }
+
+        // if(playerSoldier.collisions[1]){ //bottom
+        //     System.out.println("hit bottom");
+        //     playerSoldier.setvY(Math.max(0,playerSoldier.getvY()));
+        //     playerSoldier.setvX(MathTools.towardsZero(playerSoldier.getvX(), 0.1f));
+        // }
+        //
+        // if(playerSoldier.collisions[2]){ //right
+        //     playerSoldier.setvX(Math.min(0,playerSoldier.getvX()));
+        // }
+        //
+        // if(playerSoldier.collisions[3]){ //left
+        //     playerSoldier.setvX(Math.max(0,playerSoldier.getvX()));
+        // }
+
     }
+
+
+    // private void handleCollisions(PlayerSoldier playerSoldier){
+    //     if(playerSoldier.isCanJump()) {
+    //         playerSoldier.setvX(MathTools.towardsZero(playerSoldier.getvX(), 0.1f));
+    //     }
+    //     else { // air friction
+    //         playerSoldier.setvX(MathTools.towardsZero(playerSoldier.getvX(), 0.001f));
+    //     }
+    //     //System.out.println(map.getPosId((int)(playerSoldier.getX()),(int)(playerSoldier.getY()+playerSoldier.getvY())));
+    //     if(map.getPosId((int)(playerSoldier.getX()), Math.round(playerSoldier.getY()+playerSoldier.getvY()))==1){
+    //         //System.out.printf("%d %d %f\n",(int)(playerSoldier.getX()),(int)(playerSoldier.getY()+playerSoldier.getvY()), playerSoldier.getvY());
+    //         playerSoldier.setvY(0);
+    //         playerSoldier.setY((int)playerSoldier.getY()+0.001f);
+    //         playerSoldier.setCanJump(true);
+    //     }
+    //     else{
+    //         playerSoldier.setvY(playerSoldier.getvY()+MultiplayerTools.GRAVITY);
+    //     }
+    //     //TODO: vertical Collisions
+    //    if((map.getPosId((int)(playerSoldier.getX()+1),(int)(playerSoldier.getY()+1))==1)){ //right side
+    //         System.out.println("hitX");
+    //         playerSoldier.setX(Math.round(playerSoldier.getX()));
+    //         playerSoldier.setvX(Math.min(playerSoldier.getvX(),0));
+    //     }
+    //     if((map.getPosId((int)(playerSoldier.getX()),(int)(playerSoldier.getY()+1))==1)){ // left side
+    //         System.out.println("hitXL");
+    //         playerSoldier.setX(Math.round(playerSoldier.getX())-1);
+    //         playerSoldier.setvX(Math.max(playerSoldier.getvX(),0));
+    //     }
+    // }
 
     public void updatePlayerKeys(Integer cID, MultiplayerTools.ClientControlObject[] keys){
         players.get(cID).setKeysHeld(keys);
@@ -162,18 +214,17 @@ public class ConcurrentGameWorld {
             animation+=PlayerAnimations.FALL;
         }
 
-        // Crouching / speed falling
-        if(keyDown(keys,MultiplayerTools.Keys.S)){
-            // ToDo: Crouching and Falling Animation
-
-            // Speed Fall:
-            // If the player is in the air and going up, crouching can make the user immediately fall (Experimental)
-            if (pIn.getvY() > 0){
-                pIn.setvY(0);
-                pIn.setY((pIn.getY() - 1));
-            }
-
-        }
+        // // Crouching / speed falling
+        // if(keyDown(keys,MultiplayerTools.Keys.S)){
+        //     // ToDo: Crouching and Falling Animation
+        //
+        //     // Speed Fall:
+        //     // If the player is in the air and going up, crouching can make the user immediately fall (Experimental)
+        //     if (pIn.getvY() > 0){
+        //         pIn.setvY(0);
+        //     }
+        //
+        // }
 
         // Going Left
         if(keyDown(keys,MultiplayerTools.Keys.A)){
@@ -228,7 +279,6 @@ public class ConcurrentGameWorld {
             }
         }
 
-        // Attacking / Interacting
         else if(keyDown(keys,MultiplayerTools.Keys.LMB)){
             switch (pIn.getCurrentClass()){
                 case KNIGHT:
