@@ -20,7 +20,7 @@ public class PlayerSoldier {
 
     private float vX, vY, animationTime;
 
-    private String name = "[#FFFFFF]O[#DDDDDD]F[#BBBBBB]F[#999999]L[#777777]I[#555555]N[#333333]E[#111111]!";
+    private String name = "[#FFFFFF]N[#DDDDDD]O[#BBBBBB]_[#999999]N[#777777]A[#555555]M[#333333]E[#111111]!";
 
     public static final float width = 1;
     public static final float height = 2;
