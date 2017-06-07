@@ -36,6 +36,7 @@ public class ClientGameInstance implements InputProcessor{
     private AssetManager manager;
     private TextureRegion arrowTexture;
     private Array<BitmapFontCache> fonts;
+    boolean onlineMode = true;
     public ClientGameInstance(MultiplayerClient gameClient, HashMap<Integer, PlayerSoldier> players, OrthographicCamera camera, AssetManager manager, Array<BitmapFontCache> fonts){
         this.gameClient = gameClient;
         this.fonts = fonts;
@@ -44,22 +45,34 @@ public class ClientGameInstance implements InputProcessor{
         this.manager = manager;
         this.arrowTexture = MenuTools.mGTR("projectiles/arrow.png",manager);
     }
+    public ClientGameInstance(HashMap<Integer, PlayerSoldier> players, OrthographicCamera camera, AssetManager manager, Array<BitmapFontCache> fonts){
+        this.fonts = fonts;
+        this.playWorld = new ConcurrentGameWorld(players);
+        this.camera = camera;
+        this.manager = manager;
+        this.arrowTexture = MenuTools.mGTR("projectiles/arrow.png",manager);
+        onlineMode = false;
+    }
     public void update(){
         if(keyUpdate){
             //System.out.println("send keys");
-            gameClient.quickSend(new MultiplayerTools.ClientKeysUpdate(keysDown));
+            if(onlineMode) {
+                gameClient.quickSend(new MultiplayerTools.ClientKeysUpdate(keysDown));
+            }
             keyUpdate = false;
         }
-        if(gameClient.isHasNewPlayerInfo()) {
-            //System.out.println("new client info");
-            //System.out.println(gameClient.getPlayers().values());
-            //System.out.println("receive info");
-            playWorld.updatePlayers(gameClient.getPlayers());
+        if(onlineMode) {
+            if (gameClient.isHasNewPlayerInfo()) {
+                //System.out.println("new client info");
+                //System.out.println(gameClient.getPlayers().values());
+                //System.out.println("receive info");
+                playWorld.updatePlayers(gameClient.getPlayers());
+            }
+            if (gameClient.isHasNewProjectileInfo()) {
+                playWorld.updateProjectiles(gameClient.getProjectiles());
+            }
         }
-        if(gameClient.isHasNewProjectileInfo()){
-            playWorld.updateProjectiles(gameClient.getProjectiles());
-        }
-        playWorld.updatePlayerKeys(gameClient.getConnectionID(),keysDown);
+        playWorld.updatePlayerKeys(onlineMode?gameClient.getConnectionID():0, keysDown);
         //System.out.println("updateplayworld");
         playWorld.update();
     }
@@ -89,8 +102,10 @@ public class ClientGameInstance implements InputProcessor{
         uiBatch.end();
         playWorld.getMap().draw(batch);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        for(PlayerSoldier playerSoldier : gameClient.getPlayers().values()){
-            //DrawTools.rec(shapeRenderer,playerSoldier.getRect());
+        if(onlineMode) {
+            for (PlayerSoldier playerSoldier : gameClient.getPlayers().values()) {
+                //DrawTools.rec(shapeRenderer,playerSoldier.getRect());
+            }
         }
         /*for(PlayerSoldier playerSoldier :gameClient.getPlayers().values()) {
             System.out.println(playerSoldier.getX()-playerSoldier.getCenterX());//playerSoldier.getMouseAngle());
@@ -246,6 +261,6 @@ public class ClientGameInstance implements InputProcessor{
         fonts.get(DAGGER30).addText(String.format("%2.2f %2.2f",center.getX(),center.getY()),5,Gdx.graphics.getHeight()-55);
     }
     private PlayerSoldier clientSoldier(){ // I can't be sure the pointer is always the same since the hashmap is always being updated from the server
-        return playWorld.getPlayers().get(client.getConnectionID());
+        return playWorld.getPlayers().get(onlineMode?client.getConnectionID():0);
     }
 }

@@ -51,7 +51,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static WorldMap[] worldMaps;
 	public static final int DEBUGWORLD = 0;
 	ClientGameInstance gameInstance;
-	OfflineGameInstance offlineGameInstance;
 	@Override
 	public void create () {
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("mouseCursorTemp.png")),0,0));
@@ -251,16 +250,16 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				break;
 			case OFFLINEDEBUG:
 				//camera.setToOrtho(true,900,450);
-				if(Gdx.input.getInputProcessor() != offlineGameInstance){
+				if(Gdx.input.getInputProcessor() != gameInstance){
 					HashMap<Integer, PlayerSoldier> temp = new HashMap<Integer, PlayerSoldier>();
 					temp.put(0,clientSoldier);
-					offlineGameInstance = new OfflineGameInstance(temp,camera,assetManager,fontCaches);
-					offlineGameInstance.pickWorld(DEBUGWORLD);
-					Gdx.input.setInputProcessor(offlineGameInstance);
+					gameInstance = new ClientGameInstance(temp,camera,assetManager,fontCaches);
+					gameInstance.pickWorld(DEBUGWORLD);
+					Gdx.input.setInputProcessor(gameInstance);
 				}
-				offlineGameInstance.update();
+				gameInstance.update();
 				shapeRenderer.setColor(Color.BLUE);
-				 clientSoldierTemp = offlineGameInstance.getPlayer(client.getConnectionID());
+				 clientSoldierTemp = gameInstance.getPlayer(client.getConnectionID());
 				//System.out.println("before "+clientSoldierTemp.getX());
 				deltaX = camera.position.x-clientSoldierTemp.getX();
 				deltaY = camera.position.y-clientSoldierTemp.getY();
@@ -294,7 +293,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				camera.update();
 				shapeRenderer.setProjectionMatrix(camera.combined);
 				batch.setProjectionMatrix(camera.combined);
-				offlineGameInstance.draw(batch,shapeRenderer,uiBatch,uiShapeRenderer);
+				gameInstance.draw(batch,shapeRenderer,uiBatch,uiShapeRenderer);
 				//System.out.println("after "+clientSoldierTemp.getX());
 				break;
 			case QUIT:
