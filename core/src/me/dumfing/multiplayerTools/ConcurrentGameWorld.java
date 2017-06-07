@@ -61,7 +61,8 @@ public class ConcurrentGameWorld {
         Arrays.fill(playerSoldier.collisions,false);
         playerSoldier.setvY(playerSoldier.getvY()+GRAVITY);  // Making the player fall down
         // Colliding Top [0]
-        if ((map.getPosId(Math.round(playerSoldier.getX()), (int)(playerSoldier.getY() + playerSoldier.getHeight())) == 1)){
+        if ((map.getPosId(Math.round(playerSoldier.getX()), (int)(playerSoldier.getY() + 2)) == 1)){
+            playerSoldier.setY(Math.round(playerSoldier.getY()));
             playerSoldier.collisions[0] = true;
         }
 

@@ -1,6 +1,7 @@
 package me.dumfing.client.maingame;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
@@ -17,6 +18,8 @@ import me.dumfing.menus.*;
 import me.dumfing.multiplayerTools.MultiplayerClient;
 import me.dumfing.multiplayerTools.PlayerSoldier;
 import me.dumfing.multiplayerTools.WorldMap;
+
+import java.util.HashMap;
 
 public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static final String versionNumber = "1e-10000000";
@@ -48,6 +51,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static WorldMap[] worldMaps;
 	public static final int DEBUGWORLD = 0;
 	ClientGameInstance gameInstance;
+	OfflineGameInstance offlineGameInstance;
 	@Override
 	public void create () {
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("mouseCursorTemp.png")),0,0));
@@ -97,6 +101,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		batch.setProjectionMatrix(camera.combined);
 		menu = new UniversalClientMenu(fontCaches,assetManager,camera);
 		Gdx.input.setInputProcessor(this);
+
+		//offline setup things
+		clientSoldier.setPos(1,6);
+		clientSoldier.setCurrentClass(1);
 	}
 
 	@Override
@@ -106,7 +114,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		for(BitmapFontCache bmfc : fontCaches) {
 			bmfc.clear(); // clear bitmap font cache because it doesn't clear itself upon drawing (grumble grumble)
 		}
-		if(state == GameState.State.PLAYINGGAME){
+		if(state == GameState.State.PLAYINGGAME || state == GameState.State.OFFLINEDEBUG){
 			if(!zoomedIn){
 				System.out.println("CameraZoom "+camera.zoom);
 				System.out.println("zoomin");
@@ -138,7 +146,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					connectingMenu.init();
 					pickingInfoMenu.init(client);
 					lobbyMenu.init(client);
-					menu.init();
+					//menu.init();
 					createWorlds();
 					client.pingServers();
 
@@ -241,6 +249,54 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				break;
 			case ROUNDOVER:
 				break;
+			case OFFLINEDEBUG:
+				//camera.setToOrtho(true,900,450);
+				if(Gdx.input.getInputProcessor() != offlineGameInstance){
+					HashMap<Integer, PlayerSoldier> temp = new HashMap<Integer, PlayerSoldier>();
+					temp.put(0,clientSoldier);
+					offlineGameInstance = new OfflineGameInstance(temp,camera,assetManager,fontCaches);
+					offlineGameInstance.pickWorld(DEBUGWORLD);
+					Gdx.input.setInputProcessor(offlineGameInstance);
+				}
+				offlineGameInstance.update();
+				shapeRenderer.setColor(Color.BLUE);
+				 clientSoldierTemp = offlineGameInstance.getPlayer(client.getConnectionID());
+				//System.out.println("before "+clientSoldierTemp.getX());
+				deltaX = camera.position.x-clientSoldierTemp.getX();
+				deltaY = camera.position.y-clientSoldierTemp.getY();
+				if(deltaX<-3){ // player on right side of camera
+					//camera.position.x = clientSoldierTemp.getX()-5;
+					if(Math.abs(deltaX)<6){
+						camera.position.x = clientSoldierTemp.getX()-3;
+					}
+					else {
+						camera.position.x += Math.abs(deltaX) / 5f;
+					}
+				}
+				else if(deltaX>3){
+					//camera.position.x = clientSoldierTemp.getX()+5;//-=Math.abs(deltaX)/5f;
+					if(Math.abs(deltaX)<6){
+						camera.position.x = clientSoldierTemp.getX()+3;
+					}
+					else {
+						camera.position.x -= Math.abs(deltaX / 5f);
+					}
+				}
+				if(deltaY<-3f){
+					camera.position.y+=Math.abs(deltaY)/5f;//Math.min(Math.abs(deltaY)/5f,Math.abs(deltaY));
+				}
+				else if(deltaY>3f){
+					camera.position.y-=Math.abs(deltaY)/5f;//Math.min(Math.abs(deltaY)/5f,Math.abs(deltaY));
+				}
+				//camera.position.x = clientSoldierTemp.getX();
+				//System.out.println("camera update");
+				//System.out.println(camera.position.x-clientSoldierTemp.getX()+" "+deltaX);
+				camera.update();
+				shapeRenderer.setProjectionMatrix(camera.combined);
+				batch.setProjectionMatrix(camera.combined);
+				offlineGameInstance.draw(batch,shapeRenderer,uiBatch,uiShapeRenderer);
+				//System.out.println("after "+clientSoldierTemp.getX());
+				break;
 			case QUIT:
 				Gdx.app.exit();
 				break;
@@ -260,18 +316,20 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	}
 	public void assignValues(){
 		tuzki = assetManager.get("tuzki.png");
-		menuImg = assetManager.get("Desktop.jpg");
+		menuImg = assetManager.get("simpleBG.png");
 
 		state = GameState.State.MAINMENU;
 	}
 	public void queueLoading(){ // queue files for assetManager to load
 		//Sticking random things to load into the assetmanager to see how long it'll take to load
 		assetManager.load("tuzki.png",Texture.class);
-		assetManager.load("Desktop.jpg",Texture.class);
+		/*assetManager.load("Desktop.jpg",Texture.class);
 		assetManager.load("4k-image-santiago.jpg",Texture.class);
 		assetManager.load("4914003-galaxy-wallpaper-png.png",Texture.class);
 		assetManager.load("volcano-30238.png",Texture.class);
-		//assetManager.load("fonts/dagger40.fnt",BitmapFont.class);
+		//assetManager.load("fonts/dagger40.fnt",BitmapFont.class);*/
+		assetManager.load("simpleBG.png",Texture.class);
+		assetManager.load("simpleBGB.png",Texture.class);
 		assetManager.load("menubackdrops/canvas.png",Texture.class);
 		assetManager.load("pixmapTest.png",Texture.class);
 		assetManager.load("pixmapVisual.png",Texture.class);

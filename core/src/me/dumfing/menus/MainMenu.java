@@ -35,7 +35,7 @@ public class MainMenu extends Menu{
     }*/
 
     public void init(){
-        this.setBackground(new TextureRegion((Texture)super.getManager().get("4914003-galaxy-wallpaper-png.png")));
+        this.setBackground(new TextureRegion((Texture)super.getManager().get("simpleBG.png")));
         final MenuBox askUserNameBox = new MenuBox(Gdx.graphics.getWidth()/2-180,Gdx.graphics.getHeight()/2-70,360,140,super.getFonts());
         final MenuTools.TextField askUserNameField = new MenuTools.TextField(5, 5, 350, 40);
         final MenuTools.QueueText userNameError = new MenuTools.QueueText(5,60,0,0);
@@ -98,19 +98,19 @@ public class MainMenu extends Menu{
             public void action() {
                 MainGame.state = GameState.State.SERVERBROWSER;
             }
-        },MenuTools.mGTR("4k-image-santiago.jpg",getManager()),MenuTools.mGTR("volcano-30238.png",getManager()),getFonts(),DAGGER40);
+        },MenuTools.mGTR("simpleBG.png",getManager()),MenuTools.mGTR("simpleBGB.png",getManager()),getFonts(),DAGGER40);
         MenuBox settingsBox = MenuTools.createLabelledButton(-500, Gdx.graphics.getHeight() / 2 - 75, 400, 150, "[WHITE]Settings", new MenuTools.OnClick() {
             @Override
             public void action() {
                 MainGame.state = GameState.State.MAINMENUSETTINGS;
             }
-        },MenuTools.mGTR("4k-image-santiago.jpg",getManager()),MenuTools.mGTR("volcano-30238.png",getManager()),getFonts(),DAGGER40);//new MenuBox(-500,Gdx.graphics.getHeight()/2-75,400,150,super.getFonts());
+        },MenuTools.mGTR("simpleBG.png",getManager()),MenuTools.mGTR("simpleBGB.png",getManager()),getFonts(),DAGGER40);//new MenuBox(-500,Gdx.graphics.getHeight()/2-75,400,150,super.getFonts());
         MenuBox quitBox = MenuTools.createLabelledButton(-600,Gdx.graphics.getHeight()/2-235,400,150,"[WHITE]Quit",new MenuTools.OnClick() {
             @Override
             public void action() {
                 MainGame.state = GameState.State.QUIT;
             }
-        },MenuTools.mGTR("4k-image-santiago.jpg",getManager()),MenuTools.mGTR("volcano-30238.png",getManager()),getFonts(),DAGGER40);
+        },MenuTools.mGTR("simpleBG.png",getManager()),MenuTools.mGTR("simpleBGB.png",getManager()),getFonts(),DAGGER40);
         MenuTools.QueueText gameName = new MenuTools.QueueText(-415,Gdx.graphics.getHeight()-30,0,0);
         gameName.setText("[WHITE]Alkahest Coffee Corp",super.getFonts());
         gameName.setFont(DAGGER50);

@@ -19,8 +19,7 @@ import me.dumfing.multiplayerTools.MultiplayerTools;
 
 import java.util.HashMap;
 
-import static me.dumfing.client.maingame.MainGame.DAGGER30;
-import static me.dumfing.client.maingame.MainGame.client;
+import static me.dumfing.client.maingame.MainGame.*;
 
 @Deprecated
 public class ServerBrowser extends Menu{
@@ -47,6 +46,7 @@ public class ServerBrowser extends Menu{
         super.addMenuBox(serverList);
         addRefreshButton();
         addBackButton();
+        addOfflineButton();
         MenuTools.TextField directConnect = new MenuTools.TextField(5,5,400,40);
         directConnect.setEnterAction(new MenuTools.OnEnter() {
             @Override
@@ -83,6 +83,15 @@ public class ServerBrowser extends Menu{
         refreshServers.setUnpressedTexture(new TextureRegion((Texture)getManager().get("archive/L2.png")));
         super.addButton(refreshServers);
 
+    }
+    private void addOfflineButton(){
+        MenuBox offlineButton = MenuTools.createLabelledButton(5, 60, 300, 60, "Offline", new MenuTools.OnClick() {
+            @Override
+            public void action() {
+                MainGame.state = GameState.State.OFFLINEDEBUG;
+            }
+        },MenuTools.mGTR("simpleBGB.png",getManager()),MenuTools.mGTR("simpleBG.png",getManager()),getFonts(),DAGGER20);
+        super.addMenuBox(offlineButton);
     }
     public boolean scrolled(int amount) {
         serverList.onScroll(amount);

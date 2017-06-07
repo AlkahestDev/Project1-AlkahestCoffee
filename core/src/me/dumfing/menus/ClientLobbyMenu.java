@@ -51,7 +51,7 @@ public class ClientLobbyMenu extends Menu{
         connectedPlayers.setBackground(MenuTools.mGTR("menubackdrops/canvas.png",getManager()));
         super.addMenuBox(connectedPlayers);
         countDownBar = new MenuBox(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()-60,200,60,getFonts());
-        countDownBar.setBackground(MenuTools.mGTR("4k-image-santiago.jpg",getManager()));
+        countDownBar.setBackground(MenuTools.mGTR("simpleBG.png",getManager()));
         countdown = new MenuTools.QueueText(5,50,0,0);
         countdown.setFont(DAGGER50);
         countDownBar.addQueueText(countdown);

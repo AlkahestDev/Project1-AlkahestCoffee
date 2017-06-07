@@ -68,10 +68,10 @@ public class ClientPickingInfoMenu extends Menu{
                 }
             }
         });
-        redTeamButton.setPressedTexture(MenuTools.mGTR("Desktop.jpg",getManager()));//new TextureRegion((Texture)getManager().get("desktop.jpg")));
+        redTeamButton.setPressedTexture(MenuTools.mGTR("simpleBG.png",getManager()));//new TextureRegion((Texture)getManager().get("desktop.jpg")));
         redTeamButton.setUnpressedTexture(MenuTools.mGTR("menubackdrops/canvas.png",getManager()));
-        bluTeamButton.setPressedTexture(MenuTools.mGTR("4k-image-santiago.jpg",getManager()));
-        bluTeamButton.setUnpressedTexture(MenuTools.mGTR("4914003-galaxy-wallpaper-png.png",getManager()));
+        bluTeamButton.setPressedTexture(MenuTools.mGTR("simpleBG.png",getManager()));
+        bluTeamButton.setUnpressedTexture(MenuTools.mGTR("simpleBG.png",getManager()));
         redTeamNumbers = new MenuTools.QueueText(10,Gdx.graphics.getHeight()-10,0,0);
         bluTeamNumbers = new MenuTools.QueueText(Gdx.graphics.getWidth()/2+10,Gdx.graphics.getHeight()-10,0,0);
         redTeamNumbers.setFont(0);

@@ -27,6 +27,7 @@ public class GameState{
 		PICKINGINFO, // pick a team to join
 		PLAYINGGAME, // playing the game
 		ROUNDOVER, // end of round, show scoreboard etc.
+		OFFLINEDEBUG,
 		//return to main menu
 		QUIT, // exiting game
 	}

@@ -22,6 +22,6 @@ public class SettingsMenu extends Menu{
     @Override
     public void init() {
         super.init();
-        super.setBackground(MenuTools.mGTR("4k-image-santiago.jpg",getManager()));//new TextureRegion((Texture)getManager().get("4k-image-santiago.jpg")));
+        super.setBackground(MenuTools.mGTR("simpleBG.png",getManager()));//new TextureRegion((Texture)getManager().get("4k-image-santiago.jpg")));
     }
 }
