@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import static me.dumfing.multiplayerTools.MultiplayerTools.GRAVITY;
-import static me.dumfing.multiplayerTools.MultiplayerTools.JUMPPOWER;
 import static me.dumfing.multiplayerTools.MultiplayerTools.WALKSPEED;
 import static me.dumfing.multiplayerTools.PlayerSoldier.ARCHER;
 import static me.dumfing.multiplayerTools.PlayerSoldier.KNIGHT;
@@ -58,31 +57,11 @@ public class ConcurrentGameWorld {
         return map;
     }
 
-
-
     private void detectCollisions(PlayerSoldier playerSoldier){
-
-        //  playerSoldier.setvY(playerSoldier.getvY()+GRAVITY);  // Making the player fall down
-
-        // playerSoldier.setY(playerSoldier.getY()+GRAVITY);
-
-
-        /*
-                 0
-            -----------
-            |         |
-          2 |         | 3      <-- COLLISION DIRECTIONS (temporary comment)
-            |         |
-            -----------
-                 1
-
-         */
-
         Arrays.fill(playerSoldier.collisions,false);
-
+        playerSoldier.setvY(playerSoldier.getvY()+GRAVITY);  // Making the player fall down
         // Colliding Top [0]
         if ((map.getPosId(Math.round(playerSoldier.getX()), (int)(playerSoldier.getY() + playerSoldier.getHeight())) == 1)){
-            playerSoldier.setY(Math.round(playerSoldier.getY()));
             playerSoldier.collisions[0] = true;
         }
 
@@ -91,64 +70,41 @@ public class ConcurrentGameWorld {
             playerSoldier.setY(Math.round(playerSoldier.getY()));
             playerSoldier.collisions[1] = true;
         }
-        // Colliding Left [2]
+        // Colliding Left [3]
         if ((map.getPosId((int)(playerSoldier.getX()), (int)(playerSoldier.getY() + 1)) == 1)){
-            //playerSoldier.setX((int)playerSoldier.getX());
-            playerSoldier.setX(Math.round(playerSoldier.getX()));
-            playerSoldier.collisions[2] = true;
+            playerSoldier.setX((int)playerSoldier.getX()+1);
+            playerSoldier.collisions[3] = true;
         }
 
-        // Colliding Right [3]
-        if ((map.getPosId((int)(playerSoldier.getX() + 1), (int)(playerSoldier.getY() + 1)) == 1)){
-            //playerSoldier.setX((int)playerSoldier.getX());
-            playerSoldier.setX(Math.round(playerSoldier.getX()));
-            playerSoldier.collisions[3] = true;
+        // Colliding Right [2]
+        if ((map.getPosId((int)(playerSoldier.getX()+1), (int)(playerSoldier.getY() + 1)) == 1)){
+            playerSoldier.setX((int)playerSoldier.getX());
+            playerSoldier.collisions[2] = true;
         }
 
 
     }
     private void handleCollisions(PlayerSoldier playerSoldier){
 
-        // Vertical collisions:
-
-        // If the player is not on the floor, gravity will act upon it.
-        if (!playerSoldier.collisions[1]){
-            playerSoldier.setvY(playerSoldier.getvY() + GRAVITY);
+        if(playerSoldier.collisions[0]){ //top
+            playerSoldier.setvY(Math.min(0,playerSoldier.getvY()));
         }
 
-        // If the player collides with the ground or a ceiling, velocity is lost.
-        if(playerSoldier.collisions[0]){
-            playerSoldier.setY((playerSoldier.getY() - 1));
-            playerSoldier.setvY(0);
-        }
-        if (playerSoldier.collisions[1]){
-            // playerSoldier.setY(Math.round(playerSoldier.getY()));
-            playerSoldier.setvY(0);
+        if(playerSoldier.collisions[1]){ //bottom
+            System.out.println("hit bottom");
+            playerSoldier.setvY(Math.max(0,playerSoldier.getvY()));
+            playerSoldier.setvX(MathTools.towardsZero(playerSoldier.getvX(), 0.1f));
         }
 
+        if(playerSoldier.collisions[2]){ //right
+            playerSoldier.setvX(Math.min(0,playerSoldier.getvX()));
+        }
 
-        // ToDo: Have a way to handle situations where the physics glitches and the player is trapped in the ground.
-
-        // if(playerSoldier.collisions[0]){ //top
-        //     playerSoldier.setvY(Math.min(0,playerSoldier.getvY()));
-        // }
-
-        // if(playerSoldier.collisions[1]){ //bottom
-        //     System.out.println("hit bottom");
-        //     playerSoldier.setvY(Math.max(0,playerSoldier.getvY()));
-        //     playerSoldier.setvX(MathTools.towardsZero(playerSoldier.getvX(), 0.1f));
-        // }
-        //
-        // if(playerSoldier.collisions[2]){ //right
-        //     playerSoldier.setvX(Math.min(0,playerSoldier.getvX()));
-        // }
-        //
-        // if(playerSoldier.collisions[3]){ //left
-        //     playerSoldier.setvX(Math.max(0,playerSoldier.getvX()));
-        // }
+        if(playerSoldier.collisions[3]){ //left
+            playerSoldier.setvX(Math.max(0,playerSoldier.getvX()));
+        }
 
     }
-
 
     // private void handleCollisions(PlayerSoldier playerSoldier){
     //     if(playerSoldier.isCanJump()) {
@@ -192,93 +148,43 @@ public class ConcurrentGameWorld {
     }
 
     public int handleKeyInput(PlayerSoldier pIn){
-
         MultiplayerTools.ClientControlObject[] keys = pIn.getKeysHeld();
         int animation = 0;
-
-        // Jumping
         if(keyDown(keys,MultiplayerTools.Keys.W) || keyDown(keys,MultiplayerTools.Keys.SPACE)){
-
-            // The player is only able to jump when colliding with the ground, and when there's no top collision
-            if(pIn.collisions[1] && !pIn.collisions[0]){
-                animation+=PlayerAnimations.JUMP;
-
-                pIn.setvY(JUMPPOWER);
-                pIn.setY(pIn.getY() + pIn.getvY());  // Boost Up
-
+            if(pIn.collisions[1]){  // canJump can be replaced by pIn.collisions[1]
+                pIn.setvY(MultiplayerTools.JUMPPOWER);
+                pIn.setCanJump(false);
             }
-
         }
-        // Falling
-        if(!pIn.collisions[0] && !pIn.collisions[1] && pIn.getvY() < 0){
+        if(!pIn.isCanJump() && pIn.getvX()<0){ // if player is not on ground and player is descending
             animation+=PlayerAnimations.FALL;
         }
-
-        // // Crouching / speed falling
-        // if(keyDown(keys,MultiplayerTools.Keys.S)){
-        //     // ToDo: Crouching and Falling Animation
-        //
-        //     // Speed Fall:
-        //     // If the player is in the air and going up, crouching can make the user immediately fall (Experimental)
-        //     if (pIn.getvY() > 0){
-        //         pIn.setvY(0);
-        //     }
-        //
-        // }
-
-        // Going Left
+        else if(!pIn.isCanJump() && pIn.getvX()>0){
+            animation+=PlayerAnimations.JUMP;
+        }
+        if(keyDown(keys,MultiplayerTools.Keys.S)){
+            // ToDo: Crouching Animation
+        }
         if(keyDown(keys,MultiplayerTools.Keys.A)){
-
-            pIn.setFacingDirection(0);  // Updating direction
-
             if(pIn.collisions[1]) {
-
+                pIn.setvX(-WALKSPEED);
                 animation += PlayerAnimations.WALK;
-
-                // If there is no collision to the left, the player moves left
-                if (!pIn.collisions[2] && !pIn.collisions[0]){
-                    pIn.setX(pIn.getX() - WALKSPEED);
-                }
-
             }
             else{
-                // In the air, the player moves at half the speed
-                if (!pIn.collisions[2] && !pIn.collisions[0]){
-                    pIn.setX(pIn.getX() - (WALKSPEED));  // /2f
-                }
-
-                // broom:small issue with speed boost under tight staircases. Can be ignored.
-
+                pIn.setvX(-WALKSPEED/2f);
             }
-
+            pIn.setFacingDirection(0);
         }
-
-        // Going Right
         else if(keyDown(keys,MultiplayerTools.Keys.D)){
-
-            //BROOM: Should these ifs be a method?
-
-            pIn.setFacingDirection(1);  // Updating direction
-
             if(pIn.collisions[1]) {
-
+                pIn.setvX(WALKSPEED);
                 animation += PlayerAnimations.WALK;
-
-                // If there is no collision to the right, the player moves right
-                if (!pIn.collisions[3] && !pIn.collisions[0]){
-                    pIn.setX(pIn.getX() + WALKSPEED);
-                }
-
             }
             else{
-                // In the air, the player moves at half the speed
-                if (!pIn.collisions[3] && !pIn.collisions[0]){
-                    pIn.setX(pIn.getX() + (WALKSPEED));
-                }
-
+                pIn.setvX(WALKSPEED/2f);
             }
+            pIn.setFacingDirection(1);
         }
-
         else if(keyDown(keys,MultiplayerTools.Keys.LMB)){
             switch (pIn.getCurrentClass()){
                 case KNIGHT:
