@@ -152,20 +152,12 @@ public class PlayerSoldier {
     public void draw(SpriteBatch batch, boolean isPlayer){
         TextureRegion drawFrame;
         Animation[][][] animationSet;
-        if(isPlayer) {
             if (this.getTeam() == 0) { // red
                 animationSet = PlayerAnimations.redPlayer;
             } else { // blu
                 animationSet = PlayerAnimations.bluPlayer;
             }
-        }
-        else{
-            if (this.getTeam() == 0) { // red
-                animationSet = PlayerAnimations.redNonPlayer;
-            } else { // blu
-                animationSet = PlayerAnimations.bluNonPlayer;
-            }
-        }
+
         //System.out.println(this.animationTime);
         //System.out.println(this.getAnimationID());
         if((this.getAnimationID()&PlayerAnimations.ISWALKING) == PlayerAnimations.WALK){

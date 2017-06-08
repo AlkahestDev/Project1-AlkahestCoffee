@@ -129,8 +129,8 @@ public class ServerBrowser extends Menu{
                 sName.setFont(DAGGER30);
                 peopleLimit.setText(tOut,super.getFontCaches());
                 sName.setText(serverList.get(k).serverName,super.getFontCaches());
-                bt.setPressedTexture(MenuTools.mGTR("4914003-galaxy-wallpaper-png.png",getManager()));//new TextureRegion((Texture)assets.get("4914003-galaxy-wallpaper-png.png")));
-                bt.setUnpressedTexture(MenuTools.mGTR("Desktop.jpg",getManager()));//new TextureRegion((Texture)assets.get("Desktop.jpg")));
+                bt.setPressedTexture(MenuTools.mGTR("simpleBGB.png",getManager()));//new TextureRegion((Texture)assets.get("4914003-galaxy-wallpaper-png.png")));
+                bt.setUnpressedTexture(MenuTools.mGTR("simpleBG.png",getManager()));//new TextureRegion((Texture)assets.get("Desktop.jpg")));
                 bt.setCallback(new MenuTools.OnClick() {
                     @Override
                     public void action() {

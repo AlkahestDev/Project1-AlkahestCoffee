@@ -44,6 +44,8 @@ public class ClientGameInstance implements InputProcessor{
         this.camera=camera;
         this.manager = manager;
         this.arrowTexture = MenuTools.mGTR("projectiles/arrow.png",manager);
+        this.redArrow = MenuTools.mGTR("redArrow.png",manager);
+        this.blueArrow = MenuTools.mGTR("blueArrow.png",manager);
     }
 
     /**
@@ -60,6 +62,8 @@ public class ClientGameInstance implements InputProcessor{
         this.manager = manager;
         this.arrowTexture = MenuTools.mGTR("projectiles/arrow.png",manager);
         onlineMode = false;
+        this.redArrow = MenuTools.mGTR("redArrow.png",manager);
+        this.blueArrow = MenuTools.mGTR("blueArrow.png",manager);
     }
     public void update(){
         if(keyUpdate){
@@ -92,7 +96,9 @@ public class ClientGameInstance implements InputProcessor{
         for(PlayerSoldier p : playWorld.getPlayers().values()){
             //DrawTools.rec(renderer,p.getRect());
             p.draw(batch,clientSoldier().equals(p));
-            batch.draw();
+            if(clientSoldier().equals(p)) {
+                batch.draw(p.getTeam() == 0 ? redArrow : blueArrow, p.getX() + 0.3f, p.getY() + 2.1f, 0.4f, 0.4f);
+            }
         }
         for(Projectile proj : playWorld.getProjectiles()){
             switch (proj.getProjectileType()){
