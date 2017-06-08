@@ -334,6 +334,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		assetManager.load("pixmapTest.png",Texture.class);
 		assetManager.load("pixmapVisual.png",Texture.class);
 		assetManager.load("projectiles/arrow.png",Texture.class);
+		assetManager.load("redArrow.png",Texture.class);
+		assetManager.load("blueArrow.png",Texture.class);
 		for(int i = 1; i<10; i++){
 			assetManager.load(String.format("archive/L%d.png",i),Texture.class);
 			assetManager.load(String.format("archive/R%d.png",i),Texture.class);

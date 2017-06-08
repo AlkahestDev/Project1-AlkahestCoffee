@@ -34,7 +34,7 @@ public class ClientGameInstance implements InputProcessor{
     private ConcurrentGameWorld playWorld;
     private OrthographicCamera camera;
     private AssetManager manager;
-    private TextureRegion arrowTexture;
+    private TextureRegion arrowTexture, blueArrow, redArrow;
     private Array<BitmapFontCache> fonts;
     boolean onlineMode = true;
     public ClientGameInstance(MultiplayerClient gameClient, HashMap<Integer, PlayerSoldier> players, OrthographicCamera camera, AssetManager manager, Array<BitmapFontCache> fonts){
@@ -45,6 +45,14 @@ public class ClientGameInstance implements InputProcessor{
         this.manager = manager;
         this.arrowTexture = MenuTools.mGTR("projectiles/arrow.png",manager);
     }
+
+    /**
+     * This constructor is only to be used in offline mode
+     * @param players
+     * @param camera
+     * @param manager
+     * @param fonts
+     */
     public ClientGameInstance(HashMap<Integer, PlayerSoldier> players, OrthographicCamera camera, AssetManager manager, Array<BitmapFontCache> fonts){
         this.fonts = fonts;
         this.playWorld = new ConcurrentGameWorld(players);
@@ -84,6 +92,7 @@ public class ClientGameInstance implements InputProcessor{
         for(PlayerSoldier p : playWorld.getPlayers().values()){
             //DrawTools.rec(renderer,p.getRect());
             p.draw(batch,clientSoldier().equals(p));
+            batch.draw();
         }
         for(Projectile proj : playWorld.getProjectiles()){
             switch (proj.getProjectileType()){

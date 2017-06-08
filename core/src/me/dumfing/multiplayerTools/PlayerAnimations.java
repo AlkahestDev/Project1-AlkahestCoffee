@@ -21,14 +21,6 @@ public class PlayerAnimations {
     //c is the colour (red, blue)
     //t is the type (player, nonplayer)
     //l is the loadout (knight, archer)
-    private static final Animation<TextureRegion> redNonPlayerWalkLeftKnight = new Animation<TextureRegion>(WALKINGFRAMETIME, knightSprites.findRegions("walk/wlrnk"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> redNonPlayerWalkRightKnight = new Animation<TextureRegion>(WALKINGFRAMETIME, knightSprites.findRegions("walk/wrrnk"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> redNonPlayerWalkLeftArcher = new Animation<TextureRegion>(WALKINGFRAMETIME,archerSprites.findRegions("wlrna"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> redNonPlayerWalkRightArcher = new Animation<TextureRegion>(WALKINGFRAMETIME,archerSprites.findRegions("wrrna"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> bluNonPlayerWalkLeftKnight = new Animation<TextureRegion>(WALKINGFRAMETIME, knightSprites.findRegions("walk/wlbnk"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> bluNonPlayerWalkRightKnight = new Animation<TextureRegion>(WALKINGFRAMETIME, knightSprites.findRegions("walk/wrbnk"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> bluNonPlayerWalkLeftArcher = new Animation<TextureRegion>(WALKINGFRAMETIME,archerSprites.findRegions("wlbna"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> bluNonPlayerWalkRightArcher = new Animation<TextureRegion>(WALKINGFRAMETIME,archerSprites.findRegions("wrbna"), Animation.PlayMode.LOOP);
     private static final Animation<TextureRegion> redPlayerWalkRightKnight = new Animation<TextureRegion>(WALKINGFRAMETIME, knightSprites.findRegions("walk/wrrpk"), Animation.PlayMode.LOOP);
     private static final Animation<TextureRegion> redPlayerWalkLeftKnight = new Animation<TextureRegion>(WALKINGFRAMETIME, knightSprites.findRegions("walk/wlrpk"), Animation.PlayMode.LOOP);
     private static final Animation<TextureRegion> redPlayerWalkRightArcher = new Animation<TextureRegion>(WALKINGFRAMETIME, archerSprites.findRegions("wrrpa"), Animation.PlayMode.LOOP);
@@ -38,14 +30,6 @@ public class PlayerAnimations {
     private static final Animation<TextureRegion> bluPlayerWalkRightArcher = new Animation<TextureRegion>(WALKINGFRAMETIME, archerSprites.findRegions("wrbpa"), Animation.PlayMode.LOOP);
     private static final Animation<TextureRegion> bluPlayerWalkLeftArcher = new Animation<TextureRegion>(WALKINGFRAMETIME, archerSprites.findRegions("wlbpa"), Animation.PlayMode.LOOP);
 
-    private static final Animation<TextureRegion> redNonPlayerIdleLeftKnight = new Animation<TextureRegion>(IDLEFRAMETIME, knightSprites.findRegions("idle/ilrnk"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> redNonPlayerIdleRightKnight = new Animation<TextureRegion>(IDLEFRAMETIME, knightSprites.findRegions("idle/irrnk"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> redNonPlayerIdleLeftArcher = new Animation<TextureRegion>(IDLEFRAMETIME,archerSprites.findRegions("ilrna"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> redNonPlayerIdleRightArcher = new Animation<TextureRegion>(IDLEFRAMETIME,archerSprites.findRegions("irrna"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> bluNonPlayerIdleLeftKnight = new Animation<TextureRegion>(IDLEFRAMETIME, knightSprites.findRegions("idle/ilbnk"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> bluNonPlayerIdleRightKnight = new Animation<TextureRegion>(IDLEFRAMETIME, knightSprites.findRegions("idle/irbnk"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> bluNonPlayerIdleLeftArcher = new Animation<TextureRegion>(IDLEFRAMETIME,archerSprites.findRegions("ilbna"), Animation.PlayMode.LOOP);
-    private static final Animation<TextureRegion> bluNonPlayerIdleRightArcher = new Animation<TextureRegion>(IDLEFRAMETIME,archerSprites.findRegions("irbna"), Animation.PlayMode.LOOP);
     private static final Animation<TextureRegion> redPlayerIdleLeftKnight = new Animation<TextureRegion>(IDLEFRAMETIME, knightSprites.findRegions("idle/ilrpk"), Animation.PlayMode.LOOP);
     private static final Animation<TextureRegion> redPlayerIdleRightKnight = new Animation<TextureRegion>(IDLEFRAMETIME, knightSprites.findRegions("idle/irrpk"), Animation.PlayMode.LOOP);
     private static final Animation<TextureRegion> redPlayerIdleLeftArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("ilrpa"), Animation.PlayMode.LOOP);
@@ -69,8 +53,5 @@ public class PlayerAnimations {
     public static final int ISATTACK = 16;
     public static final int ISIDLE = 32;
     public static final Animation[][][] redPlayer = {{{redPlayerWalkLeftKnight,redPlayerWalkLeftArcher},null,null,null, {redPlayerIdleLeftKnight,redPlayerIdleLeftArcher}},{{redPlayerWalkRightKnight,redPlayerWalkRightArcher},null,null,null, {redPlayerIdleRightKnight,redPlayerIdleRightArcher}}};
-    public static final Animation[][][] redNonPlayer = {{{redNonPlayerWalkLeftKnight,redNonPlayerWalkLeftArcher},null,null,null, {redNonPlayerIdleLeftKnight,redNonPlayerIdleLeftArcher}},{{redNonPlayerWalkRightKnight,redNonPlayerWalkRightArcher},null,null,null, {redNonPlayerIdleRightKnight,redNonPlayerIdleRightArcher}}};
     public static final Animation[][][] bluPlayer = {{{bluPlayerWalkLeftKnight,bluPlayerWalkLeftArcher},null,null,null, {bluPlayerIdleLeftKnight,bluPlayerIdleLeftArcher}},{{bluPlayerWalkRightKnight,bluPlayerWalkRightArcher},null,null,null, {bluPlayerIdleRightKnight,bluPlayerIdleRightArcher}}};
-    public static final Animation[][][] bluNonPlayer = {{{bluNonPlayerWalkLeftKnight,bluNonPlayerWalkLeftArcher},null,null,null, {bluNonPlayerIdleLeftKnight, bluNonPlayerIdleLeftArcher}},{{bluNonPlayerWalkRightKnight,bluNonPlayerWalkRightArcher},null,null,null, {bluNonPlayerIdleRightKnight,bluNonPlayerIdleRightArcher}}};
-
 }

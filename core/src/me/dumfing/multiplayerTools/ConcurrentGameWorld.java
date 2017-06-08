@@ -92,7 +92,7 @@ public class ConcurrentGameWorld {
         }
 
         if(playerSoldier.collisions[1]){ //bottom
-            System.out.println("hit bottom");
+            //System.out.println("hit bottom");
             playerSoldier.setvY(Math.max(0,playerSoldier.getvY()));
             playerSoldier.setvX(MathTools.towardsZero(playerSoldier.getvX(), 0.1f));
         }
