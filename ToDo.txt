@@ -1,0 +1,23 @@
+ToDO List
+
+Main Things:
+- Attacking
+- Shielding
+- Game-mode setup
+- Bot AI
+
+Other:
+- Camera physics
+- Finish Menus (settings menu, pause menu)
+
+Graphics:
+- Shielding
+- Stabbing
+- Archer(walking, shooting, stab, idle)
+- Jumping/Landing implementation
+- Maps(Flags/Base)
+- Loading screen
+
+If Time Permits:
+- Cannon/Musket
+- Catapult
