@@ -9,14 +9,19 @@ Main Things:
 Other:
 - Camera physics
 - Finish Menus (settings menu, pause menu)
+- Spawning
+- Map Animations
 
 Graphics:
 - Shielding
-- Stabbing
+- Stabbing (horizontal attack?)
 - Archer(walking, shooting, stab, idle)
 - Jumping/Landing implementation
 - Maps(Flags/Base)
 - Loading screen
+- Basic water
+- Crouching
++ Add ShieldMovement to walking sprites
 
 If Time Permits:
 - Cannon/Musket

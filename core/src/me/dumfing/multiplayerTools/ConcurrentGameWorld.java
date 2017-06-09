@@ -189,8 +189,11 @@ public class ConcurrentGameWorld {
         else if(keyDown(keys,MultiplayerTools.Keys.LMB)){
             switch (pIn.getCurrentClass()){
                 case KNIGHT:
+
                     // ToDo:Attacking
+
                     break;
+
                 case ARCHER:
                     //System.out.println("add projectile");
                     if(projectiles.size()<20) {
