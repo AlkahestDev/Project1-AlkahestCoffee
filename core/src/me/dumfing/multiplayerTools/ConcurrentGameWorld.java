@@ -239,7 +239,6 @@ public class ConcurrentGameWorld {
                         pIn.swinging = true;
                         handleAttacks(pIn);
 
-
                     }
 
                     break;
