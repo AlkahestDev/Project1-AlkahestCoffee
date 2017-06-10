@@ -191,10 +191,10 @@ public class PlayerSoldier {
         //System.out.println(trW+" "+trH+" "+ratio);
         if((this.getAnimationID()&PlayerAnimations.ISATTACK) == PlayerAnimations.ATTACK){
             if(this.getFacingDirection()==0){
-                batch.draw(drawFrame, this.getX()-0.5f, this.getY(), this.getHeight()*ratio,this.getHeight()+0.12f);
+                batch.draw(drawFrame, this.getX()-0.64f, this.getY(), this.getHeight()*ratio+0.14f,this.getHeight()+0.13f);
             }
             else{
-                batch.draw(drawFrame, this.getX(), this.getY(), this.getHeight()*ratio,this.getHeight()+0.12f); // add 0.1 because the attacking sprites are 4 FCKING PIXELS TALLER THAN THE STANDING SPRITES
+                batch.draw(drawFrame, this.getX()-0.09f, this.getY(), this.getHeight()*ratio+0.14f,this.getHeight()+0.13f); // add 0.1 because the attacking sprites are 4 FCKING PIXELS TALLER THAN THE STANDING SPRITES
             }
         }
         else {
@@ -290,6 +290,30 @@ public class PlayerSoldier {
     }
     public float getCenterY(){
         return (this.height/2f)+this.getY();
+    }
+    public void attack(PlayerSoldier target){
+        if (target.sheilding){
+            // Swing Attack
+            if (this.swinging){
+                target.setHealth(target.getHealth() - this.swingDamage / 2);
+            }
+
+            // Stab Attack
+            if (this.stabbing){
+                this.setHealth(this.getHealth() - this.stabDamage / 2);
+            }
+        }
+        else {
+            // Swing Attack
+            if (this.swinging){
+                this.setHealth(this.getHealth() - this.swingDamage);
+            }
+
+            // Stab Attack
+            if (this.stabbing){
+                this.setHealth(this.getHealth() - this.stabDamage);
+            }
+        }
     }
     @Override
     public String toString() {

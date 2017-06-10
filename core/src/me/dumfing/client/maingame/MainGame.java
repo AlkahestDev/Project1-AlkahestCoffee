@@ -148,7 +148,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					//menu.init();
 					createWorlds();
 					client.pingServers();
-					//state = GameState.State.OFFLINEDEBUG;
+					state = GameState.State.OFFLINEDEBUG;
 
 				}
 				break;

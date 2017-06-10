@@ -118,42 +118,15 @@ public class ConcurrentGameWorld {
 
                     // Attacking Left
                     if (p.getX() < playerSoldier.getX() && playerSoldier.getFacingDirection() == 0){
-                        doDamage(playerSoldier, p);
+                        //doDamage(playerSoldier, p);
+                        playerSoldier.attack(p);
                     }
 
                     // Attacking Right
                     if (p.getX() > playerSoldier.getX() && playerSoldier.getFacingDirection() == 1) {
-                        doDamage(playerSoldier, p);
+                        playerSoldier.attack(p);
                     }
                 }
-            }
-        }
-
-    }
-
-    private void doDamage(PlayerSoldier attacker, PlayerSoldier defender){
-
-        // If the shield is up
-        if (defender.sheilding){
-            // Swing Attack
-            if (attacker.swinging){
-                defender.setHealth(defender.getHealth() - attacker.swingDamage / 2);
-            }
-
-            // Stab Attack
-            if (attacker.stabbing){
-                defender.setHealth(defender.getHealth() - attacker.stabDamage / 2);
-            }
-        }
-        else {
-            // Swing Attack
-            if (attacker.swinging){
-                defender.setHealth(defender.getHealth() - attacker.swingDamage);
-            }
-
-            // Stab Attack
-            if (attacker.stabbing){
-                defender.setHealth(defender.getHealth() - attacker.stabDamage);
             }
         }
 
@@ -235,7 +208,6 @@ public class ConcurrentGameWorld {
 
                     // On the ground, not moving
                     if (pIn.collisions[1] && !keyDown(keys,MultiplayerTools.Keys.D) && !keyDown(keys,MultiplayerTools.Keys.A)){
-
                         pIn.swinging = true;
                         handleAttacks(pIn);
 
