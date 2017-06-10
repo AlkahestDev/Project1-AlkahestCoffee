@@ -8,13 +8,12 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import javax.xml.soap.Text;
-
 public class PlayerAnimations {
     private static final TextureAtlas knightSprites = new TextureAtlas(Gdx.files.internal("SpriteSheets/KnightSprites.atlas"));
     private static final TextureAtlas archerSprites = new TextureAtlas(Gdx.files.internal("SpriteSheets/ArcherSprites.atlas"));
     private static final float WALKINGFRAMETIME = 0.07f;
     private static final float IDLEFRAMETIME = 0.3f;
+    private static final float ATTACKFRAMETIME = 0.01f;
     //file names are in format adctl
     //a is the animation (walk, jump, fall, etc.)
     //d is the direction (left, right)
@@ -38,6 +37,11 @@ public class PlayerAnimations {
     private static final Animation<TextureRegion> bluPlayerIdleRightKnight = new Animation<TextureRegion>(IDLEFRAMETIME, knightSprites.findRegions("idle/irbpk"), Animation.PlayMode.LOOP);
     private static final Animation<TextureRegion> bluPlayerIdleLeftArcher = new Animation<TextureRegion>(IDLEFRAMETIME,archerSprites.findRegions("ilbpa"), Animation.PlayMode.LOOP);
     private static final Animation<TextureRegion> bluPlayerIdleRightArcher = new Animation<TextureRegion>(IDLEFRAMETIME,archerSprites.findRegions("irbpa"), Animation.PlayMode.LOOP);
+
+    private static final Animation<TextureRegion> redPlayerAttackRightKnight = new Animation<TextureRegion>(ATTACKFRAMETIME,knightSprites.findRegions("arrpk"), Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> redPlayerAttackLeftKnight = new Animation<TextureRegion>(ATTACKFRAMETIME,knightSprites.findRegions("alrpk"), Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> bluPlayerAttackRightKnight = new Animation<TextureRegion>(ATTACKFRAMETIME, knightSprites.findRegions("arbpk"), Animation.PlayMode.LOOP);
+    private static final Animation<TextureRegion> bluPlayerAttackLeftKnight = new Animation<TextureRegion>(ATTACKFRAMETIME, knightSprites.findRegions("arbpk"), Animation.PlayMode.LOOP);
     //animations will be accessed with redPlayer[direction][animationID]
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
@@ -52,6 +56,6 @@ public class PlayerAnimations {
     public static final int ISJUMPING = 8;
     public static final int ISATTACK = 16;
     public static final int ISIDLE = 32;
-    public static final Animation[][][] redPlayer = {{{redPlayerWalkLeftKnight,redPlayerWalkLeftArcher},null,null,null, {redPlayerIdleLeftKnight,redPlayerIdleLeftArcher}},{{redPlayerWalkRightKnight,redPlayerWalkRightArcher},null,null,null, {redPlayerIdleRightKnight,redPlayerIdleRightArcher}}};
-    public static final Animation[][][] bluPlayer = {{{bluPlayerWalkLeftKnight,bluPlayerWalkLeftArcher},null,null,null, {bluPlayerIdleLeftKnight,bluPlayerIdleLeftArcher}},{{bluPlayerWalkRightKnight,bluPlayerWalkRightArcher},null,null,null, {bluPlayerIdleRightKnight,bluPlayerIdleRightArcher}}};
+    public static final Animation[][][] redPlayer = {{{redPlayerWalkLeftKnight,redPlayerWalkLeftArcher},null,null,{redPlayerAttackLeftKnight,null}, {redPlayerIdleLeftKnight,redPlayerIdleLeftArcher}},{{redPlayerWalkRightKnight,redPlayerWalkRightArcher},null,null,{redPlayerAttackRightKnight,null}, {redPlayerIdleRightKnight,redPlayerIdleRightArcher}}};
+    public static final Animation[][][] bluPlayer = {{{bluPlayerWalkLeftKnight,bluPlayerWalkLeftArcher},null,null,{bluPlayerAttackLeftKnight,null}, {bluPlayerIdleLeftKnight,bluPlayerIdleLeftArcher}},{{bluPlayerWalkRightKnight,bluPlayerWalkRightArcher},null,null,{bluPlayerAttackRightKnight,null  }, {bluPlayerIdleRightKnight,bluPlayerIdleRightArcher}}};
 }
