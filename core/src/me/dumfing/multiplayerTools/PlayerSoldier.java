@@ -119,12 +119,12 @@ public class PlayerSoldier {
     public boolean isAnimationDone(){
         // Returns whether the current animation is done or not
 
-        return getAnimationSet()[this.getAnimationID()&PlayerAnimations.DIRECTION][0][this.getCurrentClass()].isAnimationFinished(this.animationTime);
+        return getAnimation().isAnimationFinished(this.animationTime);
 
     }
 
-    public int getFrame(){
-        return getAnimationSet()[this.getAnimationID()&PlayerAnimations.DIRECTION][0][this.getCurrentClass()].getKeyFrameIndex(this.animationTime);
+    public int getFrameIndex(){
+        return getAnimation().getKeyFrameIndex(this.animationTime);
     }
 
 
@@ -182,34 +182,49 @@ public class PlayerSoldier {
      * @param isPlayer If this PlayerSoldier is the PlayerSoldier the client is viewing
      */
     public void draw(SpriteBatch batch, boolean isPlayer){
-        TextureRegion drawFrame;
-        Animation[][][] animationSet;
-            if (this.getTeam() == 0) { // red
-                animationSet = PlayerAnimations.redPlayer;
-            } else { // blu
-                animationSet = PlayerAnimations.bluPlayer;
-            }
-
         //System.out.println(this.animationTime);
         //System.out.println(this.getAnimationID());
+        TextureRegion drawFrame = (TextureRegion) getAnimation().getKeyFrame(this.animationTime);
+        float trW = drawFrame.getRegionWidth();
+        float trH = drawFrame.getRegionHeight();
+        float ratio = trW/trH;
+        //System.out.println(trW+" "+trH+" "+ratio);
+        if((this.getAnimationID()&PlayerAnimations.ISATTACK) == PlayerAnimations.ATTACK){
+            if(this.getFacingDirection()==0){
+                batch.draw(drawFrame, this.getX()-0.5f, this.getY(), this.getHeight()*ratio,this.getHeight()+0.12f);
+            }
+            else{
+                batch.draw(drawFrame, this.getX(), this.getY(), this.getHeight()*ratio,this.getHeight()+0.12f); // add 0.1 because the attacking sprites are 4 FCKING PIXELS TALLER THAN THE STANDING SPRITES
+            }
+        }
+        else {
+            batch.draw(drawFrame, this.getX(), this.getY(), this.getHeight()*ratio, this.getHeight());
+        }
+    }
+    public Animation getAnimation(){
+        Animation[][][] animationSet;
+        if (this.getTeam() == 0) { // red
+            animationSet = PlayerAnimations.redPlayer;
+        } else { // blu
+            animationSet = PlayerAnimations.bluPlayer;
+        }
+
         if((this.getAnimationID()&PlayerAnimations.ISWALKING) == PlayerAnimations.WALK){
-            drawFrame = (TextureRegion) animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][0][this.getCurrentClass()].getKeyFrame(this.animationTime);
+            return animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][0][this.getCurrentClass()];
         }
         else if((this.getAnimationID()&PlayerAnimations.ISFALLING) == PlayerAnimations.FALL){
-            drawFrame = (TextureRegion) animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][0][this.getCurrentClass()].getKeyFrame(this.animationTime); //TODO: change to 1 when falling sprites are added
+            return animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][0][this.getCurrentClass()]; //TODO: change to 1 when falling sprites are added
         }
         else if((this.getAnimationID()&PlayerAnimations.ISJUMPING) == PlayerAnimations.JUMP){
-            drawFrame = (TextureRegion) animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][0][this.getCurrentClass()].getKeyFrame(this.animationTime); //TODO: change to 2 when jumping sprites are added
+            return animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][0][this.getCurrentClass()]; //TODO: change to 2 when jumping sprites are added
         }
         else if((this.getAnimationID()&PlayerAnimations.ISATTACK) == PlayerAnimations.ATTACK){
-            drawFrame = (TextureRegion) animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][3][this.getCurrentClass()].getKeyFrame(this.animationTime); //TODO: change to 3 when attacking sprites are added
+            return animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][3][this.getCurrentClass()];
         }
         else { // idling
-            drawFrame = (TextureRegion) animationSet[this.getAnimationID() & PlayerAnimations.DIRECTION][4][this.getCurrentClass()].getKeyFrame(this.animationTime);
+            return animationSet[this.getAnimationID() & PlayerAnimations.DIRECTION][4][this.getCurrentClass()];
         }
-        batch.draw(drawFrame,this.getX(),this.getY(),this.getWidth(),this.getHeight());
     }
-
     public void setX(float x){
             this.playerArea.setX(x);
     }

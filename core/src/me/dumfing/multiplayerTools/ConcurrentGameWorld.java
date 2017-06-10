@@ -114,7 +114,7 @@ public class ConcurrentGameWorld {
         // Checking if player collides with any other player
         for (PlayerSoldier p : players.values()){
             if (p != playerSoldier){
-                if (playerSoldier.getFrame() == PlayerAnimations.ATTACKFRAME && playerSoldier.getRect().overlaps(p.getRect())){  // Maybe its  2 frame where the damage may be done?
+                if (playerSoldier.getFrameIndex() == PlayerAnimations.ATTACKFRAME && playerSoldier.getRect().overlaps(p.getRect())){  // Maybe its  2 frame where the damage may be done?
 
                     // Attacking Left
                     if (p.getX() < playerSoldier.getX() && playerSoldier.getFacingDirection() == 0){

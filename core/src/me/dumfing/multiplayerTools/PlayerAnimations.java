@@ -13,7 +13,7 @@ public class PlayerAnimations {
     private static final TextureAtlas archerSprites = new TextureAtlas(Gdx.files.internal("SpriteSheets/ArcherSprites.atlas"));
     private static final float WALKINGFRAMETIME = 0.07f;
     private static final float IDLEFRAMETIME = 0.3f;
-    private static final float ATTACKFRAMETIME = 0.01f;
+    private static final float ATTACKFRAMETIME = 0.02f;
     //file names are in format adctl
     //a is the animation (walk, jump, fall, etc.)
     //d is the direction (left, right)
