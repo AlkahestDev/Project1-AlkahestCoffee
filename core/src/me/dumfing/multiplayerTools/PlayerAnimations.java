@@ -38,6 +38,8 @@ public class PlayerAnimations {
     private static final Animation<TextureRegion> bluPlayerIdleRightKnight = new Animation<TextureRegion>(IDLEFRAMETIME, knightSprites.findRegions("idle/irbpk"), Animation.PlayMode.LOOP);
     private static final Animation<TextureRegion> bluPlayerIdleLeftArcher = new Animation<TextureRegion>(IDLEFRAMETIME,archerSprites.findRegions("ilbpa"), Animation.PlayMode.LOOP);
     private static final Animation<TextureRegion> bluPlayerIdleRightArcher = new Animation<TextureRegion>(IDLEFRAMETIME,archerSprites.findRegions("irbpa"), Animation.PlayMode.LOOP);
+
+
     //animations will be accessed with redPlayer[direction][animationID]
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
@@ -52,6 +54,9 @@ public class PlayerAnimations {
     public static final int ISJUMPING = 8;
     public static final int ISATTACK = 16;
     public static final int ISIDLE = 32;
+
+    public static final int ATTACKFRAME = 9;
+
     public static final Animation[][][] redPlayer = {{{redPlayerWalkLeftKnight,redPlayerWalkLeftArcher},null,null,null, {redPlayerIdleLeftKnight,redPlayerIdleLeftArcher}},{{redPlayerWalkRightKnight,redPlayerWalkRightArcher},null,null,null, {redPlayerIdleRightKnight,redPlayerIdleRightArcher}}};
     public static final Animation[][][] bluPlayer = {{{bluPlayerWalkLeftKnight,bluPlayerWalkLeftArcher},null,null,null, {bluPlayerIdleLeftKnight,bluPlayerIdleLeftArcher}},{{bluPlayerWalkRightKnight,bluPlayerWalkRightArcher},null,null,null, {bluPlayerIdleRightKnight,bluPlayerIdleRightArcher}}};
 }

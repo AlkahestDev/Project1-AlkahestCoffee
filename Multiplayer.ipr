@@ -231,6 +231,14 @@
       </item>
     </group>
   </component>
+  <component name="ProjectDictionaryState">
+    <dictionary name="AB">
+      <words>
+        <w>loadout</w>
+        <w>nonplayer</w>
+      </words>
+    </dictionary>
+  </component>
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Multiplayer.iml" filepath="$PROJECT_DIR$/Multiplayer.iml" />

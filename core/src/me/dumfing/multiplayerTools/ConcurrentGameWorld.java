@@ -2,6 +2,7 @@ package me.dumfing.multiplayerTools;
 
 import com.badlogic.gdx.Gdx;
 import me.dumfing.gdxtools.MathTools;
+import org.lwjgl.Sys;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,6 +34,7 @@ public class ConcurrentGameWorld {
             p.update(Gdx.graphics.getDeltaTime());
             detectCollisions(p);
             handleCollisions(p);
+            handleAttacks(p);
             p.move();
         }
         for(Projectile proj : projectiles){
@@ -107,35 +109,55 @@ public class ConcurrentGameWorld {
 
     }
 
-    // private void handleCollisions(PlayerSoldier playerSoldier){
-    //     if(playerSoldier.isCanJump()) {
-    //         playerSoldier.setvX(MathTools.towardsZero(playerSoldier.getvX(), 0.1f));
-    //     }
-    //     else { // air friction
-    //         playerSoldier.setvX(MathTools.towardsZero(playerSoldier.getvX(), 0.001f));
-    //     }
-    //     //System.out.println(map.getPosId((int)(playerSoldier.getX()),(int)(playerSoldier.getY()+playerSoldier.getvY())));
-    //     if(map.getPosId((int)(playerSoldier.getX()), Math.round(playerSoldier.getY()+playerSoldier.getvY()))==1){
-    //         //System.out.printf("%d %d %f\n",(int)(playerSoldier.getX()),(int)(playerSoldier.getY()+playerSoldier.getvY()), playerSoldier.getvY());
-    //         playerSoldier.setvY(0);
-    //         playerSoldier.setY((int)playerSoldier.getY()+0.001f);
-    //         playerSoldier.setCanJump(true);
-    //     }
-    //     else{
-    //         playerSoldier.setvY(playerSoldier.getvY()+MultiplayerTools.GRAVITY);
-    //     }
-    //     //TODO: vertical Collisions
-    //    if((map.getPosId((int)(playerSoldier.getX()+1),(int)(playerSoldier.getY()+1))==1)){ //right side
-    //         System.out.println("hitX");
-    //         playerSoldier.setX(Math.round(playerSoldier.getX()));
-    //         playerSoldier.setvX(Math.min(playerSoldier.getvX(),0));
-    //     }
-    //     if((map.getPosId((int)(playerSoldier.getX()),(int)(playerSoldier.getY()+1))==1)){ // left side
-    //         System.out.println("hitXL");
-    //         playerSoldier.setX(Math.round(playerSoldier.getX())-1);
-    //         playerSoldier.setvX(Math.max(playerSoldier.getvX(),0));
-    //     }
-    // }
+    public void handleAttacks(PlayerSoldier playerSoldier){
+
+        // Checking if player collides with any other player
+        for (PlayerSoldier p : players.values()){
+            if (p != playerSoldier){
+                if (playerSoldier.getFrame() == PlayerAnimations.ATTACKFRAME && playerSoldier.getRect().overlaps(p.getRect())){  // Maybe its  2 frame where the damage may be done?
+
+                    // Attacking Left
+                    if (p.getX() < playerSoldier.getX() && playerSoldier.getFacingDirection() == 0){
+                        doDamage(playerSoldier, p);
+                    }
+
+                    // Attacking Right
+                    if (p.getX() > playerSoldier.getX() && playerSoldier.getFacingDirection() == 1) {
+                        doDamage(playerSoldier, p);
+                    }
+                }
+            }
+        }
+
+    }
+
+    private void doDamage(PlayerSoldier attacker, PlayerSoldier defender){
+
+        // If the shield is up
+        if (defender.sheilding){
+            // Swing Attack
+            if (attacker.swinging){
+                defender.setHealth(defender.getHealth() - attacker.swingDamage / 2);
+            }
+
+            // Stab Attack
+            if (attacker.stabbing){
+                defender.setHealth(defender.getHealth() - attacker.stabDamage / 2);
+            }
+        }
+        else {
+            // Swing Attack
+            if (attacker.swinging){
+                defender.setHealth(defender.getHealth() - attacker.swingDamage);
+            }
+
+            // Stab Attack
+            if (attacker.stabbing){
+                defender.setHealth(defender.getHealth() - attacker.stabDamage);
+            }
+        }
+
+    }
 
     public void updatePlayerKeys(Integer cID, MultiplayerTools.ClientControlObject[] keys){
         players.get(cID).setKeysHeld(keys);
@@ -150,7 +172,26 @@ public class ConcurrentGameWorld {
 
     public int handleKeyInput(PlayerSoldier pIn){
         MultiplayerTools.ClientControlObject[] keys = pIn.getKeysHeld();
+
         int animation = 0;
+
+
+        // Keeping the attack animation running until it's finished
+        if (pIn.swinging){
+
+            animation += PlayerAnimations.ATTACK;
+
+            // if (pIn.getAnimationSet()[pIn.getAnimationID() & PlayerAnimations.DIRECTION][0][pIn.getCurrentClass()].isAnimationFinished(pIn.getAnimationTime())){
+            //     pIn.swinging = false;
+            // }
+
+            if (pIn.isAnimationDone()){
+                pIn.swinging = false;
+            }
+
+
+        }
+
         if(keyDown(keys,MultiplayerTools.Keys.W) || keyDown(keys,MultiplayerTools.Keys.SPACE)){
             if(pIn.collisions[1]){  // canJump can be replaced by pIn.collisions[1]
                 pIn.setvY(MultiplayerTools.JUMPPOWER);
@@ -186,11 +227,20 @@ public class ConcurrentGameWorld {
             }
             pIn.setFacingDirection(1);
         }
+
         else if(keyDown(keys,MultiplayerTools.Keys.LMB)){
+
             switch (pIn.getCurrentClass()){
                 case KNIGHT:
 
-                    // ToDo:Attacking
+                    // On the ground, not moving
+                    if (pIn.collisions[1] && !keyDown(keys,MultiplayerTools.Keys.D) && !keyDown(keys,MultiplayerTools.Keys.A)){
+
+                        pIn.swinging = true;
+                        handleAttacks(pIn);
+
+
+                    }
 
                     break;
 

@@ -27,6 +27,11 @@ public class PlayerSoldier {
     public static final int KNIGHT = 0;
     public static final int ARCHER = 1;
 
+    public boolean swinging = false;
+    public boolean stabbing = false;
+    public boolean sheilding = false;
+    public int swingDamage = 10;
+    public int stabDamage = 5;
 
     public static final int UP = 1;
     public static final int DOWN = 2;
@@ -79,6 +84,14 @@ public class PlayerSoldier {
         this.maxHealth = maxHealth;
     }
 
+    public void setHealth(int health){
+        this.health = health;
+    }
+
+    public int getHealth(){
+        return this.health;
+    }
+
     public String getName(){return this.name;}
 
     public void setKeysHeld(MultiplayerTools.ClientControlObject[] keysHeld) {
@@ -93,6 +106,29 @@ public class PlayerSoldier {
     public int getAnimationID() {
         return animationID+this.facingDirection;
     }
+
+    public Animation [] [] [] getAnimationSet(){
+
+        if (this.getTeam() == 0){
+            return PlayerAnimations.redPlayer;
+        }
+        else {
+            return PlayerAnimations.bluPlayer;
+        }
+
+    }
+
+    public boolean isAnimationDone(){
+        // Returns whether the current animation is done or not
+
+        return getAnimationSet()[this.getAnimationID()&PlayerAnimations.DIRECTION][0][this.getCurrentClass()].isAnimationFinished(this.animationTime);
+
+    }
+
+    public int getFrame(){
+        return getAnimationSet()[this.getAnimationID()&PlayerAnimations.DIRECTION][0][this.getCurrentClass()].getKeyFrameIndex(this.animationTime);
+    }
+
 
     public void setName(String name) {
         this.name = name;
@@ -131,9 +167,7 @@ public class PlayerSoldier {
         }
         return this.keysHeld[MultiplayerTools.Keys.ANGLE].angle;
     }
-    public int getHealth(){
-        return this.health;
-    }
+
     public int getMaxHealth(){
         return this.maxHealth;
     }
