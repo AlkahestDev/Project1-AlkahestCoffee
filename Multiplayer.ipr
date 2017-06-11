@@ -77,9 +77,6 @@
     <option name="PROCEED_ON_ERROR" value="false" />
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
-  <component name="EntryPointsManager">
-    <entry_points version="2.0" />
-  </component>
   <component name="GradleUISettings">
     <setting name="root" />
   </component>
@@ -239,6 +236,7 @@
         <w>nonplayer</w>
       </words>
     </dictionary>
+    <dictionary name="dumpl" />
   </component>
   <component name="ProjectModuleManager">
     <modules>

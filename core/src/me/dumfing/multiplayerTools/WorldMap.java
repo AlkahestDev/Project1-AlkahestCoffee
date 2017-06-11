@@ -10,11 +10,17 @@ import org.lwjgl.util.Point;
 /**
  * An object that links the visual componenets and functional components of a map together
  */
-
+//Colour usages in the worldmap:
+// 255,1,0 Red spawn
+// 255,2,0 Red capture flag
+// 255,255,0 Red only area
+// 0,1,255 blu spawn
+// 0,2,255 blu capture flag
+// 0,255,255 blu only area
 public class WorldMap {
     Pixmap collisionMap;
     Array<TextureRegion> visualComponent = new Array<TextureRegion>();
-    GridPoint2 redSpawn, bluSpawn;
+    GridPoint2 redSpawn, bluSpawn, redFlag, bluFlag;
     int currentFrame = 0;
     int frameCount = 0;
     int frameTime;
@@ -26,8 +32,10 @@ public class WorldMap {
         collisionMap = colMap.getTexture().getTextureData().consumePixmap();
         visualComponent = new Array<TextureRegion>();
         visualComponent.add(visComp);
-        redSpawn = findColour(-65536);
-        bluSpawn = findColour(255);
+        redSpawn = findColour(0xFF0100FF);
+        bluSpawn = findColour(0x0001FFFF);
+        redFlag = findColour(0xFF0200FF);
+        bluFlag = findColour(0x0002FFFF);
     }
 
     public void draw(SpriteBatch batch){
@@ -47,7 +55,7 @@ public class WorldMap {
     }
 
     public int getPosId(int x, int y){
-        return collisionMap.getPixel(x,collisionMap.getHeight()-y)>>8;
+        return collisionMap.getPixel(x,collisionMap.getHeight()-y);
     }
 
     public TextureRegion getVisualComponent() {
@@ -62,6 +70,14 @@ public class WorldMap {
         return bluSpawn;
     }
 
+    public GridPoint2 getRedFlag() {
+        return redFlag;
+    }
+
+    public GridPoint2 getBluFlag() {
+        return bluFlag;
+    }
+
     public Pixmap getCollisionMap() {
         return collisionMap;
     }
@@ -74,9 +90,9 @@ public class WorldMap {
      */
     public GridPoint2 findColour(int id){
         for(int x = 0; x<collisionMap.getWidth();x++){
-            for(int y = 0; y<collisionMap.getWidth();y++){
+            for(int y = 0; y<collisionMap.getHeight();y++){
                 if(getPosId(x,y)==id) {
-                    System.out.println("spawn: "+x+" "+y+" "+id);
+                    System.out.println("found: "+id+" at "+x+" "+y);
                     return new GridPoint2(x, y);
                 }
             }

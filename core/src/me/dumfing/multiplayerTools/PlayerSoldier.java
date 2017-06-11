@@ -108,10 +108,10 @@ public class PlayerSoldier {
     public Animation [] [] [] getAnimationSet(){
 
         if (this.getTeam() == 0){
-            return PlayerAnimations.redPlayer;
+            return AnimationManager.redPlayer;
         }
         else {
-            return PlayerAnimations.bluPlayer;
+            return AnimationManager.bluPlayer;
         }
 
     }
@@ -189,7 +189,7 @@ public class PlayerSoldier {
         float trH = drawFrame.getRegionHeight();
         float ratio = trW/trH;
         //System.out.println(trW+" "+trH+" "+ratio);
-        //if((this.getAnimationID()&PlayerAnimations.ISATTACK) == PlayerAnimations.ATTACK){
+        //if((this.getAnimationID()&AnimationManager.ISATTACK) == AnimationManager.ATTACK){
             if(this.getFacingDirection()==0){
                 batch.draw(drawFrame, this.getX()-0.84f, this.getY(), this.getHeight()*ratio+0.14f,this.getHeight()+0.13f);
             }
@@ -204,25 +204,25 @@ public class PlayerSoldier {
     public Animation getAnimation(){
         Animation[][][] animationSet;
         if (this.getTeam() == 0) { // red
-            animationSet = PlayerAnimations.redPlayer;
+            animationSet = AnimationManager.redPlayer;
         } else { // blu
-            animationSet = PlayerAnimations.bluPlayer;
+            animationSet = AnimationManager.bluPlayer;
         }
 
-        if((this.getAnimationID()&PlayerAnimations.ISWALKING) == PlayerAnimations.WALK){
-            return animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][0][this.getCurrentClass()];
+        if((this.getAnimationID()& AnimationManager.ISWALKING) == AnimationManager.WALK){
+            return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][0][this.getCurrentClass()];
         }
-        else if((this.getAnimationID()&PlayerAnimations.ISFALLING) == PlayerAnimations.FALL){
-            return animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][0][this.getCurrentClass()]; //TODO: change to 1 when falling sprites are added
+        else if((this.getAnimationID()& AnimationManager.ISFALLING) == AnimationManager.FALL){
+            return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][0][this.getCurrentClass()]; //TODO: change to 1 when falling sprites are added
         }
-        else if((this.getAnimationID()&PlayerAnimations.ISJUMPING) == PlayerAnimations.JUMP){
-            return animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][0][this.getCurrentClass()]; //TODO: change to 2 when jumping sprites are added
+        else if((this.getAnimationID()& AnimationManager.ISJUMPING) == AnimationManager.JUMP){
+            return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][0][this.getCurrentClass()]; //TODO: change to 2 when jumping sprites are added
         }
-        else if((this.getAnimationID()&PlayerAnimations.ISATTACK) == PlayerAnimations.ATTACK){
-            return animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][3][this.getCurrentClass()];
+        else if((this.getAnimationID()& AnimationManager.ISATTACK) == AnimationManager.ATTACK){
+            return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][3][this.getCurrentClass()];
         }
         else { // idling
-            return animationSet[this.getAnimationID() & PlayerAnimations.DIRECTION][4][this.getCurrentClass()];
+            return animationSet[this.getAnimationID() & AnimationManager.DIRECTION][4][this.getCurrentClass()];
         }
     }
     public void setX(float x){

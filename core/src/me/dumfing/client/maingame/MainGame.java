@@ -1,21 +1,18 @@
 package me.dumfing.client.maingame;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.menus.*;
 import me.dumfing.multiplayerTools.MultiplayerClient;
+import me.dumfing.multiplayerTools.AnimationManager;
 import me.dumfing.multiplayerTools.PlayerSoldier;
 import me.dumfing.multiplayerTools.WorldMap;
 
@@ -61,22 +58,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
         camera.update();
         //viewport = new FitViewport(1920, 1080, camera);
         fontCaches = new Array<BitmapFontCache>();
-        BitmapFont dagger20 = new BitmapFont(Gdx.files.internal("fonts/dagger20.fnt"));
-		BitmapFont dagger30 = new BitmapFont(Gdx.files.internal("fonts/dagger30.fnt"));
-		BitmapFont dagger40 = new BitmapFont(Gdx.files.internal("fonts/dagger40.fnt"));
-		BitmapFont dagger50 = new BitmapFont(Gdx.files.internal("fonts/dagger50.fnt"));
-		BitmapFont dagger20Small = new BitmapFont(Gdx.files.internal("fonts/dagger20.fnt"));
-		dagger20.getData().markupEnabled = true;
-		dagger30.getData().markupEnabled = true;
-		dagger40.getData().markupEnabled = true;
-		dagger50.getData().markupEnabled = true;
-		dagger20Small.getData().markupEnabled = true;
-		dagger20Small.getData().setScale(0.07f);
-		fontCaches.add(new BitmapFontCache(dagger20));
-		fontCaches.add(new BitmapFontCache(dagger30));
-		fontCaches.add(new BitmapFontCache(dagger40));
-		fontCaches.add(new BitmapFontCache(dagger50));
-		fontCaches.add(new BitmapFontCache(dagger20Small));
+
 		shapeRenderer = new ShapeRenderer();
 		uiShapeRenderer = new ShapeRenderer();
 		gameMain = new MainMenu(fontCaches,assetManager, camera);
@@ -138,6 +120,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				loadingMenu.draw(uiBatch,uiShapeRenderer);
 				if(loadingMenu.doneLoading()) { // returns true if done loading
 					//assets are assigned to variables here
+                    loadFonts();
 					assignValues();
 					gameMain.init();
 					serverBrowser.init();
@@ -145,6 +128,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					connectingMenu.init();
 					pickingInfoMenu.init(client);
 					lobbyMenu.init(client);
+                    AnimationManager.init(assetManager);
 					//menu.init();
 					createWorlds();
 					client.pingServers();
@@ -336,6 +320,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		assetManager.load("projectiles/arrow.png",Texture.class);
 		assetManager.load("redArrow.png",Texture.class);
 		assetManager.load("blueArrow.png",Texture.class);
+		assetManager.load("SpriteSheets/KnightSprites.atlas", TextureAtlas.class);
+		assetManager.load("SpriteSheets/ArcherSprites.atlas",TextureAtlas.class);
+		assetManager.load("fonts/dagger20.fnt",BitmapFont.class);
+		assetManager.load("fonts/dagger30.fnt",BitmapFont.class);
+		assetManager.load("fonts/dagger40.fnt",BitmapFont.class);
+		assetManager.load("fonts/dagger50.fnt",BitmapFont.class);
+
 		for(int i = 1; i<10; i++){
 			assetManager.load(String.format("archive/L%d.png",i),Texture.class);
 			assetManager.load(String.format("archive/R%d.png",i),Texture.class);
@@ -403,5 +394,23 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		WorldMap debugWorld = new WorldMap(MenuTools.mGTR("pixmapTest.png",assetManager),MenuTools.mGTR("pixmapVisual.png",assetManager));
 		worldMaps = new WorldMap[]{debugWorld};
 	}
+	public void loadFonts(){
+        BitmapFont dagger20 = assetManager.get("fonts/dagger20.fnt",BitmapFont.class);//new BitmapFont(Gdx.files.internal("fonts/dagger20.fnt"));
+        BitmapFont dagger30 = assetManager.get("fonts/dagger30.fnt",BitmapFont.class);//new BitmapFont(Gdx.files.internal("fonts/dagger30.fnt"));
+        BitmapFont dagger40 = assetManager.get("fonts/dagger40.fnt",BitmapFont.class);//new BitmapFont(Gdx.files.internal("fonts/dagger40.fnt"));
+        BitmapFont dagger50 = assetManager.get("fonts/dagger50.fnt",BitmapFont.class);//new BitmapFont(Gdx.files.internal("fonts/dagger50.fnt"));
+        BitmapFont dagger20Small = assetManager.get("fonts/dagger20.fnt",BitmapFont.class);//new BitmapFont(Gdx.files.internal("fonts/dagger20.fnt"));
+        dagger20.getData().markupEnabled = true;
+        dagger30.getData().markupEnabled = true;
+        dagger40.getData().markupEnabled = true;
+        dagger50.getData().markupEnabled = true;
+        dagger20Small.getData().markupEnabled = true;
+        dagger20Small.getData().setScale(0.07f);
+        fontCaches.add(new BitmapFontCache(dagger20));
+        fontCaches.add(new BitmapFontCache(dagger30));
+        fontCaches.add(new BitmapFontCache(dagger40));
+        fontCaches.add(new BitmapFontCache(dagger50));
+        fontCaches.add(new BitmapFontCache(dagger20Small));
+    }
 
 }
