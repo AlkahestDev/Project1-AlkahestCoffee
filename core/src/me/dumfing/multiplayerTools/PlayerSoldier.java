@@ -189,17 +189,17 @@ public class PlayerSoldier {
         float trH = drawFrame.getRegionHeight();
         float ratio = trW/trH;
         //System.out.println(trW+" "+trH+" "+ratio);
-        if((this.getAnimationID()&PlayerAnimations.ISATTACK) == PlayerAnimations.ATTACK){
+        //if((this.getAnimationID()&PlayerAnimations.ISATTACK) == PlayerAnimations.ATTACK){
             if(this.getFacingDirection()==0){
-                batch.draw(drawFrame, this.getX()-0.64f, this.getY(), this.getHeight()*ratio+0.14f,this.getHeight()+0.13f);
+                batch.draw(drawFrame, this.getX()-0.84f, this.getY(), this.getHeight()*ratio+0.14f,this.getHeight()+0.13f);
             }
             else{
-                batch.draw(drawFrame, this.getX()-0.09f, this.getY(), this.getHeight()*ratio+0.14f,this.getHeight()+0.13f); // add 0.1 because the attacking sprites are 4 FCKING PIXELS TALLER THAN THE STANDING SPRITES
+                batch.draw(drawFrame, this.getX()-0.22f, this.getY(), this.getHeight()*ratio+0.14f,this.getHeight()+0.13f); // add 0.1 because the attacking sprites are 4 FCKING PIXELS TALLER THAN THE STANDING SPRITES
             }
-        }
-        else {
-            batch.draw(drawFrame, this.getX(), this.getY(), this.getHeight()*ratio, this.getHeight());
-        }
+        //}
+        //else {
+        //    batch.draw(drawFrame, this.getX(), this.getY(), this.getHeight()*ratio, this.getHeight());
+        //}
     }
     public Animation getAnimation(){
         Animation[][][] animationSet;
