@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.utils.Array;
-import org.lwjgl.util.Point;
 
 /**
  * An object that links the visual componenets and functional components of a map together
@@ -35,8 +34,8 @@ public class WorldMap {
         visualComponent.add(visComp);
         redSpawn = findColour(0xFF0100FF);
         bluSpawn = findColour(0x0001FFFF);
-        redFlag = findColour(0xFF0200FF);
-        bluFlag = findColour(0x0002FFFF);
+        redFlag = findColour(0xFF0200FF).add(0,-1);
+        bluFlag = findColour(0x0002FFFF).add(0,-1);
     }
     public void draw(SpriteBatch batch){
         batch.draw(visualComponent.get(currentFrame),0,0,collisionMap.getWidth(),collisionMap.getHeight());

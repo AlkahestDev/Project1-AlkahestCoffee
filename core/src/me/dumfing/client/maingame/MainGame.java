@@ -328,7 +328,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		assetManager.load("fonts/dagger30.fnt",BitmapFont.class);
 		assetManager.load("fonts/dagger40.fnt",BitmapFont.class);
 		assetManager.load("fonts/dagger50.fnt",BitmapFont.class);
-
+		assetManager.load("SpriteSheets/FlagSprites.atlas",TextureAtlas.class);
 		for(int i = 1; i<10; i++){
 			assetManager.load(String.format("archive/L%d.png",i),Texture.class);
 			assetManager.load(String.format("archive/R%d.png",i),Texture.class);

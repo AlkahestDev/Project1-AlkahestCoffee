@@ -1,0 +1,230 @@
+
+FlagSprites.png
+size: 256,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bFlagL
+  rotate: false
+  xy: 2, 398
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 2
+bFlagL
+  rotate: false
+  xy: 98, 332
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 0
+bFlagL
+  rotate: false
+  xy: 130, 398
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 1
+bFlagL
+  rotate: false
+  xy: 34, 134
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 3
+bFlagL
+  rotate: false
+  xy: 66, 200
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 4
+bFlagL
+  rotate: false
+  xy: 98, 266
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 5
+bFlagL
+  rotate: false
+  xy: 130, 332
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 6
+bFlagL
+  rotate: false
+  xy: 162, 398
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 7
+bFlagR
+  rotate: false
+  xy: 2, 266
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 4
+bFlagR
+  rotate: false
+  xy: 34, 266
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 5
+bFlagR
+  rotate: false
+  xy: 66, 266
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 0
+bFlagR
+  rotate: false
+  xy: 2, 68
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 1
+bFlagR
+  rotate: false
+  xy: 2, 2
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 3
+bFlagR
+  rotate: false
+  xy: 66, 134
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 6
+bFlagR
+  rotate: false
+  xy: 98, 134
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 7
+bFlagR
+  rotate: false
+  xy: 130, 200
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 2
+rFlagL
+  rotate: false
+  xy: 2, 200
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 4
+rFlagL
+  rotate: false
+  xy: 34, 68
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 0
+rFlagL
+  rotate: false
+  xy: 98, 200
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 2
+rFlagL
+  rotate: false
+  xy: 130, 266
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 3
+rFlagL
+  rotate: false
+  xy: 162, 332
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 1
+rFlagL
+  rotate: false
+  xy: 194, 398
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 5
+rFlagL
+  rotate: false
+  xy: 34, 2
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 6
+rFlagL
+  rotate: false
+  xy: 66, 68
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 7
+rFlagR
+  rotate: false
+  xy: 2, 332
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 7
+rFlagR
+  rotate: false
+  xy: 34, 398
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 2
+rFlagR
+  rotate: false
+  xy: 34, 332
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 0
+rFlagR
+  rotate: false
+  xy: 66, 398
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 1
+rFlagR
+  rotate: false
+  xy: 66, 332
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 4
+rFlagR
+  rotate: false
+  xy: 98, 398
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 5
+rFlagR
+  rotate: false
+  xy: 2, 134
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 6
+rFlagR
+  rotate: false
+  xy: 34, 200
+  size: 30, 64
+  orig: 30, 64
+  offset: 0, 0
+  index: 3

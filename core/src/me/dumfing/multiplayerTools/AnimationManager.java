@@ -3,25 +3,24 @@ package me.dumfing.multiplayerTools;
 //Aaron Li  5/23/2017
 //EXPLAIN
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AnimationManager {
-    private static TextureAtlas knightSprites; //= new TextureAtlas(Gdx.files.internal("SpriteSheets/KnightSprites.atlas"));
-    private static TextureAtlas archerSprites;// = new TextureAtlas(Gdx.files.internal("SpriteSheets/ArcherSprites.atlas"));
     private static final float WALKINGFRAMETIME = 0.07f;
     private static final float IDLEFRAMETIME = 0.3f;
     private static final float ATTACKFRAMETIME = 0.02f;
+    private static final float FLAGFRAMETIME = 0.1f;
     public static Animation[][][] redPlayer;
     public static Animation[][][] bluPlayer;
     public static Animation[] redFlag;
     public static Animation[] bluFlag;
     public static void init(AssetManager manager){
-        knightSprites = manager.get("SpriteSheets/KnightSprites.atlas");
-        archerSprites = manager.get("SpriteSheets/ArcherSprites.atlas");
+        TextureAtlas knightSprites = manager.get("SpriteSheets/KnightSprites.atlas");
+        TextureAtlas archerSprites = manager.get("SpriteSheets/ArcherSprites.atlas");
+        TextureAtlas flagSprites = manager.get("SpriteSheets/FlagSprites.atlas");
         Animation<TextureRegion> redPlayerWalkRightKnight = new Animation<TextureRegion>(WALKINGFRAMETIME, knightSprites.findRegions("walk/wrrpk"), Animation.PlayMode.LOOP);
         Animation<TextureRegion> redPlayerWalkLeftKnight = new Animation<TextureRegion>(WALKINGFRAMETIME, knightSprites.findRegions("walk/wlrpk"), Animation.PlayMode.LOOP);
         Animation<TextureRegion> redPlayerWalkRightArcher = new Animation<TextureRegion>(WALKINGFRAMETIME, archerSprites.findRegions("wrrpa"), Animation.PlayMode.LOOP);
@@ -37,16 +36,20 @@ public class AnimationManager {
         Animation<TextureRegion> redPlayerIdleRightArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("irrpa"), Animation.PlayMode.LOOP);
         Animation<TextureRegion> bluPlayerIdleLeftKnight = new Animation<TextureRegion>(IDLEFRAMETIME, knightSprites.findRegions("idle/ilbpk"), Animation.PlayMode.LOOP);
         Animation<TextureRegion> bluPlayerIdleRightKnight = new Animation<TextureRegion>(IDLEFRAMETIME, knightSprites.findRegions("idle/irbpk"), Animation.PlayMode.LOOP);
-        Animation<TextureRegion> bluPlayerIdleLeftArcher = new Animation<TextureRegion>(IDLEFRAMETIME,archerSprites.findRegions("ilbpa"), Animation.PlayMode.LOOP);
-        Animation<TextureRegion> bluPlayerIdleRightArcher = new Animation<TextureRegion>(IDLEFRAMETIME,archerSprites.findRegions("irbpa"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> bluPlayerIdleLeftArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("ilbpa"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> bluPlayerIdleRightArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("irbpa"), Animation.PlayMode.LOOP);
 
-        Animation<TextureRegion> redPlayerAttackRightKnight = new Animation<TextureRegion>(ATTACKFRAMETIME,knightSprites.findRegions("arrpk"), Animation.PlayMode.LOOP);
-        Animation<TextureRegion> redPlayerAttackLeftKnight = new Animation<TextureRegion>(ATTACKFRAMETIME,knightSprites.findRegions("alrpk"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> redPlayerAttackRightKnight = new Animation<TextureRegion>(ATTACKFRAMETIME, knightSprites.findRegions("arrpk"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> redPlayerAttackLeftKnight = new Animation<TextureRegion>(ATTACKFRAMETIME, knightSprites.findRegions("alrpk"), Animation.PlayMode.LOOP);
         Animation<TextureRegion> bluPlayerAttackRightKnight = new Animation<TextureRegion>(ATTACKFRAMETIME, knightSprites.findRegions("arbpk"), Animation.PlayMode.LOOP);
         Animation<TextureRegion> bluPlayerAttackLeftKnight = new Animation<TextureRegion>(ATTACKFRAMETIME, knightSprites.findRegions("arbpk"), Animation.PlayMode.LOOP);
         //System.out.println(redPlayerWalkLeftArcher.getAnimationDuration());
-        redFlag = new Animation[]{redPlayerWalkLeftArcher,redPlayerWalkRightArcher};
-        bluFlag= new Animation[]{bluPlayerWalkLeftArcher,bluPlayerWalkRightArcher};
+        Animation<TextureRegion> redFlagLeft = new Animation<TextureRegion>(FLAGFRAMETIME,flagSprites.findRegions("rFlagL"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> redFlagRight = new Animation<TextureRegion>(FLAGFRAMETIME, flagSprites.findRegions("rFlagR"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> bluFlagLeft = new Animation<TextureRegion>(FLAGFRAMETIME, flagSprites.findRegions("bFlagL"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> bluFlagRight = new Animation<TextureRegion>(FLAGFRAMETIME, flagSprites.findRegions("bFlagR"), Animation.PlayMode.LOOP);
+        redFlag = new Animation[]{redFlagLeft,redFlagRight};
+        bluFlag= new Animation[]{bluFlagLeft,bluFlagRight};
         redPlayer = new Animation[][][]{{{redPlayerWalkLeftKnight,redPlayerWalkLeftArcher},null,null,{redPlayerAttackLeftKnight,null}, {redPlayerIdleLeftKnight,redPlayerIdleLeftArcher}},{{redPlayerWalkRightKnight,redPlayerWalkRightArcher},null,null,{redPlayerAttackRightKnight,null}, {redPlayerIdleRightKnight,redPlayerIdleRightArcher}}};
         bluPlayer = new Animation[][][]{{{bluPlayerWalkLeftKnight,bluPlayerWalkLeftArcher},null,null,{bluPlayerAttackLeftKnight,null}, {bluPlayerIdleLeftKnight,bluPlayerIdleLeftArcher}},{{bluPlayerWalkRightKnight,bluPlayerWalkRightArcher},null,null,{bluPlayerAttackRightKnight,null  }, {bluPlayerIdleRightKnight,bluPlayerIdleRightArcher}}};
     }
