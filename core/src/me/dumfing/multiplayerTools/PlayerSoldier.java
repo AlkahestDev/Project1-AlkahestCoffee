@@ -5,9 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
-
-import java.util.ArrayList;
-import java.util.*;
+import java.util.Arrays;
 
 public class PlayerSoldier {
 
@@ -27,6 +25,11 @@ public class PlayerSoldier {
     public static final int KNIGHT = 0;
     public static final int ARCHER = 1;
 
+    public boolean swinging = false;
+    public boolean stabbing = false;
+    public boolean sheilding = false;
+    public int swingDamage = 10;
+    public int stabDamage = 5;
 
     public static final int UP = 1;
     public static final int DOWN = 2;
@@ -79,6 +82,14 @@ public class PlayerSoldier {
         this.maxHealth = maxHealth;
     }
 
+    public void setHealth(int health){
+        this.health = health;
+    }
+
+    public int getHealth(){
+        return this.health;
+    }
+
     public String getName(){return this.name;}
 
     public void setKeysHeld(MultiplayerTools.ClientControlObject[] keysHeld) {
@@ -93,6 +104,29 @@ public class PlayerSoldier {
     public int getAnimationID() {
         return animationID+this.facingDirection;
     }
+
+    public Animation [] [] [] getAnimationSet(){
+
+        if (this.getTeam() == 0){
+            return AnimationManager.redPlayer;
+        }
+        else {
+            return AnimationManager.bluPlayer;
+        }
+
+    }
+
+    public boolean isAnimationDone(){
+        // Returns whether the current animation is done or not
+
+        return getAnimation().isAnimationFinished(this.animationTime);
+
+    }
+
+    public int getFrameIndex(){
+        return getAnimation().getKeyFrameIndex(this.animationTime);
+    }
+
 
     public void setName(String name) {
         this.name = name;
@@ -131,9 +165,7 @@ public class PlayerSoldier {
         }
         return this.keysHeld[MultiplayerTools.Keys.ANGLE].angle;
     }
-    public int getHealth(){
-        return this.health;
-    }
+
     public int getMaxHealth(){
         return this.maxHealth;
     }
@@ -150,34 +182,49 @@ public class PlayerSoldier {
      * @param isPlayer If this PlayerSoldier is the PlayerSoldier the client is viewing
      */
     public void draw(SpriteBatch batch, boolean isPlayer){
-        TextureRegion drawFrame;
-        Animation[][][] animationSet;
-            if (this.getTeam() == 0) { // red
-                animationSet = PlayerAnimations.redPlayer;
-            } else { // blu
-                animationSet = PlayerAnimations.bluPlayer;
-            }
-
         //System.out.println(this.animationTime);
         //System.out.println(this.getAnimationID());
-        if((this.getAnimationID()&PlayerAnimations.ISWALKING) == PlayerAnimations.WALK){
-            drawFrame = (TextureRegion) animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][0][this.getCurrentClass()].getKeyFrame(this.animationTime);
+        TextureRegion drawFrame = (TextureRegion) getAnimation().getKeyFrame(this.animationTime);
+        float trW = drawFrame.getRegionWidth();
+        float trH = drawFrame.getRegionHeight();
+        float ratio = trW/trH;
+        //System.out.println(trW+" "+trH+" "+ratio);
+        //if((this.getAnimationID()&AnimationManager.ISATTACK) == AnimationManager.ATTACK){
+            if(this.getFacingDirection()==0){
+                batch.draw(drawFrame, this.getX()-0.84f, this.getY(), this.getHeight()*ratio+0.14f,this.getHeight()+0.13f);
+            }
+            else{
+                batch.draw(drawFrame, this.getX()-0.22f, this.getY(), this.getHeight()*ratio+0.14f,this.getHeight()+0.13f); // add 0.1 because the attacking sprites are 4 FCKING PIXELS TALLER THAN THE STANDING SPRITES
+            }
+        //}
+        //else {
+        //    batch.draw(drawFrame, this.getX(), this.getY(), this.getHeight()*ratio, this.getHeight());
+        //}
+    }
+    public Animation getAnimation(){
+        Animation[][][] animationSet;
+        if (this.getTeam() == 0) { // red
+            animationSet = AnimationManager.redPlayer;
+        } else { // blu
+            animationSet = AnimationManager.bluPlayer;
         }
-        else if((this.getAnimationID()&PlayerAnimations.ISFALLING) == PlayerAnimations.FALL){
-            drawFrame = (TextureRegion) animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][0][this.getCurrentClass()].getKeyFrame(this.animationTime); //TODO: change to 1 when falling sprites are added
+
+        if((this.getAnimationID()& AnimationManager.ISWALKING) == AnimationManager.WALK){
+            return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][0][this.getCurrentClass()];
         }
-        else if((this.getAnimationID()&PlayerAnimations.ISJUMPING) == PlayerAnimations.JUMP){
-            drawFrame = (TextureRegion) animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][0][this.getCurrentClass()].getKeyFrame(this.animationTime); //TODO: change to 2 when jumping sprites are added
+        else if((this.getAnimationID()& AnimationManager.ISFALLING) == AnimationManager.FALL){
+            return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][0][this.getCurrentClass()]; //TODO: change to 1 when falling sprites are added
         }
-        else if((this.getAnimationID()&PlayerAnimations.ISATTACK) == PlayerAnimations.ATTACK){
-            drawFrame = (TextureRegion) animationSet[this.getAnimationID()&PlayerAnimations.DIRECTION][0][this.getCurrentClass()].getKeyFrame(this.animationTime); //TODO: change to 3 when attacking sprites are added
+        else if((this.getAnimationID()& AnimationManager.ISJUMPING) == AnimationManager.JUMP){
+            return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][0][this.getCurrentClass()]; //TODO: change to 2 when jumping sprites are added
+        }
+        else if((this.getAnimationID()& AnimationManager.ISATTACK) == AnimationManager.ATTACK){
+            return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][3][this.getCurrentClass()];
         }
         else { // idling
-            drawFrame = (TextureRegion) animationSet[this.getAnimationID() & PlayerAnimations.DIRECTION][4][this.getCurrentClass()].getKeyFrame(this.animationTime);
+            return animationSet[this.getAnimationID() & AnimationManager.DIRECTION][4][this.getCurrentClass()];
         }
-        batch.draw(drawFrame,this.getX(),this.getY(),this.getWidth(),this.getHeight());
     }
-
     public void setX(float x){
             this.playerArea.setX(x);
     }
@@ -243,6 +290,30 @@ public class PlayerSoldier {
     }
     public float getCenterY(){
         return (this.height/2f)+this.getY();
+    }
+    public void attack(PlayerSoldier target){
+        if (target.sheilding){
+            // Swing Attack
+            if (this.swinging){
+                target.setHealth(target.getHealth() - this.swingDamage / 2);
+            }
+
+            // Stab Attack
+            if (this.stabbing){
+                this.setHealth(this.getHealth() - this.stabDamage / 2);
+            }
+        }
+        else {
+            // Swing Attack
+            if (this.swinging){
+                this.setHealth(this.getHealth() - this.swingDamage);
+            }
+
+            // Stab Attack
+            if (this.stabbing){
+                this.setHealth(this.getHealth() - this.stabDamage);
+            }
+        }
     }
     @Override
     public String toString() {

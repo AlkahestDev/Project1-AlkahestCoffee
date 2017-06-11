@@ -94,6 +94,9 @@ public class ClientGameInstance implements InputProcessor{
     public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer, SpriteBatch uiBatch, ShapeRenderer uiShapeRenderer){
         batch.begin();
         playWorld.getMap().drawBG(batch,camera.position.x,camera.position.y);
+        for(CaptureFlag flag : playWorld.getFlags()){
+            flag.draw(batch,playWorld.getPlayers());
+        }
         for(PlayerSoldier p : playWorld.getPlayers().values()){
             //DrawTools.rec(renderer,p.getRect());
             p.draw(batch,clientSoldier().equals(p));
