@@ -14,6 +14,7 @@ import org.lwjgl.util.Point;
 public class WorldMap {
     Pixmap collisionMap;
     Array<TextureRegion> visualComponent = new Array<TextureRegion>();
+    TextureRegion foreground, background;
     GridPoint2 redSpawn, bluSpawn;
     int currentFrame = 0;
     int frameCount = 0;
@@ -29,11 +30,18 @@ public class WorldMap {
         redSpawn = findColour(-65536);
         bluSpawn = findColour(255);
     }
-
     public void draw(SpriteBatch batch){
-        batch.begin();
         batch.draw(visualComponent.get(currentFrame),0,0,collisionMap.getWidth(),collisionMap.getHeight());
-        batch.end();
+    }
+    public void drawBG(SpriteBatch batch, float xPersp, float yPersp){
+        if(background!=null) {
+            batch.draw(background,0-( xPersp / 10f),0- (yPersp / 10f), 128, 32);
+        }
+    }
+    public void drawFG(SpriteBatch batch,float xPersp,float yPersp){
+        if(foreground!=null) {
+            batch.draw(foreground, xPersp*1.1f,yPersp*1.1f);
+        }
     }
     public void setFrameRate(int fps){
         this.frameTime = 60/fps;
@@ -41,7 +49,7 @@ public class WorldMap {
     public void update(){
         if(frameCount == frameTime){
             frameCount = 0;
-            currentFrame++;
+            currentFrame=(currentFrame+1)%visualComponent.size;
         }
         frameCount++;
     }
@@ -67,6 +75,12 @@ public class WorldMap {
     }
     public void addFrame(TextureRegion frame){
         this.visualComponent.add(frame);
+    }
+    public void addForeground(TextureRegion fg){
+        this.foreground = fg;
+    }
+    public void addBackground(TextureRegion frame){
+        this.background = frame;
     }
     /**
      * returns the GridPoint2 where the first occurence of the colour with the given ID si found

@@ -336,6 +336,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		assetManager.load("projectiles/arrow.png",Texture.class);
 		assetManager.load("redArrow.png",Texture.class);
 		assetManager.load("blueArrow.png",Texture.class);
+		assetManager.load("cloudTemp.png",Texture.class);
+		assetManager.load("fgTemp.png",Texture.class);
 		for(int i = 1; i<10; i++){
 			assetManager.load(String.format("archive/L%d.png",i),Texture.class);
 			assetManager.load(String.format("archive/R%d.png",i),Texture.class);
@@ -401,6 +403,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	}
 	public void createWorlds(){
 		WorldMap debugWorld = new WorldMap(MenuTools.mGTR("pixmapTest.png",assetManager),MenuTools.mGTR("pixmapVisual.png",assetManager));
+		debugWorld.addBackground(MenuTools.mGTR("cloudTemp.png",assetManager));
+		debugWorld.addForeground(MenuTools.mGTR("fgTemp.png",assetManager));
 		worldMaps = new WorldMap[]{debugWorld};
 	}
 

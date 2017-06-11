@@ -93,6 +93,7 @@ public class ClientGameInstance implements InputProcessor{
     }
     public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer, SpriteBatch uiBatch, ShapeRenderer uiShapeRenderer){
         batch.begin();
+        playWorld.getMap().drawBG(batch,camera.position.x,camera.position.y);
         for(PlayerSoldier p : playWorld.getPlayers().values()){
             //DrawTools.rec(renderer,p.getRect());
             p.draw(batch,clientSoldier().equals(p));
@@ -107,6 +108,8 @@ public class ClientGameInstance implements InputProcessor{
                     break;
             }
         }
+        playWorld.getMap().draw(batch);
+        playWorld.getMap().drawFG(batch,camera.position.x,camera.position.y);
         //batch.draw(playWorld.getMap().getVisualComponent(),0,0);
         batch.end();
         uiBatch.begin();
@@ -115,7 +118,6 @@ public class ClientGameInstance implements InputProcessor{
             bmfc.draw(uiBatch);
         }
         uiBatch.end();
-        playWorld.getMap().draw(batch);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         if(onlineMode) {
             for (PlayerSoldier playerSoldier : gameClient.getPlayers().values()) {
