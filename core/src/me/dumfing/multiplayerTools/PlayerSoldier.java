@@ -27,7 +27,7 @@ public class PlayerSoldier {
 
     public boolean swinging = false;
     public boolean stabbing = false;
-    public boolean sheilding = false;
+    public boolean shielding = false;
     public int swingDamage = 10;
     public int stabDamage = 5;
 
@@ -292,7 +292,7 @@ public class PlayerSoldier {
         return (this.height/2f)+this.getY();
     }
     public void attack(PlayerSoldier target){
-        if (target.sheilding){
+        if (target.shielding){
             // Swing Attack
             if (this.swinging){
                 target.setHealth(target.getHealth() - this.swingDamage / 2);
@@ -321,12 +321,12 @@ public class PlayerSoldier {
 
         // Facing Left
         if (this.getFacingDirection() == 0){
-            this.setvX((float) 0.3);
+            this.setvX(0.3f);
         }
 
         // Facing Right
         else{
-            this.setvX((float) -0.3);
+            this.setvX(-0.3f);
         }
 
 
