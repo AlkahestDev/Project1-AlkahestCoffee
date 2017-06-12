@@ -3,36 +3,45 @@ package me.dumfing.multiplayerTools;
 //Aaron Li  6/11/2017
 //EXPLAIN
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.Rectangle;
 
 import java.util.HashMap;
 
 public class CaptureFlag {
-    private float xPos, yPos;
+    private Rectangle hitBox;
     private float animationTime = 0;
     private int physicsParent = -1;
     private int teamID = -1; //whichever team the flag is on
     private int facingDirection = 0;
     public CaptureFlag(){}
     public CaptureFlag(float x, float y, int teamID){
-        this.xPos = x;
-        this.yPos = y;
+        this.hitBox = new Rectangle(x,y,1,2);
         this.teamID = teamID;
     }
     public CaptureFlag(GridPoint2 pos, int teamID){
-        this.xPos = pos.x;
-        this.yPos = pos.y;
+        this.hitBox = new Rectangle(pos.x,pos.y,1,2);
         this.teamID = teamID;
     }
     public void update(float deltaTime, HashMap<Integer, PlayerSoldier> players){
         if(players.containsKey(this.physicsParent)){
             PlayerSoldier parent = players.get(this.physicsParent);
-            this.xPos = parent.getX();
-            this.yPos = parent.getY();
+            hitBox.setPosition(parent.getX(),parent.getY());
             this.facingDirection = parent.getFacingDirection();
+        }
+        else{
+            this.physicsParent = -1;
+        }
+        for(Integer playerKey : players.keySet()){
+            PlayerSoldier player = players.get(playerKey);
+            if(player.getTeam() != this.teamID) {
+                if (player.getRect().overlaps(this.hitBox)) {
+                    this.physicsParent = playerKey;
+                    break;
+                }
+            }
         }
         this.animationTime+=deltaTime;
 
@@ -41,19 +50,19 @@ public class CaptureFlag {
         if(teamID!=-1){
             if(players.containsKey(this.physicsParent)){
                 PlayerSoldier parent = players.get(this.physicsParent);
-                batch.draw((TextureRegion) (this.teamID==0?AnimationManager.redFlag:AnimationManager.bluFlag)[parent.getFacingDirection()].getKeyFrame(this.animationTime),this.xPos,this.yPos,1,2);
+                batch.draw((TextureRegion) (this.teamID==0?AnimationManager.redFlag:AnimationManager.bluFlag)[1-parent.getFacingDirection()].getKeyFrame(this.animationTime),this.getxPos()+(parent.getFacingDirection()==0?0.75f:-0.8f),this.getyPos()+1f,1,2);
             }
             else{
-                batch.draw((TextureRegion) (this.teamID==0?AnimationManager.redFlag:AnimationManager.bluFlag)[this.facingDirection].getKeyFrame(this.animationTime),this.xPos,this.yPos,1,2);
+                batch.draw((TextureRegion) (this.teamID==0?AnimationManager.redFlag:AnimationManager.bluFlag)[this.facingDirection].getKeyFrame(this.animationTime),this.getxPos(),this.getyPos(),1,2);
             }
         }
     }
     public float getxPos() {
-        return xPos;
+        return this.hitBox.getX();
     }
 
     public float getyPos() {
-        return yPos;
+        return this.hitBox.getY();
     }
 
     public int getPhysicsParent() {
