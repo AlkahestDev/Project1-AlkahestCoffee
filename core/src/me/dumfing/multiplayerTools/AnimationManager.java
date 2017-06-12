@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class AnimationManager {
     private static final float WALKINGFRAMETIME = 0.07f;
     private static final float IDLEFRAMETIME = 0.3f;
-    private static final float ATTACKFRAMETIME = 0.02f;
+    private static final float ATTACKFRAMETIME = 0.025f;
     private static final float FLAGFRAMETIME = 0.1f;
     public static Animation[][][] redPlayer;
     public static Animation[][][] bluPlayer;

@@ -237,6 +237,14 @@ public class ConcurrentGameWorld {
                     break;
             }
         }
+
+        else if(keyDown(keys,MultiplayerTools.Keys.RMB)){
+            // SHITTY TEST FOR KNOCKBACK
+
+            pIn.knockBack();
+
+        }
+
         if(animation+pIn.getFacingDirection()!=pIn.getAnimationID()){
             pIn.setAnimationTime(0);
         }

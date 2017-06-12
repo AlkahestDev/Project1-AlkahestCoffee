@@ -296,6 +296,7 @@ public class PlayerSoldier {
             // Swing Attack
             if (this.swinging){
                 target.setHealth(target.getHealth() - this.swingDamage / 2);
+                target.knockBack();
             }
 
             // Stab Attack
@@ -315,6 +316,22 @@ public class PlayerSoldier {
             }
         }
     }
+
+    void knockBack(){
+
+        // Facing Left
+        if (this.getFacingDirection() == 0){
+            this.setvX((float) 0.3);
+        }
+
+        // Facing Right
+        else{
+            this.setvX((float) -0.3);
+        }
+
+
+    }
+
     @Override
     public String toString() {
         return "PlayerSoldier{" +
