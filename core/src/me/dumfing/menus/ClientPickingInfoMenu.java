@@ -9,6 +9,7 @@ import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.multiplayerTools.MultiplayerClient;
 import me.dumfing.multiplayerTools.MultiplayerTools;
 
+import static me.dumfing.client.maingame.MainGame.DAGGER40;
 import static me.dumfing.multiplayerTools.PlayerSoldier.ARCHER;
 import static me.dumfing.multiplayerTools.PlayerSoldier.KNIGHT;
 
@@ -74,8 +75,8 @@ public class ClientPickingInfoMenu extends Menu{
         bluTeamButton.setUnpressedTexture(MenuTools.mGTR("simpleBG.png",getManager()));
         redTeamNumbers = new MenuTools.QueueText(10,Gdx.graphics.getHeight()-10,0,0);
         bluTeamNumbers = new MenuTools.QueueText(Gdx.graphics.getWidth()/2+10,Gdx.graphics.getHeight()-10,0,0);
-        redTeamNumbers.setFont(0);
-        bluTeamNumbers.setFont(0);
+        redTeamNumbers.setFont(DAGGER40);
+        bluTeamNumbers.setFont(DAGGER40);
         knightButton.setPressedTexture(MenuTools.mGTR("archive/L1.png",getManager()));
         knightButton.setUnpressedTexture(MenuTools.mGTR("archive/R1.png",getManager()));
         knightButton.setCallback(new MenuTools.OnClick() {

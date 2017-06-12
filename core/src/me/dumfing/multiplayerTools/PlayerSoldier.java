@@ -190,12 +190,22 @@ public class PlayerSoldier {
         float ratio = trW/trH;
         //System.out.println(trW+" "+trH+" "+ratio);
         //if((this.getAnimationID()&AnimationManager.ISATTACK) == AnimationManager.ATTACK){
-            if(this.getFacingDirection()==0){
-                batch.draw(drawFrame, this.getX()-0.84f, this.getY(), this.getHeight()*ratio+0.14f,this.getHeight()+0.13f);
-            }
-            else{
-                batch.draw(drawFrame, this.getX()-0.22f, this.getY(), this.getHeight()*ratio+0.14f,this.getHeight()+0.13f); // add 0.1 because the attacking sprites are 4 FCKING PIXELS TALLER THAN THE STANDING SPRITES
-            }
+        switch(this.getCurrentClass()) {
+            case KNIGHT:
+             if (this.getFacingDirection() == 0) {
+                 batch.draw(drawFrame, this.getX() - 0.84f, this.getY(), this.getHeight() * ratio + 0.14f, this.getHeight() + 0.13f);
+             } else {
+                 batch.draw(drawFrame, this.getX() - 0.22f, this.getY(), this.getHeight() * ratio + 0.14f, this.getHeight() + 0.13f); // add 0.1 because the attacking sprites are 4 FCKING PIXELS TALLER THAN THE STANDING SPRITES
+               }
+            break;
+            case ARCHER:
+                if (this.getFacingDirection() == 0) {
+                    batch.draw(drawFrame, this.getX() -0.28f, this.getY(), this.getHeight() * ratio + 0.14f, this.getHeight() + 0.13f);
+                } else {
+                    batch.draw(drawFrame, this.getX() - 0.22f, this.getY(), this.getHeight() * ratio + 0.14f, this.getHeight() + 0.13f); // add 0.1 because the attacking sprites are 4 FCKING PIXELS TALLER THAN THE STANDING SPRITES
+                }
+            break;
+        }
         //}
         //else {
         //    batch.draw(drawFrame, this.getX(), this.getY(), this.getHeight()*ratio, this.getHeight());
@@ -208,7 +218,7 @@ public class PlayerSoldier {
         } else { // blu
             animationSet = AnimationManager.bluPlayer;
         }
-
+        System.out.println(this.facingDirection);
         if((this.getAnimationID()& AnimationManager.ISWALKING) == AnimationManager.WALK){
             return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][0][this.getCurrentClass()];
         }

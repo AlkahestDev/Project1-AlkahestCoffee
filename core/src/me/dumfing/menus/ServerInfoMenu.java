@@ -31,7 +31,7 @@ public class ServerInfoMenu extends Menu{
         peopleConnected = new MenuTools.QueueText(5, Gdx.graphics.getHeight()-35,0,0);
         peopleConnected.setFont(0);
         peopleConnected.setText("",super.getFonts());
-        super.setBackground(MenuTools.mGTR("tuzki.png",getManager()));//new TextureRegion((Texture)getManager().get("tuzki.png")));
+        super.setBackground(MenuTools.mGTR("simpleBG.png",getManager()));//new TextureRegion((Texture)getManager().get("tuzki.png")));
         super.addQueueText(peopleConnected);
         super.init();
     }

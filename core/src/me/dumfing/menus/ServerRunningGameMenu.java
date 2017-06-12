@@ -28,7 +28,7 @@ public class ServerRunningGameMenu extends Menu{
         numConnected.setFont(0);
         numConnected.setText("",getFonts());
         super.addQueueText(numConnected);
-        super.setBackground(MenuTools.mGTR("4k-image-santiago.jpg",getManager()));//new TextureRegion((Texture)getManager().get("4k-image-santiago.jpg")));
+        super.setBackground(MenuTools.mGTR("simpleBG.png",getManager()));//new TextureRegion((Texture)getManager().get("4k-image-santiago.jpg")));
     }
 
     @Override

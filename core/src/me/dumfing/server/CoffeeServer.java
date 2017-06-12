@@ -6,10 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
@@ -18,6 +15,7 @@ import me.dumfing.menus.LoadingMenu;
 import me.dumfing.menus.Menu;
 import me.dumfing.menus.ServerInfoMenu;
 import me.dumfing.menus.ServerRunningGameMenu;
+import me.dumfing.multiplayerTools.AnimationManager;
 import me.dumfing.multiplayerTools.WorldMap;
 
 import java.util.HashSet;
@@ -61,12 +59,15 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
         shapeRenderer = new ShapeRenderer();
         loadingMenu = new LoadingMenu(fonts,manager,camView);
         readyLoadingBackground();
-        manager.load("tuzki.png",Texture.class);
-        manager.load("volcano-30238.png",Texture.class);
-        manager.load("4k-image-santiago.jpg",Texture.class);
-        manager.load("4914003-galaxy-wallpaper-png.png",Texture.class);
+        manager.load("simpleBG.png",Texture.class);
+        manager.load("simpleBGB.png",Texture.class);
+        //manager.load("4k-image-santiago.jpg",Texture.class);
+        //manager.load("4914003-galaxy-wallpaper-png.png",Texture.class);
         manager.load("pixmapTest.png",Texture.class);
         manager.load("pixmapVisual.png",Texture.class);
+        manager.load("SpriteSheets/KnightSprites.atlas", TextureAtlas.class);
+        manager.load("SpriteSheets/ArcherSprites.atlas",TextureAtlas.class);
+        manager.load("SpriteSheets/FlagSprites.atlas",TextureAtlas.class);
         BitmapFont dagger30 = new BitmapFont(Gdx.files.internal("fonts/dagger30.fnt"));
         dagger30.getData().markupEnabled = true;
         serverInfo = new ServerInfoMenu(fonts,manager,camView);
@@ -89,6 +90,7 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
                     askConfig = createServerForm();
                     serverInfo.init();
                     serverRunningMenu.init();
+                    AnimationManager.init(manager);
                 }
                 loadingMenu.update();
                 loadingMenu.draw(batch,shapeRenderer);
@@ -163,7 +165,7 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
     }
     private Menu createServerForm(){
         Menu out = new Menu(fonts,manager,camView);
-        out.setBackground(new TextureRegion((Texture)manager.get("4k-image-santiago.jpg")));
+        out.setBackground(new TextureRegion((Texture)manager.get("simpleBGB.png")));
         final MenuTools.TextField serverNameField = new MenuTools.TextField(Gdx.graphics.getWidth()/2-150,Gdx.graphics.getHeight()-90,300,45);
         final MenuTools.TextField maxPlayersField = new MenuTools.TextField(Gdx.graphics.getWidth()/2-150,Gdx.graphics.getHeight()-140,300,45);
         MenuTools.Button submitInfo = new MenuTools.Button(Gdx.graphics.getWidth()/2-80,Gdx.graphics.getHeight()-200,160,55);
@@ -172,8 +174,8 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
         errorText.setText("",fonts);
         maxPlayersField.setFont(0);
         serverNameField.setFont(0);
-        submitInfo.setUnpressedTexture(new TextureRegion((Texture)manager.get("4k-image-santiago.jpg")));
-        submitInfo.setPressedTexture(new TextureRegion((Texture)manager.get("tuzki.png")));
+        submitInfo.setUnpressedTexture(new TextureRegion((Texture)manager.get("simpleBG.png")));
+        submitInfo.setPressedTexture(new TextureRegion((Texture)manager.get("simpleBG.png")));
         submitInfo.setCallback(new MenuTools.OnClick() {
             @Override
             public void action() {

@@ -77,24 +77,24 @@ public class ConcurrentGameWorld {
         playerSoldier.setvY(playerSoldier.getvY()+GRAVITY);  // Making the player fall down
         // Colliding Top [0]
         //System.out.println(map.getPosId(Math.round(playerSoldier.getX()), (int)(playerSoldier.getY() + 2)));
-        if ((map.getPosId(Math.round(playerSoldier.getX()), (int)(playerSoldier.getY() + 2))>>8 == 1)){
+        if ((map.getPosId(Math.round(playerSoldier.getX()), (int)(playerSoldier.getY() + 2))>>8 == 1)||(map.getPosId(Math.round(playerSoldier.getX()), (int)(playerSoldier.getY() + 2)) == (playerSoldier.getTeam()==0?0x00FFFFFF:0xFFFF00FF))){
             playerSoldier.setY(Math.round(playerSoldier.getY()));
             playerSoldier.collisions[0] = true;
         }
 
         // Colliding Bottom [1]
-        if ((map.getPosId(Math.round(playerSoldier.getX()), Math.round(playerSoldier.getY()))>>8 == 1)){
+        if ((map.getPosId(Math.round(playerSoldier.getX()), Math.round(playerSoldier.getY()))>>8 == 1)||(map.getPosId(Math.round(playerSoldier.getX()), Math.round(playerSoldier.getY()))==(playerSoldier.getTeam()==0?0x00FFFF:0xFF0000))){
             playerSoldier.setY(Math.round(playerSoldier.getY()));
             playerSoldier.collisions[1] = true;
         }
         // Colliding Left [3]
-        if ((map.getPosId((int)(playerSoldier.getX()), (int)(playerSoldier.getY() + 1))>>8 == 1)){
+        if ((map.getPosId((int)(playerSoldier.getX()), (int)(playerSoldier.getY() + 1))>>8 == 1)||(map.getPosId((int)(playerSoldier.getX()), (int)(playerSoldier.getY() + 1))==(playerSoldier.getTeam()==0?0xFFFF00FF:0x00FFFFFF))){
             playerSoldier.setX((int)playerSoldier.getX()+1);
             playerSoldier.collisions[3] = true;
         }
 
         // Colliding Right [2]
-        if ((map.getPosId((int)(playerSoldier.getX()+1), (int)(playerSoldier.getY() + 1))>>8 == 1)){
+        if ((map.getPosId((int)(playerSoldier.getX()+1), (int)(playerSoldier.getY() + 1))>>8 == 1)||(map.getPosId((int)(playerSoldier.getX()+1), (int)(playerSoldier.getY() + 1))==(playerSoldier.getTeam()==0?0xFFFF00FF:0x00FFFFFF))){
             playerSoldier.setX((int)playerSoldier.getX());
             playerSoldier.collisions[2] = true;
         }

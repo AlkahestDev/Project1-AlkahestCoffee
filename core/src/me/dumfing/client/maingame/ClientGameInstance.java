@@ -4,23 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import me.dumfing.gdxtools.DrawTools;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.multiplayerTools.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import static me.dumfing.client.maingame.MainGame.DAGGER20S;
 import static me.dumfing.client.maingame.MainGame.DAGGER30;
 import static me.dumfing.client.maingame.MainGame.client;
 
@@ -36,7 +31,7 @@ public class ClientGameInstance implements InputProcessor{
     private AssetManager manager;
     private TextureRegion arrowTexture, blueArrow, redArrow;
     private Array<BitmapFontCache> fonts;
-    boolean onlineMode = true;
+    private boolean onlineMode = true;
     public ClientGameInstance(MultiplayerClient gameClient, HashMap<Integer, PlayerSoldier> players, OrthographicCamera camera, AssetManager manager, Array<BitmapFontCache> fonts){
         this.gameClient = gameClient;
         this.fonts = fonts;
@@ -46,6 +41,7 @@ public class ClientGameInstance implements InputProcessor{
         this.arrowTexture = MenuTools.mGTR("projectiles/arrow.png",manager);
         this.redArrow = MenuTools.mGTR("redArrow.png",manager);
         this.blueArrow = MenuTools.mGTR("blueArrow.png",manager);
+        onlineMode = true;
     }
 
     /**
@@ -73,6 +69,7 @@ public class ClientGameInstance implements InputProcessor{
             }
             keyUpdate = false;
         }
+        //System.out.println(onlineMode);
         if(onlineMode) {
             if (gameClient.isHasNewPlayerInfo()) {
                 //System.out.println("new client info");

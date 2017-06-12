@@ -84,8 +84,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		Gdx.input.setInputProcessor(this);
 
 		//offline setup things
-		clientSoldier.setPos(1,6);
-		clientSoldier.setCurrentClass(0);
+		//clientSoldier.setPos(1,6);
+		//clientSoldier.setCurrentClass(0);
 	}
 
 	@Override
@@ -132,7 +132,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					//menu.init();
 					createWorlds();
 					client.pingServers();
-					state = GameState.State.OFFLINEDEBUG;
+					//state = GameState.State.OFFLINEDEBUG;
 
 				}
 				break;
