@@ -119,7 +119,7 @@ public class ConcurrentGameWorld {
         }
 
         if(playerSoldier.collisions[3]){ //left
-            playerSoldier.setvX(Math.max(0,playerSoldier.getvX()));
+            playerSoldier.setvX(Math.min(0,playerSoldier.getvX()));
         }
 
     }
@@ -242,7 +242,7 @@ public class ConcurrentGameWorld {
         else if(keyDown(keys,MultiplayerTools.Keys.RMB)){
             // SHITTY TEST FOR KNOCKBACK
 
-            pIn.knockBack();
+            pIn.knockBack(0.3f);
 
         }
 

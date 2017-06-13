@@ -84,8 +84,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		Gdx.input.setInputProcessor(this);
 
 		//offline setup things
-		//clientSoldier.setPos(1,6);
-		//clientSoldier.setCurrentClass(0);
+		clientSoldier.setPos(1,6);
+		clientSoldier.setCurrentClass(1);
 	}
 
 	@Override

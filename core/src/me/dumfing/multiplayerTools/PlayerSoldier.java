@@ -306,37 +306,40 @@ public class PlayerSoldier {
             // Swing Attack
             if (this.swinging){
                 target.setHealth(target.getHealth() - this.swingDamage / 2);
-                target.knockBack();
+                target.knockBack(0.3f);
             }
 
             // Stab Attack
             if (this.stabbing){
                 this.setHealth(this.getHealth() - this.stabDamage / 2);
+                target.knockBack(0.2f);
             }
         }
         else {
             // Swing Attack
             if (this.swinging){
                 this.setHealth(this.getHealth() - this.swingDamage);
+                target.knockBack(0.5f);
             }
 
             // Stab Attack
             if (this.stabbing){
                 this.setHealth(this.getHealth() - this.stabDamage);
+                target.knockBack(0.3f);
             }
         }
     }
 
-    void knockBack(){
+    void knockBack(float val){
 
         // Facing Left
         if (this.getFacingDirection() == 0){
-            this.setvX(0.3f);
+            this.setvX(val);
         }
 
         // Facing Right
         else{
-            this.setvX(-0.3f);
+            this.setvX(-val);
         }
 
 
