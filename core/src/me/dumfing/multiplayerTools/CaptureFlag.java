@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Rectangle;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class CaptureFlag {
@@ -17,6 +16,7 @@ public class CaptureFlag {
     private int physicsParent = -1;
     private int teamID = -1; //whichever team the flag is on
     private int facingDirection = 0;
+    private boolean scored = false;
     public CaptureFlag(){}
     public CaptureFlag(float x, float y, int teamID){
         this.hitBox = new Rectangle(x,y,1,2);
@@ -45,11 +45,12 @@ public class CaptureFlag {
                 }
             }
         }
-        System.out.println(Arrays.toString(score));
-        if(world.getPosId((int)this.getxPos(), (int) this.getyPos())==(this.teamID==0?0x0003FFFF:0xFF0300FF)){
+        System.out.printf("%d %d %d %d %d\n",world.getPosId((int)this.getxPos(), (int) this.getyPos()),0x0003FFFF,0xFF0300FF,(int)this.getxPos(),(int)this.getyPos());
+        if(world.getPosId(Math.round(this.getxPos()), Math.round(this.getyPos()+1))==(this.teamID==0?0x0003FFFF:0xFF0300FF)){
             this.physicsParent = -1;
             score[teamID]+=1;
             resetPos(world);
+            scored = true;
         }
         this.animationTime+=deltaTime;
 
@@ -83,5 +84,13 @@ public class CaptureFlag {
     public void resetPos(WorldMap world){
         GridPoint2 flagPos = this.teamID==0?world.getRedFlag():world.getBluFlag();
         this.hitBox.setPosition(flagPos.x,flagPos.y);
+    }
+
+    public boolean isScored() {
+        return scored;
+    }
+
+    public void setScored(boolean scored) {
+        this.scored = scored;
     }
 }

@@ -68,6 +68,8 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
         manager.load("SpriteSheets/KnightSprites.atlas", TextureAtlas.class);
         manager.load("SpriteSheets/ArcherSprites.atlas",TextureAtlas.class);
         manager.load("SpriteSheets/FlagSprites.atlas",TextureAtlas.class);
+        manager.load("Particles/RedFlagCap", ParticleEffect.class);
+        manager.load("Particles/BluFlagCap",ParticleEffect.class);
         BitmapFont dagger30 = new BitmapFont(Gdx.files.internal("fonts/dagger30.fnt"));
         dagger30.getData().markupEnabled = true;
         serverInfo = new ServerInfoMenu(fonts,manager,camView);
@@ -113,7 +115,7 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
                 if(Gdx.input.getInputProcessor() != serverRunningMenu){
                     serverRunningMenu.setInputProcessor();
                     instance = new ServerGameInstance(sv.getPlayers());
-                    instance.setWorldMap(new WorldMap(MenuTools.mGTR("pixmapTest.png",manager),MenuTools.mGTR("pixmapVisual.png",manager)));
+                    instance.setWorldMap(new WorldMap(MenuTools.mGTR("pixmapTest.png",manager),MenuTools.mGTR("pixmapVisual.png",manager),(ParticleEffect) manager.get("Particles/RedFlagCap"),(ParticleEffect) manager.get("Particles/BluFlagCap")));
                     //instance.world.setCollisionBoxes(Gdx.files.internal("pixmapTest.png"));
                 }
                 instance.update(sv);

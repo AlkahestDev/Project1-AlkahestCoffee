@@ -42,6 +42,7 @@ public class MultiplayerClient {
     private LinkedList<String> messages = new LinkedList<String>();
     LinkedList<Projectile> projectiles = new LinkedList<Projectile>();
     private HashMap<Integer, PlayerSoldier> players = new HashMap<Integer, PlayerSoldier>();
+    CaptureFlag[] flags = new CaptureFlag[2];
     private boolean findingServers = false;
     private Client playerClient;
     private HashMap<String, MultiplayerTools.ServerSummary> serverSummaries;
@@ -54,6 +55,7 @@ public class MultiplayerClient {
     private int worldNum = -1;
     private boolean hasNewPlayerInfo = false;
     private boolean hasNewProjectileInfo = false;
+    private boolean hasNewFlagInfo = false;
     public MultiplayerClient(){
         playerClient = new Client();
         serverSummaries = new HashMap<String, MultiplayerTools.ServerSummary>();
@@ -136,6 +138,10 @@ public class MultiplayerClient {
                 else if(o instanceof  MultiplayerTools.ServerProjectilePositions){
                     projectiles = ((MultiplayerTools.ServerProjectilePositions) o).getProjectiles();
                     hasNewProjectileInfo = true;
+                }
+                else if(o instanceof MultiplayerTools.ServerFlagPositions){
+                    flags = ((MultiplayerTools.ServerFlagPositions) o).getFlags();
+                    hasNewFlagInfo = true;
                 }
                 super.received(connection, o);
             }
@@ -298,6 +304,15 @@ public class MultiplayerClient {
         boolean ogOut = hasNewProjectileInfo;
         hasNewProjectileInfo = false;
         return ogOut;
+    }
+    public boolean isHasNewFlagInfo(){
+        boolean ogOut = hasNewFlagInfo;
+        hasNewFlagInfo = false;
+        return ogOut;
+    }
+
+    public CaptureFlag[] getFlags() {
+        return flags;
     }
 
     public LinkedList<Projectile> getProjectiles() {

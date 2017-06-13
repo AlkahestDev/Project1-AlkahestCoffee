@@ -33,6 +33,7 @@ public class ServerGameInstance {
             //System.out.println("send players");
             sv.quickSendAll(new MultiplayerTools.ServerPlayerPositions(world.getPlayers()));
             sv.quickSendAll(new MultiplayerTools.ServerProjectilePositions(world.getProjectiles()));
+            sv.quickSendAll(new MultiplayerTools.ServerFlagPositions(world.getFlags()));
         }
 
         frameCount++;

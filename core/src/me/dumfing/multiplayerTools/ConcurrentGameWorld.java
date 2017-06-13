@@ -1,15 +1,13 @@
 package me.dumfing.multiplayerTools;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MathTools;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import static me.dumfing.multiplayerTools.MultiplayerTools.GRAVITY;
-import static me.dumfing.multiplayerTools.MultiplayerTools.WALKSPEED;
+import static me.dumfing.multiplayerTools.MultiplayerTools.*;
 import static me.dumfing.multiplayerTools.PlayerSoldier.ARCHER;
 import static me.dumfing.multiplayerTools.PlayerSoldier.KNIGHT;
 
@@ -21,18 +19,18 @@ public class ConcurrentGameWorld {
     private HashMap<Integer, PlayerSoldier> players;
     private WorldMap map;
     private LinkedList<Projectile> projectiles = new LinkedList<Projectile>();
-    private Array<CaptureFlag> flags = new Array<CaptureFlag>();
+    private CaptureFlag[] flags = new CaptureFlag[2];
     private int[] score = new int[2];
     public ConcurrentGameWorld(HashMap<Integer, PlayerSoldier> initialPlayers){
         this.players = initialPlayers;
     }
     public void setWorld(WorldMap wmIn){
         this.map = wmIn;
-        flags.add(new CaptureFlag(this.map.getRedFlag(),0));
-        flags.add(new CaptureFlag(this.map.getBluFlag(),1));
+        flags[0] = new CaptureFlag(this.map.getRedFlag(),0);
+        flags[1] = new CaptureFlag(this.map.getBluFlag(),1);
     }
 
-    public Array<CaptureFlag> getFlags() {
+    public CaptureFlag[] getFlags() {
         return flags;
     }
 
@@ -123,8 +121,7 @@ public class ConcurrentGameWorld {
         }
 
     }
-
-    public void handleAttacks(PlayerSoldier playerSoldier){
+    private void handleAttacks(PlayerSoldier playerSoldier){
 
         // Checking if player collides with any other player
         for (PlayerSoldier p : players.values()){
@@ -256,5 +253,14 @@ public class ConcurrentGameWorld {
     }
     private boolean keyDown(MultiplayerTools.ClientControlObject[] keys, int key){
         return keys[key]!=null && keys[key].type == 1 && keys[key].isDown;
+    }
+    public void updateFlags(CaptureFlag[] flags){
+        this.flags = flags;
+    }
+    public int getRedScore(){
+        return score[REDTEAM];
+    }
+    public int getBluScore(){
+        return score[BLUTEAM];
     }
 }

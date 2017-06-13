@@ -43,6 +43,9 @@ public class MultiplayerTools {
         serializer.register(PlayerSoldier.class);
         serializer.register(Projectile.class);
         serializer.register(ServerProjectilePositions.class);
+        serializer.register(CaptureFlag.class);
+        serializer.register(CaptureFlag[].class);
+        serializer.register(ServerFlagPositions.class);
         serializer.register(ClientControlObject[].class);
         serializer.register(ClientControlObject.class);
         serializer.register(ClientKeysUpdate.class);
@@ -63,7 +66,18 @@ public class MultiplayerTools {
         serializer.register(ServerNotifyGame.class);
         serializer.register(boolean[].class);
     }
+    public static class ServerFlagPositions{
+        CaptureFlag[] flags;
+        public ServerFlagPositions(){}
 
+        public ServerFlagPositions(CaptureFlag[] flags) {
+            this.flags = flags;
+        }
+
+        public CaptureFlag[] getFlags() {
+            return flags;
+        }
+    }
     /**
      * An object that can either hold a boolean or float for a key's state or the mouse's angle
      */

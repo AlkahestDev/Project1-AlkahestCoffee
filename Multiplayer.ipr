@@ -277,6 +277,13 @@
       <JAVADOC />
       <SOURCES />
     </library>
+    <library name="gdx-tools-1.9.5">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-tools-1.9.5.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
     <library name="jinput-2.0.5">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/core/assets/javalibs/lwjgl/jinput-2.0.5.jar!/" />

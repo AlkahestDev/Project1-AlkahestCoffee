@@ -84,8 +84,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		Gdx.input.setInputProcessor(this);
 
 		//offline setup things
-		//clientSoldier.setPos(1,6);
-		//clientSoldier.setCurrentClass(0);
+		clientSoldier.setPos(1,6);
+		clientSoldier.setCurrentClass(0);
 	}
 
 	@Override
@@ -132,7 +132,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					//menu.init();
 					createWorlds();
 					client.pingServers();
-					//state = GameState.State.OFFLINEDEBUG;
+					state = GameState.State.OFFLINEDEBUG;
 
 				}
 				break;
@@ -329,6 +329,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		assetManager.load("fonts/dagger40.fnt",BitmapFont.class);
 		assetManager.load("fonts/dagger50.fnt",BitmapFont.class);
 		assetManager.load("SpriteSheets/FlagSprites.atlas",TextureAtlas.class);
+		assetManager.load("Particles/RedFlagCap",ParticleEffect.class);
+		assetManager.load("Particles/BluFlagCap",ParticleEffect.class);
 		for(int i = 1; i<10; i++){
 			assetManager.load(String.format("archive/L%d.png",i),Texture.class);
 			assetManager.load(String.format("archive/R%d.png",i),Texture.class);
@@ -393,7 +395,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		batch.setProjectionMatrix(camera.combined);
 	}
 	public void createWorlds(){
-		WorldMap debugWorld = new WorldMap(MenuTools.mGTR("pixmapTest.png",assetManager),MenuTools.mGTR("pixmapVisual.png",assetManager));
+		WorldMap debugWorld = new WorldMap(MenuTools.mGTR("pixmapTest.png",assetManager),MenuTools.mGTR("pixmapVisual.png",assetManager),(ParticleEffect) assetManager.get("Particles/RedFlagCap"),(ParticleEffect) assetManager.get("Particles/BluFlagCap"));
 		debugWorld.addBackground(MenuTools.mGTR("cloudTemp.png",assetManager));
 		debugWorld.addForeground(MenuTools.mGTR("fgTemp.png",assetManager));
 		worldMaps = new WorldMap[]{debugWorld};

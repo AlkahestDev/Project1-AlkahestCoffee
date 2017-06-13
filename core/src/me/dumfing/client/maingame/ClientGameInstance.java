@@ -17,6 +17,7 @@ import me.dumfing.multiplayerTools.*;
 import java.util.HashMap;
 
 import static me.dumfing.client.maingame.MainGame.DAGGER30;
+import static me.dumfing.client.maingame.MainGame.DAGGER40;
 import static me.dumfing.client.maingame.MainGame.client;
 
 /**
@@ -79,6 +80,9 @@ public class ClientGameInstance implements InputProcessor{
             }
             if (gameClient.isHasNewProjectileInfo()) {
                 playWorld.updateProjectiles(gameClient.getProjectiles());
+            }
+            if(gameClient.isHasNewFlagInfo()){
+                playWorld.updateFlags(gameClient.getFlags());
             }
         }
         playWorld.updatePlayerKeys(onlineMode?gameClient.getConnectionID():0, keysDown);
@@ -276,6 +280,8 @@ public class ClientGameInstance implements InputProcessor{
     private void drawHud(Batch batch, ShapeRenderer shapeRenderer, PlayerSoldier center){
         fonts.get(DAGGER30).addText(center.getName(),5,Gdx.graphics.getHeight()-30);
         fonts.get(DAGGER30).addText(String.format("%2.2f %2.2f",center.getX(),center.getY()),5,Gdx.graphics.getHeight()-55);
+        fonts.get(DAGGER40).addText(Integer.toString(playWorld.getRedScore()),50,Gdx.graphics.getHeight()-10);
+        fonts.get(DAGGER40).addText(Integer.toString(playWorld.getBluScore()),Gdx.graphics.getWidth()-50,Gdx.graphics.getHeight()-10);
     }
     private PlayerSoldier clientSoldier(){ // I can't be sure the pointer is always the same since the hashmap is always being updated from the server
         return playWorld.getPlayers().get(onlineMode?client.getConnectionID():0);
