@@ -3,7 +3,6 @@ package me.dumfing.multiplayerTools;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import java.util.Collection;
 import java.util.LinkedList;
 
 import static me.dumfing.multiplayerTools.MultiplayerTools.GRAVITY;
@@ -56,7 +55,7 @@ public class Projectile {
                     }
                     playerIndex++;
                 }
-                if (!isHit && world.getPosId(Math.round(x + checkX), (int) (y + checkY + 1)) == 1) {
+                if (!isHit && (world.getPosId(Math.round(x + checkX), (int) (y + checkY + 1)) == 1||world.getPosId(Math.round(x + checkX), (int) (y + checkY + 1)) ==(this.attackerTeam==0?0x00FFFFFF:0xFFFF00FF))) {
                     //TODO: action when collided
                     this.x += checkX;
                     this.y += checkY;
