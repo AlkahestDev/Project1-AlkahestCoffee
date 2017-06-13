@@ -22,6 +22,7 @@ public class ConcurrentGameWorld {
     private WorldMap map;
     private LinkedList<Projectile> projectiles = new LinkedList<Projectile>();
     private Array<CaptureFlag> flags = new Array<CaptureFlag>();
+    private int[] score = new int[2];
     public ConcurrentGameWorld(HashMap<Integer, PlayerSoldier> initialPlayers){
         this.players = initialPlayers;
     }
@@ -55,7 +56,7 @@ public class ConcurrentGameWorld {
             }
         }
         for(CaptureFlag flag : flags){
-            flag.update(deltaTime,players);
+            flag.update(deltaTime,players,map,score);
 
         }
     }

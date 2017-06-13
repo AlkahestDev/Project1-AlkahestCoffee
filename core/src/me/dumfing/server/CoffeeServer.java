@@ -175,7 +175,7 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
         maxPlayersField.setFont(0);
         serverNameField.setFont(0);
         submitInfo.setUnpressedTexture(new TextureRegion((Texture)manager.get("simpleBG.png")));
-        submitInfo.setPressedTexture(new TextureRegion((Texture)manager.get("simpleBG.png")));
+        submitInfo.setPressedTexture(new TextureRegion((Texture)manager.get("simpleBGB.png")));
         submitInfo.setCallback(new MenuTools.OnClick() {
             @Override
             public void action() {
