@@ -1,6 +1,7 @@
 package me.dumfing.multiplayerTools;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Rectangle;
 import me.dumfing.gdxtools.MathTools;
 
 import java.util.Arrays;
@@ -121,23 +122,24 @@ public class ConcurrentGameWorld {
         }
 
     }
-    private void handleAttacks(PlayerSoldier playerSoldier){
+    private void handleAttacks(PlayerSoldier attacker){
 
         // Checking if player collides with any other player
-        for (PlayerSoldier p : players.values()){
-            if (p != playerSoldier){
-                if (playerSoldier.getFrameIndex() == AnimationManager.ATTACKFRAME && playerSoldier.getRect().overlaps(p.getRect())){  // Maybe its  2 frame where the damage may be done?
-
+        Rectangle attackRect = new Rectangle(attacker.getX()+(attacker.getFacingDirection()==0?-0.5f:1),attacker.getY()+0.5f,0.5f,0.5f); // TODO: tweak this to line up with the animations better
+        for (PlayerSoldier target : players.values()){
+            if (target != attacker){
+                if (attacker.getFrameIndex() == AnimationManager.ATTACKFRAME && attackRect.overlaps(target.getRect())){  // Maybe its  2 frame where the damage may be done?
                     // Attacking Left
-                    if (p.getX() < playerSoldier.getX() && playerSoldier.getFacingDirection() == 0){
+                    /*if (target.getX() < attacker.getX() && attacker.getFacingDirection() == 0){
                         //doDamage(playerSoldier, p);
-                        playerSoldier.attack(p);
+                        attacker.attack(target);
                     }
 
                     // Attacking Right
-                    if (p.getX() > playerSoldier.getX() && playerSoldier.getFacingDirection() == 1) {
-                        playerSoldier.attack(p);
-                    }
+                    if (target.getX() > attacker.getX() && attacker.getFacingDirection() == 1) {
+                        attacker.attack(target);
+                    }*/
+                    attacker.attack(target); // always will attack because the attack rectangle is left or right of the player already
                 }
             }
         }
