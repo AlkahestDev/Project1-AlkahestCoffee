@@ -279,6 +279,7 @@ public class ClientGameInstance implements InputProcessor{
     }
     private void drawHud(Batch batch, ShapeRenderer shapeRenderer, PlayerSoldier center){
         fonts.get(DAGGER30).addText(center.getName(),5,Gdx.graphics.getHeight()-30);
+        fonts.get(DAGGER30).addText(Integer.toString(center.getHealth()),5,Gdx.graphics.getHeight()-62);
         fonts.get(DAGGER30).addText(String.format("%2.2f %2.2f",center.getX(),center.getY()),5,Gdx.graphics.getHeight()-55);
         fonts.get(DAGGER40).addText(Integer.toString(playWorld.getRedScore()),50,Gdx.graphics.getHeight()-10);
         fonts.get(DAGGER40).addText(Integer.toString(playWorld.getBluScore()),Gdx.graphics.getWidth()-50,Gdx.graphics.getHeight()-10);

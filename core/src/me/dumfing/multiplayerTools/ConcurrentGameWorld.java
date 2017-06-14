@@ -125,7 +125,7 @@ public class ConcurrentGameWorld {
     private void handleAttacks(PlayerSoldier attacker){
 
         // Checking if player collides with any other player
-        Rectangle attackRect = new Rectangle(attacker.getX()+(attacker.getFacingDirection()==0?-0.5f:1),attacker.getY()+0.5f,0.5f,0.5f); // TODO: tweak this to line up with the animations better
+        Rectangle attackRect = new Rectangle(attacker.getX()+(attacker.getFacingDirection()==0?-0.7f:1),attacker.getY()+0.5f,0.7f,0.5f); // TODO: tweak this to line up with the animations better
         for (PlayerSoldier target : players.values()){
             if (target != attacker){
                 if (attacker.getFrameIndex() == AnimationManager.ATTACKFRAME && attackRect.overlaps(target.getRect())){  // Maybe its  2 frame where the damage may be done?
@@ -264,5 +264,12 @@ public class ConcurrentGameWorld {
     }
     public int getBluScore(){
         return score[BLUTEAM];
+    }
+    private void checkDeaths(){// checks if any player should be killed and does something about it
+        for(PlayerSoldier player : players.values()){
+            if(player.getY()<-10){
+                //kill them
+            }
+        }
     }
 }
