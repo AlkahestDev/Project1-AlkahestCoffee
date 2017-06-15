@@ -47,11 +47,11 @@ public class Projectile {
                     if (player.getTeam() != this.attackerTeam && player.getRect().contains(x + checkX, y + checkY)) {
                         this.x += checkX;
                         this.y += checkY;
+                        player.damage((int) Math.round(Math.hypot(this.vX,this.vY)*20));
                         this.vX = 0;
                         this.vY = 0;
                         isHit = true;
                         physicsParent = playerIndex;
-                        player.damage(1);
                         break;
                     }
                     playerIndex++;

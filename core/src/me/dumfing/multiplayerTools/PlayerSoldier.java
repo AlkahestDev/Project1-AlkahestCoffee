@@ -8,9 +8,9 @@ import com.badlogic.gdx.math.Rectangle;
 import java.util.Arrays;
 
 public class PlayerSoldier {
-
-    private int health, maxHealth, animationID, team, pickedClass,facingDirection; // animationID is an int describing the direction the player is facing and what animation they're doing
-    private boolean canJump;
+    //Arrow drawing will work by having a counter that increases as the mouse is down. If drawingBow is true and the mouse is up the arrow will be fired, and the counter will be set to 0
+    private int health, maxHealth, animationID, team, pickedClass,facingDirection,drawTime; // animationID is an int describing the direction the player is facing and what animation they're doing
+    private boolean canJump, drawingBow;
 
     private MultiplayerTools.ClientControlObject[] keysHeld = new MultiplayerTools.ClientControlObject[10];
 
@@ -332,6 +332,7 @@ public class PlayerSoldier {
 
     }
     void damage(int amount){
+        System.out.println(amount);
         this.health = Math.max(0,this.health-amount);
     }
     @Override
@@ -348,5 +349,21 @@ public class PlayerSoldier {
                 ", pickedClass=" + pickedClass +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    public int getDrawTime() {
+        return drawTime;
+    }
+
+    public void setDrawTime(int drawTime) {
+        this.drawTime = drawTime;
+    }
+
+    public boolean isDrawingBow() {
+        return drawingBow;
+    }
+
+    public void setDrawingBow(boolean drawingBow) {
+        this.drawingBow = drawingBow;
     }
 }

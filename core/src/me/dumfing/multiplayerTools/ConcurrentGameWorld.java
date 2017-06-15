@@ -231,11 +231,18 @@ public class ConcurrentGameWorld {
                     break;
 
                 case ARCHER:
-                    if(projectiles.size()<2) {
-                        projectiles.add(new Projectile(pIn.getX(), pIn.getY(), 2f, pIn.getMouseAngle(), 0, pIn.getTeam()));
+                    if(projectiles.size()<20) {
+                        System.out.printf("draw amount: %d\n",pIn.getDrawTime());
+                        pIn.setDrawTime(pIn.getDrawTime()+1);
+                        pIn.setDrawingBow(true);
                     }
                     break;
             }
+        }
+        if(pIn.isDrawingBow() && pIn.getDrawTime() > 20&& !keyDown(keys, Keys.LMB)){
+            projectiles.add(new Projectile(pIn.getX()+pIn.getWidth()/2f, pIn.getY()+pIn.getHeight()/2f, Math.min(2,(float)pIn.getDrawTime()/30f), pIn.getMouseAngle(), 0, pIn.getTeam()));
+            pIn.setDrawingBow(false);
+            pIn.setDrawTime(0);
         }
 
         else if(keyDown(keys,MultiplayerTools.Keys.RMB)){
