@@ -75,7 +75,7 @@ public class AnimationManager {
     public static final int ISATTACK = 16;
     public static final int ISIDLE = 32;
 
-    public static final int ATTACKFRAME = 9;
+    public static final int ATTACKFRAME = 10;
 
 
 

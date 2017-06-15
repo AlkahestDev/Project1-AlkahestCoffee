@@ -50,7 +50,12 @@ public class CaptureFlag {
                 }
             }
         }
-        System.out.printf("%d %d %d %d %d\n",world.getPosId((int)this.getxPos(), (int) this.getyPos()),0x0003FFFF,0xFF0300FF,(int)this.getxPos(),(int)this.getyPos());
+        if(world.getPosId(Math.round(this.getxPos()), Math.round(this.getyPos()+1))==(this.teamID==0?0x0003FFFF:0xFF0300FF)){
+            this.physicsParent = -1;
+            score[teamID]+=1;
+            resetPos(world);
+            scored = true;
+        }
         this.animationTime+=deltaTime;
 
 
@@ -83,6 +88,7 @@ public class CaptureFlag {
     }
     public void resetPos(WorldMap world){
         GridPoint2 flagPos = this.teamID==0?world.getRedFlag():world.getBluFlag();
+        this.physicsParent = -1;
         this.hitBox.setPosition(flagPos.x,flagPos.y);
     }
 

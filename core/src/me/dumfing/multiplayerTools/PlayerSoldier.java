@@ -218,7 +218,7 @@ public class PlayerSoldier {
         } else { // blu
             animationSet = AnimationManager.bluPlayer;
         }
-        System.out.println(this.facingDirection);
+        //System.out.println(this.facingDirection);
         if((this.getAnimationID()& AnimationManager.ISWALKING) == AnimationManager.WALK){
             return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][0][this.getCurrentClass()];
         }
@@ -242,10 +242,10 @@ public class PlayerSoldier {
         this.playerArea.setY(y);
     }
     public float getWidth(){
-        return this.width;
+        return width;
     }
     public float getHeight(){
-        return this.height;
+        return height;
     }
     public void setvX(float vX) {
         this.vX = vX;
@@ -296,51 +296,44 @@ public class PlayerSoldier {
         this.animationTime = animationTime;
     }
     public float getCenterX(){
-        return (this.width/2f)+this.getX();
+        return (width/2f)+this.getX();
     }
     public float getCenterY(){
-        return (this.height/2f)+this.getY();
+        return (height/2f)+this.getY();
     }
     public void attack(PlayerSoldier target){
+        int side = (int)((target.getX()-this.getX())/Math.abs(target.getX()-this.getX())); // is positive when the target is on the right side of the player annd is negative when target is on left side of player
+        //System.out.println(side);
         if (target.shielding){
             // Swing Attack
             if (this.swinging){
-                target.setHealth(target.getHealth() - this.swingDamage / 2);
-                target.knockBack(0.3f);
+                target.setHealth(Math.max(0,target.getHealth() - this.swingDamage / 2));
+                target.knockBack(0.3f*side);
             }
 
             // Stab Attack
             if (this.stabbing){
-                this.setHealth(this.getHealth() - this.stabDamage / 2);
-                target.knockBack(0.2f);
+                target.setHealth(Math.max(0,target.getHealth() - this.stabDamage / 2));
+                target.knockBack(0.2f*side);
             }
         }
         else {
             // Swing Attack
             if (this.swinging){
-                this.setHealth(this.getHealth() - this.swingDamage);
-                target.knockBack(0.5f);
+                target.setHealth(Math.max(0,target.getHealth() - this.swingDamage));
+                target.knockBack(0.5f*side);
             }
 
             // Stab Attack
             if (this.stabbing){
-                this.setHealth(this.getHealth() - this.stabDamage);
-                target.knockBack(0.3f);
+                target.setHealth(Math.max(0,target.getHealth() - this.stabDamage));
+                target.knockBack(0.3f*side);
             }
         }
     }
-
     void knockBack(float val){
 
-        // Facing Left
-        if (this.getFacingDirection() == 0){
-            this.setvX(val);
-        }
-
-        // Facing Right
-        else{
-            this.setvX(-val);
-        }
+        this.setvX(val);
 
 
     }

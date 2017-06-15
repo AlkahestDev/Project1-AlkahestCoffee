@@ -281,8 +281,10 @@ public class ClientGameInstance implements InputProcessor{
         float playerScY = camera.viewportHeight/2-((camera.position.y-clientSoldier().getY())/camera.zoom);
         return playerScY;
     }
+
     private void drawHudSprites(Batch batch, PlayerSoldier center){
         fonts.get(DAGGER30).addText(center.getName(),5,25+HEALTH_BAR_HEIGHT);
+        fonts.get(DAGGER30).addText(Integer.toString(center.getHealth()),5,Gdx.graphics.getHeight()-62);
         fonts.get(DAGGER30).addText(String.format("%2.2f %2.2f",center.getX(),center.getY()),5,Gdx.graphics.getHeight()-55);
         fonts.get(DAGGER40).addText(String.format("[WHITE]%d",playWorld.getBluScore()),400,Gdx.graphics.getHeight()-10);
         fonts.get(DAGGER40).addText(String.format("[WHITE]%d",playWorld.getRedScore()),Gdx.graphics.getWidth()-420,Gdx.graphics.getHeight()-10);
