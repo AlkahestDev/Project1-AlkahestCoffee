@@ -115,7 +115,7 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
                 if(Gdx.input.getInputProcessor() != serverRunningMenu){
                     serverRunningMenu.setInputProcessor();
                     instance = new ServerGameInstance(sv.getPlayers());
-                    instance.setWorldMap(new WorldMap(MenuTools.mGTR("pixmapTest.png",manager),MenuTools.mGTR("pixmapVisual.png",manager),(ParticleEffect) manager.get("Particles/RedFlagCap"),(ParticleEffect) manager.get("Particles/BluFlagCap")));
+                    instance.setWorldMap(new WorldMap(MenuTools.mGTR("pixmapTest.png",manager),MenuTools.mGTR("pixmapVisual.png",manager)));
                     //instance.world.setCollisionBoxes(Gdx.files.internal("pixmapTest.png"));
                 }
                 instance.update(sv);

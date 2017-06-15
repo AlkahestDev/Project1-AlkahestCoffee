@@ -63,6 +63,16 @@ public class MainMenu extends Menu{
                         }
                     },2);
                 }
+                else if(sIn.length() >=12){
+                    Timer.instance().clear(); // prevents the previous timer from clearing this text prematurely
+                    userNameError.setText("[RED]Length must be under 12 characters!",MainMenu.super.getFonts());
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            userNameError.clearText();
+                        }
+                    },2);
+                }
                 else {
                     float vY = -18.4f;
                     if (gHeight >= 660) {

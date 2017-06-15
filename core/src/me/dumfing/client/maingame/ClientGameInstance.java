@@ -4,14 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MenuTools;
+import me.dumfing.menus.MenuBox;
 import me.dumfing.multiplayerTools.*;
 
 import java.util.HashMap;
@@ -33,6 +32,8 @@ public class ClientGameInstance implements InputProcessor{
     private TextureRegion arrowTexture, blueArrow, redArrow;
     private Array<BitmapFontCache> fonts;
     private boolean onlineMode = true;
+    private MenuBox gameInfoBox;
+    private static float HEALTH_BAR_HEIGHT = 40;
     public ClientGameInstance(MultiplayerClient gameClient, HashMap<Integer, PlayerSoldier> players, OrthographicCamera camera, AssetManager manager, Array<BitmapFontCache> fonts){
         this.gameClient = gameClient;
         this.fonts = fonts;
@@ -43,6 +44,7 @@ public class ClientGameInstance implements InputProcessor{
         this.redArrow = MenuTools.mGTR("redArrow.png",manager);
         this.blueArrow = MenuTools.mGTR("blueArrow.png",manager);
         onlineMode = true;
+        setupGsmeInfoBox();
     }
 
     /**
@@ -61,6 +63,7 @@ public class ClientGameInstance implements InputProcessor{
         onlineMode = false;
         this.redArrow = MenuTools.mGTR("redArrow.png",manager);
         this.blueArrow = MenuTools.mGTR("blueArrow.png",manager);
+        setupGsmeInfoBox();
     }
     public void update(){
         if(keyUpdate){
@@ -87,6 +90,7 @@ public class ClientGameInstance implements InputProcessor{
         }
         playWorld.updatePlayerKeys(onlineMode?gameClient.getConnectionID():0, keysDown);
         //System.out.println("updateplayworld");
+        gameInfoBox.update();
         playWorld.update();
     }
     public PlayerSoldier getPlayer(int connectionID){
@@ -116,29 +120,29 @@ public class ClientGameInstance implements InputProcessor{
         playWorld.getMap().drawFG(batch,camera.position.x,camera.position.y);
         //batch.draw(playWorld.getMap().getVisualComponent(),0,0);
         batch.end();
-        uiBatch.begin();
-        drawHud(uiBatch,uiShapeRenderer, clientSoldier());
-        for(BitmapFontCache bmfc : fonts){
-            bmfc.draw(uiBatch);
-        }
-        uiBatch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         if(onlineMode) {
             for (PlayerSoldier playerSoldier : gameClient.getPlayers().values()) {
                 //DrawTools.rec(shapeRenderer,playerSoldier.getRect());
             }
         }
-        /*for(PlayerSoldier playerSoldier :gameClient.getPlayers().values()) {
-            System.out.println(playerSoldier.getX()-playerSoldier.getCenterX());//playerSoldier.getMouseAngle());
-            renderer.setColor(Color.RED);
-            renderer.line(playerSoldier.getCenterX(),
-                    playerSoldier.getCenterY(),
-                    playerSoldier.getCenterX()+(5*(float)Math.cos(Math.toRadians(playerSoldier.getMouseAngle()))),
-                    playerSoldier.getCenterY()+(5*(float)Math.sin(Math.toRadians(playerSoldier.getMouseAngle()))));
-            renderer.setColor(Color.BLUE);
-            DrawTools.rec(renderer, new Rectangle((int) (playerSoldier.getX()), (int) (playerSoldier.getY() + playerSoldier.getvY()), 1, 1));
-        }*/
         shapeRenderer.end();
+        // Draw Sprites for UI
+        uiBatch.begin();
+        drawHudSprites(uiBatch, clientSoldier());
+        gameInfoBox.spriteDraw(uiBatch);
+        uiBatch.end();
+        // Draw shapes for UI
+        uiShapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        drawHudShapes(uiShapeRenderer,clientSoldier());
+        gameInfoBox.shapeDraw(uiShapeRenderer);
+        uiShapeRenderer.end();
+        //Draw fonts for ui
+        uiBatch.begin();
+        for(BitmapFontCache bmfc : fonts){
+            bmfc.draw(uiBatch);
+        }
+        uiBatch.end();
     }
     public void pickWorld(int worldID){
         playWorld.setWorld(MainGame.worldMaps[MainGame.DEBUGWORLD]);
@@ -277,13 +281,39 @@ public class ClientGameInstance implements InputProcessor{
         float playerScY = camera.viewportHeight/2-((camera.position.y-clientSoldier().getY())/camera.zoom);
         return playerScY;
     }
-    private void drawHud(Batch batch, ShapeRenderer shapeRenderer, PlayerSoldier center){
-        fonts.get(DAGGER30).addText(center.getName(),5,Gdx.graphics.getHeight()-30);
+    private void drawHudSprites(Batch batch, PlayerSoldier center){
+        fonts.get(DAGGER30).addText(center.getName(),5,25+HEALTH_BAR_HEIGHT);
         fonts.get(DAGGER30).addText(String.format("%2.2f %2.2f",center.getX(),center.getY()),5,Gdx.graphics.getHeight()-55);
-        fonts.get(DAGGER40).addText(Integer.toString(playWorld.getRedScore()),50,Gdx.graphics.getHeight()-10);
-        fonts.get(DAGGER40).addText(Integer.toString(playWorld.getBluScore()),Gdx.graphics.getWidth()-50,Gdx.graphics.getHeight()-10);
+        fonts.get(DAGGER40).addText(String.format("[WHITE]%d",playWorld.getBluScore()),400,Gdx.graphics.getHeight()-10);
+        fonts.get(DAGGER40).addText(String.format("[WHITE]%d",playWorld.getRedScore()),Gdx.graphics.getWidth()-420,Gdx.graphics.getHeight()-10);
+    }
+    private void drawHudShapes(ShapeRenderer shapeRenderer, PlayerSoldier center){
+        float gHt = Gdx.graphics.getHeight();
+        float gWh = Gdx.graphics.getWidth();
+        float nameWidth = MenuTools.textWidth(fonts.get(DAGGER30).getFont(),center.getName());
+        float healthPercent = ((float)center.getHealth())/((float)center.getMaxHealth());
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        shapeRenderer.setColor(1,0.2f,0.2f,0.6f);
+        //Red flag background triangle
+        shapeRenderer.triangle(355,gHt+1,425,gHt+1,425,gHt-50);
+        shapeRenderer.setColor(0.2f,0.2f,1,0.6f);
+        //Blue flag background triangle
+        shapeRenderer.triangle(gWh-355,gHt+1,gWh-425,gHt+1,gWh-425,gHt-51);
+        shapeRenderer.setColor(0.2f,0.2f,0.2f,0.6f);
+        shapeRenderer.rect(425,gHt-50,gWh-(425*2),70);
+        //player info
+        shapeRenderer.rect(0,HEALTH_BAR_HEIGHT,nameWidth+5,40);
+        shapeRenderer.triangle(nameWidth+5,40+HEALTH_BAR_HEIGHT,nameWidth+45,HEALTH_BAR_HEIGHT,nameWidth+5,HEALTH_BAR_HEIGHT);
+        //player health
+        shapeRenderer.rect(0,0,270,HEALTH_BAR_HEIGHT);
+        shapeRenderer.setColor(1-healthPercent,healthPercent,0.2f,0.4f);
+        shapeRenderer.rect(0,0,270f*healthPercent,HEALTH_BAR_HEIGHT);
     }
     private PlayerSoldier clientSoldier(){ // I can't be sure the pointer is always the same since the hashmap is always being updated from the server
         return playWorld.getPlayers().get(onlineMode?client.getConnectionID():0);
+    }
+    private void setupGsmeInfoBox(){
+        gameInfoBox = new MenuBox(Gdx.graphics.getWidth()-200,Gdx.graphics.getHeight()-50,200,50,fonts);
+        gameInfoBox.setBackground(MenuTools.mGTR("simpleBG.png",manager));
     }
 }

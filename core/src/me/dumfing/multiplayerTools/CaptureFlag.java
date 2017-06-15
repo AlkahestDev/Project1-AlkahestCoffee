@@ -26,6 +26,11 @@ public class CaptureFlag {
         this.hitBox = new Rectangle(pos.x,pos.y,1,2);
         this.teamID = teamID;
     }
+
+    public void setPhysicsParent(int physicsParent) {
+        this.physicsParent = physicsParent;
+    }
+
     public void update(float deltaTime, HashMap<Integer, PlayerSoldier> players, WorldMap world, int[] score){
         if(players.containsKey(this.physicsParent)){
             PlayerSoldier parent = players.get(this.physicsParent);
@@ -46,13 +51,8 @@ public class CaptureFlag {
             }
         }
         System.out.printf("%d %d %d %d %d\n",world.getPosId((int)this.getxPos(), (int) this.getyPos()),0x0003FFFF,0xFF0300FF,(int)this.getxPos(),(int)this.getyPos());
-        if(world.getPosId(Math.round(this.getxPos()), Math.round(this.getyPos()+1))==(this.teamID==0?0x0003FFFF:0xFF0300FF)){
-            this.physicsParent = -1;
-            score[teamID]+=1;
-            resetPos(world);
-            scored = true;
-        }
         this.animationTime+=deltaTime;
+
 
     }
     public void draw(SpriteBatch batch, HashMap<Integer, PlayerSoldier> players){

@@ -18,18 +18,18 @@ public class PlayerSoldier {
 
     private float vX, vY, animationTime;
 
-    private String name = "[#FFFFFF]N[#DDDDDD]O[#BBBBBB]_[#999999]N[#777777]A[#555555]M[#333333]E[#111111]!";
+    private String name = "[#FF0000]N[#DD1100]O[#BB3300]_[#995500]N[#777700]A[#559900]M[#33BB00]E[#11DD00]!";
 
     public static final float width = 1;
     public static final float height = 2;
     public static final int KNIGHT = 0;
     public static final int ARCHER = 1;
 
-    public boolean swinging = false;
-    public boolean stabbing = false;
-    public boolean shielding = false;
-    public int swingDamage = 10;
-    public int stabDamage = 5;
+    boolean swinging = false;
+    private boolean stabbing = false;
+    private boolean shielding = false;
+    private int swingDamage = 10;
+    private int stabDamage = 5;
 
     public static final int UP = 1;
     public static final int DOWN = 2;
@@ -344,7 +344,9 @@ public class PlayerSoldier {
 
 
     }
-
+    void damage(int amount){
+        this.health = Math.max(0,this.health-amount);
+    }
     @Override
     public String toString() {
         return "PlayerSoldier{" +

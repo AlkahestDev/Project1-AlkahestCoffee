@@ -44,7 +44,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static final int DAGGER30 = 1;
 	public static final int DAGGER40 = 2;
 	public static final int DAGGER50 = 3;
-	public static final int DAGGER20S = 4;
 	public static WorldMap[] worldMaps;
 	public static final int DEBUGWORLD = 0;
 	ClientGameInstance gameInstance;
@@ -91,7 +90,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	@Override
 	public void render () {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT );
 		for(BitmapFontCache bmfc : fontCaches) {
 			bmfc.clear(); // clear bitmap font cache because it doesn't clear itself upon drawing (grumble grumble)
 		}
@@ -132,7 +131,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					//menu.init();
 					createWorlds();
 					client.pingServers();
-					state = GameState.State.OFFLINEDEBUG;
+					//state = GameState.State.OFFLINEDEBUG;
 
 				}
 				break;
@@ -245,7 +244,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				gameInstance.update();
 				shapeRenderer.setColor(Color.BLUE);
 				 clientSoldierTemp = gameInstance.getPlayer(client.getConnectionID());
-				//System.out.println("before "+clientSoldierTemp.getX());
+				System.out.println("before "+clientSoldierTemp);
 				deltaX = camera.position.x-clientSoldierTemp.getX();
 				deltaY = camera.position.y-clientSoldierTemp.getY();
 				if(deltaX<-3){ // player on right side of camera
@@ -395,7 +394,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		batch.setProjectionMatrix(camera.combined);
 	}
 	public void createWorlds(){
-		WorldMap debugWorld = new WorldMap(MenuTools.mGTR("pixmapTest.png",assetManager),MenuTools.mGTR("pixmapVisual.png",assetManager),(ParticleEffect) assetManager.get("Particles/RedFlagCap"),(ParticleEffect) assetManager.get("Particles/BluFlagCap"));
+		WorldMap debugWorld = new WorldMap(MenuTools.mGTR("pixmapTest.png",assetManager),MenuTools.mGTR("pixmapVisual.png",assetManager));
 		debugWorld.addBackground(MenuTools.mGTR("cloudTemp.png",assetManager));
 		debugWorld.addForeground(MenuTools.mGTR("fgTemp.png",assetManager));
 		worldMaps = new WorldMap[]{debugWorld};
@@ -405,18 +404,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
         BitmapFont dagger30 = assetManager.get("fonts/dagger30.fnt",BitmapFont.class);//new BitmapFont(Gdx.files.internal("fonts/dagger30.fnt"));
         BitmapFont dagger40 = assetManager.get("fonts/dagger40.fnt",BitmapFont.class);//new BitmapFont(Gdx.files.internal("fonts/dagger40.fnt"));
         BitmapFont dagger50 = assetManager.get("fonts/dagger50.fnt",BitmapFont.class);//new BitmapFont(Gdx.files.internal("fonts/dagger50.fnt"));
-        BitmapFont dagger20Small = assetManager.get("fonts/dagger20.fnt",BitmapFont.class);//new BitmapFont(Gdx.files.internal("fonts/dagger20.fnt"));
         dagger20.getData().markupEnabled = true;
         dagger30.getData().markupEnabled = true;
         dagger40.getData().markupEnabled = true;
         dagger50.getData().markupEnabled = true;
-        dagger20Small.getData().markupEnabled = true;
-        dagger20Small.getData().setScale(0.07f);
         fontCaches.add(new BitmapFontCache(dagger20));
         fontCaches.add(new BitmapFontCache(dagger30));
         fontCaches.add(new BitmapFontCache(dagger40));
         fontCaches.add(new BitmapFontCache(dagger50));
-        fontCaches.add(new BitmapFontCache(dagger20Small));
     }
 
 }

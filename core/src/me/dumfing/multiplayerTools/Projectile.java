@@ -51,6 +51,7 @@ public class Projectile {
                         this.vY = 0;
                         isHit = true;
                         physicsParent = playerIndex;
+                        //player.damage(1);
                         break;
                     }
                     playerIndex++;

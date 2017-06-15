@@ -55,7 +55,11 @@ public class ConcurrentGameWorld {
         }
         for(CaptureFlag flag : flags){
             flag.update(deltaTime,players,map,score);
-
+            if(map.getPosId(Math.round(flag.getxPos()), Math.round(flag.getyPos()+1))==(flag.getTeamID()==0?0x0003FFFF:0xFF0300FF)){
+                flag.setPhysicsParent(-1);
+                score[flag.getTeamID()]+=1;
+                flag.resetPos(map);
+            }
         }
     }
 

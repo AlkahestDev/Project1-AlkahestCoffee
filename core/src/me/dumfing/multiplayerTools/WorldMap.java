@@ -28,10 +28,7 @@ public class WorldMap {
     private int currentFrame = 0;
     private int frameCount = 0;
     private int frameTime;
-    ParticleEffect redFlagCap;
-    ParticleEffect bluFlagCap;
-
-    public WorldMap(TextureRegion colMap, TextureRegion visComp, ParticleEffect redFlagEffect, ParticleEffect bluFlagEffect){
+    public WorldMap(TextureRegion colMap, TextureRegion visComp){
         if(!colMap.getTexture().getTextureData().isPrepared()){
             colMap.getTexture().getTextureData().prepare();
         }
@@ -41,14 +38,11 @@ public class WorldMap {
         redSpawn = findColour(0xFF0100FF);
         bluSpawn = findColour(0x0001FFFF);
         redFlag = findColour(0xFF0200FF).add(0,-1);
+
         bluFlag = findColour(0x0002FFFF).add(0,-1);
-        bluFlagCap = new ParticleEffect(bluFlagEffect);
-        redFlagCap = new ParticleEffect(redFlagEffect);
     }
     public void draw(SpriteBatch batch){
         batch.draw(visualComponent.get(currentFrame),0,0,collisionMap.getWidth(),collisionMap.getHeight());
-        redFlagCap.draw(batch);
-        bluFlagCap.draw(batch);
     }
     public void drawBG(SpriteBatch batch, float xPersp, float yPersp){
         if(background!=null) {
@@ -64,9 +58,6 @@ public class WorldMap {
         this.frameTime = 60/fps;
     }
     public void update(){
-        float deltaTime = Gdx.graphics.getDeltaTime();
-        redFlagCap.update(deltaTime);
-        bluFlagCap.update(deltaTime);
         if(frameCount == frameTime){
             frameCount = 0;
             currentFrame=(currentFrame+1)%visualComponent.size;
@@ -80,14 +71,6 @@ public class WorldMap {
 
     public TextureRegion getVisualComponent() {
         return visualComponent.get(currentFrame);
-    }
-    public void startRedFlagParticles(int xPos, int yPos){
-        redFlagCap.setPosition(xPos,yPos);
-        redFlagCap.start();
-    }
-    public void startBluFlagParticles(int xPos, int yPos){
-        bluFlagCap.setPosition(xPos,yPos);
-        bluFlagCap.start();
     }
     public GridPoint2 getRedSpawn() {
         return redSpawn;
