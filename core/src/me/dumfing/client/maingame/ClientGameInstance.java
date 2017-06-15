@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -44,7 +45,7 @@ public class ClientGameInstance implements InputProcessor{
         this.redArrow = MenuTools.mGTR("redArrow.png",manager);
         this.blueArrow = MenuTools.mGTR("blueArrow.png",manager);
         onlineMode = true;
-        setupGsmeInfoBox();
+        setupGameInfoBox();
     }
 
     /**
@@ -63,22 +64,17 @@ public class ClientGameInstance implements InputProcessor{
         onlineMode = false;
         this.redArrow = MenuTools.mGTR("redArrow.png",manager);
         this.blueArrow = MenuTools.mGTR("blueArrow.png",manager);
-        setupGsmeInfoBox();
+        setupGameInfoBox();
     }
     public void update(){
         if(keyUpdate){
-            //System.out.println("send keys");
             if(onlineMode) {
                 gameClient.quickSend(new MultiplayerTools.ClientKeysUpdate(keysDown));
             }
             keyUpdate = false;
         }
-        //System.out.println(onlineMode);
         if(onlineMode) {
             if (gameClient.isHasNewPlayerInfo()) {
-                //System.out.println("new client info");
-                //System.out.println(gameClient.getPlayers().values());
-                //System.out.println("receive info");
                 playWorld.updatePlayers(gameClient.getPlayers());
             }
             if (gameClient.isHasNewProjectileInfo()) {
@@ -89,7 +85,6 @@ public class ClientGameInstance implements InputProcessor{
             }
         }
         playWorld.updatePlayerKeys(onlineMode?gameClient.getConnectionID():0, keysDown);
-        //System.out.println("updateplayworld");
         gameInfoBox.update();
         playWorld.update();
     }
@@ -284,8 +279,8 @@ public class ClientGameInstance implements InputProcessor{
 
     private void drawHudSprites(Batch batch, PlayerSoldier center){
         fonts.get(DAGGER30).addText(center.getName(),5,25+HEALTH_BAR_HEIGHT);
-        fonts.get(DAGGER30).addText(Integer.toString(center.getHealth()),5,Gdx.graphics.getHeight()-62);
-        fonts.get(DAGGER30).addText(String.format("%2.2f %2.2f",center.getX(),center.getY()),5,Gdx.graphics.getHeight()-55);
+        fonts.get(DAGGER30).addText(Integer.toString(center.getHealth()),5,25);
+        fonts.get(DAGGER30).addText(String.format("[WHITE]%2.2f %2.2f",center.getX(),center.getY()),5,Gdx.graphics.getHeight()-55);
         fonts.get(DAGGER40).addText(String.format("[WHITE]%d",playWorld.getBluScore()),400,Gdx.graphics.getHeight()-10);
         fonts.get(DAGGER40).addText(String.format("[WHITE]%d",playWorld.getRedScore()),Gdx.graphics.getWidth()-420,Gdx.graphics.getHeight()-10);
     }
@@ -293,7 +288,12 @@ public class ClientGameInstance implements InputProcessor{
         float gHt = Gdx.graphics.getHeight();
         float gWh = Gdx.graphics.getWidth();
         float nameWidth = MenuTools.textWidth(fonts.get(DAGGER30).getFont(),center.getName());
-        float healthPercent = ((float)center.getHealth())/((float)center.getMaxHealth());
+        float healthBarPercent = (Math.min((float)center.getHealth()+5,(float)center.getMaxHealth()-5))/((float)center.getMaxHealth()-5);
+        float healthTrianglePercent = Math.max((((float)center.getHealth()-95)/((float)center.getMaxHealth()-95)),0);
+        if(center.getHealth() ==0){
+            healthBarPercent = 0;
+        }
+        //System.out.printf("%f %f %f\n",healthBarPercent,(Math.min((float)center.getHealth()+5,(float)center.getMaxHealth()-5)),((float)center.getMaxHealth()-5));
         Gdx.gl.glEnable(GL20.GL_BLEND);
         shapeRenderer.setColor(1,0.2f,0.2f,0.6f);
         //Red flag background triangle
@@ -306,15 +306,19 @@ public class ClientGameInstance implements InputProcessor{
         //player info
         shapeRenderer.rect(0,HEALTH_BAR_HEIGHT,nameWidth+5,40);
         shapeRenderer.triangle(nameWidth+5,40+HEALTH_BAR_HEIGHT,nameWidth+45,HEALTH_BAR_HEIGHT,nameWidth+5,HEALTH_BAR_HEIGHT);
+        shapeRenderer.triangle(270, HEALTH_BAR_HEIGHT, 270 + HEALTH_BAR_HEIGHT, 0, 270, 0);
         //player health
         shapeRenderer.rect(0,0,270,HEALTH_BAR_HEIGHT);
-        shapeRenderer.setColor(1-healthPercent,healthPercent,0.2f,0.4f);
-        shapeRenderer.rect(0,0,270f*healthPercent,HEALTH_BAR_HEIGHT);
+        shapeRenderer.setColor(1-healthBarPercent,healthBarPercent,0.2f,0.4f);
+        shapeRenderer.rect(0,0,270f*healthBarPercent,HEALTH_BAR_HEIGHT);
+        //little triangle bit at the end of the health
+        shapeRenderer.rect(270,0,HEALTH_BAR_HEIGHT*healthTrianglePercent,HEALTH_BAR_HEIGHT*(1-healthTrianglePercent));
+        shapeRenderer.triangle(270,HEALTH_BAR_HEIGHT*(1-healthTrianglePercent),270,HEALTH_BAR_HEIGHT,270+HEALTH_BAR_HEIGHT*healthTrianglePercent,HEALTH_BAR_HEIGHT*(1-healthTrianglePercent));
     }
     private PlayerSoldier clientSoldier(){ // I can't be sure the pointer is always the same since the hashmap is always being updated from the server
         return playWorld.getPlayers().get(onlineMode?client.getConnectionID():0);
     }
-    private void setupGsmeInfoBox(){
+    private void setupGameInfoBox(){
         gameInfoBox = new MenuBox(Gdx.graphics.getWidth()-200,Gdx.graphics.getHeight()-50,200,50,fonts);
         gameInfoBox.setBackground(MenuTools.mGTR("simpleBG.png",manager));
     }

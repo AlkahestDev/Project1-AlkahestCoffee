@@ -36,7 +36,6 @@ public class ConcurrentGameWorld {
     }
 
     public void update(){
-        //System.out.println(projectiles);
         float deltaTime = Gdx.graphics.getDeltaTime();
         for(PlayerSoldier p : players.values()){
             p.setAnimationID(handleKeyInput(p));
@@ -80,7 +79,6 @@ public class ConcurrentGameWorld {
         Arrays.fill(playerSoldier.collisions,false);
         playerSoldier.setvY(playerSoldier.getvY()+GRAVITY);  // Making the player fall down
         // Colliding Top [0]
-        //System.out.println(map.getPosId(Math.round(playerSoldier.getX()), (int)(playerSoldier.getY() + 2)));
         if ((map.getPosId(Math.round(playerSoldier.getX()), (int)(playerSoldier.getY() + 2))>>8 == 1)||(map.getPosId(Math.round(playerSoldier.getX()), (int)(playerSoldier.getY() + 2)) == (playerSoldier.getTeam()==1?0xFFFF00FF:0x00FFFFFF))){
             playerSoldier.setY(Math.round(playerSoldier.getY()));
             playerSoldier.collisions[0] = true;
@@ -112,7 +110,6 @@ public class ConcurrentGameWorld {
         }
 
         if(playerSoldier.collisions[1]){ //bottom
-            //System.out.println("hit bottom");
             playerSoldier.setvY(Math.max(0,playerSoldier.getvY()));
             playerSoldier.setvX(MathTools.towardsZero(playerSoldier.getvX(), 0.1f));
         }
@@ -234,8 +231,7 @@ public class ConcurrentGameWorld {
                     break;
 
                 case ARCHER:
-                    //System.out.println("add projectile");
-                    if(projectiles.size()<20) {
+                    if(projectiles.size()<2) {
                         projectiles.add(new Projectile(pIn.getX(), pIn.getY(), 2f, pIn.getMouseAngle(), 0, pIn.getTeam()));
                     }
                     break;

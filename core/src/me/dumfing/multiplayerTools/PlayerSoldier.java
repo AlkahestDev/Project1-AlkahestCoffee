@@ -173,7 +173,6 @@ public class PlayerSoldier {
     public void move(){
         playerArea.x+=this.vX;
         playerArea.y+=this.vY;
-        //System.out.println("after moving "+super.getPos());
     }
 
     /**
@@ -182,13 +181,10 @@ public class PlayerSoldier {
      * @param isPlayer If this PlayerSoldier is the PlayerSoldier the client is viewing
      */
     public void draw(SpriteBatch batch, boolean isPlayer){
-        //System.out.println(this.animationTime);
-        //System.out.println(this.getAnimationID());
         TextureRegion drawFrame = (TextureRegion) getAnimation().getKeyFrame(this.animationTime);
         float trW = drawFrame.getRegionWidth();
         float trH = drawFrame.getRegionHeight();
         float ratio = trW/trH;
-        //System.out.println(trW+" "+trH+" "+ratio);
         //if((this.getAnimationID()&AnimationManager.ISATTACK) == AnimationManager.ATTACK){
         switch(this.getCurrentClass()) {
             case KNIGHT:
@@ -218,7 +214,6 @@ public class PlayerSoldier {
         } else { // blu
             animationSet = AnimationManager.bluPlayer;
         }
-        //System.out.println(this.facingDirection);
         if((this.getAnimationID()& AnimationManager.ISWALKING) == AnimationManager.WALK){
             return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][0][this.getCurrentClass()];
         }
@@ -303,7 +298,6 @@ public class PlayerSoldier {
     }
     public void attack(PlayerSoldier target){
         int side = (int)((target.getX()-this.getX())/Math.abs(target.getX()-this.getX())); // is positive when the target is on the right side of the player annd is negative when target is on left side of player
-        //System.out.println(side);
         if (target.shielding){
             // Swing Attack
             if (this.swinging){

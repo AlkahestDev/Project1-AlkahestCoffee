@@ -70,7 +70,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded, background frames are loaded and added to it here
 		scW = Gdx.graphics.getWidth();
 		scH = Gdx.graphics.getHeight();
-		//System.out.println(new Pixmap(Gdx.files.internal("pixmapTest.png")).getPixel(0,0)>>8);//since gimp doesn't do alpha in a friendly way, I'll bitshift right 8 bits to ignore alpha
 		state = GameState.State.LOADINGGAME;
 		batch = new SpriteBatch();
 		uiBatch = new SpriteBatch();
@@ -194,41 +193,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				gameInstance.update();
 				shapeRenderer.setColor(Color.BLUE);
 				PlayerSoldier clientSoldierTemp = gameInstance.getPlayer(client.getConnectionID());
-				//System.out.println("before "+clientSoldierTemp.getX());
 				float deltaX = camera.position.x-clientSoldierTemp.getX();
 				float deltaY = camera.position.y-clientSoldierTemp.getY();
-				if(deltaX<-3){ // player on right side of camera
-					//camera.position.x = clientSoldierTemp.getX()-5;
-					if(Math.abs(deltaX)<6){
-						camera.position.x = clientSoldierTemp.getX()-3;
-					}
-					else {
-						camera.position.x += Math.abs(deltaX) / 5f;
-					}
-				}
-				else if(deltaX>3){
-					//camera.position.x = clientSoldierTemp.getX()+5;//-=Math.abs(deltaX)/5f;
-					if(Math.abs(deltaX)<6){
-						camera.position.x = clientSoldierTemp.getX()+3;
-					}
-					else {
-						camera.position.x -= Math.abs(deltaX / 5f);
-					}
-				}
-				if(deltaY<-3f){
-					camera.position.y+=Math.abs(deltaY)/5f;//Math.min(Math.abs(deltaY)/5f,Math.abs(deltaY));
-				}
-				else if(deltaY>3f){
-					camera.position.y-=Math.abs(deltaY)/5f;//Math.min(Math.abs(deltaY)/5f,Math.abs(deltaY));
-				}
+				moveCamera(deltaX,deltaY,clientSoldierTemp);
 				//camera.position.x = clientSoldierTemp.getX();
-				//System.out.println("camera update");
-				//System.out.println(camera.position.x-clientSoldierTemp.getX()+" "+deltaX);
 				camera.update();
 				shapeRenderer.setProjectionMatrix(camera.combined);
 				batch.setProjectionMatrix(camera.combined);
 				gameInstance.draw(batch,shapeRenderer,uiBatch,uiShapeRenderer);
-				//System.out.println("after "+clientSoldierTemp.getX());
 				break;
 			case ROUNDOVER:
 				break;
@@ -243,42 +215,15 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				}
 				gameInstance.update();
 				shapeRenderer.setColor(Color.BLUE);
-				 clientSoldierTemp = gameInstance.getPlayer(client.getConnectionID());
-				System.out.println("before "+clientSoldierTemp);
+                clientSoldierTemp = gameInstance.getPlayer(0);
 				deltaX = camera.position.x-clientSoldierTemp.getX();
 				deltaY = camera.position.y-clientSoldierTemp.getY();
-				if(deltaX<-3){ // player on right side of camera
-					//camera.position.x = clientSoldierTemp.getX()-5;
-					if(Math.abs(deltaX)<6){
-						camera.position.x = clientSoldierTemp.getX()-3;
-					}
-					else {
-						camera.position.x += Math.abs(deltaX) / 5f;
-					}
-				}
-				else if(deltaX>3){
-					//camera.position.x = clientSoldierTemp.getX()+5;//-=Math.abs(deltaX)/5f;
-					if(Math.abs(deltaX)<6){
-						camera.position.x = clientSoldierTemp.getX()+3;
-					}
-					else {
-						camera.position.x -= Math.abs(deltaX / 5f);
-					}
-				}
-				if(deltaY<-3f){
-					camera.position.y+=Math.abs(deltaY)/5f;//Math.min(Math.abs(deltaY)/5f,Math.abs(deltaY));
-				}
-				else if(deltaY>3f){
-					camera.position.y-=Math.abs(deltaY)/5f;//Math.min(Math.abs(deltaY)/5f,Math.abs(deltaY));
-				}
+				moveCamera(deltaX,deltaY,clientSoldierTemp);
 				//camera.position.x = clientSoldierTemp.getX();
-				//System.out.println("camera update");
-				//System.out.println(camera.position.x-clientSoldierTemp.getX()+" "+deltaX);
 				camera.update();
 				shapeRenderer.setProjectionMatrix(camera.combined);
 				batch.setProjectionMatrix(camera.combined);
 				gameInstance.draw(batch,shapeRenderer,uiBatch,uiShapeRenderer);
-				//System.out.println("after "+clientSoldierTemp.getX());
 				break;
 			case QUIT:
 				Gdx.app.exit();
@@ -291,7 +236,32 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		// Called when the viewport is scaled
 		//viewport.update(width, height);
 	}
-
+    private void moveCamera(float deltaX, float deltaY, PlayerSoldier clientSoldierTemp){
+        if(deltaX<-3){ // player on right side of camera
+            //camera.position.x = clientSoldierTemp.getX()-5;
+            if(Math.abs(deltaX)<6){
+                camera.position.x = clientSoldierTemp.getX()-3;
+            }
+            else {
+                camera.position.x += Math.abs(deltaX) / 5f;
+            }
+        }
+        else if(deltaX>3){
+            //camera.position.x = clientSoldierTemp.getX()+5;//-=Math.abs(deltaX)/5f;
+            if(Math.abs(deltaX)<6){
+                camera.position.x = clientSoldierTemp.getX()+3;
+            }
+            else {
+                camera.position.x -= Math.abs(deltaX / 5f);
+            }
+        }
+        if(deltaY<-3f){
+            camera.position.y+=Math.abs(deltaY)/5f;//Math.min(Math.abs(deltaY)/5f,Math.abs(deltaY));
+        }
+        else if(deltaY>3f){
+            camera.position.y-=Math.abs(deltaY)/5f;//Math.min(Math.abs(deltaY)/5f,Math.abs(deltaY));
+        }
+    }
 	@Override
 	public void dispose () {
 		batch.dispose();
@@ -396,7 +366,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public void createWorlds(){
 		WorldMap debugWorld = new WorldMap(MenuTools.mGTR("pixmapTest.png",assetManager),MenuTools.mGTR("pixmapVisual.png",assetManager));
 		debugWorld.addBackground(MenuTools.mGTR("cloudTemp.png",assetManager));
-		debugWorld.addForeground(MenuTools.mGTR("fgTemp.png",assetManager));
+		//debugWorld.addForeground(MenuTools.mGTR("fgTemp.png",assetManager));
 		worldMaps = new WorldMap[]{debugWorld};
 	}
 	public void loadFonts(){

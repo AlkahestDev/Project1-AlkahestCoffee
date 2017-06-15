@@ -47,7 +47,6 @@ public class ServerInfoMenu extends Menu{
         if(timerStarted){
             numFrames++;
             if(numFrames % 60 == 0){
-                System.out.println(numFrames);
                 System.out.println("Sent "+(6-(numFrames/60)));
                 svIn.secureSendAll(new MultiplayerTools.ServerGameCountdown(6-(numFrames/60)));
             }

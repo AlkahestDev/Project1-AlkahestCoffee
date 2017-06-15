@@ -142,7 +142,6 @@ public class MainMenu extends Menu{
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         super.touchDown(screenX, screenY, pointer, button);
-        //System.out.println(super.getFocused());
         return true;
     }
 }

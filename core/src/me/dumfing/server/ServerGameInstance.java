@@ -30,7 +30,6 @@ public class ServerGameInstance {
         }
         if(frameCount == 3){ // 2 gets an interesting 30hz
             frameCount = 0;
-            //System.out.println("send players");
             sv.quickSendAll(new MultiplayerTools.ServerPlayerPositions(world.getPlayers()));
             sv.quickSendAll(new MultiplayerTools.ServerProjectilePositions(world.getProjectiles()));
             sv.quickSendAll(new MultiplayerTools.ServerFlagPositions(world.getFlags()));

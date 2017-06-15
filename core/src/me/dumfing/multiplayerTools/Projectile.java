@@ -51,12 +51,12 @@ public class Projectile {
                         this.vY = 0;
                         isHit = true;
                         physicsParent = playerIndex;
-                        //player.damage(1);
+                        player.damage(1);
                         break;
                     }
                     playerIndex++;
                 }
-                if (!isHit && ((world.getPosId(Math.round(x + checkX), (int) (y + checkY + 1)) == 1)||(world.getPosId(Math.round(x + checkX), (int) (y + checkY + 1)) ==(this.attackerTeam==0?0x00FFFFFF:0xFFFF00FF)))) {
+                if (!isHit && ((world.getPosId(Math.round(x + checkX), (int) (y + checkY + 1)) == 0x000001FF)||(world.getPosId(Math.round(x + checkX), (int) (y + checkY + 1)) ==(this.attackerTeam==0?0x00FFFFFF:0xFFFF00FF)))) {
                     //TODO: action when collided
                     this.x += checkX;
                     this.y += checkY;
@@ -67,8 +67,8 @@ public class Projectile {
                 }
             }
         }
-        else {
-            if(players.get(physicsParent) == null){
+        else {//TODO: figure out why arrows are being destroyed when they hit players
+            if(players.size() >=physicsParent||players.get(physicsParent) == null){
                 this.timeAlive = MAXLIFETIME;
             }
             else {

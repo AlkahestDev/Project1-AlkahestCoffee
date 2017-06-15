@@ -81,7 +81,6 @@ public class MultiplayerClient {
 
             @Override
             public void received(Connection connection, Object o) {
-                //System.out.println(String.format("Received %-20s from connection %d",o.getClass().getSimpleName(),connection.getID()));
                 if(o instanceof MultiplayerTools.ServerSummary){
                     MultiplayerTools.ServerSummary temp = (MultiplayerTools.ServerSummary) o;
                     serverSummaries.put(connection.getRemoteAddressUDP().toString(),temp);
@@ -110,7 +109,6 @@ public class MultiplayerClient {
                 }
                 else if(o instanceof MultiplayerTools.ServerDetailedSummary){
                     MultiplayerTools.ServerDetailedSummary temp = (MultiplayerTools.ServerDetailedSummary)o;
-                    System.out.println(temp.people.values());
                     redTeam = temp.rTeam;
                     blueTeam = temp.bTeam;
                     rLimit = temp.rMax;

@@ -112,7 +112,6 @@ public class ServerBrowser extends Menu{
             this.assets = assets;
         }
         public void refreshServers(final HashMap<String, MultiplayerTools.ServerSummary> serverList){
-            //System.out.println(serverList);
             int btHeight = 60; //Height of all buttons to be added
             int bNum = 0;
             super.clearButtons();
@@ -124,7 +123,6 @@ public class ServerBrowser extends Menu{
                 MenuTools.Button bt= new MenuTools.Button(0,super.getRect().getHeight()-btPosY-btHeight,super.getRect().getWidth(),btHeight);
                 MenuTools.QueueText sName = new MenuTools.QueueText(5,super.getRect().getHeight()-btPosY-btHeight/2+7,0,0);
                 MenuTools.QueueText peopleLimit = new MenuTools.QueueText(super.getRect().getWidth()-MenuTools.textWidth(getFonts().get(DAGGER30).getFont(),tOut)-2,super.getRect().getHeight()-btPosY-btHeight/2+7, 0,0);
-                System.out.println(sName.getRect()+" "+peopleLimit.getRect());
                 peopleLimit.setFont(DAGGER30);
                 sName.setFont(DAGGER30);
                 peopleLimit.setText(tOut,super.getFontCaches());

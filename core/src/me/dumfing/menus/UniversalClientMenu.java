@@ -92,9 +92,6 @@ public class UniversalClientMenu extends Menu{
 
     @Override
     public void update() {
-        //System.out.println(playBox.getvX());
-        //playBox.translate(playBox.getvX(),0);
-        //System.out.println(playBox.getRect().x);
         super.update();
     }
 

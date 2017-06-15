@@ -43,7 +43,6 @@ public class AnimationManager {
         Animation<TextureRegion> redPlayerAttackLeftKnight = new Animation<TextureRegion>(ATTACKFRAMETIME, knightSprites.findRegions("alrpk"), Animation.PlayMode.LOOP);
         Animation<TextureRegion> bluPlayerAttackRightKnight = new Animation<TextureRegion>(ATTACKFRAMETIME, knightSprites.findRegions("arbpk"), Animation.PlayMode.LOOP);
         Animation<TextureRegion> bluPlayerAttackLeftKnight = new Animation<TextureRegion>(ATTACKFRAMETIME, knightSprites.findRegions("albpk"), Animation.PlayMode.LOOP);
-        //System.out.println(redPlayerWalkLeftArcher.getAnimationDuration());
         Animation<TextureRegion> redFlagLeft = new Animation<TextureRegion>(FLAGFRAMETIME,flagSprites.findRegions("rFlagL"), Animation.PlayMode.LOOP);
         Animation<TextureRegion> redFlagRight = new Animation<TextureRegion>(FLAGFRAMETIME, flagSprites.findRegions("rFlagR"), Animation.PlayMode.LOOP);
         Animation<TextureRegion> bluFlagLeft = new Animation<TextureRegion>(FLAGFRAMETIME, flagSprites.findRegions("bFlagL"), Animation.PlayMode.LOOP);
