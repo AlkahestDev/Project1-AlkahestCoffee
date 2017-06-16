@@ -56,6 +56,7 @@ public class ConcurrentGameWorld {
             handleCollisions(p);
             handleAttacks(p);
             p.move();
+            System.out.println(p.getMouseAngle());
             if(p.getMouseAngle()> 90 && p.getMouseAngle()<270){
                 p.setFacingDirection(0);
             }
@@ -234,7 +235,9 @@ public class ConcurrentGameWorld {
             else{
                 pIn.setvX(-WALKSPEED/2f);
             }
+            pIn.setFacingDirection(0);
             pIn.setMouseAngle(180);
+            System.out.println(pIn.getMouseAngle());
         }
         else if(keyDown(keys,MultiplayerTools.Keys.D)){
             if(pIn.collisions[1]) {
@@ -244,6 +247,7 @@ public class ConcurrentGameWorld {
             else{
                 pIn.setvX(WALKSPEED/2f);
             }
+            pIn.setFacingDirection(1);
             pIn.setMouseAngle(0);
         }
 

@@ -169,6 +169,7 @@ public class PlayerSoldier {
     }
     public void setMouseAngle(float ang){
             if(keysHeld[MultiplayerTools.Keys.ANGLE]==null){
+                this.keysHeld[MultiplayerTools.Keys.ANGLE] = new MultiplayerTools.ClientControlObject(ang);
             }
             else {
                 this.keysHeld[MultiplayerTools.Keys.ANGLE].angle = ang;

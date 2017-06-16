@@ -10,14 +10,13 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MenuTools;
+import me.dumfing.menus.Menu;
 import me.dumfing.menus.MenuBox;
 import me.dumfing.multiplayerTools.*;
 
 import java.util.HashMap;
 
-import static me.dumfing.client.maingame.MainGame.DAGGER30;
-import static me.dumfing.client.maingame.MainGame.DAGGER40;
-import static me.dumfing.client.maingame.MainGame.client;
+import static me.dumfing.client.maingame.MainGame.*;
 
 /**
  * Created by dumpl on 5/15/2017.
@@ -128,12 +127,19 @@ public class ClientGameInstance implements InputProcessor{
         shapeRenderer.end();
         // Draw Sprites for UI
         uiBatch.begin();
-        drawHudSprites(uiBatch, clientSoldier());
+        if(clientSoldier().isAlive()) {
+            drawHudSprites(uiBatch, clientSoldier());
+        }
+        else{
+            drawDeathSprites(uiBatch,clientSoldier());
+        }
         gameInfoBox.spriteDraw(uiBatch);
         uiBatch.end();
         // Draw shapes for UI
         uiShapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        drawHudShapes(uiShapeRenderer,clientSoldier());
+        if(clientSoldier().isAlive()) {
+            drawHudShapes(uiShapeRenderer, clientSoldier());
+        }
         gameInfoBox.shapeDraw(uiShapeRenderer);
         uiShapeRenderer.end();
         //Draw fonts for ui
@@ -290,6 +296,13 @@ public class ClientGameInstance implements InputProcessor{
         fonts.get(DAGGER30).addText(String.format("[WHITE]%2.2f %2.2f",center.getX(),center.getY()),5,Gdx.graphics.getHeight()-55);
         fonts.get(DAGGER40).addText(String.format("[WHITE]%d",playWorld.getBluScore()),400,Gdx.graphics.getHeight()-10);
         fonts.get(DAGGER40).addText(String.format("[WHITE]%d",playWorld.getRedScore()),Gdx.graphics.getWidth()-420,Gdx.graphics.getHeight()-10);
+    }
+    private void drawDeathSprites(Batch batch, PlayerSoldier center){
+        float timeRemaining = playWorld.getRespawnTimers().get(onlineMode?client.getConnectionID():0).y;
+        String youDied = "YOU HAVE DIED";
+        String timeRemainingText = String.format("Respawn in %d...",((int)timeRemaining/60)+1);
+        fonts.get(DAGGER50).addText(youDied,Gdx.graphics.getWidth()/2-(MenuTools.textWidth(fonts.get(DAGGER50).getFont(),youDied)/2),Gdx.graphics.getHeight()/2-(MenuTools.textHeight(fonts.get(DAGGER50).getFont(),youDied)/2));
+        fonts.get(DAGGER50).addText(timeRemainingText,Gdx.graphics.getWidth()/2-(MenuTools.textWidth(fonts.get(DAGGER50).getFont(),timeRemainingText)/2),Gdx.graphics.getHeight()/2-(MenuTools.textHeight(fonts.get(DAGGER50).getFont(),timeRemainingText)/2)-55);
     }
     private void drawHudShapes(ShapeRenderer shapeRenderer, PlayerSoldier center){
         float gHt = Gdx.graphics.getHeight();
