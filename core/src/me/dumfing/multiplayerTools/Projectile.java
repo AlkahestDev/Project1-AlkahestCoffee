@@ -12,7 +12,7 @@ import static me.dumfing.multiplayerTools.MultiplayerTools.REDTEAM;
  * Created by aaronli on 2017-06-02.
  */
 public class Projectile {
-    private static final float CHECKRES = 0.01f;
+    private static final float CHECKRES = 0.001f;
     public static final int MAXLIFETIME = 240;
     private float x,y;
     private float vX = 0;
@@ -68,7 +68,7 @@ public class Projectile {
             }
         }
         else {//TODO: figure out why arrows are being destroyed when they hit players
-            if(players.size() >=physicsParent||players.get(physicsParent) == null){
+            if(players.size() <physicsParent||players.get(physicsParent) == null||!players.get(physicsParent).isAlive()){
                 this.timeAlive = MAXLIFETIME;
             }
             else {

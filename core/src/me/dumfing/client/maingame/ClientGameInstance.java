@@ -6,11 +6,14 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MenuTools;
-import me.dumfing.menus.Menu;
 import me.dumfing.menus.MenuBox;
 import me.dumfing.multiplayerTools.*;
 
@@ -298,7 +301,17 @@ public class ClientGameInstance implements InputProcessor{
         fonts.get(DAGGER40).addText(String.format("[WHITE]%d",playWorld.getRedScore()),Gdx.graphics.getWidth()-420,Gdx.graphics.getHeight()-10);
     }
     private void drawDeathSprites(Batch batch, PlayerSoldier center){
-        float timeRemaining = playWorld.getRespawnTimers().get(onlineMode?client.getConnectionID():0).y;
+        float timeRemaining = 0;
+        if(onlineMode){
+            timeRemaining = playWorld.getRespawnTimers().get(0).y;
+        }
+        else {
+            for (Vector2 timePair : playWorld.getRespawnTimers()) {
+                if ((int) timePair.x == client.getConnectionID()) {
+                    timeRemaining = timePair.y;
+                }
+            }
+        }
         String youDied = "YOU HAVE DIED";
         String timeRemainingText = String.format("Respawn in %d...",((int)timeRemaining/60)+1);
         fonts.get(DAGGER50).addText(youDied,Gdx.graphics.getWidth()/2-(MenuTools.textWidth(fonts.get(DAGGER50).getFont(),youDied)/2),Gdx.graphics.getHeight()/2-(MenuTools.textHeight(fonts.get(DAGGER50).getFont(),youDied)/2));

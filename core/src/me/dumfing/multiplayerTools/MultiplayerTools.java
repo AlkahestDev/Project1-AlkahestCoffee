@@ -38,6 +38,7 @@ public class MultiplayerTools {
     public static void register(EndPoint endpoint){
         Kryo serializer = endpoint.getKryo();
         //Can't register Connection so will have to switch with Integer
+        serializer.register(Vector2.class);
         serializer.register(HashMap.class);
         serializer.register(LinkedList.class);
         serializer.register(Rectangle.class);
@@ -65,6 +66,7 @@ public class MultiplayerTools {
         serializer.register(ServerPlayerPositions.class);
         serializer.register(ServerGameStarted.class);
         serializer.register(ServerNotifyGame.class);
+        serializer.register(ServerRespawnTimes.class);
         serializer.register(boolean[].class);
     }
     public static class ServerFlagPositions{

@@ -13,6 +13,7 @@ public class AnimationManager {
     private static final float IDLEFRAMETIME = 0.3f;
     private static final float ATTACKFRAMETIME = 0.025f;
     private static final float FLAGFRAMETIME = 0.1f;
+    private static final float WALKATTACKFRAMETIME = 0.04f;
     public static Animation[][][] redPlayer;
     public static Animation[][][] bluPlayer;
     public static Animation[] redFlag;
@@ -43,14 +44,32 @@ public class AnimationManager {
         Animation<TextureRegion> redPlayerAttackLeftKnight = new Animation<TextureRegion>(ATTACKFRAMETIME, knightSprites.findRegions("alrpk"), Animation.PlayMode.LOOP);
         Animation<TextureRegion> bluPlayerAttackRightKnight = new Animation<TextureRegion>(ATTACKFRAMETIME, knightSprites.findRegions("arbpk"), Animation.PlayMode.LOOP);
         Animation<TextureRegion> bluPlayerAttackLeftKnight = new Animation<TextureRegion>(ATTACKFRAMETIME, knightSprites.findRegions("albpk"), Animation.PlayMode.LOOP);
+
+        Animation<TextureRegion> redPlayerWalkAttackRightKnight = qMakeA(knightSprites,"warrpk",WALKATTACKFRAMETIME);//new Animation<TextureRegion>(ATTACKFRAMETIME, knightSprites.findRegions("warrpk"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> redPlayerWalkAttackLeftKnight = qMakeA(knightSprites,"walrpk",WALKATTACKFRAMETIME);
+        Animation<TextureRegion> bluPlayerWalkAttackRightKnight = qMakeA(knightSprites,"warbpk",WALKATTACKFRAMETIME);
+        Animation<TextureRegion> bluPlayerWalkAttackLeftKnight = qMakeA(knightSprites,"walbpk",WALKATTACKFRAMETIME);
+
         Animation<TextureRegion> redFlagLeft = new Animation<TextureRegion>(FLAGFRAMETIME,flagSprites.findRegions("rFlagL"), Animation.PlayMode.LOOP);
         Animation<TextureRegion> redFlagRight = new Animation<TextureRegion>(FLAGFRAMETIME, flagSprites.findRegions("rFlagR"), Animation.PlayMode.LOOP);
         Animation<TextureRegion> bluFlagLeft = new Animation<TextureRegion>(FLAGFRAMETIME, flagSprites.findRegions("bFlagL"), Animation.PlayMode.LOOP);
         Animation<TextureRegion> bluFlagRight = new Animation<TextureRegion>(FLAGFRAMETIME, flagSprites.findRegions("bFlagR"), Animation.PlayMode.LOOP);
         redFlag = new Animation[]{redFlagLeft,redFlagRight};
         bluFlag= new Animation[]{bluFlagLeft,bluFlagRight};
-        redPlayer = new Animation[][][]{{{redPlayerWalkLeftKnight,redPlayerWalkLeftArcher},null,null,{redPlayerAttackLeftKnight,null}, {redPlayerIdleLeftKnight,redPlayerIdleLeftArcher}},{{redPlayerWalkRightKnight,redPlayerWalkRightArcher},null,null,{redPlayerAttackRightKnight,null}, {redPlayerIdleRightKnight,redPlayerIdleRightArcher}}};
-        bluPlayer = new Animation[][][]{{{bluPlayerWalkLeftKnight,bluPlayerWalkLeftArcher},null,null,{bluPlayerAttackLeftKnight,null}, {bluPlayerIdleLeftKnight,bluPlayerIdleLeftArcher}},{{bluPlayerWalkRightKnight,bluPlayerWalkRightArcher},null,null,{bluPlayerAttackRightKnight,null  }, {bluPlayerIdleRightKnight,bluPlayerIdleRightArcher}}};
+        redPlayer = new Animation[][][]{{{redPlayerWalkLeftKnight,redPlayerWalkLeftArcher},null,null,{redPlayerAttackLeftKnight,null}, {redPlayerIdleLeftKnight,redPlayerIdleLeftArcher},{redPlayerWalkAttackLeftKnight,null}},{{redPlayerWalkRightKnight,redPlayerWalkRightArcher},null,null,{redPlayerAttackRightKnight,null}, {redPlayerIdleRightKnight,redPlayerIdleRightArcher},{redPlayerWalkAttackRightKnight,null}}};
+        bluPlayer = new Animation[][][]{{{bluPlayerWalkLeftKnight,bluPlayerWalkLeftArcher},null,null,{bluPlayerAttackLeftKnight,null}, {bluPlayerIdleLeftKnight,bluPlayerIdleLeftArcher},{bluPlayerWalkAttackLeftKnight,null}},{{bluPlayerWalkRightKnight,bluPlayerWalkRightArcher},null,null,{bluPlayerAttackRightKnight,null  }, {bluPlayerIdleRightKnight,bluPlayerIdleRightArcher},{bluPlayerWalkAttackRightKnight,null}}};
+    }
+
+    /**
+     * quickMakeAnimation<br/>
+     * Lets you make Animations without adding extra fluff that takes longer to type
+     * @param atlas
+     * @param names
+     * @param frameTime
+     * @return
+     */
+    private static Animation<TextureRegion> qMakeA(TextureAtlas atlas, String names, float frameTime){
+        return new Animation<TextureRegion>(frameTime,atlas.findRegions(names), Animation.PlayMode.LOOP);
     }
     //file names are in format adctl
     //a is the animation (walk, jump, fall, etc.)

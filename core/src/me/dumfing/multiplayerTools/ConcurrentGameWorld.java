@@ -2,6 +2,7 @@ package me.dumfing.multiplayerTools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import me.dumfing.gdxtools.MathTools;
@@ -26,10 +27,18 @@ public class ConcurrentGameWorld {
     private int[] score = new int[2];
     private LinkedList<Vector2> respawnTimers = new LinkedList<Vector2>(); // a linkedlist of vector2's with the x's as id's and y's as time. 0 means they should respawn
 
+    /**
+     * Gets the respawn timeers from the world
+     * @return A LinkedList of Vector2 respawn timers
+     */
     public LinkedList<Vector2> getRespawnTimers() {
         return respawnTimers;
     }
 
+    /**
+     * Used to update the respawn timers from the MultiplayerClient
+     * @param respawnTimers The most up to date LinkedList of respawn timers from the MultiplayerClient
+     */
     public void setRespawnTimers(LinkedList<Vector2> respawnTimers) {
         this.respawnTimers = respawnTimers;
     }
@@ -37,16 +46,28 @@ public class ConcurrentGameWorld {
     public ConcurrentGameWorld(HashMap<Integer, PlayerSoldier> initialPlayers){
         this.players = initialPlayers;
     }
+
+    /**
+     * Sets which worldmap is to be used by the Concurrent GameWorld
+     * @param wmIn The WorldMap object to use
+     */
     public void setWorld(WorldMap wmIn){
         this.worldMap = wmIn;
         flags[0] = new CaptureFlag(this.worldMap.getRedFlag(),0);
         flags[1] = new CaptureFlag(this.worldMap.getBluFlag(),1);
     }
 
+    /**
+     * Gets the flags from the MultiplayerClient
+     * @return
+     */
     public CaptureFlag[] getFlags() {
         return flags;
     }
 
+    /**
+     * Updates everything in the ConcurrentGameWorld, players, projectiles, flags, respawn timers.
+     */
     public void update(){
         float deltaTime = Gdx.graphics.getDeltaTime();
         for(PlayerSoldier p : getLivingPlayers().values()){
@@ -56,7 +77,6 @@ public class ConcurrentGameWorld {
             handleCollisions(p);
             handleAttacks(p);
             p.move();
-            System.out.println(p.getMouseAngle());
             if(p.getMouseAngle()> 90 && p.getMouseAngle()<270){
                 p.setFacingDirection(0);
             }
@@ -169,6 +189,7 @@ public class ConcurrentGameWorld {
                     if (target.getX() > attacker.getX() && attacker.getFacingDirection() == 1) {
                         attacker.attack(target);
                     }*/
+                    System.out.println("BANG");
                     attacker.attack(target); // always will attack because the attack rectangle is left or right of the player already
                 }
             }
@@ -236,8 +257,7 @@ public class ConcurrentGameWorld {
                 pIn.setvX(-WALKSPEED/2f);
             }
             pIn.setFacingDirection(0);
-            pIn.setMouseAngle(180);
-            System.out.println(pIn.getMouseAngle());
+            pIn.setMouseAngle(MathUtils.clamp(pIn.getMouseAngle(),89,269));
         }
         else if(keyDown(keys,MultiplayerTools.Keys.D)){
             if(pIn.collisions[1]) {
@@ -248,10 +268,15 @@ public class ConcurrentGameWorld {
                 pIn.setvX(WALKSPEED/2f);
             }
             pIn.setFacingDirection(1);
-            pIn.setMouseAngle(0);
+            if(pIn.getMouseAngle()>0 && pIn.getMouseAngle()<90) {
+                pIn.setMouseAngle(MathUtils.clamp(pIn.getMouseAngle(),0,90));
+            }
+            else {
+                pIn.setMouseAngle(MathUtils.clamp(pIn.getMouseAngle(),270,360));
+            }
         }
 
-        else if(keyDown(keys,MultiplayerTools.Keys.LMB)){
+        if(keyDown(keys,MultiplayerTools.Keys.LMB)){
 
             switch (pIn.getCurrentClass()){
                 case KNIGHT:
@@ -261,6 +286,11 @@ public class ConcurrentGameWorld {
                         pIn.swinging = true;
                         handleAttacks(pIn);
 
+                    }
+                    else if(pIn.collisions[1] &&(keyDown(keys,MultiplayerTools.Keys.D) || keyDown(keys,MultiplayerTools.Keys.A))){
+                        System.out.println("TRYATTACK");
+                        animation+=AnimationManager.ATTACK;
+                        handleAttacks(pIn);
                     }
 
                     break;
@@ -316,12 +346,10 @@ public class ConcurrentGameWorld {
         for(Integer k : players.keySet()){
             if(players.get(k).getY()<-10){
                 //kill them
-                GridPoint2 spawnPos = players.get(k).getTeam() == 0? worldMap.getRedSpawn(): worldMap.getBluSpawn();
-                players.get(k).setPos(spawnPos);
-                players.get(k).setAlive(false);
-                players.get(k).reset();
-                respawnTimers.add(new Vector2(k,180));
-
+                killPlayer(k);
+            }
+            else if(players.get(k).getHealth() <=0){
+                killPlayer(k);
             }
         }
     }
@@ -334,4 +362,12 @@ public class ConcurrentGameWorld {
         }
         return playersOut;
     }
+    private void killPlayer(Integer k){
+        GridPoint2 spawnPos = players.get(k).getTeam() == 0? worldMap.getRedSpawn(): worldMap.getBluSpawn();
+        players.get(k).setPos(spawnPos);
+        players.get(k).setAlive(false);
+        players.get(k).reset();
+        respawnTimers.add(new Vector2(k,180));
+    }
+
 }

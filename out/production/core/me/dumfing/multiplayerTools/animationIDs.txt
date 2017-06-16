@@ -3,3 +3,4 @@
 2 Falling
 3 Attacking
 4 Idle
+5 walking+attacking

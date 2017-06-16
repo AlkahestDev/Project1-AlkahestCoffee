@@ -30,8 +30,8 @@ public class PlayerSoldier {
     boolean alive = true;
     private boolean stabbing = false;
     private boolean shielding = false;
-    private int swingDamage = 10;
-    private int stabDamage = 5;
+    private int swingDamage = 25;
+    private int stabDamage = 15;
 
     public static final int UP = 1;
     public static final int DOWN = 2;
@@ -104,7 +104,8 @@ public class PlayerSoldier {
     }
 
     public int getAnimationID() {
-        return animationID+this.facingDirection;
+        //System.out.println(animationID|facingDirection);
+        return animationID|this.facingDirection;
     }
 
     public Animation [] [] [] getAnimationSet(){
@@ -231,7 +232,10 @@ public class PlayerSoldier {
         } else { // blu
             animationSet = AnimationManager.bluPlayer;
         }
-        if((this.getAnimationID()& AnimationManager.ISWALKING) == AnimationManager.WALK){
+        if((this.getAnimationID()&AnimationManager.ISWALKING) == AnimationManager.WALK && (this.getAnimationID()&AnimationManager.ISATTACK)==AnimationManager.ATTACK){
+            return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][5][0]; //TODO: change 0 to this.getCurrentClass when archer sprites are done
+        }
+        else if((this.getAnimationID()& AnimationManager.ISWALKING) == AnimationManager.WALK){
             return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][0][this.getCurrentClass()];
         }
         else if((this.getAnimationID()& AnimationManager.ISFALLING) == AnimationManager.FALL){
@@ -353,7 +357,6 @@ public class PlayerSoldier {
 
     }
     void damage(int amount){
-        System.out.println(amount);
         this.health = Math.max(0,this.health-amount);
     }
 
