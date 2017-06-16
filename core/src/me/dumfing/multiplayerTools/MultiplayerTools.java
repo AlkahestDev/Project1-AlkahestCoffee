@@ -1,6 +1,7 @@
 package me.dumfing.multiplayerTools;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
@@ -76,6 +77,20 @@ public class MultiplayerTools {
 
         public CaptureFlag[] getFlags() {
             return flags;
+        }
+    }
+    public static class ServerRespawnTimes{
+        LinkedList<Vector2> times;
+
+        public ServerRespawnTimes() {
+        }
+
+        public ServerRespawnTimes(LinkedList<Vector2> times) {
+            this.times = times;
+        }
+
+        public LinkedList<Vector2> getTimes() {
+            return times;
         }
     }
     /**

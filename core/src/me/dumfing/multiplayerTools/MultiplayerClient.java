@@ -1,5 +1,7 @@
 package me.dumfing.multiplayerTools;
 
+import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -43,6 +45,7 @@ public class MultiplayerClient {
     LinkedList<Projectile> projectiles = new LinkedList<Projectile>();
     private HashMap<Integer, PlayerSoldier> players = new HashMap<Integer, PlayerSoldier>();
     CaptureFlag[] flags = new CaptureFlag[2];
+    LinkedList<Vector2> respawnTimes = new LinkedList<Vector2>();
     private boolean findingServers = false;
     private Client playerClient;
     private HashMap<String, MultiplayerTools.ServerSummary> serverSummaries;
@@ -56,6 +59,7 @@ public class MultiplayerClient {
     private boolean hasNewPlayerInfo = false;
     private boolean hasNewProjectileInfo = false;
     private boolean hasNewFlagInfo = false;
+    private boolean hasNewRespawnInfo = false;
     public MultiplayerClient(){
         playerClient = new Client();
         serverSummaries = new HashMap<String, MultiplayerTools.ServerSummary>();
@@ -140,6 +144,10 @@ public class MultiplayerClient {
                 else if(o instanceof MultiplayerTools.ServerFlagPositions){
                     flags = ((MultiplayerTools.ServerFlagPositions) o).getFlags();
                     hasNewFlagInfo = true;
+                }
+                else if(o instanceof  MultiplayerTools.ServerRespawnTimes){
+                    respawnTimes = ((MultiplayerTools.ServerRespawnTimes) o).getTimes();
+                    hasNewRespawnInfo = true;
                 }
                 super.received(connection, o);
             }
@@ -308,6 +316,11 @@ public class MultiplayerClient {
         hasNewFlagInfo = false;
         return ogOut;
     }
+    public boolean isHasNewRespawnInfo() {
+        boolean ogOut = hasNewRespawnInfo;
+        hasNewRespawnInfo = false;
+        return ogOut;
+    }
 
     public CaptureFlag[] getFlags() {
         return flags;
@@ -315,6 +328,10 @@ public class MultiplayerClient {
 
     public LinkedList<Projectile> getProjectiles() {
         return projectiles;
+    }
+
+    public LinkedList<Vector2> getRespawnTimes() {
+        return respawnTimes;
     }
 
     /**

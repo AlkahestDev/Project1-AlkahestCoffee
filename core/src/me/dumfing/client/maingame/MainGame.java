@@ -83,7 +83,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 
 		//offline setup things
 		clientSoldier.setPos(1,6);
-		clientSoldier.setCurrentClass(0);
+		clientSoldier.setCurrentClass(1);
 	}
 
 	@Override

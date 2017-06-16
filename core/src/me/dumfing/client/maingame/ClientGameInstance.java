@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -83,6 +82,9 @@ public class ClientGameInstance implements InputProcessor{
             if(gameClient.isHasNewFlagInfo()){
                 playWorld.updateFlags(gameClient.getFlags());
             }
+            if(gameClient.isHasNewRespawnInfo()){
+                playWorld.updateRespawnTimes(gameClient.getRespawnTimes());
+            }
         }
         playWorld.updatePlayerKeys(onlineMode?gameClient.getConnectionID():0, keysDown);
         gameInfoBox.update();
@@ -93,15 +95,17 @@ public class ClientGameInstance implements InputProcessor{
     }
     public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer, SpriteBatch uiBatch, ShapeRenderer uiShapeRenderer){
         batch.begin();
-        playWorld.getMap().drawBG(batch,camera.position.x,camera.position.y);
+        playWorld.getWorldMap().drawBG(batch,camera.position.x,camera.position.y);
         for(CaptureFlag flag : playWorld.getFlags()){
             flag.draw(batch,playWorld.getPlayers());
         }
         for(PlayerSoldier p : playWorld.getPlayers().values()){
             //DrawTools.rec(renderer,p.getRect());
-            p.draw(batch,clientSoldier().equals(p));
-            if(clientSoldier().equals(p)) {
-                batch.draw(p.getTeam() == 0 ? redArrow : blueArrow, p.getX() + 0.3f, p.getY() + 2.1f, 0.4f, 0.4f);
+            if(p.isAlive()) {
+                p.draw(batch, clientSoldier().equals(p));
+                if (clientSoldier().equals(p)) {
+                    batch.draw(p.getTeam() == 0 ? redArrow : blueArrow, p.getX() + 0.3f, p.getY() + 2.1f, 0.4f, 0.4f);
+                }
             }
         }
         for(Projectile proj : playWorld.getProjectiles()){
@@ -111,9 +115,9 @@ public class ClientGameInstance implements InputProcessor{
                     break;
             }
         }
-        playWorld.getMap().draw(batch);
-        playWorld.getMap().drawFG(batch,camera.position.x,camera.position.y);
-        //batch.draw(playWorld.getMap().getVisualComponent(),0,0);
+        playWorld.getWorldMap().draw(batch);
+        playWorld.getWorldMap().drawFG(batch,camera.position.x,camera.position.y);
+        //batch.draw(playWorld.getWorldMap().getVisualComponent(),0,0);
         batch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         if(onlineMode) {
@@ -240,7 +244,9 @@ public class ClientGameInstance implements InputProcessor{
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         screenY=Gdx.graphics.getHeight()-screenY;
-        keysDown[MultiplayerTools.Keys.ANGLE] = new MultiplayerTools.ClientControlObject(getPointerAngle(screenX,screenY));
+        float freeAng = (getPointerAngle(screenX,screenY)+360)%360;
+        System.out.println(freeAng);
+        keysDown[MultiplayerTools.Keys.ANGLE] = new MultiplayerTools.ClientControlObject(freeAng);
         keyUpdate=true;
         return false;
     }
@@ -257,7 +263,8 @@ public class ClientGameInstance implements InputProcessor{
     public float getPointerAngle(float screenX, float screenY){
         float xLeg = screenX-(getPlayerOnscreenX()+(clientSoldier().getWidth()/2));
         float yLeg = screenY-(getPlayerOnscreenY()+(clientSoldier().getHeight()/2));
-        return (float)Math.toDegrees(Math.atan2(yLeg,xLeg));
+        float freeDeg = (float)Math.toDegrees(Math.atan2(yLeg,xLeg)); // angle, not limited by facing direction
+        return freeDeg;
     }
     /**
      * Gets the client's player x coordinate relative to the bottom left of the screen

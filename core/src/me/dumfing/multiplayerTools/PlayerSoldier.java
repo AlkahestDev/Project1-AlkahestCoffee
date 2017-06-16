@@ -3,13 +3,14 @@ package me.dumfing.multiplayerTools;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Rectangle;
 
 import java.util.Arrays;
 
 public class PlayerSoldier {
     //Arrow drawing will work by having a counter that increases as the mouse is down. If drawingBow is true and the mouse is up the arrow will be fired, and the counter will be set to 0
-    private int health, maxHealth, animationID, team, pickedClass,facingDirection,drawTime; // animationID is an int describing the direction the player is facing and what animation they're doing
+    private int health, maxHealth, animationID, team, pickedClass,facingDirection, bowDrawTime; // animationID is an int describing the direction the player is facing and what animation they're doing
     private boolean canJump, drawingBow;
 
     private MultiplayerTools.ClientControlObject[] keysHeld = new MultiplayerTools.ClientControlObject[10];
@@ -26,6 +27,7 @@ public class PlayerSoldier {
     public static final int ARCHER = 1;
 
     boolean swinging = false;
+    boolean alive = true;
     private boolean stabbing = false;
     private boolean shielding = false;
     private int swingDamage = 10;
@@ -165,7 +167,13 @@ public class PlayerSoldier {
         }
         return this.keysHeld[MultiplayerTools.Keys.ANGLE].angle;
     }
-
+    public void setMouseAngle(float ang){
+            if(keysHeld[MultiplayerTools.Keys.ANGLE]==null){
+            }
+            else {
+                this.keysHeld[MultiplayerTools.Keys.ANGLE].angle = ang;
+            }
+    }
     public int getMaxHealth(){
         return this.maxHealth;
     }
@@ -199,6 +207,14 @@ public class PlayerSoldier {
                     batch.draw(drawFrame, this.getX() -0.28f, this.getY(), this.getHeight() * ratio + 0.14f, this.getHeight() + 0.13f);
                 } else {
                     batch.draw(drawFrame, this.getX() - 0.22f, this.getY(), this.getHeight() * ratio + 0.14f, this.getHeight() + 0.13f); // add 0.1 because the attacking sprites are 4 FCKING PIXELS TALLER THAN THE STANDING SPRITES
+                }
+                if(this.isDrawingBow()){ // bow drawing animation
+                    if(this.getFacingDirection() == 0) {
+                        batch.draw((TextureRegion) AnimationManager.bluFlag[0].getKeyFrame((float)bowDrawTime/30f), this.getX() - 0.28f, this.getY() + this.getHeight() / 2, 1, 0.5f, 2, 1, 1, 1, this.getMouseAngle());
+                    }
+                    else {
+                        batch.draw((TextureRegion) AnimationManager.bluFlag[0].getKeyFrame((float)bowDrawTime/30f), this.getX() - 0.22f, this.getY() + this.getHeight() / 2, 1, 0.5f, 2, 1, 1, 1, this.getMouseAngle());// add 0.1 because the attacking sprites are 4 FCKING PIXELS TALLER THAN THE STANDING SPRITES
+                    }
                 }
             break;
         }
@@ -252,6 +268,10 @@ public class PlayerSoldier {
 
     public void setPos(float x, float y){
         this.playerArea.setPosition(x,y);
+    }
+    public void setPos(GridPoint2 pos){
+        this.playerArea.setX(pos.x);
+        this.playerArea.setY(pos.y);
     }
 
     public Rectangle getRect() {
@@ -335,28 +355,39 @@ public class PlayerSoldier {
         System.out.println(amount);
         this.health = Math.max(0,this.health-amount);
     }
-    @Override
+
     public String toString() {
         return "PlayerSoldier{" +
                 "health=" + health +
                 ", maxHealth=" + maxHealth +
+                ", animationID=" + animationID +
+                ", team=" + team +
+                ", pickedClass=" + pickedClass +
+                ", facingDirection=" + facingDirection +
+                ", bowDrawTime=" + bowDrawTime +
                 ", canJump=" + canJump +
+                ", drawingBow=" + drawingBow +
                 ", keysHeld=" + Arrays.toString(keysHeld) +
                 ", playerArea=" + playerArea +
                 ", vX=" + vX +
                 ", vY=" + vY +
-                ", team=" + team +
-                ", pickedClass=" + pickedClass +
+                ", animationTime=" + animationTime +
                 ", name='" + name + '\'' +
+                ", swinging=" + swinging +
+                ", stabbing=" + stabbing +
+                ", shielding=" + shielding +
+                ", swingDamage=" + swingDamage +
+                ", stabDamage=" + stabDamage +
+                ", collisions=" + Arrays.toString(collisions) +
                 '}';
     }
 
-    public int getDrawTime() {
-        return drawTime;
+    public int getBowDrawTime() {
+        return bowDrawTime;
     }
 
-    public void setDrawTime(int drawTime) {
-        this.drawTime = drawTime;
+    public void setBowDrawTime(int bowDrawTime) {
+        this.bowDrawTime = bowDrawTime;
     }
 
     public boolean isDrawingBow() {
@@ -365,5 +396,21 @@ public class PlayerSoldier {
 
     public void setDrawingBow(boolean drawingBow) {
         this.drawingBow = drawingBow;
+    }
+    public void reset(){
+        this.health = maxHealth;
+        this.animationTime = 0;
+        this.vX = 0;
+        this.vY = 0;
+        this.drawingBow = false;
+        this.bowDrawTime = 0;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 }

@@ -23,7 +23,7 @@ public class ServerGameInstance {
             switch (svEvent.getEventType()){
                 case PLAYERPICKEDTEAM:
                     PlayerSoldier plr = world.getPlayers().get(svEvent.getConnectionID());
-                    GridPoint2 spawnPos = plr.getTeam()==MultiplayerTools.REDTEAM?world.getMap().getRedSpawn():world.getMap().getBluSpawn();
+                    GridPoint2 spawnPos = plr.getTeam()==MultiplayerTools.REDTEAM?world.getWorldMap().getRedSpawn():world.getWorldMap().getBluSpawn();
                     world.setPlayerPos(svEvent.getConnectionID(),spawnPos.x,spawnPos.y);
                     break;
             }
@@ -33,6 +33,7 @@ public class ServerGameInstance {
             sv.quickSendAll(new MultiplayerTools.ServerPlayerPositions(world.getPlayers()));
             sv.quickSendAll(new MultiplayerTools.ServerProjectilePositions(world.getProjectiles()));
             sv.quickSendAll(new MultiplayerTools.ServerFlagPositions(world.getFlags()));
+            sv.quickSendAll(new MultiplayerTools.ServerRespawnTimes(world.getRespawnTimers()));
         }
 
         frameCount++;
