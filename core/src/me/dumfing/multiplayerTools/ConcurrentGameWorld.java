@@ -257,7 +257,7 @@ public class ConcurrentGameWorld {
                 pIn.setvX(-WALKSPEED/2f);
             }
             pIn.setFacingDirection(0);
-            pIn.setMouseAngle(MathUtils.clamp(pIn.getMouseAngle(),89,269));
+            pIn.setMouseAngle(MathUtils.clamp(pIn.getMouseAngle(),91,269));
         }
         else if(keyDown(keys,MultiplayerTools.Keys.D)){
             if(pIn.collisions[1]) {
