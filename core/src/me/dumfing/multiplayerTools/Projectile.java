@@ -22,16 +22,18 @@ public class Projectile {
     private float angle = 0;
     private int projectileType = 0;
     private int attackerTeam = REDTEAM;
+    private int caster = -1; // the player that fired the projectile
     int physicsParent = -1; //upon hitting a player, the arrow will inherit all of their velocities
     //0 for arrow
     public Projectile(){}
-    public Projectile(float x, float y,float speed, float angle, int type, int attackerTeam){
+    public Projectile(float x, float y,float speed, float angle, int type, int attackerTeam, int caster){
         this.x = x;
         this.y = y;
         this.vX = speed*(float) Math.cos(Math.toRadians(angle));
         this.vY = speed*(float) Math.sin(Math.toRadians(angle));
         this.projectileType = type;
         this.attackerTeam = attackerTeam;
+        this.caster = caster;
     }
     public void checkCollisions(LinkedList<PlayerSoldier> players, WorldMap world) {
         timeAlive++;

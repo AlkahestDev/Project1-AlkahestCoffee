@@ -47,6 +47,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static WorldMap[] worldMaps;
 	public static final int DEBUGWORLD = 0;
 	ClientGameInstance gameInstance;
+	ParticleEffect bloodEffect;
+	ParticleEffectPool bloodEffectPool;
 	@Override
 	public void create () {
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("mouseCursorTemp.png")),0,0));
@@ -80,7 +82,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		batch.setProjectionMatrix(camera.combined);
 		menu = new UniversalClientMenu(fontCaches,assetManager,camera);
 		Gdx.input.setInputProcessor(this);
-
 		//offline setup things
 		clientSoldier.setPos(1,6);
 		clientSoldier.setCurrentClass(0);
@@ -270,17 +271,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public void assignValues(){
 		tuzki = assetManager.get("tuzki.png");
 		menuImg = assetManager.get("simpleBG.png");
-
+        bloodEffect = assetManager.get("Particles/hitBlood");
+        bloodEffectPool = new ParticleEffectPool(bloodEffect,4,8); // the max capacity only needs to be 4 (8 players, 4 attacking at a time) but there are enough effects for everyone to bleed
 		state = GameState.State.MAINMENU;
 	}
 	public void queueLoading(){ // queue files for assetManager to load
 		//Sticking random things to load into the assetmanager to see how long it'll take to load
 		assetManager.load("tuzki.png",Texture.class);
-		/*assetManager.load("Desktop.jpg",Texture.class);
-		assetManager.load("4k-image-santiago.jpg",Texture.class);
-		assetManager.load("4914003-galaxy-wallpaper-png.png",Texture.class);
-		assetManager.load("volcano-30238.png",Texture.class);
-		//assetManager.load("fonts/dagger40.fnt",BitmapFont.class);*/
 		assetManager.load("simpleBG.png",Texture.class);
 		assetManager.load("simpleBGB.png",Texture.class);
 		assetManager.load("menubackdrops/canvas.png",Texture.class);
@@ -300,6 +297,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		assetManager.load("SpriteSheets/FlagSprites.atlas",TextureAtlas.class);
 		assetManager.load("Particles/RedFlagCap",ParticleEffect.class);
 		assetManager.load("Particles/BluFlagCap",ParticleEffect.class);
+		assetManager.load("Particles/hitBlood",ParticleEffect.class);
 		for(int i = 1; i<10; i++){
 			assetManager.load(String.format("archive/L%d.png",i),Texture.class);
 			assetManager.load(String.format("archive/R%d.png",i),Texture.class);

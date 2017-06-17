@@ -45,7 +45,7 @@ public class MultiplayerClient {
     LinkedList<Projectile> projectiles = new LinkedList<Projectile>();
     private HashMap<Integer, PlayerSoldier> players = new HashMap<Integer, PlayerSoldier>();
     CaptureFlag[] flags = new CaptureFlag[2];
-    LinkedList<Vector2> respawnTimes = new LinkedList<Vector2>();
+    LinkedList<GridPoint2> respawnTimes = new LinkedList<GridPoint2>();
     private boolean findingServers = false;
     private Client playerClient;
     private HashMap<String, MultiplayerTools.ServerSummary> serverSummaries;
@@ -330,7 +330,7 @@ public class MultiplayerClient {
         return projectiles;
     }
 
-    public LinkedList<Vector2> getRespawnTimes() {
+    public LinkedList<GridPoint2> getRespawnTimes() {
         return respawnTimes;
     }
 

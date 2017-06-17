@@ -25,13 +25,13 @@ public class ConcurrentGameWorld {
     private LinkedList<Projectile> projectiles = new LinkedList<Projectile>();
     private CaptureFlag[] flags = new CaptureFlag[2];
     private int[] score = new int[2];
-    private LinkedList<Vector2> respawnTimers = new LinkedList<Vector2>(); // a linkedlist of vector2's with the x's as id's and y's as time. 0 means they should respawn
-
+    private LinkedList<GridPoint2> respawnTimers = new LinkedList<GridPoint2>(); // a linkedlist of GridPoint2's with the x's as id's and y's as time. 0 means they should respawn
+    private LinkedList<GridPoint2> hits= new LinkedList<GridPoint2>();  // LinkedList of GridPoint2's with the x as the attacker's id and the y as the defender's
     /**
      * Gets the respawn timeers from the world
      * @return A LinkedList of Vector2 respawn timers
      */
-    public LinkedList<Vector2> getRespawnTimers() {
+    public LinkedList<GridPoint2> getRespawnTimers() {
         return respawnTimers;
     }
 
@@ -39,7 +39,7 @@ public class ConcurrentGameWorld {
      * Used to update the respawn timers from the MultiplayerClient
      * @param respawnTimers The most up to date LinkedList of respawn timers from the MultiplayerClient
      */
-    public void setRespawnTimers(LinkedList<Vector2> respawnTimers) {
+    public void setRespawnTimers(LinkedList<GridPoint2> respawnTimers) {
         this.respawnTimers = respawnTimers;
     }
 
@@ -101,9 +101,9 @@ public class ConcurrentGameWorld {
                 flag.resetPos(worldMap);
             }
         }
-        for(Vector2 timePair : respawnTimers){
-            if((int)timePair.y<=0){ // if the respawn time is over
-                players.get((int)timePair.x).setAlive(true); // set the respective player alive
+        for(GridPoint2 timePair : respawnTimers){
+            if(timePair.y<=0){ // if the respawn time is over
+                players.get(timePair.x).setAlive(true); // set the respective player alive
                 respawnTimers.remove(timePair); // remove the time pair
             }
             else{
@@ -177,7 +177,8 @@ public class ConcurrentGameWorld {
 
         // Checking if player collides with any other player
         Rectangle attackRect = new Rectangle(attacker.getX()+(attacker.getFacingDirection()==0?-0.7f:1),attacker.getY()+0.5f,0.7f,0.5f); // TODO: tweak this to line up with the animations better
-        for (PlayerSoldier target : players.values()){
+        for (Integer k: players.keySet()){
+            PlayerSoldier target = players.get(k);
             if (target != attacker){
                 System.out.println("check "+attacker.getFrameIndex());
                 if (attacker.getFrameIndex() == AnimationManager.ATTACKFRAME && attackRect.overlaps(target.getRect())){  // Maybe its  2 frame where the damage may be done?
@@ -192,6 +193,11 @@ public class ConcurrentGameWorld {
                         attacker.attack(target);
                     }*/
                     System.out.println("BANG");
+                    for(Integer v : players.keySet()){
+                        if(players.get(v) == attacker){
+                            hits.add(new GridPoint2(v,k));
+                        }
+                    }
                     attacker.attack(target); // always will attack because the attack rectangle is left or right of the player already
                 }
             }
@@ -202,7 +208,7 @@ public class ConcurrentGameWorld {
     public void updatePlayerKeys(Integer cID, MultiplayerTools.ClientControlObject[] keys){
         players.get(cID).setKeysHeld(keys);
     }
-    public void updateRespawnTimes(LinkedList<Vector2> times){
+    public void updateRespawnTimes(LinkedList<GridPoint2> times){
         this.respawnTimers = times;
     }
     public void updatePlayers(HashMap<Integer, PlayerSoldier> newInfo){
@@ -309,7 +315,11 @@ public class ConcurrentGameWorld {
         }
         if(!keyDown(keys, Keys.LMB)) {
             if (pIn.isDrawingBow() && pIn.getBowDrawTime() > 20) {
-                projectiles.add(new Projectile(pIn.getX() + pIn.getWidth() / 2f, pIn.getY() + pIn.getHeight() / 2f, Math.min(2, (float) pIn.getBowDrawTime() / 30f), pIn.getMouseAngle(), 0, pIn.getTeam()));
+                for(Integer v : players.keySet()){
+                    if(players.get(v) == pIn){
+                        projectiles.add(new Projectile(pIn.getX() + pIn.getWidth() / 2f, pIn.getY() + pIn.getHeight() / 2f, Math.min(2, (float) pIn.getBowDrawTime() / 30f), pIn.getMouseAngle(), 0, pIn.getTeam(),v));
+                    }
+                }
             }
             pIn.setDrawingBow(false);
             pIn.setBowDrawTime(0);
@@ -370,7 +380,7 @@ public class ConcurrentGameWorld {
         players.get(k).setPos(spawnPos);
         players.get(k).setAlive(false);
         players.get(k).reset();
-        respawnTimers.add(new Vector2(k,180));
+        respawnTimers.add(new GridPoint2(k,180));
     }
 
 }

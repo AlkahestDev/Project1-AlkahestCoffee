@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MenuTools;
@@ -306,8 +307,8 @@ public class ClientGameInstance implements InputProcessor{
             timeRemaining = playWorld.getRespawnTimers().get(0).y;
         }
         else {
-            for (Vector2 timePair : playWorld.getRespawnTimers()) {
-                if ((int) timePair.x == client.getConnectionID()) {
+            for (GridPoint2 timePair : playWorld.getRespawnTimers()) {
+                if ( timePair.x == client.getConnectionID()) {
                     timeRemaining = timePair.y;
                 }
             }

@@ -1,5 +1,6 @@
 package me.dumfing.multiplayerTools;
 
+import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryo.Kryo;
@@ -38,7 +39,7 @@ public class MultiplayerTools {
     public static void register(EndPoint endpoint){
         Kryo serializer = endpoint.getKryo();
         //Can't register Connection so will have to switch with Integer
-        serializer.register(Vector2.class);
+        serializer.register(GridPoint2.class);
         serializer.register(HashMap.class);
         serializer.register(LinkedList.class);
         serializer.register(Rectangle.class);
@@ -82,16 +83,16 @@ public class MultiplayerTools {
         }
     }
     public static class ServerRespawnTimes{
-        LinkedList<Vector2> times;
+        LinkedList<GridPoint2> times;
 
         public ServerRespawnTimes() {
         }
 
-        public ServerRespawnTimes(LinkedList<Vector2> times) {
+        public ServerRespawnTimes(LinkedList<GridPoint2> times) {
             this.times = times;
         }
 
-        public LinkedList<Vector2> getTimes() {
+        public LinkedList<GridPoint2> getTimes() {
             return times;
         }
     }
