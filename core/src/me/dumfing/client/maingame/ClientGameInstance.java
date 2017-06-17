@@ -104,7 +104,7 @@ public class ClientGameInstance implements InputProcessor{
         for(PlayerSoldier p : playWorld.getPlayers().values()){
             //DrawTools.rec(renderer,p.getRect());
             if(p.isAlive()) {
-                p.draw(batch, clientSoldier().equals(p));
+                p.draw(batch);
                 if (clientSoldier().equals(p)) {
                     batch.draw(p.getTeam() == 0 ? redArrow : blueArrow, p.getX() + 0.3f, p.getY() + 2.1f, 0.4f, 0.4f);
                 }
