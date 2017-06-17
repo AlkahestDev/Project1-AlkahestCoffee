@@ -68,7 +68,7 @@ public class Projectile {
             }
         }
         else {//TODO: figure out why arrows are being destroyed when they hit players
-            if(players.size() <physicsParent||players.get(physicsParent) == null||!players.get(physicsParent).isAlive()){
+            if(players.size()-1 <physicsParent||players.get(physicsParent) == null||!players.get(physicsParent).isAlive()){
                 this.timeAlive = MAXLIFETIME;
             }
             else {

@@ -190,7 +190,7 @@ public class PlayerSoldier {
      * @param batch
      * @param isPlayer If this PlayerSoldier is the PlayerSoldier the client is viewing
      */
-    public void draw(SpriteBatch batch, boolean isPlayer){
+    public void draw(SpriteBatch batch){
         TextureRegion drawFrame = (TextureRegion) getAnimation().getKeyFrame(this.animationTime);
         float trW = drawFrame.getRegionWidth();
         float trH = drawFrame.getRegionHeight();

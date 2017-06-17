@@ -75,12 +75,13 @@ public class ConcurrentGameWorld {
             p.update(deltaTime);
             detectCollisions(p);
             handleCollisions(p);
-            handleAttacks(p);
+            //handleAttacks(p);
             p.move();
             if(p.getMouseAngle()> 90 && p.getMouseAngle()<270){
                 p.setFacingDirection(0);
             }
             else {
+                System.out.println("mR");
                 p.setFacingDirection(1);
             }
         }
@@ -178,6 +179,7 @@ public class ConcurrentGameWorld {
         Rectangle attackRect = new Rectangle(attacker.getX()+(attacker.getFacingDirection()==0?-0.7f:1),attacker.getY()+0.5f,0.7f,0.5f); // TODO: tweak this to line up with the animations better
         for (PlayerSoldier target : players.values()){
             if (target != attacker){
+                System.out.println("check "+attacker.getFrameIndex());
                 if (attacker.getFrameIndex() == AnimationManager.ATTACKFRAME && attackRect.overlaps(target.getRect())){  // Maybe its  2 frame where the damage may be done?
                     // Attacking Left
                     /*if (target.getX() < attacker.getX() && attacker.getFacingDirection() == 0){
@@ -258,6 +260,7 @@ public class ConcurrentGameWorld {
             }
             pIn.setFacingDirection(0);
             pIn.setMouseAngle(MathUtils.clamp(pIn.getMouseAngle(),89,269));
+            System.out.println(pIn.getMouseAngle());
         }
         else if(keyDown(keys,MultiplayerTools.Keys.D)){
             if(pIn.collisions[1]) {

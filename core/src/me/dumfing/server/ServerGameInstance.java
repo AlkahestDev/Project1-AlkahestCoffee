@@ -28,7 +28,7 @@ public class ServerGameInstance {
                     break;
             }
         }
-        if(frameCount == 3){ // 2 gets an interesting 30hz
+        if(frameCount >= 2){ // 2 gets an interesting 30hz
             frameCount = 0;
             sv.quickSendAll(new MultiplayerTools.ServerPlayerPositions(world.getPlayers()));
             sv.quickSendAll(new MultiplayerTools.ServerProjectilePositions(world.getProjectiles()));
