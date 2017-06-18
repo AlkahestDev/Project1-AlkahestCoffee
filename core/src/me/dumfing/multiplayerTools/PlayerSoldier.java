@@ -104,7 +104,6 @@ public class PlayerSoldier {
     }
 
     public int getAnimationID() {
-        //System.out.println(animationID|facingDirection);
         return animationID|this.facingDirection;
     }
 
@@ -188,7 +187,6 @@ public class PlayerSoldier {
     /**
      * Draws the PlayerSoldier
      * @param batch
-     * @param isPlayer If this PlayerSoldier is the PlayerSoldier the client is viewing
      */
     public void draw(SpriteBatch batch){
         TextureRegion drawFrame = (TextureRegion) getAnimation().getKeyFrame(this.animationTime);
@@ -361,29 +359,7 @@ public class PlayerSoldier {
     }
 
     public String toString() {
-        return "PlayerSoldier{" +
-                "health=" + health +
-                ", maxHealth=" + maxHealth +
-                ", animationID=" + animationID +
-                ", team=" + team +
-                ", pickedClass=" + pickedClass +
-                ", facingDirection=" + facingDirection +
-                ", bowDrawTime=" + bowDrawTime +
-                ", canJump=" + canJump +
-                ", drawingBow=" + drawingBow +
-                ", keysHeld=" + Arrays.toString(keysHeld) +
-                ", playerArea=" + playerArea +
-                ", vX=" + vX +
-                ", vY=" + vY +
-                ", animationTime=" + animationTime +
-                ", name='" + name + '\'' +
-                ", swinging=" + swinging +
-                ", stabbing=" + stabbing +
-                ", shielding=" + shielding +
-                ", swingDamage=" + swingDamage +
-                ", stabDamage=" + stabDamage +
-                ", collisions=" + Arrays.toString(collisions) +
-                '}';
+        return name;
     }
 
     public int getBowDrawTime() {

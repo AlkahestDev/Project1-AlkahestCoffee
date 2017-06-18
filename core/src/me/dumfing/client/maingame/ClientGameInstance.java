@@ -6,10 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
@@ -37,6 +34,7 @@ public class ClientGameInstance implements InputProcessor{
     private boolean onlineMode = true;
     private MenuBox gameInfoBox;
     private static float HEALTH_BAR_HEIGHT = 40;
+    Array<ParticleEffectPool.PooledEffect> effects = new Array<ParticleEffectPool.PooledEffect>();
     public ClientGameInstance(MultiplayerClient gameClient, HashMap<Integer, PlayerSoldier> players, OrthographicCamera camera, AssetManager manager, Array<BitmapFontCache> fonts){
         this.gameClient = gameClient;
         this.fonts = fonts;
@@ -92,6 +90,20 @@ public class ClientGameInstance implements InputProcessor{
         playWorld.updatePlayerKeys(onlineMode?gameClient.getConnectionID():0, keysDown);
         gameInfoBox.update();
         playWorld.update();
+        for(GridPoint2 hit : playWorld.getHits()){
+            PlayerSoldier hitPlayer = playWorld.getPlayers().get(hit.y);
+            addBloodParticle(hitPlayer.getX()+hitPlayer.getWidth()/2f,hitPlayer.getY()+hitPlayer.getHeight()/2f);
+        }
+        playWorld.clearHits();
+        for(Projectile arrow : playWorld.getProjectiles()){
+            if(!arrow.isParticlesStarted() && arrow.isHit()){
+                if(arrow.getAttackPair().y!=-1) {
+                    PlayerSoldier hitTarget = playWorld.getPlayers().get(arrow.getAttackPair().y);
+                    addBloodParticle(hitTarget.getX()+hitTarget.getWidth()/2f, hitTarget.getY()+hitTarget.getHeight()/2f);
+                    arrow.setParticlesStarted(true);
+                }
+            }
+        }
     }
     public PlayerSoldier getPlayer(int connectionID){
         return playWorld.getPlayers().get(connectionID);
@@ -116,6 +128,13 @@ public class ClientGameInstance implements InputProcessor{
                 case 0:
                     proj.draw(batch,arrowTexture);
                     break;
+            }
+        }
+        for(ParticleEffectPool.PooledEffect effectTemp : effects){
+            effectTemp.draw(batch,Gdx.graphics.getDeltaTime());
+            if(effectTemp.isComplete()){
+                effectTemp.free();
+                effects.removeValue(effectTemp,true);
             }
         }
         playWorld.getWorldMap().draw(batch);
@@ -355,5 +374,10 @@ public class ClientGameInstance implements InputProcessor{
     private void setupGameInfoBox(){
         gameInfoBox = new MenuBox(Gdx.graphics.getWidth()-200,Gdx.graphics.getHeight()-50,200,50,fonts);
         gameInfoBox.setBackground(MenuTools.mGTR("simpleBG.png",manager));
+    }
+    public void addBloodParticle(float x, float y){
+        ParticleEffectPool.PooledEffect effectTemp = bloodEffectPool.obtain();
+        effectTemp.setPosition(x,y);
+        effects.add(effectTemp);
     }
 }

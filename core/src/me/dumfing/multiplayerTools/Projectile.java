@@ -2,7 +2,9 @@ package me.dumfing.multiplayerTools;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.GridPoint2;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import static me.dumfing.multiplayerTools.MultiplayerTools.GRAVITY;
@@ -24,6 +26,7 @@ public class Projectile {
     private int attackerTeam = REDTEAM;
     private int caster = -1; // the player that fired the projectile
     int physicsParent = -1; //upon hitting a player, the arrow will inherit all of their velocities
+    boolean particlesStarted = false;
     //0 for arrow
     public Projectile(){}
     public Projectile(float x, float y,float speed, float angle, int type, int attackerTeam, int caster){
@@ -35,7 +38,7 @@ public class Projectile {
         this.attackerTeam = attackerTeam;
         this.caster = caster;
     }
-    public void checkCollisions(LinkedList<PlayerSoldier> players, WorldMap world) {
+    public void checkCollisions(HashMap<Integer,PlayerSoldier> players, WorldMap world) {
         timeAlive++;
         if (physicsParent == -1) {
             float hyp = (float) Math.hypot(this.vX, this.vY);
@@ -44,8 +47,8 @@ public class Projectile {
             for (float i = 0; i < hyp; i += CHECKRES) {
                 float checkX = xAmt * i;
                 float checkY = yAmt * i;
-                int playerIndex = 0;
-                for (PlayerSoldier player : players) {
+                for (Integer k : players.keySet()) {
+                    PlayerSoldier player = players.get(k);
                     if (player.getTeam() != this.attackerTeam && player.getRect().contains(x + checkX, y + checkY)) {
                         this.x += checkX;
                         this.y += checkY;
@@ -53,10 +56,9 @@ public class Projectile {
                         this.vX = 0;
                         this.vY = 0;
                         isHit = true;
-                        physicsParent = playerIndex;
-                        break;
+                        physicsParent = k;
+                        return;
                     }
-                    playerIndex++;
                 }
                 if (!isHit && ((world.getPosId(Math.round(x + checkX), (int) (y + checkY + 1)) == 0x000001FF)||(world.getPosId(Math.round(x + checkX), (int) (y + checkY + 1)) ==(this.attackerTeam==0?0x00FFFFFF:0xFFFF00FF)))) {
                     //TODO: action when collided
@@ -65,7 +67,7 @@ public class Projectile {
                     this.vX = 0;
                     this.vY = 0;
                     isHit = true;
-                    break;
+                    return;
                 }
             }
         }
@@ -115,5 +117,20 @@ public class Projectile {
                 ", projectileType=" + projectileType +
                 ", attackerTeam=" + attackerTeam +
                 '}';
+    }
+    public GridPoint2 getAttackPair(){ // returns the caster and physicsparent (player who is hit by arrow)
+        return new GridPoint2(caster,physicsParent);
+    }
+
+    public boolean isParticlesStarted() {
+        return particlesStarted;
+    }
+
+    public boolean isHit() {
+        return isHit;
+    }
+
+    public void setParticlesStarted(boolean particlesStarted) {
+        this.particlesStarted = particlesStarted;
     }
 }

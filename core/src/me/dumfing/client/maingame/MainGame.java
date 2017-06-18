@@ -48,7 +48,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static final int DEBUGWORLD = 0;
 	ClientGameInstance gameInstance;
 	ParticleEffect bloodEffect;
-	ParticleEffectPool bloodEffectPool;
+	public static ParticleEffectPool bloodEffectPool;
 	@Override
 	public void create () {
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("mouseCursorTemp.png")),0,0));

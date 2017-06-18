@@ -86,7 +86,7 @@ public class ConcurrentGameWorld {
             }
         }
         for(Projectile proj : projectiles){
-            proj.checkCollisions(new LinkedList<PlayerSoldier>(getLivingPlayers().values()), worldMap);
+            proj.checkCollisions(getLivingPlayers(), worldMap);
         }
         for(int i = projectiles.size()-1;i>-1;i--){
             if(projectiles.get(i).getTimeAlive() >= Projectile.MAXLIFETIME){
@@ -383,4 +383,10 @@ public class ConcurrentGameWorld {
         respawnTimers.add(new GridPoint2(k,180));
     }
 
+    public LinkedList<GridPoint2> getHits() {
+        return hits;
+    }
+    public void clearHits(){
+        hits.clear();
+    }
 }
