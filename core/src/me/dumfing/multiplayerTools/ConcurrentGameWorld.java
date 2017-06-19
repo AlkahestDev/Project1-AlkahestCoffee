@@ -341,6 +341,7 @@ public class ConcurrentGameWorld {
                     // On the ground, not moving
                     if (pIn.collisions[1] && !keyDown(keys,MultiplayerTools.Keys.D) && !keyDown(keys,MultiplayerTools.Keys.A)){
                         pIn.swinging = true;
+                        //animation+=AnimationManager.ATTACK;
                         handleAttacks(pIn);
 
                     }
@@ -357,6 +358,7 @@ public class ConcurrentGameWorld {
                         System.out.printf("draw amount: %d\n",pIn.getBowDrawTime());
                         pIn.setBowDrawTime(pIn.getBowDrawTime()+1);
                         pIn.setDrawingBow(true);
+                        animation+=AnimationManager.ATTACK;
                     }
                     break;
             }
@@ -365,7 +367,7 @@ public class ConcurrentGameWorld {
             if (pIn.isDrawingBow() && pIn.getBowDrawTime() > 20) {
                 for(Integer v : players.keySet()){
                     if(players.get(v) == pIn){
-                        projectiles.add(new Projectile(pIn.getX() + pIn.getWidth() / 2f, pIn.getY() + pIn.getHeight() / 2f, Math.min(2, (float) pIn.getBowDrawTime() / 30f), pIn.getMouseAngle(), 0, pIn.getTeam(),v));
+                        projectiles.add(new Projectile(pIn.getX() + pIn.getWidth() / 2f, pIn.getY() + pIn.getHeight() / 2f, Math.min(2, (float) pIn.getBowDrawTime() / 45f), pIn.getMouseAngle(), 0, pIn.getTeam(),v));
                     }
                 }
             }
