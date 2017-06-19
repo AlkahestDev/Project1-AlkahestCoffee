@@ -14,10 +14,13 @@ public class AnimationManager {
     private static final float ATTACKFRAMETIME = 0.025f;
     private static final float FLAGFRAMETIME = 0.1f;
     private static final float WALKATTACKFRAMETIME = 0.04f;
+    private static final float BOWDRAWFRAMETIME = 0.6f;
     public static Animation[][][] redPlayer;
     public static Animation[][][] bluPlayer;
     public static Animation[] redFlag;
     public static Animation[] bluFlag;
+    public static Animation[] archerDrawLeft;
+    public static Animation[] archerDrawRight;
     public static void init(AssetManager manager){
 
         // Atlas
@@ -112,22 +115,22 @@ public class AnimationManager {
         Animation<TextureRegion> bluPlayerIdleRightArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("irbpa"), Animation.PlayMode.LOOP);
 
         // Archer IdleLegs
-        Animation<TextureRegion> redPlayerIdleLegsLeftArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("lilrpa"), Animation.PlayMode.LOOP);
-        Animation<TextureRegion> redPlayerIdleLegsRightArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("lirrpa"), Animation.PlayMode.LOOP);
-        Animation<TextureRegion> bluPlayerIdleLegsLeftArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("lilbpa"), Animation.PlayMode.LOOP);
-        Animation<TextureRegion> bluPlayerIdleLegsRightArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("lirbpa"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> redPlayerIdleLegsLeftArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("illrpa"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> redPlayerIdleLegsRightArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("ilrrpa"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> bluPlayerIdleLegsLeftArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("illbpa"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> bluPlayerIdleLegsRightArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("ilrbpa"), Animation.PlayMode.LOOP);
 
         // Archer WalkingLegs
-        Animation<TextureRegion> redPlayerWalkingLegsLeftArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("llrpa"), Animation.PlayMode.LOOP);
-        Animation<TextureRegion> redPlayerWalkingLegsRightArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("lrrpa"), Animation.PlayMode.LOOP);
-        Animation<TextureRegion> bluPlayerWalkingLegsLeftArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("llbpa"), Animation.PlayMode.LOOP);
-        Animation<TextureRegion> bluPlayerWalkingLegsRightArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("lrbpa"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> redPlayerWalkingLegsLeftArcher = new Animation<TextureRegion>(WALKINGFRAMETIME, archerSprites.findRegions("wl1lrpa"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> redPlayerWalkingLegsRightArcher = new Animation<TextureRegion>(WALKINGFRAMETIME, archerSprites.findRegions("wl1rrpa"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> bluPlayerWalkingLegsLeftArcher = new Animation<TextureRegion>(WALKINGFRAMETIME, archerSprites.findRegions("wl1lbpa"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> bluPlayerWalkingLegsRightArcher = new Animation<TextureRegion>(WALKINGFRAMETIME, archerSprites.findRegions("wl1rbpa"), Animation.PlayMode.LOOP);
 
         // Archer PullBack
-        Animation<TextureRegion> redPlayerPullBackLeftArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("flrpa"), Animation.PlayMode.LOOP);
-        Animation<TextureRegion> redPlayerPullBackRightArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("frrpa"), Animation.PlayMode.LOOP);
-        Animation<TextureRegion> bluPlayerPullBackLeftArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("flbpa"), Animation.PlayMode.LOOP);
-        Animation<TextureRegion> bluPlayerPullBackRightArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("frbpa"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> redPlayerPullBackLeftArcher = new Animation<TextureRegion>(BOWDRAWFRAMETIME, archerSprites.findRegions("flrpa"), Animation.PlayMode.NORMAL);
+        Animation<TextureRegion> redPlayerPullBackRightArcher = new Animation<TextureRegion>(BOWDRAWFRAMETIME, archerSprites.findRegions("frrpa"), Animation.PlayMode.NORMAL);
+        Animation<TextureRegion> bluPlayerPullBackLeftArcher = new Animation<TextureRegion>(BOWDRAWFRAMETIME, archerSprites.findRegions("flbpa"), Animation.PlayMode.NORMAL);
+        Animation<TextureRegion> bluPlayerPullBackRightArcher = new Animation<TextureRegion>(BOWDRAWFRAMETIME, archerSprites.findRegions("frbpa"), Animation.PlayMode.NORMAL);
 
         // Flags
         Animation<TextureRegion> redFlagLeft = new Animation<TextureRegion>(FLAGFRAMETIME,flagSprites.findRegions("rFlagL"), Animation.PlayMode.LOOP);
@@ -137,8 +140,10 @@ public class AnimationManager {
 
         redFlag = new Animation[]{redFlagLeft,redFlagRight};
         bluFlag= new Animation[]{bluFlagLeft,bluFlagRight};
-        redPlayer = new Animation[][][]{{{redPlayerWalkLeftKnight,redPlayerWalkLeftArcher},null,null,{redPlayerAttackLeftKnight,null}, {redPlayerIdleLeftKnight,redPlayerIdleLeftArcher},{redPlayerWalkAttackLeftKnight,null}},{{redPlayerWalkRightKnight,redPlayerWalkRightArcher},null,null,{redPlayerAttackRightKnight,null}, {redPlayerIdleRightKnight,redPlayerIdleRightArcher},{redPlayerWalkAttackRightKnight,null}}};
-        bluPlayer = new Animation[][][]{{{bluPlayerWalkLeftKnight,bluPlayerWalkLeftArcher},null,null,{bluPlayerAttackLeftKnight,null}, {bluPlayerIdleLeftKnight,bluPlayerIdleLeftArcher},{bluPlayerWalkAttackLeftKnight,null}},{{bluPlayerWalkRightKnight,bluPlayerWalkRightArcher},null,null,{bluPlayerAttackRightKnight,null  }, {bluPlayerIdleRightKnight,bluPlayerIdleRightArcher},{bluPlayerWalkAttackRightKnight,null}}};
+        archerDrawLeft = new Animation[]{redPlayerPullBackLeftArcher,bluPlayerPullBackLeftArcher};
+        archerDrawRight = new Animation[]{redPlayerPullBackRightArcher,bluPlayerPullBackRightArcher};
+        redPlayer = new Animation[][][]{{{redPlayerWalkLeftKnight,redPlayerWalkLeftArcher},null,null,{redPlayerAttackLeftKnight,redPlayerIdleLegsLeftArcher}, {redPlayerIdleLeftKnight,redPlayerIdleLeftArcher},{redPlayerWalkAttackLeftKnight,redPlayerWalkingLegsLeftArcher}},{{redPlayerWalkRightKnight,redPlayerWalkRightArcher},null,null,{redPlayerAttackRightKnight,redPlayerIdleLegsRightArcher}, {redPlayerIdleRightKnight,redPlayerIdleRightArcher},{redPlayerWalkAttackRightKnight,redPlayerWalkingLegsRightArcher}}};
+        bluPlayer = new Animation[][][]{{{bluPlayerWalkLeftKnight,bluPlayerWalkLeftArcher},null,null,{bluPlayerAttackLeftKnight,bluPlayerIdleLegsLeftArcher}, {bluPlayerIdleLeftKnight,bluPlayerIdleLeftArcher},{bluPlayerWalkAttackLeftKnight,bluPlayerWalkingLegsLeftArcher}},{{bluPlayerWalkRightKnight,bluPlayerWalkRightArcher},null,null,{bluPlayerAttackRightKnight,bluPlayerIdleLegsRightArcher}, {bluPlayerIdleRightKnight,bluPlayerIdleRightArcher},{bluPlayerWalkAttackRightKnight,bluPlayerWalkingLegsRightArcher}}};
     }
 
     /**

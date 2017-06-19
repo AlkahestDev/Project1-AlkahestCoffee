@@ -4,9 +4,11 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
 import java.util.Arrays;
+import java.util.Map;
 
 public class PlayerSoldier {
     //Arrow drawing will work by having a counter that increases as the mouse is down. If drawingBow is true and the mouse is up the arrow will be fired, and the counter will be set to 0
@@ -221,35 +223,39 @@ public class PlayerSoldier {
         float trH = drawFrame.getRegionHeight();
         float ratio = trW/trH;
         //if((this.getAnimationID()&AnimationManager.ISATTACK) == AnimationManager.ATTACK){
-        switch(this.getCurrentClass()) {
-            case KNIGHT:
+        //switch(this.getCurrentClass()) {
+        //    case KNIGHT:
              if (this.getFacingDirection() == 0) {
                  batch.draw(drawFrame, this.getX() - 0.84f, this.getY(), this.getHeight() * ratio + 0.14f, this.getHeight() + 0.13f);
              } else {
                  batch.draw(drawFrame, this.getX() - 0.22f, this.getY(), this.getHeight() * ratio + 0.14f, this.getHeight() + 0.13f); // add 0.1 because the attacking sprites are 4 FCKING PIXELS TALLER THAN THE STANDING SPRITES
                }
-            break;
-            case ARCHER:
-                if (this.getFacingDirection() == 0) {
-                    batch.draw(drawFrame, this.getX() -0.28f, this.getY(), this.getHeight() * ratio + 0.14f, this.getHeight() + 0.13f);
-                } else {
-                    batch.draw(drawFrame, this.getX() - 0.22f, this.getY(), this.getHeight() * ratio + 0.14f, this.getHeight() + 0.13f); // add 0.1 because the attacking sprites are 4 FCKING PIXELS TALLER THAN THE STANDING SPRITES
-                }
                 if(this.isDrawingBow()){ // bow drawing animation
+                    System.out.println(this.facingDirection);
+                    float limAng = getMouseAngle();
+                    //if((this.getAnimationID()&AnimationManager.ISWALKING) == AnimationManager.WALK){
+                       if(this.getFacingDirection()==0){
+                           limAng = MathUtils.clamp(limAng,160,200); // negative x part of circle
+                       }
+                       else{
+                           if(limAng > 0 && limAng<90){
+                               System.out.println("x+ y+");
+                               limAng = MathUtils.clamp(limAng,0,20); //positive x, positive y part of circle
+                           }
+                           else if(limAng>=270){
+                               System.out.println("x+ y-");
+                               limAng = MathUtils.clamp(limAng,340,360); //positive x, negative y part of circle
+                           }
+                       }
+                    //}
                     if(this.getFacingDirection() == 0) {
-                        batch.draw((TextureRegion) AnimationManager.bluFlag[0].getKeyFrame((float)bowDrawTime/30f), this.getX() - 0.28f, this.getY() + this.getHeight() / 2, 1, 0.5f, 2, 1, 1, 1, this.getMouseAngle());
+                        batch.draw((TextureRegion) AnimationManager.archerDrawLeft[this.getTeam()].getKeyFrame((float)bowDrawTime/30f), this.getX() - 0.85f, this.getY()+0.1f, 1.1f, 0.6f, 2, 2, 1, 1, 180+limAng);
                     }
                     else {
-                        batch.draw((TextureRegion) AnimationManager.bluFlag[0].getKeyFrame((float)bowDrawTime/30f), this.getX() - 0.22f, this.getY() + this.getHeight() / 2, 1, 0.5f, 2, 1, 1, 1, this.getMouseAngle());// add 0.1 because the attacking sprites are 4 FCKING PIXELS TALLER THAN THE STANDING SPRITES
+                        batch.draw((TextureRegion) AnimationManager.archerDrawRight[this.getTeam()].getKeyFrame((float)bowDrawTime/30f), this.getX() - 0.22f, this.getY()+0.1f, 0.7f, 0.6f, 2, 2, 1, 1, limAng);// add 0.1 because the attacking sprites are 4 FCKING PIXELS TALLER THAN THE STANDING SPRITES
                     }
                 }
-            break;
         }
-        //}
-        //else {
-        //    batch.draw(drawFrame, this.getX(), this.getY(), this.getHeight()*ratio, this.getHeight());
-        //}
-    }
     public Animation getAnimation(){
         Animation[][][] animationSet;
         if (this.getTeam() == 0) { // red
@@ -258,7 +264,7 @@ public class PlayerSoldier {
             animationSet = AnimationManager.bluPlayer;
         }
         if((this.getAnimationID()&AnimationManager.ISWALKING) == AnimationManager.WALK && (this.getAnimationID()&AnimationManager.ISATTACK)==AnimationManager.ATTACK){
-            return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][5][0]; //TODO: change 0 to this.getCurrentClass when archer sprites are done
+            return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][5][this.getCurrentClass()];
         }
         else if((this.getAnimationID()& AnimationManager.ISWALKING) == AnimationManager.WALK){
             return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][0][this.getCurrentClass()];

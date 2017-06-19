@@ -96,8 +96,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		}
 		if(state == GameState.State.PLAYINGGAME || state == GameState.State.OFFLINEDEBUG){
 //			if(!zoomedIn){
-				System.out.println("CameraZoom "+camera.zoom);
-				System.out.println("zoomin");
 				if(gameInstance == null || gameInstance.clientSoldier().getKeysHeld()[MultiplayerTools.Keys.RMB] == null){
 				    zoomCamera(0.025f);
                 }
@@ -140,7 +138,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					//menu.init();
 					createWorlds();
 					client.pingServers();
-					state = GameState.State.OFFLINEDEBUG;
+					//state = GameState.State.OFFLINEDEBUG;
 
 				}
 				break;

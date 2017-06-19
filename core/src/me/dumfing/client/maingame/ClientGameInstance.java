@@ -14,6 +14,7 @@ import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.menus.MenuBox;
 import me.dumfing.multiplayerTools.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static me.dumfing.client.maingame.MainGame.*;
@@ -35,6 +36,7 @@ public class ClientGameInstance implements InputProcessor{
     private boolean boxOut = false;
     private static float HEALTH_BAR_HEIGHT = 40;
     private Array<ParticleEffectPool.PooledEffect> effects = new Array<ParticleEffectPool.PooledEffect>();
+    private ArrayList<Projectile> effectHandled = new ArrayList<Projectile>(); // the projectiles who's particles have already started
     public ClientGameInstance(MultiplayerClient gameClient, HashMap<Integer, PlayerSoldier> players, OrthographicCamera camera, AssetManager manager, Array<BitmapFontCache> fonts){
         this.gameClient = gameClient;
         this.fonts = fonts;
@@ -75,12 +77,16 @@ public class ClientGameInstance implements InputProcessor{
         for(Projectile arrow : playWorld.getProjectiles()){
             if(!arrow.isParticlesStarted() && arrow.isHit()){
                 if(arrow.getAttackPair().y!=-1) {
-                    PlayerSoldier hitTarget = playWorld.getPlayers().get(arrow.getAttackPair().y);
-                    addBloodParticle(hitTarget.getX()+hitTarget.getWidth()/2f, hitTarget.getY()+hitTarget.getHeight()/2f);
-                    arrow.setParticlesStarted(true);
+                    if(!effectHandled.contains(arrow)) {
+                        PlayerSoldier hitTarget = playWorld.getPlayers().get(arrow.getAttackPair().y);
+                        addBloodParticle(hitTarget.getX() + hitTarget.getWidth() / 2f, hitTarget.getY() + hitTarget.getHeight() / 2f);
+                        arrow.setParticlesStarted(true);
+                        effectHandled.add(arrow);
+                    }
                 }
             }
         }
+        //effectHandled.retainAll(playWorld.getProjectiles());
         if(keyUpdate){
             if(onlineMode) {
                 gameClient.quickSend(new MultiplayerTools.ClientKeysUpdate(keysDown));
