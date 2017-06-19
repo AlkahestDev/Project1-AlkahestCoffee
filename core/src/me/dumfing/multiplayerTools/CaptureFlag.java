@@ -50,12 +50,6 @@ public class CaptureFlag {
                 }
             }
         }
-        if(world.getPosId(Math.round(this.getxPos()), Math.round(this.getyPos()+1))==(this.teamID==0?0x0003FFFF:0xFF0300FF)){
-            this.physicsParent = -1;
-            score[teamID]+=1;
-            resetPos(world);
-            scored = true;
-        }
         this.animationTime+=deltaTime;
 
 

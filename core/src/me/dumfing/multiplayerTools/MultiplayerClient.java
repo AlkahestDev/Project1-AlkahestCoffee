@@ -80,6 +80,7 @@ public class MultiplayerClient {
                 if(GameState.ONLINESTATES.contains(MainGame.state)){
                     MainGame.state = GameState.State.SERVERBROWSER; // go back to the server browser
                 }
+                MainGame.gameStarted = false;
                 super.disconnected(connection);
             }
 

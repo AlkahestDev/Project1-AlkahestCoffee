@@ -38,7 +38,7 @@ public class ClientPickingInfoMenu extends Menu{
         redTeamButton  =new MenuTools.Button(5,5, Gdx.graphics.getWidth()/2-10,Gdx.graphics.getHeight()-10);
         bluTeamButton = new MenuTools.Button(Gdx.graphics.getWidth()/2+5,5,Gdx.graphics.getWidth()/2-10,Gdx.graphics.getHeight()-10);
         knightButton = new MenuTools.Button(5,Gdx.graphics.getHeight(),Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight()/2);
-        archerButton = new MenuTools.Button(10+Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight(),Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight()/2);
+        archerButton = new MenuTools.Button(Gdx.graphics.getWidth()-Gdx.graphics.getWidth()/3-5,Gdx.graphics.getHeight(),Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight()/2);
         redTeamButton.setCallback(new MenuTools.OnClick() {
             @Override
             public void action() {
@@ -99,9 +99,7 @@ public class ClientPickingInfoMenu extends Menu{
         super.addButton(redTeamButton);
         super.addButton(bluTeamButton);
     }
-
-    @Override
-    public void setInputProcessor() {
+    public void resetButtonPosses(){
         if(!inOriginalPosition) {
             redTeamButton.setVelocity(30, 0);
             bluTeamButton.setVelocity(-30, 0);
@@ -111,9 +109,7 @@ public class ClientPickingInfoMenu extends Menu{
             archerButton.setVelocity(0,20);
             inOriginalPosition = true;
         }
-        super.setInputProcessor();
     }
-
     public void updateTeamNumbers(int redTeam, int blueTeam, int rMax, int bMax){
         redTeamNumbers.setText(String.format("%s%d|%d",redTeam>=rMax?"[RED]":"",redTeam,rMax),getFonts());
         bluTeamNumbers.setText(String.format("%s%d|%d",blueTeam>=bMax?"[RED]":"",blueTeam,bMax),getFonts());

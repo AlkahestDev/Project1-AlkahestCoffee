@@ -70,47 +70,48 @@ public class ConcurrentGameWorld {
      */
     public void update(){
         float deltaTime = Gdx.graphics.getDeltaTime();
-        for(PlayerSoldier p : getLivingPlayers().values()){
-            p.setAnimationID(handleKeyInput(p));
-            p.update(deltaTime);
-            detectCollisions(p);
-            handleCollisions(p);
-            //handleAttacks(p);
-            p.move();
-            if(p.getMouseAngle()> 90 && p.getMouseAngle()<270){
-                p.setFacingDirection(0);
+        checkDeaths(); // check to see if anyone should be killed so you don't have to deal with dead people
+        for(PlayerSoldier p : getLivingPlayers().values()){ // iterate through all the players in the list of living players
+            p.setAnimationID(handleKeyInput(p)); // figure out their animation from the keys they are pressing, this also sets their velocities
+            p.update(deltaTime); // update the player for any time based actions they'll need to do
+            detectCollisions(p); // see if the player is hitting anywhere in the world
+            handleCollisions(p); // stop the player from moving if they're hitting anything in the world
+            p.move(); // move the player by their vX and vY
+            if(p.getMouseAngle()> 90 && p.getMouseAngle()<270){ // if the mouse relative to the player is on the left side relative to the player
+                p.setFacingDirection(0); // make the player face left
             }
-            else {
-                System.out.println("mR");
-                p.setFacingDirection(1);
-            }
-        }
-        for(Projectile proj : projectiles){
-            proj.checkCollisions(getLivingPlayers(), worldMap);
-        }
-        for(int i = projectiles.size()-1;i>-1;i--){
-            if(projectiles.get(i).getTimeAlive() >= Projectile.MAXLIFETIME){
-                projectiles.remove(i);
+            else { // if the mouse is on the right side
+                p.setFacingDirection(1); // make player face right
             }
         }
-        for(CaptureFlag flag : flags){
-            flag.update(deltaTime,getLivingPlayers(), worldMap,score);
-            if(worldMap.getPosId(Math.round(flag.getxPos()), Math.round(flag.getyPos()+1))==(flag.getTeamID()==0?0x0003FFFF:0xFF0300FF)){
-                flag.setPhysicsParent(-1);
-                score[flag.getTeamID()]+=1;
+        for(Projectile proj : projectiles){ // iterate through the list of projectiles
+            proj.checkCollisions(getLivingPlayers(), worldMap); // check if the projectile is colliding with anything
+        }
+        for(int i = projectiles.size()-1;i>-1;i--){ // loop in reverse to prepare to remove projectiles from the list
+            if(projectiles.get(i).getTimeAlive() >= Projectile.MAXLIFETIME){ // if the projectile has existed for longer than the designated max lifetime
+                projectiles.remove(i); // remove the projectile from the array if it's lasted too long
+            }
+        }
+        for(CaptureFlag flag : flags){ // iterate through all the flags
+            flag.update(deltaTime,getLivingPlayers(), worldMap,score); // update the flag, checking if it's supposed to move with a player or hit the ground
+            if(worldMap.getPosId(Math.round(flag.getxPos()), Math.round(flag.getyPos()+1))==(flag.getTeamID()==0?0x0003FFFF:0xFF0300FF)){ // if the flag is on the red team, this checks that it's in the blue area and vice versa
+                flag.setPhysicsParent(-1); // reset physics parent to nothing
+                score[1-flag.getTeamID()]+=1; // increase team that is opposite of flag's score
+                flag.setScored(true);
                 flag.resetPos(worldMap);
             }
         }
         for(GridPoint2 timePair : respawnTimers){
             if(timePair.y<=0){ // if the respawn time is over
-                players.get(timePair.x).setAlive(true); // set the respective player alive
+                if(players.get(timePair.x)!=null) {
+                    players.get(timePair.x).setAlive(true); // set the respective player alive
+                }
                 respawnTimers.remove(timePair); // remove the time pair
             }
             else{
                 timePair.add(0,-1); // subtract 1/60th of a second from the time
             }
         }
-        checkDeaths();
     }
 
     public HashMap<Integer, PlayerSoldier> getPlayers() {
@@ -325,14 +326,6 @@ public class ConcurrentGameWorld {
             pIn.setBowDrawTime(0);
         }
         else if(keyDown(keys,MultiplayerTools.Keys.RMB)){
-            if(pIn.getFacingDirection()==0){
-                pIn.setvX(-0.9f);
-            }
-            else{
-                pIn.setvX(0.9f);
-            }
-            //pIn.knockBack(0.3f);
-
         }
 
         if(animation+pIn.getFacingDirection()!=pIn.getAnimationID()){

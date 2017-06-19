@@ -11,10 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.menus.*;
-import me.dumfing.multiplayerTools.MultiplayerClient;
-import me.dumfing.multiplayerTools.AnimationManager;
-import me.dumfing.multiplayerTools.PlayerSoldier;
-import me.dumfing.multiplayerTools.WorldMap;
+import me.dumfing.multiplayerTools.*;
 
 import java.util.HashMap;
 
@@ -49,6 +46,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	ClientGameInstance gameInstance;
 	ParticleEffect bloodEffect;
 	public static ParticleEffectPool bloodEffectPool;
+	public static boolean gameStarted = false;
+	public static String gpuName;
 	@Override
 	public void create () {
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("mouseCursorTemp.png")),0,0));
@@ -84,7 +83,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		Gdx.input.setInputProcessor(this);
 		//offline setup things
 		clientSoldier.setPos(1,6);
-		clientSoldier.setCurrentClass(0);
+		clientSoldier.setCurrentClass(1);
+		gpuName = Gdx.gl.glGetString(GL20.GL_RENDERER);
 	}
 
 	@Override
@@ -95,22 +95,31 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			bmfc.clear(); // clear bitmap font cache because it doesn't clear itself upon drawing (grumble grumble)
 		}
 		if(state == GameState.State.PLAYINGGAME || state == GameState.State.OFFLINEDEBUG){
-			if(!zoomedIn){
+//			if(!zoomedIn){
 				System.out.println("CameraZoom "+camera.zoom);
 				System.out.println("zoomin");
-				zoomCamera(0.025f);
-				zoomedIn = true;
-			}
+				if(gameInstance == null || gameInstance.clientSoldier().getKeysHeld()[MultiplayerTools.Keys.RMB] == null){
+				    zoomCamera(0.025f);
+                }
+                else if (gameInstance.clientSoldier()!=null && gameInstance.clientSoldier().getCurrentClass() == PlayerSoldier.ARCHER && gameInstance.clientSoldier().getKeysHeld()[MultiplayerTools.Keys.RMB].getIsDown()){ // if the player exists and the right mouse button is pressed
+				    camera.translate(gameInstance.clientSoldier().getFacingDirection()==0?-7:7,0); // translate the camera left or right based on the player's facing direction
+                    zoomCamera(0.05f); // zoom camera out (currently 2x)
+                }
+                else if(gameInstance.clientSoldier()!=null && !gameInstance.clientSoldier().getKeysHeld()[MultiplayerTools.Keys.RMB].getIsDown()){ // if the mouse isn't down
+                    zoomCamera(0.025f); // zoom in to regular area
+                }
+//				zoomedIn = true;
+//			}
 		}
 		else{
-			if(zoomedIn){
+//		if(zoomedIn){
 				camera.position.set(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2,0);
 				zoomCamera(1);
 				//camera.update();
 				//shapeRenderer.setProjectionMatrix(camera.combined);
 				//batch.setProjectionMatrix(camera.combined);
-				zoomedIn = false;
-			}
+//				zoomedIn = false;
+//			}
 		}
 		switch(state){
 			case LOADINGGAME: // we shouldn't ever be going back to LOADINGGAME
@@ -131,7 +140,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					//menu.init();
 					createWorlds();
 					client.pingServers();
-					//state = GameState.State.OFFLINEDEBUG;
+					state = GameState.State.OFFLINEDEBUG;
 
 				}
 				break;
@@ -178,6 +187,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				break;
 			case PICKINGINFO:
 				if(Gdx.input.getInputProcessor() != pickingInfoMenu){
+				    if(Gdx.input.getInputProcessor() != gameInstance){
+                        pickingInfoMenu.resetButtonPosses();
+                    }
 					pickingInfoMenu.setInputProcessor();
 				}
 				pickingInfoMenu.updateTeamNumbers(client.getRedTeam(), client.getBlueTeam(), client.getrLimit(), client.getbLimit());
@@ -187,8 +199,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			case PLAYINGGAME:
 				//camera.setToOrtho(true,900,450);
 				if(Gdx.input.getInputProcessor() != gameInstance){
-					gameInstance = new ClientGameInstance(client, client.getPlayers(),camera,assetManager,fontCaches);
-					gameInstance.pickWorld(DEBUGWORLD);
+				    if(!gameStarted) {
+                        gameInstance = new ClientGameInstance(client, client.getPlayers(), camera, assetManager, fontCaches);
+                        gameInstance.pickWorld(DEBUGWORLD);
+                    }
+                    gameStarted = true;
 					Gdx.input.setInputProcessor(gameInstance);
 				}
 				gameInstance.update();
@@ -208,10 +223,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			case OFFLINEDEBUG:
 				//camera.setToOrtho(true,900,450);
 				if(Gdx.input.getInputProcessor() != gameInstance){
-					HashMap<Integer, PlayerSoldier> temp = new HashMap<Integer, PlayerSoldier>();
-					temp.put(0,clientSoldier);
-					gameInstance = new ClientGameInstance(temp,camera,assetManager,fontCaches);
-					gameInstance.pickWorld(DEBUGWORLD);
+				    if(!gameStarted) {
+                        HashMap<Integer, PlayerSoldier> temp = new HashMap<Integer, PlayerSoldier>();
+                        temp.put(0, clientSoldier);
+                        gameInstance = new ClientGameInstance(temp, camera, assetManager, fontCaches);
+                        gameInstance.pickWorld(DEBUGWORLD);
+                    }
+                    gameStarted = true;
 					Gdx.input.setInputProcessor(gameInstance);
 				}
 				gameInstance.update();

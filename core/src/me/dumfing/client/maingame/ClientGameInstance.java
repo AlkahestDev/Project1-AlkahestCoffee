@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.GridPoint2;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.menus.MenuBox;
@@ -25,16 +24,17 @@ import static me.dumfing.client.maingame.MainGame.*;
 public class ClientGameInstance implements InputProcessor{
     private MultiplayerTools.ClientControlObject[] keysDown = new MultiplayerTools.ClientControlObject[10];
     private boolean keyUpdate = false;
-    MultiplayerClient gameClient;
+    private MultiplayerClient gameClient;
     private ConcurrentGameWorld playWorld;
     private OrthographicCamera camera;
     private AssetManager manager;
     private TextureRegion arrowTexture, blueArrow, redArrow;
     private Array<BitmapFontCache> fonts;
     private boolean onlineMode = true;
-    private MenuBox gameInfoBox;
+    private MenuBox pauseBox;
+    private boolean boxOut = false;
     private static float HEALTH_BAR_HEIGHT = 40;
-    Array<ParticleEffectPool.PooledEffect> effects = new Array<ParticleEffectPool.PooledEffect>();
+    private Array<ParticleEffectPool.PooledEffect> effects = new Array<ParticleEffectPool.PooledEffect>();
     public ClientGameInstance(MultiplayerClient gameClient, HashMap<Integer, PlayerSoldier> players, OrthographicCamera camera, AssetManager manager, Array<BitmapFontCache> fonts){
         this.gameClient = gameClient;
         this.fonts = fonts;
@@ -45,7 +45,7 @@ public class ClientGameInstance implements InputProcessor{
         this.redArrow = MenuTools.mGTR("redArrow.png",manager);
         this.blueArrow = MenuTools.mGTR("blueArrow.png",manager);
         onlineMode = true;
-        setupGameInfoBox();
+        setupPauseMenuBox();
     }
 
     /**
@@ -64,9 +64,23 @@ public class ClientGameInstance implements InputProcessor{
         onlineMode = false;
         this.redArrow = MenuTools.mGTR("redArrow.png",manager);
         this.blueArrow = MenuTools.mGTR("blueArrow.png",manager);
-        setupGameInfoBox();
+        setupPauseMenuBox();
     }
     public void update(){
+        for(GridPoint2 hit : playWorld.getHits()){
+            PlayerSoldier hitPlayer = playWorld.getPlayers().get(hit.y);
+            addBloodParticle(hitPlayer.getX()+hitPlayer.getWidth()/2f,hitPlayer.getY()+hitPlayer.getHeight()/2f);
+        }
+        playWorld.clearHits();
+        for(Projectile arrow : playWorld.getProjectiles()){
+            if(!arrow.isParticlesStarted() && arrow.isHit()){
+                if(arrow.getAttackPair().y!=-1) {
+                    PlayerSoldier hitTarget = playWorld.getPlayers().get(arrow.getAttackPair().y);
+                    addBloodParticle(hitTarget.getX()+hitTarget.getWidth()/2f, hitTarget.getY()+hitTarget.getHeight()/2f);
+                    arrow.setParticlesStarted(true);
+                }
+            }
+        }
         if(keyUpdate){
             if(onlineMode) {
                 gameClient.quickSend(new MultiplayerTools.ClientKeysUpdate(keysDown));
@@ -88,22 +102,8 @@ public class ClientGameInstance implements InputProcessor{
             }
         }
         playWorld.updatePlayerKeys(onlineMode?gameClient.getConnectionID():0, keysDown);
-        gameInfoBox.update();
+        pauseBox.update();
         playWorld.update();
-        for(GridPoint2 hit : playWorld.getHits()){
-            PlayerSoldier hitPlayer = playWorld.getPlayers().get(hit.y);
-            addBloodParticle(hitPlayer.getX()+hitPlayer.getWidth()/2f,hitPlayer.getY()+hitPlayer.getHeight()/2f);
-        }
-        playWorld.clearHits();
-        for(Projectile arrow : playWorld.getProjectiles()){
-            if(!arrow.isParticlesStarted() && arrow.isHit()){
-                if(arrow.getAttackPair().y!=-1) {
-                    PlayerSoldier hitTarget = playWorld.getPlayers().get(arrow.getAttackPair().y);
-                    addBloodParticle(hitTarget.getX()+hitTarget.getWidth()/2f, hitTarget.getY()+hitTarget.getHeight()/2f);
-                    arrow.setParticlesStarted(true);
-                }
-            }
-        }
     }
     public PlayerSoldier getPlayer(int connectionID){
         return playWorld.getPlayers().get(connectionID);
@@ -156,14 +156,14 @@ public class ClientGameInstance implements InputProcessor{
         else{
             drawDeathSprites(uiBatch,clientSoldier());
         }
-        gameInfoBox.spriteDraw(uiBatch);
+        pauseBox.spriteDraw(uiBatch);
         uiBatch.end();
         // Draw shapes for UI
         uiShapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         if(clientSoldier().isAlive()) {
             drawHudShapes(uiShapeRenderer, clientSoldier());
         }
-        gameInfoBox.shapeDraw(uiShapeRenderer);
+        pauseBox.shapeDraw(uiShapeRenderer);
         uiShapeRenderer.end();
         //Draw fonts for ui
         uiBatch.begin();
@@ -229,6 +229,16 @@ public class ClientGameInstance implements InputProcessor{
             case Input.Keys.CONTROL_LEFT:
                 keysDown[MultiplayerTools.Keys.CONTROL] = new MultiplayerTools.ClientControlObject(true);
                 break;
+            case Input.Keys.ESCAPE:
+                if(boxOut){
+                    pauseBox.setVelocity(0,-30);
+                    boxOut = false;
+                }
+                else{
+                    pauseBox.setVelocity(0,30);
+                    boxOut = true;
+                }
+                break;
         }
         keyUpdate = true;
         return false;
@@ -253,6 +263,7 @@ public class ClientGameInstance implements InputProcessor{
             keyUpdate = true;
         }
         keysDown[MultiplayerTools.Keys.ANGLE] = new MultiplayerTools.ClientControlObject(getPointerAngle(screenX,screenY));
+        pauseBox.checkButtonsPressed(screenX,screenY);
         return false;
     }
 
@@ -274,7 +285,6 @@ public class ClientGameInstance implements InputProcessor{
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         screenY=Gdx.graphics.getHeight()-screenY;
         float freeAng = (getPointerAngle(screenX,screenY)+360)%360;
-        System.out.println(freeAng);
         keysDown[MultiplayerTools.Keys.ANGLE] = new MultiplayerTools.ClientControlObject(freeAng);
         keyUpdate=true;
         return false;
@@ -317,8 +327,8 @@ public class ClientGameInstance implements InputProcessor{
         fonts.get(DAGGER30).addText(center.getName(),5,25+HEALTH_BAR_HEIGHT);
         fonts.get(DAGGER30).addText(Integer.toString(center.getHealth()),5,25);
         fonts.get(DAGGER30).addText(String.format("[WHITE]%2.2f %2.2f",center.getX(),center.getY()),5,Gdx.graphics.getHeight()-55);
-        fonts.get(DAGGER40).addText(String.format("[WHITE]%d",playWorld.getBluScore()),400,Gdx.graphics.getHeight()-10);
-        fonts.get(DAGGER40).addText(String.format("[WHITE]%d",playWorld.getRedScore()),Gdx.graphics.getWidth()-420,Gdx.graphics.getHeight()-10);
+        fonts.get(DAGGER40).addText(String.format("[WHITE]%d",playWorld.getRedScore()),400,Gdx.graphics.getHeight()-10);
+        fonts.get(DAGGER40).addText(String.format("[WHITE]%d",playWorld.getBluScore()),Gdx.graphics.getWidth()-420,Gdx.graphics.getHeight()-10);
     }
     private void drawDeathSprites(Batch batch, PlayerSoldier center){
         float timeRemaining = 0;
@@ -368,12 +378,38 @@ public class ClientGameInstance implements InputProcessor{
         shapeRenderer.rect(270,0,HEALTH_BAR_HEIGHT*healthTrianglePercent,HEALTH_BAR_HEIGHT*(1-healthTrianglePercent));
         shapeRenderer.triangle(270,HEALTH_BAR_HEIGHT*(1-healthTrianglePercent),270,HEALTH_BAR_HEIGHT,270+HEALTH_BAR_HEIGHT*healthTrianglePercent,HEALTH_BAR_HEIGHT*(1-healthTrianglePercent));
     }
-    private PlayerSoldier clientSoldier(){ // I can't be sure the pointer is always the same since the hashmap is always being updated from the server
+    public PlayerSoldier clientSoldier(){ // I can't be sure the pointer is always the same since the hashmap is always being updated from the server
         return playWorld.getPlayers().get(onlineMode?client.getConnectionID():0);
     }
-    private void setupGameInfoBox(){
-        gameInfoBox = new MenuBox(Gdx.graphics.getWidth()-200,Gdx.graphics.getHeight()-50,200,50,fonts);
-        gameInfoBox.setBackground(MenuTools.mGTR("simpleBG.png",manager));
+    private void setupPauseMenuBox(){
+        float boxWidth = 400;
+        float boxHeight = onlineMode?140:50;
+        pauseBox = new MenuBox(Gdx.graphics.getWidth()/2-boxWidth/2,Gdx.graphics.getHeight()/2-boxHeight/2,boxWidth,boxHeight,fonts);
+        pauseBox.setBackground(MenuTools.mGTR("simpleBGB.png",manager));
+        if(onlineMode) {
+            pauseBox.addMenuBox(MenuTools.createLabelledButton(5, boxHeight-45, boxWidth-10, 40, "[BLACK]Disconnect", new MenuTools.OnClick() {
+                public void action() {
+                    if(MainGame.state == GameState.State.OFFLINEDEBUG){
+                        MainGame.state = GameState.State.SERVERBROWSER;
+                    }
+                    else {
+                        client.disconnect();
+                    }
+                    MainGame.gameStarted = false;
+                }
+            },MenuTools.mGTR("simpleBGB.png",manager),MenuTools.mGTR("simpleBG.png",manager),fonts,DAGGER30));
+            pauseBox.addMenuBox(MenuTools.createLabelledButton(5, boxHeight - 90, boxWidth - 10, 40, "[BLACK]Change Class", new MenuTools.OnClick() {
+                public void action() {
+                    MainGame.state = GameState.State.PICKINGINFO;
+                }
+            }, MenuTools.mGTR("simpleBGB.png", manager), MenuTools.mGTR("simpleBG.png", manager), fonts, DAGGER30));
+        }
+        pauseBox.addMenuBox(MenuTools.createLabelledButton(5, onlineMode?boxHeight - 135:5, boxWidth - 10, 40, "[RED]Quit", new MenuTools.OnClick() {
+            public void action() {
+                Gdx.app.exit();
+            }
+        },MenuTools.mGTR("simpleBGB.png",manager),MenuTools.mGTR("simpleBG.png",manager),fonts,DAGGER30));
+        pauseBox.setVelocity(0,-30);
     }
     public void addBloodParticle(float x, float y){
         ParticleEffectPool.PooledEffect effectTemp = bloodEffectPool.obtain();
