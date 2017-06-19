@@ -242,20 +242,34 @@ public class ConcurrentGameWorld {
 
         }
 
+        if (pIn.isDrawingShield()){
+
+            // Walking
+            if (keyDown(keys, Keys.A) || keyDown(keys, Keys.S)){
+                animation += AnimationManager.SHEILD_DRAW_WALKING;
+            }
+            // Idle
+            else {
+                animation += AnimationManager.SHEILD_DRAW_IDLE;
+            }
+
+
+            if (pIn.isAnimationDone()){
+                pIn.setDrawingShield(false);
+                
+            }
+
+        }
+
+
         if(keyDown(keys,MultiplayerTools.Keys.W) || keyDown(keys,MultiplayerTools.Keys.SPACE)){
             if(pIn.collisions[1]){  // canJump can be replaced by pIn.collisions[1]
                 pIn.setvY(MultiplayerTools.JUMPPOWER);
                 pIn.setCanJump(false);
             }
         }
-        if(!pIn.isCanJump() && pIn.getvX()<0){ // if player is not on ground and player is descending
-            animation+= AnimationManager.FALL;
-        }
         else if(!pIn.isCanJump() && pIn.getvX()>0){
             animation+= AnimationManager.JUMP;
-        }
-        if(keyDown(keys,MultiplayerTools.Keys.S)){
-            // ToDo: Crouching Animation
         }
         if(keyDown(keys,MultiplayerTools.Keys.A)){
             if(pIn.collisions[1]) {
@@ -286,6 +300,39 @@ public class ConcurrentGameWorld {
             }
         }
 
+        // Shielding
+        if (keyDown(keys, Keys.CONTROL)){
+
+            // Walking
+            if (keyDown(keys, Keys.A) || keyDown(keys, Keys.S)){
+
+                // Shield is already drawn
+                if (pIn.isShieldUp()){
+                    animation += AnimationManager.SHEILD_WALKING;
+                }
+                // Drawing Up shield
+                else{
+                    animation += AnimationManager.SHEILD_DRAW_WALKING;
+                }
+
+            }
+            // Idle
+            else {
+
+                // Shield is already drawn
+                if (pIn.isShieldUp()){
+                    animation += AnimationManager.SHEILD_IDLE;
+                }
+                // Drawing Up shield
+                else{
+                    animation += AnimationManager.SHEILD_DRAW_IDLE;
+                }
+
+            }
+
+
+        }
+
         if(keyDown(keys,MultiplayerTools.Keys.LMB)){
 
             switch (pIn.getCurrentClass()){
@@ -298,7 +345,7 @@ public class ConcurrentGameWorld {
 
                     }
                     else if(pIn.collisions[1] &&(keyDown(keys,MultiplayerTools.Keys.D) || keyDown(keys,MultiplayerTools.Keys.A))){
-                        System.out.println("TRYATTACK");
+
                         animation+=AnimationManager.ATTACK;
                         handleAttacks(pIn);
                     }

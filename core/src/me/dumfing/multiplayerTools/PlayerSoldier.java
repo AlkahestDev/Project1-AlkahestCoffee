@@ -30,6 +30,9 @@ public class PlayerSoldier {
     boolean alive = true;
     private boolean stabbing = false;
     private boolean shielding = false;
+    private boolean shieldUp = false;
+    private boolean drawingShield = false;
+
     private int swingDamage = 25;
     private int stabDamage = 15;
 
@@ -90,6 +93,30 @@ public class PlayerSoldier {
 
     public int getHealth(){
         return this.health;
+    }
+
+    public boolean isShielding() {
+        return shielding;
+    }
+
+    public boolean isShieldUp() {
+        return shieldUp;
+    }
+
+    public void setShielding(boolean shielding) {
+        this.shielding = shielding;
+    }
+
+    public void setShieldUp(boolean shieldUp) {
+        this.shieldUp = shieldUp;
+    }
+
+    public boolean isDrawingShield() {
+        return drawingShield;
+    }
+
+    public void setDrawingShield(boolean drawingShield) {
+        this.drawingShield = drawingShield;
     }
 
     public String getName(){return this.name;}

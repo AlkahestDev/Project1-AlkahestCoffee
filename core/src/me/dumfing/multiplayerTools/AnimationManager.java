@@ -167,6 +167,10 @@ public class AnimationManager {
     public static final int JUMP = 8;
     public static final int ATTACK = 16;
     public static final int IDLE = 32;
+    public static final int SHEILD_IDLE = 64;
+    public static final int SHEILD_WALKING = 128;
+    public static final int SHEILD_DRAW_IDLE = 256;
+    public static final int SHEILD_DRAW_WALKING = 512;
     public static final int DIRECTION = 1;
     public static final int ISWALKING = 2;
     public static final int ISFALLING = 4;
