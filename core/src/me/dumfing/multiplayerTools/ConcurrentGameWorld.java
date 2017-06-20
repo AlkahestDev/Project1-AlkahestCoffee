@@ -1,10 +1,8 @@
 package me.dumfing.multiplayerTools;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.GridPoint2;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MathTools;
 
 import java.util.Arrays;
@@ -27,6 +25,7 @@ public class ConcurrentGameWorld {
     private int[] score = new int[2];
     private LinkedList<GridPoint2> respawnTimers = new LinkedList<GridPoint2>(); // a linkedlist of GridPoint2's with the x's as id's and y's as time. 0 means they should respawn
     private LinkedList<GridPoint2> hits= new LinkedList<GridPoint2>();  // LinkedList of GridPoint2's with the x as the attacker's id and the y as the defender's
+    private Array<Vector3> particleList = new Array<Vector3>(); // places where particles should be played, and what colour
     /**
      * Gets the respawn timeers from the world
      * @return A LinkedList of Vector2 respawn timers
@@ -98,6 +97,7 @@ public class ConcurrentGameWorld {
                 flag.setPhysicsParent(-1); // reset physics parent to nothing
                 score[1-flag.getTeamID()]+=1; // increase team that is opposite of flag's score
                 flag.setScored(true);
+                particleList.add(new Vector3(flag.getxPos(),flag.getyPos(),1-flag.getTeamID()));
                 flag.resetPos(worldMap);
             }
         }
@@ -196,6 +196,7 @@ public class ConcurrentGameWorld {
                     System.out.println("BANG");
                     for(Integer v : players.keySet()){
                         if(players.get(v) == attacker){
+                            System.out.println(attackRect+" "+players.get(v).getRect());
                             hits.add(new GridPoint2(v,k));
                         }
                     }
@@ -230,7 +231,7 @@ public class ConcurrentGameWorld {
         if (pIn.swinging){
 
             animation += AnimationManager.ATTACK;
-
+            handleAttacks(pIn);
             // if (pIn.getAnimationSet()[pIn.getAnimationID() & AnimationManager.DIRECTION][0][pIn.getCurrentClass()].isAnimationFinished(pIn.getAnimationTime())){
             //     pIn.swinging = false;
             // }
@@ -342,13 +343,13 @@ public class ConcurrentGameWorld {
                     if (pIn.collisions[1] && !keyDown(keys,MultiplayerTools.Keys.D) && !keyDown(keys,MultiplayerTools.Keys.A)){
                         pIn.swinging = true;
                         //animation+=AnimationManager.ATTACK;
-                        handleAttacks(pIn);
+                        //handleAttacks(pIn);
 
                     }
                     else if(pIn.collisions[1] &&(keyDown(keys,MultiplayerTools.Keys.D) || keyDown(keys,MultiplayerTools.Keys.A))){
-
+                        pIn.swinging = true;
                         animation+=AnimationManager.ATTACK;
-                        handleAttacks(pIn);
+                        //handleAttacks(pIn);
                     }
 
                     break;
@@ -430,5 +431,10 @@ public class ConcurrentGameWorld {
     }
     public void clearHits(){
         hits.clear();
+    }
+    public Array<Vector3> getParticles(){
+        Array<Vector3> aOut = new Array<Vector3>(this.particleList);
+        this.particleList.clear();
+        return aOut;
     }
 }

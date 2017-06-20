@@ -48,6 +48,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static ParticleEffectPool bloodEffectPool;
 	public static boolean gameStarted = false;
 	public static String gpuName;
+	public static ParticleEffect redFlagCap;
+	public static ParticleEffect bluFlagCap;
 	@Override
 	public void create () {
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("mouseCursorTemp.png")),0,0));
@@ -84,12 +86,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		//offline setup things
 		clientSoldier.setPos(1,6);
 		clientSoldier.setCurrentClass(1);
+		clientSoldier.setTeam(1);
 		gpuName = Gdx.gl.glGetString(GL20.GL_RENDERER);
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClearColor(0.0352f, 0.4705f, 0.925f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT );
 		for(BitmapFontCache bmfc : fontCaches) {
 			bmfc.clear(); // clear bitmap font cache because it doesn't clear itself upon drawing (grumble grumble)
@@ -289,6 +292,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		menuImg = assetManager.get("simpleBG.png");
         bloodEffect = assetManager.get("Particles/hitBlood");
         bloodEffectPool = new ParticleEffectPool(bloodEffect,4,8); // the max capacity only needs to be 4 (8 players, 4 attacking at a time) but there are enough effects for everyone to bleed
+        redFlagCap = assetManager.get("Particles/RedFlagCap");
+        bluFlagCap = assetManager.get("Particles/BluFlagCap");
 		state = GameState.State.MAINMENU;
 	}
 	public void queueLoading(){ // queue files for assetManager to load

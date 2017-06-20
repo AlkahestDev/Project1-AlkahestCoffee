@@ -128,7 +128,6 @@ public class PlayerSoldier {
     }
 
     public void setAnimationID(int animationID) {
-        //this.animationTime = 0;
         this.animationID = animationID;
     }
 
@@ -222,23 +221,19 @@ public class PlayerSoldier {
         float trW = drawFrame.getRegionWidth();
         float trH = drawFrame.getRegionHeight();
         float ratio = trW/trH;
-        //if((this.getAnimationID()&AnimationManager.ISATTACK) == AnimationManager.ATTACK){
-        //switch(this.getCurrentClass()) {
-        //    case KNIGHT:
-             if (this.getFacingDirection() == 0) {
-                 batch.draw(drawFrame, this.getX() - 0.84f, this.getY(), this.getHeight() * ratio + 0.14f, this.getHeight() + 0.13f);
-             } else {
-                 batch.draw(drawFrame, this.getX() - 0.22f, this.getY(), this.getHeight() * ratio + 0.14f, this.getHeight() + 0.13f); // add 0.1 because the attacking sprites are 4 FCKING PIXELS TALLER THAN THE STANDING SPRITES
-               }
-                if(this.isDrawingBow()){ // bow drawing animation
-                    System.out.println(this.facingDirection);
-                    float limAng = getMouseAngle();
-                    //if((this.getAnimationID()&AnimationManager.ISWALKING) == AnimationManager.WALK){
+        if (this.getFacingDirection() == 0) {
+            batch.draw(drawFrame, this.getX() - 0.84f, this.getY(), this.getHeight() * ratio + 0.14f, this.getHeight() + 0.13f);
+        }
+        else {
+            batch.draw(drawFrame, this.getX() - 0.22f, this.getY(), this.getHeight() * ratio + 0.14f, this.getHeight() + 0.13f); // add 0.1 because the attacking sprites are 4 FCKING PIXELS TALLER THAN THE STANDING SPRITES
+        }
+        if(this.isDrawingBow()){ // bow drawing animation
+                    float limAng = getMouseAngle(); // this angle will be clamped based on which direction the player is facing
                        if(this.getFacingDirection()==0){
                            limAng = MathUtils.clamp(limAng,160,200); // negative x part of circle
                        }
                        else{
-                           if(limAng > 0 && limAng<90){
+                           if(limAng > 0 && limAng<90){ // 0 is straight right, meaning the top half of the right is 0-90 and the bottom half is 270-360, separate cases are needed for each
                                System.out.println("x+ y+");
                                limAng = MathUtils.clamp(limAng,0,20); //positive x, positive y part of circle
                            }
@@ -247,8 +242,7 @@ public class PlayerSoldier {
                                limAng = MathUtils.clamp(limAng,340,360); //positive x, negative y part of circle
                            }
                        }
-                    //}
-                    if(this.getFacingDirection() == 0) {
+                    if(this.getFacingDirection() == 0) {//draw the frames facing the correct direction based on the direction the player is facing
                         batch.draw((TextureRegion) AnimationManager.archerDrawLeft[this.getTeam()].getKeyFrame((float)bowDrawTime/30f), this.getX() - 0.85f, this.getY()+0.1f, 1.1f, 0.6f, 2, 2, 1, 1, 180+limAng);
                     }
                     else {
@@ -256,7 +250,7 @@ public class PlayerSoldier {
                     }
                 }
         }
-    public Animation getAnimation(){
+    public Animation getAnimation(){ // gets the animation that should be drawn for the player in their current state
         Animation[][][] animationSet;
         if (this.getTeam() == 0) { // red
             animationSet = AnimationManager.redPlayer;

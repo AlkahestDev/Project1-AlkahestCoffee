@@ -30,6 +30,7 @@ public class ServerGameInstance {
         }
         if(frameCount >= 2){ // 2 gets an interesting 30hz
             frameCount = 0;
+            world.getParticles(); // call this so that the list of particles in the gameworld doesn't get too long
             sv.quickSendAll(new MultiplayerTools.ServerPlayerPositions(world.getPlayers()));
             sv.quickSendAll(new MultiplayerTools.ServerProjectilePositions(world.getProjectiles()));
             sv.quickSendAll(new MultiplayerTools.ServerFlagPositions(world.getFlags()));

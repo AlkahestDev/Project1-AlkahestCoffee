@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.menus.MenuBox;
@@ -107,6 +108,21 @@ public class ClientGameInstance implements InputProcessor{
                 playWorld.updateRespawnTimes(gameClient.getRespawnTimes());
             }
         }
+        for(Vector3 partInfo : playWorld.getParticles()){
+            int team = (int)partInfo.z;
+            if(team == 0){
+                MainGame.redFlagCap.reset();
+                MainGame.redFlagCap.setPosition(partInfo.x,partInfo.y);
+                MainGame.redFlagCap.start();
+                MainGame.redFlagCap.update(3.5f);
+            }
+            else{
+                MainGame.bluFlagCap.reset();
+                MainGame.bluFlagCap.setPosition(partInfo.x,partInfo.y);
+                MainGame.bluFlagCap.start();
+                MainGame.bluFlagCap.update(3.5f); // there's a 3.5 second delay for some reason. We offset the particle's timer by 3.5 to compensate
+            }
+        }
         playWorld.updatePlayerKeys(onlineMode?gameClient.getConnectionID():0, keysDown);
         pauseBox.update();
         playWorld.update();
@@ -115,6 +131,7 @@ public class ClientGameInstance implements InputProcessor{
         return playWorld.getPlayers().get(connectionID);
     }
     public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer, SpriteBatch uiBatch, ShapeRenderer uiShapeRenderer){
+        float deltaTime = Gdx.graphics.getDeltaTime();
         batch.begin();
         playWorld.getWorldMap().drawBG(batch,camera.position.x,camera.position.y);
         for(CaptureFlag flag : playWorld.getFlags()){
@@ -137,13 +154,19 @@ public class ClientGameInstance implements InputProcessor{
             }
         }
         for(ParticleEffectPool.PooledEffect effectTemp : effects){
-            effectTemp.draw(batch,Gdx.graphics.getDeltaTime());
+            effectTemp.draw(batch,deltaTime);
             if(effectTemp.isComplete()){
                 effectTemp.free();
                 effects.removeValue(effectTemp,true);
             }
         }
         playWorld.getWorldMap().draw(batch);
+        //if(!MainGame.bluFlagCap.isComplete()){
+            bluFlagCap.draw(batch,deltaTime);
+        //}
+        //if(!MainGame.redFlagCap.isComplete()){
+            redFlagCap.draw(batch,deltaTime);
+        //}
         playWorld.getWorldMap().drawFG(batch,camera.position.x,camera.position.y);
         //batch.draw(playWorld.getWorldMap().getVisualComponent(),0,0);
         batch.end();
@@ -237,6 +260,7 @@ public class ClientGameInstance implements InputProcessor{
                 break;
             case Input.Keys.ESCAPE:
                 if(boxOut){
+                    pauseBox.setPos(Gdx.graphics.getWidth()/2-pauseBox.getRect().width/2,Gdx.graphics.getHeight()/2-pauseBox.getRect().height/2);
                     pauseBox.setVelocity(0,-30);
                     boxOut = false;
                 }
@@ -407,6 +431,7 @@ public class ClientGameInstance implements InputProcessor{
             pauseBox.addMenuBox(MenuTools.createLabelledButton(5, boxHeight - 90, boxWidth - 10, 40, "[BLACK]Change Class", new MenuTools.OnClick() {
                 public void action() {
                     MainGame.state = GameState.State.PICKINGINFO;
+                    clientSoldier().setHealth(0);
                 }
             }, MenuTools.mGTR("simpleBGB.png", manager), MenuTools.mGTR("simpleBG.png", manager), fonts, DAGGER30));
         }

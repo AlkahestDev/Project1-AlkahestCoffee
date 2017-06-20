@@ -202,6 +202,11 @@ public class MenuBox extends MenuObject{
             mb.translate(x, y);
         }
     }
+    public void setPos(float x, float y){
+        float transX = x-super.getRect().x;
+        float transY = y-super.getRect().y;
+        this.translate(transX,transY);
+    }
     /**
      * Checks if a point is within the bounds of this MenuBox
      * @param mx
