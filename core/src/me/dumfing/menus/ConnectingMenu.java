@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MenuTools;
 
-@Deprecated
+
 public class ConnectingMenu extends Menu{
 
     /**

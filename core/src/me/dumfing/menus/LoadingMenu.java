@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
-@Deprecated
+
 public class LoadingMenu extends Menu {
     //Refer to commented out sections for how to use the GifDecoder
     //AssetManager manager;

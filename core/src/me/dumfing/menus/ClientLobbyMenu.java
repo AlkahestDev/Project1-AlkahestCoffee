@@ -17,7 +17,7 @@ import static me.dumfing.client.maingame.MainGame.DAGGER50;
 /**
  * The Lobby the clients will stay in while waiting for more people to connect
  */
-@Deprecated
+
 public class ClientLobbyMenu extends Menu{
     MenuBox chatBox, connectedPlayers, countDownBar;
     MenuTools.QueueText countdown;

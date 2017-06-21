@@ -14,7 +14,7 @@ import me.dumfing.gdxtools.MenuTools;
 
 import static me.dumfing.client.maingame.MainGame.*;
 
-@Deprecated
+
 public class MainMenu extends Menu{
     //private AssetManager manager;
     public MainMenu(Array<BitmapFontCache> bmfc, AssetManager assetManager, OrthographicCamera camera) {

@@ -21,7 +21,7 @@ import java.util.HashMap;
 
 import static me.dumfing.client.maingame.MainGame.*;
 
-@Deprecated
+
 public class ServerBrowser extends Menu{
     private ServerBrowserList serverList;
     /**

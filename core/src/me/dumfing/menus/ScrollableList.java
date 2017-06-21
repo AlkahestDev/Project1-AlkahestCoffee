@@ -8,7 +8,7 @@ import me.dumfing.gdxtools.MenuTools;
 
 import static me.dumfing.client.maingame.MainGame.DAGGER40;
 
-@Deprecated
+
 public class ScrollableList extends MenuObject{
     float scrollHeight = 0;
     int font = DAGGER40;

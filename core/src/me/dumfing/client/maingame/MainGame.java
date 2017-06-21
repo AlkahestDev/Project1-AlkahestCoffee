@@ -16,7 +16,7 @@ import me.dumfing.multiplayerTools.*;
 import java.util.HashMap;
 
 public class MainGame extends ApplicationAdapter implements InputProcessor{
-	public static final String versionNumber = "1e-10000000";
+	public static final String versionNumber = "1.0";
 	private float scW, scH;
 	//private Viewport viewport;
 	SpriteBatch batch, uiBatch; //uiBatch and uiShapeRenderer are not attached to the camera and can be used for the ui
@@ -85,14 +85,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		Gdx.input.setInputProcessor(this);
 		//offline setup things
 		clientSoldier.setPos(1,6);
-		clientSoldier.setCurrentClass(1);
+		clientSoldier.setCurrentClass(0);
 		clientSoldier.setTeam(1);
 		gpuName = Gdx.gl.glGetString(GL20.GL_RENDERER);
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(0.0352f, 0.4705f, 0.925f, 1);
+		Gdx.gl.glClearColor(169 / 255f, 223 / 255f, 229 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT );
 		for(BitmapFontCache bmfc : fontCaches) {
 			bmfc.clear(); // clear bitmap font cache because it doesn't clear itself upon drawing (grumble grumble)
@@ -234,7 +234,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					Gdx.input.setInputProcessor(gameInstance);
 				}
 				gameInstance.update();
-				shapeRenderer.setColor(Color.BLUE);
+				// shapeRenderer.setColor(Color.argb8888(255, 169, 223, 229));
                 clientSoldierTemp = gameInstance.getPlayer(0);
 				deltaX = camera.position.x-clientSoldierTemp.getX();
 				deltaY = camera.position.y-clientSoldierTemp.getY();
