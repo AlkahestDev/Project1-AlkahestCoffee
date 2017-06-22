@@ -410,7 +410,7 @@ public class ConcurrentGameWorld {
     }
     private void checkDeaths(){// checks if any player should be killed and does something about it
         for(Integer k : players.keySet()){
-            if(players.get(k).getY()<-10){
+            if(players.get(k).getY()<-30){
                 //kill them
                 killPlayer(k);
             }
