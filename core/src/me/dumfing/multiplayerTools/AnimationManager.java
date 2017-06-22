@@ -92,10 +92,10 @@ public class AnimationManager {
 
 
         // Archer Walking
-        Animation<TextureRegion> redPlayerWalkRightArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("wrrpa"), Animation.PlayMode.LOOP);
-        Animation<TextureRegion> redPlayerWalkLeftArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("wlrpa"), Animation.PlayMode.LOOP);
-        Animation<TextureRegion> bluPlayerWalkRightArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("wrbpa"), Animation.PlayMode.LOOP);
-        Animation<TextureRegion> bluPlayerWalkLeftArcher = new Animation<TextureRegion>(IDLEFRAMETIME, archerSprites.findRegions("wlbpa"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> redPlayerWalkRightArcher = new Animation<TextureRegion>(WALKINGFRAMETIME, archerSprites.findRegions("wrrpa"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> redPlayerWalkLeftArcher = new Animation<TextureRegion>(WALKINGFRAMETIME, archerSprites.findRegions("wlrpa"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> bluPlayerWalkRightArcher = new Animation<TextureRegion>(WALKINGFRAMETIME, archerSprites.findRegions("wrbpa"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> bluPlayerWalkLeftArcher = new Animation<TextureRegion>(WALKINGFRAMETIME, archerSprites.findRegions("wlbpa"), Animation.PlayMode.LOOP);
 
         // Archer StabbingIdle
         Animation<TextureRegion> bluPlayerStabLeftArcher = new Animation<TextureRegion>(ATTACKFRAMETIME, knightSprites.findRegions("silbpa"), Animation.PlayMode.LOOP);

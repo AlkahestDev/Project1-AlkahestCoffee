@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -50,6 +51,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static String gpuName;
 	public static ParticleEffect redFlagCap;
 	public static ParticleEffect bluFlagCap;
+	public static Sound flagCap, arrowHit, swordHit;
 	@Override
 	public void create () {
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("mouseCursorTemp.png")),0,0));
@@ -284,6 +286,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
         bloodEffectPool = new ParticleEffectPool(bloodEffect,4,8); // the max capacity only needs to be 4 (8 players, 4 attacking at a time) but there are enough effects for everyone to bleed
         redFlagCap = assetManager.get("Particles/RedFlagCap");
         bluFlagCap = assetManager.get("Particles/BluFlagCap");
+        flagCap = assetManager.get("sounds/flagCap.wav");
+        swordHit = assetManager.get("sounds/swordHit.mp3");
+        arrowHit = assetManager.get("sounds/arrowHit.mp3");
 		state = GameState.State.MAINMENU;
 	}
 	public void queueLoading(){ // queue files for assetManager to load
@@ -309,6 +314,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		assetManager.load("Particles/RedFlagCap",ParticleEffect.class);
 		assetManager.load("Particles/BluFlagCap",ParticleEffect.class);
 		assetManager.load("Particles/hitBlood",ParticleEffect.class);
+		assetManager.load("sounds/flagCap.wav",Sound.class);
+		assetManager.load("sounds/swordHit.mp3",Sound.class);
+		assetManager.load("sounds/arrowHit.mp3",Sound.class);
 		for(int i = 1; i<10; i++){
 			assetManager.load(String.format("archive/L%d.png",i),Texture.class);
 			assetManager.load(String.format("archive/R%d.png",i),Texture.class);

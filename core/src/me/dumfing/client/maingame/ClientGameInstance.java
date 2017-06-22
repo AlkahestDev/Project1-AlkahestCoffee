@@ -73,6 +73,7 @@ public class ClientGameInstance implements InputProcessor{
         for(GridPoint2 hit : playWorld.getHits()){
             PlayerSoldier hitPlayer = playWorld.getPlayers().get(hit.y);
             addBloodParticle(hitPlayer.getX()+hitPlayer.getWidth()/2f,hitPlayer.getY()+hitPlayer.getHeight()/2f);
+            MainGame.swordHit.play();
         }
         playWorld.clearHits();
         for(Projectile arrow : playWorld.getProjectiles()){
@@ -83,6 +84,7 @@ public class ClientGameInstance implements InputProcessor{
                         addBloodParticle(hitTarget.getX() + hitTarget.getWidth() / 2f, hitTarget.getY() + hitTarget.getHeight() / 2f);
                         arrow.setParticlesStarted(true);
                         effectHandled.add(arrow);
+                        MainGame.arrowHit.play();
                     }
                 }
             }
@@ -115,12 +117,14 @@ public class ClientGameInstance implements InputProcessor{
                 MainGame.redFlagCap.setPosition(partInfo.x,partInfo.y);
                 MainGame.redFlagCap.start();
                 MainGame.redFlagCap.update(3.5f);
+                MainGame.flagCap.play();
             }
             else{
                 MainGame.bluFlagCap.reset();
                 MainGame.bluFlagCap.setPosition(partInfo.x,partInfo.y);
                 MainGame.bluFlagCap.start();
                 MainGame.bluFlagCap.update(3.5f); // there's a 3.5 second delay for some reason. We offset the particle's timer by 3.5 to compensate
+                MainGame.flagCap.play();
             }
         }
         playWorld.updatePlayerKeys(onlineMode?gameClient.getConnectionID():0, keysDown);
