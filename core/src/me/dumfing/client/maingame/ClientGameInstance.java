@@ -365,14 +365,10 @@ public class ClientGameInstance implements InputProcessor{
         fonts.get(DAGGER30).addText(String.format("[WHITE]%2.2f %2.2f",center.getX(),center.getY()),5,Gdx.graphics.getHeight()-55);
         fonts.get(DAGGER40).addText(String.format("[WHITE]%d",playWorld.getRedScore()),400,Gdx.graphics.getHeight()-10);
         fonts.get(DAGGER40).addText(String.format("[WHITE]%d",playWorld.getBluScore()),Gdx.graphics.getWidth()-420,Gdx.graphics.getHeight()-10);
-        fonts.get(DAGGER30).addText(String.format("[WHITE]Kills: %d",clientSoldier().getKills()),430,Gdx.graphics.getHeight()-10);
-        int deaths = Math.max(1,clientSoldier().getDeaths()); // deaths used for calculating k/d
+        fonts.get(DAGGER30).addText(String.format("[WHITE]Kills: %d",clientSoldier().getKills()),430,Gdx.graphics.getHeight()-15);
         String deathsText = "[WHITE]Deaths: "+clientSoldier().getDeaths();
         float deathsWidth = MenuTools.textWidth(fonts.get(DAGGER30).getFont(),deathsText);
-        fonts.get(DAGGER30).addText(deathsText,Gdx.graphics.getWidth()-430-deathsWidth,Gdx.graphics.getHeight()-10);
-        String kdText = String.format("[WHITE]KD: %.2f",((float)clientSoldier().getKills()/(float)deaths));
-        float kdWidth = MenuTools.textWidth(fonts.get(DAGGER30).getFont(), kdText);
-        fonts.get(DAGGER30).addText(kdText,Gdx.graphics.getWidth()/2-kdWidth/2,Gdx.graphics.getHeight()-10);
+        fonts.get(DAGGER30).addText(deathsText,Gdx.graphics.getWidth()-430-deathsWidth,Gdx.graphics.getHeight()-15);
     }
     private void drawDeathSprites(Batch batch, PlayerSoldier center){
         float timeRemaining = 0;
@@ -429,7 +425,7 @@ public class ClientGameInstance implements InputProcessor{
         float boxWidth = 400;
         float boxHeight = onlineMode?140:50;
         pauseBox = new MenuBox(Gdx.graphics.getWidth()/2-boxWidth/2,Gdx.graphics.getHeight()/2-boxHeight/2,boxWidth,boxHeight,fonts);
-        pauseBox.setBackground(MenuTools.mGTR("simpleBGB.png",manager));
+        pauseBox.setBackground(MainGame.bigButtonPress);
         if(onlineMode) {
             pauseBox.addMenuBox(MenuTools.createLabelledButton(5, boxHeight-45, boxWidth-10, 40, "[BLACK]Disconnect", new MenuTools.OnClick() {
                 public void action() {
@@ -441,19 +437,19 @@ public class ClientGameInstance implements InputProcessor{
                     }
                     MainGame.gameStarted = false;
                 }
-            },MenuTools.mGTR("simpleBGB.png",manager),MenuTools.mGTR("simpleBG.png",manager),fonts,DAGGER30));
+            }, MainGame.bigButtonPress,MainGame.bigButtonUn,fonts,DAGGER30));
             pauseBox.addMenuBox(MenuTools.createLabelledButton(5, boxHeight - 90, boxWidth - 10, 40, "[BLACK]Change Class", new MenuTools.OnClick() {
                 public void action() {
                     MainGame.state = GameState.State.PICKINGINFO;
                     clientSoldier().setHealth(0);
                 }
-            }, MenuTools.mGTR("simpleBGB.png", manager), MenuTools.mGTR("simpleBG.png", manager), fonts, DAGGER30));
+            }, MainGame.bigButtonPress,MainGame.bigButtonUn, fonts, DAGGER30));
         }
         pauseBox.addMenuBox(MenuTools.createLabelledButton(5, onlineMode?boxHeight - 135:5, boxWidth - 10, 40, "[RED]Quit", new MenuTools.OnClick() {
             public void action() {
                 Gdx.app.exit();
             }
-        },MenuTools.mGTR("simpleBGB.png",manager),MenuTools.mGTR("simpleBG.png",manager),fonts,DAGGER30));
+        },MainGame.bigButtonPress,MainGame.bigButtonUn,fonts,DAGGER30));
         pauseBox.setVelocity(0,-30);
     }
     public void addBloodParticle(float x, float y){

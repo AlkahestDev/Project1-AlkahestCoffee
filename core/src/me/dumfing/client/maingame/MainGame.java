@@ -33,7 +33,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	ClientPickingInfoMenu pickingInfoMenu;
 	ClientLobbyMenu lobbyMenu;
 	public static ServerBrowser serverBrowser; // static so I can access the serverList from the findServers runnable in MultiplayerClient
-	SettingsMenu settingsMenu;
 	OrthographicCamera camera;
 	UniversalClientMenu menu;
 	Array<BitmapFontCache> fontCaches;
@@ -52,6 +51,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public static ParticleEffect redFlagCap;
 	public static ParticleEffect bluFlagCap;
 	public static Sound flagCap, arrowHit, swordHit;
+	public static TextureRegion backPres,backUn,background,bigButtonPress,bigButtonUn,refreshPress,refreshUn,bowSill,swordSill;
 	@Override
 	public void create () {
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("mouseCursorTemp.png")),0,0));
@@ -69,7 +69,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		loadingMenu = new LoadingMenu(fontCaches, assetManager, camera);
 		connectingMenu = new ConnectingMenu(fontCaches,assetManager,camera);
 		serverBrowser = new ServerBrowser(fontCaches,assetManager,camera);
-		settingsMenu = new SettingsMenu(fontCaches,assetManager,camera);
 		pickingInfoMenu = new ClientPickingInfoMenu(fontCaches,assetManager,camera);
 		lobbyMenu = new ClientLobbyMenu(fontCaches,assetManager,camera);
 		//setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded, background frames are loaded and added to it here
@@ -124,7 +123,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					assignValues();
 					gameMain.init();
 					serverBrowser.init();
-					settingsMenu.init();
 					connectingMenu.init();
 					pickingInfoMenu.init(client);
 					lobbyMenu.init(client);
@@ -148,13 +146,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				menu.standardDraw(batch,shapeRenderer);*/
 				gameMain.update();
 				gameMain.standardDraw(uiBatch,uiShapeRenderer);
-				break;
-			case MAINMENUSETTINGS:
-				if(Gdx.input.getInputProcessor() != settingsMenu){
-					settingsMenu.setInputProcessor();
-				}
-				settingsMenu.update();
-				settingsMenu.standardDraw(uiBatch,uiShapeRenderer);
 				break;
 			case SERVERBROWSER:
 			    if(Gdx.input.getInputProcessor()!=serverBrowser){
@@ -281,7 +272,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	}
 	public void assignValues(){
 		tuzki = assetManager.get("tuzki.png");
-		menuImg = assetManager.get("simpleBG.png");
         bloodEffect = assetManager.get("Particles/hitBlood");
         bloodEffectPool = new ParticleEffectPool(bloodEffect,4,8); // the max capacity only needs to be 4 (8 players, 4 attacking at a time) but there are enough effects for everyone to bleed
         redFlagCap = assetManager.get("Particles/RedFlagCap");
@@ -289,14 +279,29 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
         flagCap = assetManager.get("sounds/flagCap.wav");
         swordHit = assetManager.get("sounds/swordHit.mp3");
         arrowHit = assetManager.get("sounds/arrowHit.mp3");
+        backPres = new TextureRegion((Texture) assetManager.get("Menu/BackPres.png"));
+        backUn = new TextureRegion((Texture) assetManager.get("Menu/BackUn.png"));
+        background  = new TextureRegion((Texture) assetManager.get("Menu/bckgrndCropped.png"));
+        bigButtonPress = new TextureRegion((Texture) assetManager.get("Menu/BigButtonPres.png"));
+        bigButtonUn = new TextureRegion((Texture) assetManager.get("Menu/BigButtonUn.png"));
+        refreshPress = new TextureRegion((Texture) assetManager.get("Menu/RefreshPres.png"));
+        refreshUn = new TextureRegion((Texture) assetManager.get("Menu/RefreshUn.png"));
+        bowSill = new TextureRegion((Texture) assetManager.get("Menu/BowSillo.png"));
+        swordSill = new TextureRegion((Texture) assetManager.get("Menu/SwordSilo.png"));
 		state = GameState.State.MAINMENU;
 	}
 	public void queueLoading(){ // queue files for assetManager to load
 		//Sticking random things to load into the assetmanager to see how long it'll take to load
 		assetManager.load("tuzki.png",Texture.class);
-		assetManager.load("simpleBG.png",Texture.class);
-		assetManager.load("simpleBGB.png",Texture.class);
-		assetManager.load("Menu/canvas.png",Texture.class);
+		assetManager.load("Menu/bckgrndCropped.png",Texture.class);
+		assetManager.load("Menu/BigButtonUn.png",Texture.class);
+		assetManager.load("Menu/BigButtonPres.png",Texture.class);
+		assetManager.load("Menu/BackPres.png",Texture.class);
+		assetManager.load("Menu/BackUn.png",Texture.class);
+		assetManager.load("Menu/RefreshPres.png",Texture.class);
+		assetManager.load("Menu/RefreshUn.png",Texture.class);
+		assetManager.load("Menu/BowSillo.png",Texture.class);
+		assetManager.load("Menu/SwordSilo.png",Texture.class);
 		assetManager.load("pixmapTest.png",Texture.class);
 		assetManager.load("pixmapVisual.png",Texture.class);
 		assetManager.load("projectiles/arrow.png",Texture.class);

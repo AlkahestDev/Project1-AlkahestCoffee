@@ -40,7 +40,7 @@ public class ServerBrowser extends Menu{
      */
     public void init() {
         //super.init();
-        super.setBackground(new TextureRegion((Texture) super.getManager().get("tuzki.png")));
+        super.setBackground(MainGame.background);
         float serverListHeight = 3000;
         serverList = new ServerBrowserList(Gdx.graphics.getWidth()-400, Gdx.graphics.getHeight() - serverListHeight, 400, serverListHeight, super.getFonts(), this.getManager());
         super.addMenuBox(serverList);
@@ -65,8 +65,8 @@ public class ServerBrowser extends Menu{
                 MainGame.state = GameState.State.MAINMENU;
             }
         });
-        bt.setPressedTexture(new TextureRegion((Texture)getManager().get("archive/R1.png")));
-        bt.setUnpressedTexture(new TextureRegion((Texture)getManager().get("archive/R2.png")));
+        bt.setPressedTexture(MainGame.backPres);
+        bt.setUnpressedTexture(MainGame.backUn);
         super.addButton(bt);
     }
     private void addRefreshButton(){
@@ -79,18 +79,18 @@ public class ServerBrowser extends Menu{
                 }
             }
         });
-        refreshServers.setPressedTexture(new TextureRegion((Texture)getManager().get("archive/L1.png")));
-        refreshServers.setUnpressedTexture(new TextureRegion((Texture)getManager().get("archive/L2.png")));
+        refreshServers.setPressedTexture(MainGame.refreshPress);
+        refreshServers.setUnpressedTexture(MainGame.refreshUn);
         super.addButton(refreshServers);
 
     }
     private void addOfflineButton(){
-        MenuBox offlineButton = MenuTools.createLabelledButton(5, 60, 300, 60, "Offline", new MenuTools.OnClick() {
+        MenuBox offlineButton = MenuTools.createLabelledButton(5, 60, 300, 60, "[WHITE]Offline", new MenuTools.OnClick() {
             @Override
             public void action() {
                 MainGame.state = GameState.State.OFFLINEDEBUG;
             }
-        },MenuTools.mGTR("simpleBGB.png",getManager()),MenuTools.mGTR("simpleBG.png",getManager()),getFonts(),DAGGER20);
+        },MainGame.bigButtonPress,MainGame.bigButtonUn,getFonts(),DAGGER20);
         super.addMenuBox(offlineButton);
     }
     public boolean scrolled(int amount) {
@@ -127,8 +127,8 @@ public class ServerBrowser extends Menu{
                 sName.setFont(DAGGER30);
                 peopleLimit.setText(tOut,super.getFontCaches());
                 sName.setText(serverList.get(k).serverName,super.getFontCaches());
-                bt.setPressedTexture(MenuTools.mGTR("simpleBGB.png",getManager()));//new TextureRegion((Texture)assets.get("4914003-galaxy-wallpaper-png.png")));
-                bt.setUnpressedTexture(MenuTools.mGTR("simpleBG.png",getManager()));//new TextureRegion((Texture)assets.get("Desktop.jpg")));
+                bt.setPressedTexture(MainGame.bigButtonPress);//new TextureRegion((Texture)assets.get("4914003-galaxy-wallpaper-png.png")));
+                bt.setUnpressedTexture(MainGame.bigButtonUn);//new TextureRegion((Texture)assets.get("Desktop.jpg")));
                 bt.setCallback(new MenuTools.OnClick() {
                     @Override
                     public void action() {

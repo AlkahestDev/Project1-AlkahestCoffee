@@ -35,7 +35,7 @@ public class MainMenu extends Menu{
     }*/
 
     public void init(){
-        this.setBackground(new TextureRegion((Texture)super.getManager().get("simpleBG.png")));
+        this.setBackground(MainGame.background);
         final MenuBox askUserNameBox = new MenuBox(Gdx.graphics.getWidth()/2-180,Gdx.graphics.getHeight()/2-70,360,140,super.getFonts());
         final MenuTools.TextField askUserNameField = new MenuTools.TextField(5, 5, 350, 40);
         final MenuTools.QueueText userNameError = new MenuTools.QueueText(5,60,0,0);
@@ -94,7 +94,7 @@ public class MainMenu extends Menu{
         userNameError.setFont(DAGGER20);
         askUserNameBox.addQueueText(userNameError);
         askUserNameBox.addTextField(askUserNameField);
-        askUserNameBox.setBackground(new TextureRegion((Texture)super.getManager().get("Menu/canvas.png")));
+        askUserNameBox.setBackground(bigButtonPress);
         String tempMessage = "Enter a username";
         MenuTools.QueueText tempQt = new MenuTools.QueueText(180-MenuTools.textWidth(super.getFonts().get(DAGGER40).getFont(),tempMessage)/2,120,0,0);
         tempQt.setText(tempMessage,super.getFonts());
@@ -103,38 +103,30 @@ public class MainMenu extends Menu{
     }
 
     private void addMenuButtons(){
-        MenuBox playBox = MenuTools.createLabelledButton(-400,Gdx.graphics.getHeight()/2+85,400,150,"[WHITE]Play",new MenuTools.OnClick() {
+        MenuBox playBox = MenuTools.createLabelledButton(-400,170,400,150,"[WHITE]Play",new MenuTools.OnClick() {
             @Override
             public void action() {
                 MainGame.state = GameState.State.SERVERBROWSER;
             }
-        },MenuTools.mGTR("simpleBG.png",getManager()),MenuTools.mGTR("simpleBGB.png",getManager()),getFonts(),DAGGER40);
-        MenuBox settingsBox = MenuTools.createLabelledButton(-500, Gdx.graphics.getHeight() / 2 - 75, 400, 150, "[WHITE]Settings", new MenuTools.OnClick() {
-            @Override
-            public void action() {
-                MainGame.state = GameState.State.MAINMENUSETTINGS;
-            }
-        },MenuTools.mGTR("simpleBG.png",getManager()),MenuTools.mGTR("simpleBGB.png",getManager()),getFonts(),DAGGER40);//new MenuBox(-500,Gdx.graphics.getHeight()/2-75,400,150,super.getFonts());
-        MenuBox quitBox = MenuTools.createLabelledButton(-600,Gdx.graphics.getHeight()/2-235,400,150,"[WHITE]Quit",new MenuTools.OnClick() {
+        },MainGame.bigButtonPress,MainGame.bigButtonUn,getFonts(),DAGGER40);
+        MenuBox quitBox = MenuTools.createLabelledButton(-600,10,400,150,"[WHITE]Quit",new MenuTools.OnClick() {
             @Override
             public void action() {
                 MainGame.state = GameState.State.QUIT;
             }
-        },MenuTools.mGTR("simpleBG.png",getManager()),MenuTools.mGTR("simpleBGB.png",getManager()),getFonts(),DAGGER40);
+        },MainGame.bigButtonPress,MainGame.bigButtonUn,getFonts(),DAGGER40);
         MenuTools.QueueText gameName = new MenuTools.QueueText(-415,Gdx.graphics.getHeight()-30,0,0);
-        gameName.setText("[WHITE]Alkahest Coffee Corp",super.getFonts());
+        gameName.setText("[BLACK]Alkahest Coffee Corp",super.getFonts());
         gameName.setFont(DAGGER50);
         gameName.setVelocity(20.3f,0);
         super.addQueueText(gameName);
         MenuTools.QueueText versionNumber = new MenuTools.QueueText(-415, Gdx.graphics.getHeight()-70,0,0);
-        versionNumber.setText("[WHITE]Version: "+MainGame.versionNumber,getFonts());
+        versionNumber.setText("[BLACK]Version: "+MainGame.versionNumber,getFonts());
         versionNumber.setFont(DAGGER20);
         versionNumber.setVelocity(20.3f,0);
         super.addQueueText(versionNumber);
         playBox.setVelocity(19.862f,0);
-        settingsBox.setVelocity(22.21f,0);
         quitBox.setVelocity(24.32f,0);
-        super.addMenuBox(settingsBox);
         super.addMenuBox(playBox);
         super.addMenuBox(quitBox);
     }

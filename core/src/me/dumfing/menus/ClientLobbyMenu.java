@@ -34,6 +34,7 @@ public class ClientLobbyMenu extends Menu{
     }
 
     public void init(final MultiplayerClient client) {
+        this.setBackground(MainGame.background);
         MenuTools.TextField sendChatMessage = new MenuTools.TextField(5,5,400,40);
         sendChatMessage.setEnterAction(new MenuTools.OnEnter() {
             @Override
@@ -44,14 +45,14 @@ public class ClientLobbyMenu extends Menu{
             }
         });
         chatBox = new MenuBox(Gdx.graphics.getWidth()-415,5,410,480,getFonts());
-        chatBox.setBackground(MenuTools.mGTR("Menu/canvas.png",getManager()));
+        chatBox.setBackground(MainGame.bigButtonUn);
         chatBox.addTextField(sendChatMessage);
         super.addMenuBox(chatBox);
         connectedPlayers = new MenuBox(5,5,400,660,getFonts());
-        connectedPlayers.setBackground(MenuTools.mGTR("Menu/canvas.png",getManager()));
+        connectedPlayers.setBackground(MainGame.bigButtonUn);
         super.addMenuBox(connectedPlayers);
         countDownBar = new MenuBox(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()-60,200,60,getFonts());
-        countDownBar.setBackground(MenuTools.mGTR("simpleBG.png",getManager()));
+        countDownBar.setBackground(MainGame.bigButtonUn);
         countdown = new MenuTools.QueueText(5,50,0,0);
         countdown.setFont(DAGGER50);
         countDownBar.addQueueText(countdown);

@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.utils.Array;
+import me.dumfing.client.maingame.MainGame;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.multiplayerTools.MultiplayerClient;
 import me.dumfing.multiplayerTools.MultiplayerTools;
@@ -69,24 +70,24 @@ public class ClientPickingInfoMenu extends Menu{
                 }
             }
         });
-        redTeamButton.setPressedTexture(MenuTools.mGTR("simpleBG.png",getManager()));//new TextureRegion((Texture)getManager().get("desktop.jpg")));
-        redTeamButton.setUnpressedTexture(MenuTools.mGTR("Menu/canvas.png",getManager()));
-        bluTeamButton.setPressedTexture(MenuTools.mGTR("simpleBG.png",getManager()));
-        bluTeamButton.setUnpressedTexture(MenuTools.mGTR("simpleBG.png",getManager()));
+        redTeamButton.setPressedTexture(MainGame.bigButtonPress);//new TextureRegion((Texture)getManager().get("desktop.jpg")));
+        redTeamButton.setUnpressedTexture(MainGame.bigButtonUn);
+        bluTeamButton.setPressedTexture(MainGame.bigButtonPress);
+        bluTeamButton.setUnpressedTexture(MainGame.bigButtonUn);
         redTeamNumbers = new MenuTools.QueueText(10,Gdx.graphics.getHeight()-10,0,0);
         bluTeamNumbers = new MenuTools.QueueText(Gdx.graphics.getWidth()/2+10,Gdx.graphics.getHeight()-10,0,0);
         redTeamNumbers.setFont(DAGGER40);
         bluTeamNumbers.setFont(DAGGER40);
-        knightButton.setPressedTexture(MenuTools.mGTR("archive/L1.png",getManager()));
-        knightButton.setUnpressedTexture(MenuTools.mGTR("archive/R1.png",getManager()));
+        knightButton.setPressedTexture(MainGame.bigButtonPress);
+        knightButton.setUnpressedTexture(MainGame.bigButtonUn);
         knightButton.setCallback(new MenuTools.OnClick() {
             @Override
             public void action() {
                 cl.secureSend(new MultiplayerTools.ClientPickedLoadout(KNIGHT));
             }
         });
-        archerButton.setPressedTexture(MenuTools.mGTR("archive/L2.png",getManager()));
-        archerButton.setUnpressedTexture(MenuTools.mGTR("archive/R2.png",getManager()));
+        archerButton.setPressedTexture(MainGame.bigButtonPress);
+        archerButton.setUnpressedTexture(MainGame.bigButtonUn);
         archerButton.setCallback(new MenuTools.OnClick() {
             public void action() {
                 cl.secureSend(new MultiplayerTools.ClientPickedLoadout(ARCHER));
