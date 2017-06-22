@@ -317,18 +317,6 @@ public class ConcurrentGameWorld {
         if (keyDown(keys, MultiplayerTools.Keys.CONTROL)){
             // Walking
             if (keyDown(keys, MultiplayerTools.Keys.A) || keyDown(keys, MultiplayerTools.Keys.D)){
-
-                // Shield is already drawn
-                if (pIn.isShieldUp()){
-                    System.out.println("SHIELD IS UP");
-                    animation += AnimationManager.SHIELD_WALKING;
-                }
-                // Drawing Up shield
-                else {
-                    System.out.println("SHIELD DRAW WALKING");
-                    pIn.setDrawingShield(true);
-                    animation += AnimationManager.SHIELD_DRAW_WALKING;
-                }
                 if(pIn.getCurrentClass()==KNIGHT) {
                     // Shield is already drawn
                     if (pIn.isShieldUp()) {

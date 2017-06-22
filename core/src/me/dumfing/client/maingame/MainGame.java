@@ -85,7 +85,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		menu = new UniversalClientMenu(fontCaches,assetManager,camera);
 		Gdx.input.setInputProcessor(this);
 		//offline setup things
-		clientSoldier.setPos(58,30);
+		clientSoldier.setPos(16,7);
 		clientSoldier.setCurrentClass(0);
 		clientSoldier.setTeam(0);
 		gpuName = Gdx.gl.glGetString(GL20.GL_RENDERER);
