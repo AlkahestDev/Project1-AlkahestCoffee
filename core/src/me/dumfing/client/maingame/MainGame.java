@@ -72,7 +72,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		settingsMenu = new SettingsMenu(fontCaches,assetManager,camera);
 		pickingInfoMenu = new ClientPickingInfoMenu(fontCaches,assetManager,camera);
 		lobbyMenu = new ClientLobbyMenu(fontCaches,assetManager,camera);
-		setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded, background frames are loaded and added to it here
+		//setupLoadingMenu(); // loadingmenu is the only one that is setup before anything else is loaded, background frames are loaded and added to it here
 		scW = Gdx.graphics.getWidth();
 		scH = Gdx.graphics.getHeight();
 		state = GameState.State.LOADINGGAME;
@@ -325,13 +325,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			assetManager.load(String.format("loading/tuzkii/tuzkiii%d.png",i),Texture.class);
 		}
 	}
-	public void setupLoadingMenu(){
+	/*public void setupLoadingMenu(){
 		int numFrames = 39;
 		for(int i = 0; i<numFrames;i++){
 			loadingMenu.addBackground(new TextureRegion(new Texture(Gdx.files.internal(String.format("loading/loadingKnight/loadingKnight%d.png",i)))));
 		}
 		loadingMenu.setFrameRate(25);
-	}
+	}*/
 
 	@Override
 	public boolean keyDown(int keycode) {

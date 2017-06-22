@@ -1,0 +1,62 @@
+
+LoadingAnimation.png
+size: 512,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+archerLoad
+  rotate: false
+  xy: 2, 2
+  size: 46, 49
+  orig: 46, 49
+  offset: 0, 0
+  index: 0
+archerLoad
+  rotate: false
+  xy: 50, 2
+  size: 46, 49
+  orig: 46, 49
+  offset: 0, 0
+  index: 1
+archerLoad
+  rotate: false
+  xy: 98, 2
+  size: 46, 49
+  orig: 46, 49
+  offset: 0, 0
+  index: 2
+archerLoad
+  rotate: false
+  xy: 146, 2
+  size: 46, 49
+  orig: 46, 49
+  offset: 0, 0
+  index: 3
+archerLoad
+  rotate: false
+  xy: 194, 2
+  size: 46, 49
+  orig: 46, 49
+  offset: 0, 0
+  index: 4
+archerLoad
+  rotate: false
+  xy: 242, 2
+  size: 46, 49
+  orig: 46, 49
+  offset: 0, 0
+  index: 5
+archerLoad
+  rotate: false
+  xy: 290, 2
+  size: 46, 49
+  orig: 46, 49
+  offset: 0, 0
+  index: 6
+archerLoad
+  rotate: false
+  xy: 338, 2
+  size: 46, 49
+  orig: 46, 49
+  offset: 0, 0
+  index: 7
