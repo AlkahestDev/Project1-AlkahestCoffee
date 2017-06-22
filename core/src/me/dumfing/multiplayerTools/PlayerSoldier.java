@@ -7,9 +7,6 @@ import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
-import java.util.Arrays;
-import java.util.Map;
-
 public class PlayerSoldier {
     //Arrow drawing will work by having a counter that increases as the mouse is down. If drawingBow is true and the mouse is up the arrow will be fired, and the counter will be set to 0
     private int health, maxHealth, animationID, team, pickedClass,facingDirection, bowDrawTime; // animationID is an int describing the direction the player is facing and what animation they're doing
@@ -212,6 +209,14 @@ public class PlayerSoldier {
         playerArea.y+=this.vY;
     }
 
+    public boolean isSwinging() {
+        return swinging;
+    }
+
+    public void setSwinging(boolean swinging) {
+        this.swinging = swinging;
+    }
+
     /**
      * Draws the PlayerSoldier
      * @param batch
@@ -230,15 +235,14 @@ public class PlayerSoldier {
         if(this.isDrawingBow()){ // bow drawing animation
                     float limAng = getMouseAngle(); // this angle will be clamped based on which direction the player is facing
                        if(this.getFacingDirection()==0){
+
                            limAng = MathUtils.clamp(limAng,160,200); // negative x part of circle
                        }
                        else{
                            if(limAng > 0 && limAng<90){ // 0 is straight right, meaning the top half of the right is 0-90 and the bottom half is 270-360, separate cases are needed for each
-                               System.out.println("x+ y+");
                                limAng = MathUtils.clamp(limAng,0,20); //positive x, positive y part of circle
                            }
                            else if(limAng>=270){
-                               System.out.println("x+ y-");
                                limAng = MathUtils.clamp(limAng,340,360); //positive x, negative y part of circle
                            }
                        }
@@ -260,6 +264,9 @@ public class PlayerSoldier {
         if((this.getAnimationID()&AnimationManager.ISWALKING) == AnimationManager.WALK && (this.getAnimationID()&AnimationManager.ISATTACK)==AnimationManager.ATTACK){
             return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][5][this.getCurrentClass()];
         }
+        else if((this.getAnimationID()& AnimationManager.SHIELD_WALKING) == AnimationManager.SHIELD_WALKING){
+            return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][8][this.getCurrentClass()];
+        }
         else if((this.getAnimationID()& AnimationManager.ISWALKING) == AnimationManager.WALK){
             return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][0][this.getCurrentClass()];
         }
@@ -271,6 +278,12 @@ public class PlayerSoldier {
         }
         else if((this.getAnimationID()& AnimationManager.ISATTACK) == AnimationManager.ATTACK){
             return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][3][this.getCurrentClass()];
+        }
+        else if((this.getAnimationID()& AnimationManager.SHIELD_IDLE) == AnimationManager.SHIELD_IDLE){
+            return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][6][this.getCurrentClass()];
+        }
+        else if((this.getAnimationID()& AnimationManager.SHIELD_DRAW_IDLE) == AnimationManager.SHIELD_DRAW_IDLE){
+            return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][7][this.getCurrentClass()];
         }
         else { // idling
             return animationSet[this.getAnimationID() & AnimationManager.DIRECTION][4][this.getCurrentClass()];
@@ -419,5 +432,19 @@ public class PlayerSoldier {
 
     public void setAlive(boolean alive) {
         this.alive = alive;
+    }
+
+    /**
+     * returns the animation in bit form as a string
+     * @return
+     */
+    public String animationString(){
+        String sOut = "";
+        int animation = this.getAnimationID();
+        for(int i = 32; i>-1;i--){
+            sOut=(animation%2)+sOut;
+            animation/=2;
+        }
+        return sOut;
     }
 }

@@ -4,3 +4,6 @@
 3 Attacking
 4 Idle
 5 walking+attacking
+6 shield idling
+7 Shield Drawing
+8 Shield Walking

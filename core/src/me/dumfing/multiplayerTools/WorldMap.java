@@ -18,7 +18,6 @@ import com.badlogic.gdx.utils.Array;
 // 255,255,0 Red only area
 // 0,1,255 blu spawn
 // 0,2,255 blu capture flag
-//
 // 0,255,255 blu only area
 public class WorldMap {
     Pixmap collisionMap;

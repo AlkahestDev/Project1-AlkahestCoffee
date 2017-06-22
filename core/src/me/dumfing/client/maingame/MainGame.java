@@ -97,30 +97,19 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		for(BitmapFontCache bmfc : fontCaches) {
 			bmfc.clear(); // clear bitmap font cache because it doesn't clear itself upon drawing (grumble grumble)
 		}
-		if(state == GameState.State.PLAYINGGAME || state == GameState.State.OFFLINEDEBUG){
-//			if(!zoomedIn){
-				if(gameInstance == null || gameInstance.clientSoldier().getKeysHeld()[MultiplayerTools.Keys.RMB] == null){
-				    zoomCamera(0.025f);
-                }
-                else if (gameInstance.clientSoldier()!=null && gameInstance.clientSoldier().getCurrentClass() == PlayerSoldier.ARCHER && gameInstance.clientSoldier().getKeysHeld()[MultiplayerTools.Keys.RMB].getIsDown()){ // if the player exists and the right mouse button is pressed
-				    camera.translate(gameInstance.clientSoldier().getFacingDirection()==0?-7:7,0); // translate the camera left or right based on the player's facing direction
-                    zoomCamera(0.05f); // zoom camera out (currently 2x)
-                }
-                else if(gameInstance.clientSoldier()!=null && !gameInstance.clientSoldier().getKeysHeld()[MultiplayerTools.Keys.RMB].getIsDown()){ // if the mouse isn't down
-                    zoomCamera(0.025f); // zoom in to regular area
-                }
-//				zoomedIn = true;
-//			}
-		}
+		if(state == GameState.State.PLAYINGGAME || state == GameState.State.OFFLINEDEBUG) {
+            if (gameInstance == null || gameInstance.clientSoldier().getKeysHeld()[MultiplayerTools.Keys.RMB] == null) {
+                zoomCamera(0.025f);
+            } else if (gameInstance.clientSoldier() != null && gameInstance.clientSoldier().getCurrentClass() == PlayerSoldier.ARCHER && gameInstance.clientSoldier().getKeysHeld()[MultiplayerTools.Keys.RMB].getIsDown()) { // if the player exists and the right mouse button is pressed
+                camera.translate(gameInstance.clientSoldier().getFacingDirection() == 0 ? -7 : 7, 0); // translate the camera left or right based on the player's facing direction
+                zoomCamera(0.05f); // zoom camera out (currently 2x)
+            } else if (gameInstance.clientSoldier() != null && !gameInstance.clientSoldier().getKeysHeld()[MultiplayerTools.Keys.RMB].getIsDown()) { // if the mouse isn't down
+                zoomCamera(0.025f); // zoom in to regular area
+            }
+        }
 		else{
-//		if(zoomedIn){
 				camera.position.set(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2,0);
 				zoomCamera(1);
-				//camera.update();
-				//shapeRenderer.setProjectionMatrix(camera.combined);
-				//batch.setProjectionMatrix(camera.combined);
-//				zoomedIn = false;
-//			}
 		}
 		switch(state){
 			case LOADINGGAME: // we shouldn't ever be going back to LOADINGGAME
@@ -169,6 +158,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			    if(Gdx.input.getInputProcessor()!=serverBrowser){
 			        serverBrowser.setInputProcessor();
 			        System.out.println("RUN!");
+			        gameInstance = null;
                 }
                 serverBrowser.update();
 			    serverBrowser.draw(uiBatch,uiShapeRenderer);

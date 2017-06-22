@@ -177,23 +177,11 @@ public class ConcurrentGameWorld {
     private void handleAttacks(PlayerSoldier attacker){
 
         // Checking if player collides with any other player
-        Rectangle attackRect = new Rectangle(attacker.getX()+(attacker.getFacingDirection()==0?-0.7f:1),attacker.getY()+0.5f,0.7f,0.5f); // TODO: tweak this to line up with the animations better
+        Rectangle attackRect = new Rectangle(attacker.getX()+(attacker.getFacingDirection()==0?-0.7f:1),attacker.getY()+0.7f,0.7f,0.7f); // TODO: tweak this to line up with the animations better
         for (Integer k: players.keySet()){
             PlayerSoldier target = players.get(k);
             if (target != attacker){
-                System.out.println("check "+attacker.getFrameIndex());
                 if (attacker.getFrameIndex() == AnimationManager.ATTACKFRAME && attackRect.overlaps(target.getRect())){  // Maybe its  2 frame where the damage may be done?
-                    // Attacking Left
-                    /*if (target.getX() < attacker.getX() && attacker.getFacingDirection() == 0){
-                        //doDamage(playerSoldier, p);
-                        attacker.attack(target);
-                    }
-
-                    // Attacking Right
-                    if (target.getX() > attacker.getX() && attacker.getFacingDirection() == 1) {
-                        attacker.attack(target);
-                    }*/
-                    System.out.println("BANG");
                     for(Integer v : players.keySet()){
                         if(players.get(v) == attacker){
                             System.out.println(attackRect+" "+players.get(v).getRect());
@@ -247,16 +235,16 @@ public class ConcurrentGameWorld {
 
             // Walking
             if (keyDown(keys, Keys.A) || keyDown(keys, Keys.S)){
-                animation += AnimationManager.SHEILD_DRAW_WALKING;
+                animation += AnimationManager.SHIELD_DRAW_WALKING;
             }
             // Idle
             else {
-                animation += AnimationManager.SHEILD_DRAW_IDLE;
+                animation += AnimationManager.SHIELD_DRAW_IDLE;
             }
-
 
             if (pIn.isAnimationDone()){
                 pIn.setDrawingShield(false);
+                pIn.setShieldUp(true);
                 
             }
 
@@ -268,6 +256,7 @@ public class ConcurrentGameWorld {
                 pIn.setvY(MultiplayerTools.JUMPPOWER);
                 pIn.setCanJump(false);
             }
+            pIn.setSwinging(false);
         }
         else if(!pIn.isCanJump() && pIn.getvX()>0){
             animation+= AnimationManager.JUMP;
@@ -302,36 +291,40 @@ public class ConcurrentGameWorld {
         }
 
         // Shielding
-        if (keyDown(keys, Keys.CONTROL)){
-
+        if (keyDown(keys, MultiplayerTools.Keys.CONTROL)){
             // Walking
-            if (keyDown(keys, Keys.A) || keyDown(keys, Keys.S)){
+            if (keyDown(keys, MultiplayerTools.Keys.A) || keyDown(keys, MultiplayerTools.Keys.D)){
 
                 // Shield is already drawn
                 if (pIn.isShieldUp()){
-                    animation += AnimationManager.SHEILD_WALKING;
+                    System.out.println("SHIELD IS UP");
+                    animation += AnimationManager.SHIELD_WALKING;
                 }
                 // Drawing Up shield
                 else{
-                    animation += AnimationManager.SHEILD_DRAW_WALKING;
+                    System.out.println("SHIELD DRAW WALKING");
+                    animation += AnimationManager.SHIELD_DRAW_WALKING;
                 }
 
             }
             // Idle
             else {
-
                 // Shield is already drawn
                 if (pIn.isShieldUp()){
-                    animation += AnimationManager.SHEILD_IDLE;
+                    animation += AnimationManager.SHIELD_IDLE;
                 }
                 // Drawing Up shield
-                else{
-                    animation += AnimationManager.SHEILD_DRAW_IDLE;
+                else if((animation&256)!=256){
+                    animation += AnimationManager.SHIELD_DRAW_IDLE;
                 }
 
             }
+            pIn.setDrawingShield(true);
 
-
+        }
+        else{
+            pIn.setShieldUp(false);
+            pIn.setDrawingShield(false);
         }
 
         if(keyDown(keys,MultiplayerTools.Keys.LMB)){

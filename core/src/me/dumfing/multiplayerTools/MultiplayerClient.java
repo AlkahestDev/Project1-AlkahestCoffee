@@ -80,6 +80,11 @@ public class MultiplayerClient {
                 if(GameState.ONLINESTATES.contains(MainGame.state)){
                     MainGame.state = GameState.State.SERVERBROWSER; // go back to the server browser
                 }
+                messages.clear();
+                projectiles.clear();
+                players.clear();
+                flags = new CaptureFlag[2];
+                respawnTimes.clear();
                 MainGame.gameStarted = false;
                 super.disconnected(connection);
             }
