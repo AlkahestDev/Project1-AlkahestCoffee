@@ -58,7 +58,6 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
         manager = new AssetManager();
         shapeRenderer = new ShapeRenderer();
         loadingMenu = new LoadingMenu(fonts,manager,camView);
-        readyLoadingBackground();
         manager.load("simpleBG.png",Texture.class);
         manager.load("simpleBGB.png",Texture.class);
         //manager.load("4k-image-santiago.jpg",Texture.class);
@@ -215,12 +214,6 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
         out.addTextField(maxPlayersField);
         out.addButton(submitInfo);
         return out;
-    }
-    private void readyLoadingBackground(){
-        for(int i = 0;i<39;i++){
-            this.loadingMenu.addBackground(new TextureRegion(new Texture(Gdx.files.internal(String.format("loading/loadingKnight/loadingKnight%d.png",i)))));
-        }
-        loadingMenu.setFrameRate(25);
     }
     private void serverFormError(String message, final MenuTools.QueueText queueText){
         Timer.instance().clear();

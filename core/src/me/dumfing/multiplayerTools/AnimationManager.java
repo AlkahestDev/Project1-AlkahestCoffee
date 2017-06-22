@@ -148,10 +148,10 @@ public class AnimationManager {
                 null,
                 {redPlayerAttackLeftKnight,redPlayerIdleLegsLeftArcher},
                 {redPlayerIdleLeftKnight,redPlayerIdleLeftArcher},
-                {redPlayerWalkAttackLeftKnight,redPlayerWalkingLegsLeftArcher},
+                {redPlayerWalkAttackLeftKnight,redPlayerWalkingLegsLeftArcher}, {redPlayerStabLeftArcher}, {redPlayerWalkStabLeftArcher},
                 {redPlayerIdleShieldLeftKnight,null},
                 {redPlayerIdleShieldDrawLeftKnight,null},
-                {redPlayerWalkingShieldLeftKnight}},
+                {redPlayerWalkingShieldLeftKnight}, {redPlayerWalkingShieldDrawLeftKnight}, {redPlayerStabRightKnight}, {redPlayerWalkStabRightKnight}},
                 {{redPlayerWalkRightKnight,redPlayerWalkRightArcher},
                         null,
                         null,
@@ -160,8 +160,9 @@ public class AnimationManager {
                         {redPlayerWalkAttackRightKnight,redPlayerWalkingLegsRightArcher},
                         {redPlayerIdleShieldRightKnight,null},
                         {redPlayerIdleShieldDrawRightKnight},
-                        {redPlayerWalkingShieldRightKnight}}};
-        bluPlayer = new Animation[][][]{{{bluPlayerWalkLeftKnight,bluPlayerWalkLeftArcher},null,null,{bluPlayerAttackLeftKnight,bluPlayerIdleLegsLeftArcher}, {bluPlayerIdleLeftKnight,bluPlayerIdleLeftArcher},{bluPlayerWalkAttackLeftKnight,bluPlayerWalkingLegsLeftArcher},{bluPlayerIdleShieldLeftKnight,null},{bluPlayerIdleShieldDrawLeftKnight},{bluPlayerWalkingShieldLeftKnight}, {bluPlayerWalkingShieldDrawLeftKnight}},{{bluPlayerWalkRightKnight,bluPlayerWalkRightArcher},null,null,{bluPlayerAttackRightKnight,bluPlayerIdleLegsRightArcher}, {bluPlayerIdleRightKnight,bluPlayerIdleRightArcher},{bluPlayerWalkAttackRightKnight,bluPlayerWalkingLegsRightArcher},{bluPlayerIdleShieldRightKnight,null},{bluPlayerIdleShieldDrawRightKnight},{bluPlayerWalkingShieldRightKnight}, {bluPlayerWalkingShieldDrawRightKnight}}};
+                        {redPlayerWalkingShieldRightKnight}, {redPlayerWalkingShieldDrawRightKnight}, {redPlayerStabRightKnight}, {redPlayerWalkStabRightKnight}, {redPlayerStabRightArcher}, {redPlayerWalkStabRightArcher}}};
+        bluPlayer = new Animation[][][]{{{bluPlayerWalkLeftKnight,bluPlayerWalkLeftArcher},null,null,{bluPlayerAttackLeftKnight,bluPlayerIdleLegsLeftArcher}, {bluPlayerIdleLeftKnight,bluPlayerIdleLeftArcher},{bluPlayerWalkAttackLeftKnight,bluPlayerWalkingLegsLeftArcher},{bluPlayerIdleShieldLeftKnight,null},{bluPlayerIdleShieldDrawLeftKnight},{bluPlayerWalkingShieldLeftKnight}, {bluPlayerWalkingShieldDrawLeftKnight}, {bluPlayerStabLeftKnight}, {bluPlayerWalkStabLeftKnight}, {bluPlayerStabLeftArcher}, {bluPlayerWalkStabLeftKnight}},{{bluPlayerWalkRightKnight,bluPlayerWalkRightArcher},null,null,{bluPlayerAttackRightKnight,bluPlayerIdleLegsRightArcher}, {bluPlayerIdleRightKnight,bluPlayerIdleRightArcher},{bluPlayerWalkAttackRightKnight,bluPlayerWalkingLegsRightArcher},{bluPlayerIdleShieldRightKnight,null},{bluPlayerIdleShieldDrawRightKnight},{bluPlayerWalkingShieldRightKnight}, {bluPlayerWalkingShieldDrawRightKnight}, {bluPlayerStabRightKnight}, {bluPlayerWalkStabRightKnight}, {bluPlayerStabRightArcher}, {bluPlayerWalkStabRightArcher}}};
+
     }
 
     /**

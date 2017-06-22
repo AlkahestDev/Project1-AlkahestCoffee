@@ -95,7 +95,7 @@ public class MainMenu extends Menu{
         askUserNameBox.addQueueText(userNameError);
         askUserNameBox.addTextField(askUserNameField);
         askUserNameBox.setBackground(bigButtonPress);
-        String tempMessage = "Enter a username";
+        String tempMessage = "[WHITE]Enter a username";
         MenuTools.QueueText tempQt = new MenuTools.QueueText(180-MenuTools.textWidth(super.getFonts().get(DAGGER40).getFont(),tempMessage)/2,120,0,0);
         tempQt.setText(tempMessage,super.getFonts());
         askUserNameBox.addQueueText(tempQt);

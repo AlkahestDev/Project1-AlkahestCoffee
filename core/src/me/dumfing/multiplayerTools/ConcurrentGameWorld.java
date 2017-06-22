@@ -305,6 +305,14 @@ public class ConcurrentGameWorld {
             }
         }
 
+        // Stabbing
+        if (keyDown(keys, Keys.SHIFT)){
+            // Walking
+            if (keyDown(keys, MultiplayerTools.Keys.A) || keyDown(keys, MultiplayerTools.Keys.D)){
+            }
+
+        }
+
         // Shielding
         if (keyDown(keys, MultiplayerTools.Keys.CONTROL)){
             // Walking

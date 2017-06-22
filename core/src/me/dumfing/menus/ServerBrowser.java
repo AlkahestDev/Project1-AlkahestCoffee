@@ -58,7 +58,7 @@ public class ServerBrowser extends Menu{
         super.addTextField(directConnect);
     }
     private void addBackButton(){
-        MenuTools.Button bt = new MenuTools.Button(0,Gdx.graphics.getHeight()-65,60,60);
+        MenuTools.Button bt = new MenuTools.Button(5,Gdx.graphics.getHeight()-65,60,60);
         bt.setCallback(new MenuTools.OnClick() {
             @Override
             public void action() {
@@ -70,7 +70,7 @@ public class ServerBrowser extends Menu{
         super.addButton(bt);
     }
     private void addRefreshButton(){
-        MenuTools.Button refreshServers = new MenuTools.Button(Gdx.graphics.getWidth()-485,Gdx.graphics.getHeight()-85,80,80);
+        MenuTools.Button refreshServers = new MenuTools.Button(Gdx.graphics.getWidth()-465,Gdx.graphics.getHeight()-65,60,60);
         refreshServers.setCallback(new MenuTools.OnClick() {
             @Override
             public void action() {

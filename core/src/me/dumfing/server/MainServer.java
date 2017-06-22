@@ -84,7 +84,7 @@ public class MainServer {
                     else{
                         //Successful Connection
                         validConnections.add(connection);
-                        players.put(connection.getID(),new PlayerSoldier(new Rectangle(2,5,1,2),0,temp.playerName));
+                        players.put(connection.getID(),new PlayerSoldier(new Rectangle(58,30,1,2),0,temp.playerName));
                         events.add(new ServerEvent(ServerEvent.EventType.PLAYERCONNECTED,connection.getID()));
                         response = new MultiplayerTools.ServerResponse(MultiplayerTools.ServerResponse.ResponseCode.CLIENTCONNECTED);
                         quickSendAll(new MultiplayerTools.ServerDetailedSummary(CoffeeServer.redTeamMembers.size(),CoffeeServer.bluTeamMembers.size(),players));

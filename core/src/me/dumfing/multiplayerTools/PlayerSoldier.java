@@ -296,8 +296,11 @@ public class PlayerSoldier {
         else if((this.getAnimationID()& AnimationManager.SHIELD_DRAW_WALKING) == AnimationManager.SHIELD_DRAW_WALKING){
             return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][9][this.getCurrentClass()];
         }
-        else if((this.getAnimationID()& AnimationManager.SHIELD_IDLE) == AnimationManager.STABBING_IDLE){
+        else if((this.getAnimationID()& AnimationManager.STABBING_IDLE) == AnimationManager.STABBING_IDLE){
             return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][10][this.getCurrentClass()];
+        }
+        else if((this.getAnimationID()& AnimationManager.STABBING_WALKING) == AnimationManager.STABBING_WALKING){
+            return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][11][this.getCurrentClass()];
         }
         else { // idling
             return animationSet[this.getAnimationID() & AnimationManager.DIRECTION][4][this.getCurrentClass()];
