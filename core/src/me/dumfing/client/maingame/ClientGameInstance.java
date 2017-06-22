@@ -17,6 +17,7 @@ import me.dumfing.multiplayerTools.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import static me.dumfing.client.maingame.MainGame.*;
 
@@ -37,7 +38,7 @@ public class ClientGameInstance implements InputProcessor{
     private boolean boxOut = false;
     private static float HEALTH_BAR_HEIGHT = 40;
     private Array<ParticleEffectPool.PooledEffect> effects = new Array<ParticleEffectPool.PooledEffect>();
-    private ArrayList<Projectile> effectHandled = new ArrayList<Projectile>(); // the projectiles who's particles have already started
+    private HashSet<String> startedEffects = new HashSet<String>();
     public ClientGameInstance(MultiplayerClient gameClient, HashMap<Integer, PlayerSoldier> players, OrthographicCamera camera, AssetManager manager, Array<BitmapFontCache> fonts){
         this.gameClient = gameClient;
         this.fonts = fonts;
@@ -79,16 +80,17 @@ public class ClientGameInstance implements InputProcessor{
         for(Projectile arrow : playWorld.getProjectiles()){
             if(!arrow.isParticlesStarted() && arrow.isHit()){
                 if(arrow.getAttackPair().y!=-1) {
-                    if(!effectHandled.contains(arrow)) {
+                    if(!startedEffects.contains(arrow.getServerHash())) {
                         PlayerSoldier hitTarget = playWorld.getPlayers().get(arrow.getAttackPair().y);
                         addBloodParticle(hitTarget.getX() + hitTarget.getWidth() / 2f, hitTarget.getY() + hitTarget.getHeight() / 2f);
                         arrow.setParticlesStarted(true);
-                        effectHandled.add(arrow);
+                        startedEffects.add(arrow.getServerHash());
                         MainGame.arrowHit.play();
                     }
                 }
             }
         }
+        startedEffects.retainAll(existingHashes());
         //effectHandled.retainAll(playWorld.getProjectiles());
         if(keyUpdate){
             if(onlineMode) {
@@ -363,6 +365,14 @@ public class ClientGameInstance implements InputProcessor{
         fonts.get(DAGGER30).addText(String.format("[WHITE]%2.2f %2.2f",center.getX(),center.getY()),5,Gdx.graphics.getHeight()-55);
         fonts.get(DAGGER40).addText(String.format("[WHITE]%d",playWorld.getRedScore()),400,Gdx.graphics.getHeight()-10);
         fonts.get(DAGGER40).addText(String.format("[WHITE]%d",playWorld.getBluScore()),Gdx.graphics.getWidth()-420,Gdx.graphics.getHeight()-10);
+        fonts.get(DAGGER30).addText(String.format("[WHITE]Kills: %d",clientSoldier().getKills()),430,Gdx.graphics.getHeight()-10);
+        int deaths = Math.max(1,clientSoldier().getDeaths()); // deaths used for calculating k/d
+        String deathsText = "[WHITE]Deaths: "+clientSoldier().getDeaths();
+        float deathsWidth = MenuTools.textWidth(fonts.get(DAGGER30).getFont(),deathsText);
+        fonts.get(DAGGER30).addText(deathsText,Gdx.graphics.getWidth()-430-deathsWidth,Gdx.graphics.getHeight()-10);
+        String kdText = String.format("[WHITE]KD: %.2f",((float)clientSoldier().getKills()/(float)deaths));
+        float kdWidth = MenuTools.textWidth(fonts.get(DAGGER30).getFont(), kdText);
+        fonts.get(DAGGER30).addText(kdText,Gdx.graphics.getWidth()/2-kdWidth/2,Gdx.graphics.getHeight()-10);
     }
     private void drawDeathSprites(Batch batch, PlayerSoldier center){
         float timeRemaining = 0;
@@ -450,5 +460,17 @@ public class ClientGameInstance implements InputProcessor{
         ParticleEffectPool.PooledEffect effectTemp = bloodEffectPool.obtain();
         effectTemp.setPosition(x,y);
         effects.add(effectTemp);
+    }
+
+    /**
+     * returns which arrows still exist on the server
+     * @return
+     */
+    private HashSet<String> existingHashes(){
+        HashSet<String> out = new HashSet<String>();
+        for(Projectile proj : playWorld.getProjectiles()){
+            out.add(proj.getServerHash());
+        }
+        return out;
     }
 }

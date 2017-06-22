@@ -6,17 +6,18 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import me.dumfing.gdxtools.MathTools;
 
 public class PlayerSoldier {
     //Arrow drawing will work by having a counter that increases as the mouse is down. If drawingBow is true and the mouse is up the arrow will be fired, and the counter will be set to 0
-    private int health, maxHealth, animationID, team, pickedClass,facingDirection, bowDrawTime; // animationID is an int describing the direction the player is facing and what animation they're doing
+    private int health, maxHealth, animationID, team, pickedClass,facingDirection, bowDrawTime, kills, deaths; // animationID is an int describing the direction the player is facing and what animation they're doing
     private boolean canJump, drawingBow;
 
     private MultiplayerTools.ClientControlObject[] keysHeld = new MultiplayerTools.ClientControlObject[10];
 
     private Rectangle playerArea;
 
-    private float vX, vY, animationTime;
+    private float vX, vY, animationTime,hitCooldown; // hitCooldown is the amount of time you can be hit again in seconds
 
     private String name = "[#FF0000]N[#DD1100]O[#BB3300]_[#995500]N[#777700]A[#559900]M[#33BB00]E[#11DD00]!";
 
@@ -80,6 +81,9 @@ public class PlayerSoldier {
 
     public void update(float deltaTime){
         this.animationTime+=deltaTime;
+        if(this.hitCooldown>0) {
+            this.hitCooldown = MathTools.towardsZero(this.hitCooldown, deltaTime);
+        }
     }
 
     public void setMaxHealth(int maxHealth){
@@ -181,6 +185,10 @@ public class PlayerSoldier {
 
     public int getFacingDirection() {
         return facingDirection;
+    }
+
+    public float getHitCooldown() {
+        return hitCooldown;
     }
 
     public void setFacingDirection(int facingDirection) {
@@ -370,26 +378,26 @@ public class PlayerSoldier {
         if (target.shielding){
             // Swing Attack
             if (this.swinging){
-                target.setHealth(Math.max(0,target.getHealth() - this.swingDamage / 2));
+                target.damage(this.swingDamage/2);
                 target.knockBack(0.3f*side);
             }
 
             // Stab Attack
             if (this.stabbing){
-                target.setHealth(Math.max(0,target.getHealth() - this.stabDamage / 2));
+                target.damage(this.stabDamage/2);
                 target.knockBack(0.2f*side);
             }
         }
         else {
             // Swing Attack
             if (this.swinging){
-                target.setHealth(Math.max(0,target.getHealth() - this.swingDamage));
+                target.damage(this.swingDamage);//setHealth(Math.max(0,target.getHealth() - this.swingDamage));
                 target.knockBack(0.5f*side);
             }
 
             // Stab Attack
             if (this.stabbing){
-                target.setHealth(Math.max(0,target.getHealth() - this.stabDamage));
+                target.damage(this.stabDamage);//setHealth(Math.max(0,target.getHealth() - this.stabDamage));
                 target.knockBack(0.3f*side);
             }
         }
@@ -402,6 +410,7 @@ public class PlayerSoldier {
     }
     void damage(int amount){
         this.health = Math.max(0,this.health-amount);
+        this.hitCooldown = 0.4f; // this is in seconds because it's being subtracted by deltatime
     }
 
     public String toString() {
@@ -452,5 +461,26 @@ public class PlayerSoldier {
             animation/=2;
         }
         return sOut;
+    }
+
+    public int getKills() {
+        return kills;
+    }
+
+    public void setKills(int kills) {
+        this.kills = kills;
+    }
+    public int getDeaths() {
+        return deaths;
+    }
+
+    public void setDeaths(int deaths) {
+        this.deaths = deaths;
+    }
+    public void addKill(){
+        this.kills++;
+    }
+    public void addDeath(){
+        this.deaths++;
     }
 }

@@ -80,8 +80,8 @@ public class AnimationManager {
         // Knight ShieldWalking
         Animation<TextureRegion> bluPlayerWalkingShieldLeftKnight = new Animation<TextureRegion>(WALKINGFRAMETIME, knightSprites.findRegions("wshlbpk"), Animation.PlayMode.LOOP);
         Animation<TextureRegion> bluPlayerWalkingShieldRightKnight = new Animation<TextureRegion>(WALKINGFRAMETIME, knightSprites.findRegions("wshrbpk"), Animation.PlayMode.LOOP);
-        Animation<TextureRegion> redPlayerWalkingShieldLeftKnight = new Animation<TextureRegion>(WALKINGFRAMETIME, knightSprites.findRegions("wshlbpk"), Animation.PlayMode.LOOP);
-        Animation<TextureRegion> redPlayerWalkingShieldRightKnight = new Animation<TextureRegion>(WALKINGFRAMETIME, knightSprites.findRegions("wshrbpk"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> redPlayerWalkingShieldLeftKnight = new Animation<TextureRegion>(WALKINGFRAMETIME, knightSprites.findRegions("wshlrpk"), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> redPlayerWalkingShieldRightKnight = new Animation<TextureRegion>(WALKINGFRAMETIME, knightSprites.findRegions("wshrrpk"), Animation.PlayMode.LOOP);
 
         // Knight ShieldIdle
         Animation<TextureRegion> bluPlayerIdleShieldLeftKnight = new Animation<TextureRegion>(SHIELDDRAWFRAMETIME, knightSprites.findRegions("shlbpk"), Animation.PlayMode.LOOP);
