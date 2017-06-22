@@ -27,9 +27,12 @@ public class Projectile {
     private int caster = -1; // the player that fired the projectile
     int physicsParent = -1; //upon hitting a player, the arrow will inherit all of their velocities
     boolean particlesStarted = false;
+    boolean killedPlayer = false;
+    private String serverHash; // hashcodes between the client and server are different, this will be used for the client to keep track of arrows
     //0 for arrow
     public Projectile(){}
-    public Projectile(float x, float y,float speed, float angle, int type, int attackerTeam, int caster){
+
+    public Projectile(float x, float y, float speed, float angle, int type, int attackerTeam, int caster){
         this.x = x;
         this.y = y;
         this.vX = speed*(float) Math.cos(Math.toRadians(angle));
@@ -37,7 +40,10 @@ public class Projectile {
         this.projectileType = type;
         this.attackerTeam = attackerTeam;
         this.caster = caster;
+        this.serverHash = ""+caster+System.currentTimeMillis(); // the same person shouldn't be able to fire 2 arrows in the same time
+        System.out.println(this.serverHash);
     }
+
     public void checkCollisions(HashMap<Integer,PlayerSoldier> players, WorldMap world) {
         timeAlive++;
         if (physicsParent == -1) {
@@ -53,6 +59,7 @@ public class Projectile {
                         this.x += checkX;
                         this.y += checkY;
                         player.damage((int) Math.round(Math.hypot(this.vX,this.vY)*20));
+                        killedPlayer = player.getHealth()<=0;
                         this.vX = 0;
                         this.vY = 0;
                         isHit = true;
@@ -72,7 +79,7 @@ public class Projectile {
             }
         }
         else {//TODO: figure out why arrows are being destroyed when they hit players
-            if(players.size()-1 <physicsParent||players.get(physicsParent) == null||!players.get(physicsParent).isAlive()){
+            if(players.get(physicsParent) == null||!players.get(physicsParent).isAlive()){
                 this.timeAlive = MAXLIFETIME;
             }
             else {
@@ -86,7 +93,6 @@ public class Projectile {
             angle = (float) Math.toDegrees(Math.atan2(this.vY,this.vX));
         }
     }
-
     public int getTimeAlive() {
         return timeAlive;
     }
@@ -95,10 +101,10 @@ public class Projectile {
             this.x+=vX;
             this.y+=vY;
     }
+
     public void draw(SpriteBatch batch, TextureRegion textureRegion){
         batch.draw(textureRegion,this.x,this.y,0,0,0.6f,0.15f,1f,1f,angle);
     }
-
     public int getProjectileType() {
         return projectileType;
     }
@@ -118,16 +124,24 @@ public class Projectile {
                 ", attackerTeam=" + attackerTeam +
                 '}';
     }
+
     public GridPoint2 getAttackPair(){ // returns the caster and physicsparent (player who is hit by arrow)
         return new GridPoint2(caster,physicsParent);
     }
-
     public boolean isParticlesStarted() {
         return particlesStarted;
     }
 
+    public String getServerHash() {
+        return serverHash;
+    }
+
     public boolean isHit() {
         return isHit;
+    }
+
+    public boolean isKilledPlayer() {
+        return killedPlayer;
     }
 
     public void setParticlesStarted(boolean particlesStarted) {

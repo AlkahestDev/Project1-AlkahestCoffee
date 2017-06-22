@@ -18,6 +18,8 @@ import static me.dumfing.multiplayerTools.PlayerSoldier.KNIGHT;
  * simulation of how the server's world is working
  */
 public class ConcurrentGameWorld {
+    private static final int SWORD = 0;
+    private static final int BOW = 1;
     private HashMap<Integer, PlayerSoldier> players;
     private WorldMap worldMap;
     private LinkedList<Projectile> projectiles = new LinkedList<Projectile>();
@@ -26,6 +28,7 @@ public class ConcurrentGameWorld {
     private LinkedList<GridPoint2> respawnTimers = new LinkedList<GridPoint2>(); // a linkedlist of GridPoint2's with the x's as id's and y's as time. 0 means they should respawn
     private LinkedList<GridPoint2> hits= new LinkedList<GridPoint2>();  // LinkedList of GridPoint2's with the x as the attacker's id and the y as the defender's
     private Array<Vector3> particleList = new Array<Vector3>(); // places where particles should be played, and what colour
+    private LinkedList<GridPoint3> killLog = new LinkedList<GridPoint3>();
     /**
      * Gets the respawn timeers from the world
      * @return A LinkedList of Vector2 respawn timers
@@ -85,6 +88,11 @@ public class ConcurrentGameWorld {
         }
         for(Projectile proj : projectiles){ // iterate through the list of projectiles
             proj.checkCollisions(getLivingPlayers(), worldMap); // check if the projectile is colliding with anything
+            if(proj.killedPlayer){
+                GridPoint2 killPair = proj.getAttackPair();
+                logKill(killPair.x,killPair.y,BOW);
+                System.out.println(players.get(killPair.x).getName()+" killed "+players.get(killPair.y).getName()+" with an arrow");
+            }
         }
         for(int i = projectiles.size()-1;i>-1;i--){ // loop in reverse to prepare to remove projectiles from the list
             if(projectiles.get(i).getTimeAlive() >= Projectile.MAXLIFETIME){ // if the projectile has existed for longer than the designated max lifetime
@@ -175,20 +183,27 @@ public class ConcurrentGameWorld {
 
     }
     private void handleAttacks(PlayerSoldier attacker){
-
         // Checking if player collides with any other player
-        Rectangle attackRect = new Rectangle(attacker.getX()+(attacker.getFacingDirection()==0?-0.7f:1),attacker.getY()+0.7f,0.7f,0.7f); // TODO: tweak this to line up with the animations better
+        Rectangle attackRect = new Rectangle(attacker.getX()+(attacker.getFacingDirection()==0?-0.8f:1),attacker.getY(),0.9f,2f); // TODO: tweak this to line up with the animations better
         for (Integer k: players.keySet()){
             PlayerSoldier target = players.get(k);
             if (target != attacker){
-                if (attacker.getFrameIndex() == AnimationManager.ATTACKFRAME && attackRect.overlaps(target.getRect())){  // Maybe its  2 frame where the damage may be done?
+                if (attacker.getFrameIndex() == AnimationManager.ATTACKFRAME && attackRect.overlaps(target.getRect()) && target.getHitCooldown()==0){  // Maybe its  2 frame where the damage may be done?
+                    System.out.println(attacker.getName()+" attacked "+target.getName());
+                    int attackerID = 0;
+                    int victimID = k;
+                    attacker.attack(target); // always will attack because the attack rectangle is left or right of the player already
                     for(Integer v : players.keySet()){
                         if(players.get(v) == attacker){
-                            System.out.println(attackRect+" "+players.get(v).getRect());
                             hits.add(new GridPoint2(v,k));
+                            attackerID = v;
                         }
                     }
-                    attacker.attack(target); // always will attack because the attack rectangle is left or right of the player already
+                    if(target.getHealth() <= 0){
+                        logKill(attackerID,victimID,SWORD);
+                        System.out.println(attacker.getName()+" killed "+target.getName()+" with a sword");
+                    }
+                    return;
                 }
             }
         }
@@ -294,32 +309,35 @@ public class ConcurrentGameWorld {
         if (keyDown(keys, MultiplayerTools.Keys.CONTROL)){
             // Walking
             if (keyDown(keys, MultiplayerTools.Keys.A) || keyDown(keys, MultiplayerTools.Keys.D)){
+                if(pIn.getCurrentClass()==KNIGHT) {
+                    // Shield is already drawn
+                    if (pIn.isShieldUp()) {
+                        animation += AnimationManager.SHIELD_WALKING;
+                    }
+                    // Drawing Up shield
+                    else {
+                        animation += AnimationManager.SHIELD_DRAW_WALKING;
+                    }
+                    pIn.setDrawingShield(true);
+                }
 
-                // Shield is already drawn
-                if (pIn.isShieldUp()){
-                    System.out.println("SHIELD IS UP");
-                    animation += AnimationManager.SHIELD_WALKING;
-                }
-                // Drawing Up shield
-                else{
-                    System.out.println("SHIELD DRAW WALKING");
-                    animation += AnimationManager.SHIELD_DRAW_WALKING;
-                }
 
             }
             // Idle
             else {
-                // Shield is already drawn
-                if (pIn.isShieldUp()){
-                    animation += AnimationManager.SHIELD_IDLE;
-                }
-                // Drawing Up shield
-                else if((animation&256)!=256){
-                    animation += AnimationManager.SHIELD_DRAW_IDLE;
+                if(pIn.getCurrentClass()==KNIGHT) {
+                    // Shield is already drawn
+                    if (pIn.isShieldUp()) {
+                        animation += AnimationManager.SHIELD_IDLE;
+                    }
+                    // Drawing Up shield
+                    else if ((animation & 256) != 256) {
+                        animation += AnimationManager.SHIELD_DRAW_IDLE;
+                    }
+                    pIn.setDrawingShield(true);
                 }
 
             }
-            pIn.setDrawingShield(true);
 
         }
         else{
@@ -349,7 +367,6 @@ public class ConcurrentGameWorld {
 
                 case ARCHER:
                     if(projectiles.size()<20) {
-                        System.out.printf("draw amount: %d\n",pIn.getBowDrawTime());
                         pIn.setBowDrawTime(pIn.getBowDrawTime()+1);
                         pIn.setDrawingBow(true);
                         animation+=AnimationManager.ATTACK;
@@ -429,5 +446,28 @@ public class ConcurrentGameWorld {
         Array<Vector3> aOut = new Array<Vector3>(this.particleList);
         this.particleList.clear();
         return aOut;
+    }
+
+    /**
+     * Adds a kill to the kill log
+     * @param killer the connection id of the person who killed
+     * @param victim the connection id of the person who was killed
+     * @param weapon the weapon that was used
+     */
+    public void logKill(int killer, int victim, int weapon){
+        players.get(killer).addKill();
+        players.get(victim).addDeath();
+        killLog.add(new GridPoint3(killer,victim,weapon));
+        if(killLog.size()>10){
+            killLog.remove();
+        }
+    }
+
+    /**
+     * gets the kill log
+     * @return
+     */
+    public LinkedList<GridPoint3> getKillLog() {
+        return killLog;
     }
 }
