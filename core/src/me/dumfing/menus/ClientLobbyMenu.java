@@ -44,11 +44,11 @@ public class ClientLobbyMenu extends Menu{
             }
         });
         chatBox = new MenuBox(Gdx.graphics.getWidth()-415,5,410,480,getFonts());
-        chatBox.setBackground(MenuTools.mGTR("menubackdrops/canvas.png",getManager()));
+        chatBox.setBackground(MenuTools.mGTR("Menu/canvas.png",getManager()));
         chatBox.addTextField(sendChatMessage);
         super.addMenuBox(chatBox);
         connectedPlayers = new MenuBox(5,5,400,660,getFonts());
-        connectedPlayers.setBackground(MenuTools.mGTR("menubackdrops/canvas.png",getManager()));
+        connectedPlayers.setBackground(MenuTools.mGTR("Menu/canvas.png",getManager()));
         super.addMenuBox(connectedPlayers);
         countDownBar = new MenuBox(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()-60,200,60,getFonts());
         countDownBar.setBackground(MenuTools.mGTR("simpleBG.png",getManager()));

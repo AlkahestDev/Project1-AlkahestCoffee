@@ -303,6 +303,7 @@ public class ConcurrentGameWorld {
                 // Drawing Up shield
                 else{
                     System.out.println("SHIELD DRAW WALKING");
+
                     animation += AnimationManager.SHIELD_DRAW_WALKING;
                 }
 

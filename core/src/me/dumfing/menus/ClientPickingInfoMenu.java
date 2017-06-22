@@ -70,7 +70,7 @@ public class ClientPickingInfoMenu extends Menu{
             }
         });
         redTeamButton.setPressedTexture(MenuTools.mGTR("simpleBG.png",getManager()));//new TextureRegion((Texture)getManager().get("desktop.jpg")));
-        redTeamButton.setUnpressedTexture(MenuTools.mGTR("menubackdrops/canvas.png",getManager()));
+        redTeamButton.setUnpressedTexture(MenuTools.mGTR("Menu/canvas.png",getManager()));
         bluTeamButton.setPressedTexture(MenuTools.mGTR("simpleBG.png",getManager()));
         bluTeamButton.setUnpressedTexture(MenuTools.mGTR("simpleBG.png",getManager()));
         redTeamNumbers = new MenuTools.QueueText(10,Gdx.graphics.getHeight()-10,0,0);

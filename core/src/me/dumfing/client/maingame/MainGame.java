@@ -296,7 +296,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		assetManager.load("tuzki.png",Texture.class);
 		assetManager.load("simpleBG.png",Texture.class);
 		assetManager.load("simpleBGB.png",Texture.class);
-		assetManager.load("menubackdrops/canvas.png",Texture.class);
+		assetManager.load("Menu/canvas.png",Texture.class);
 		assetManager.load("pixmapTest.png",Texture.class);
 		assetManager.load("pixmapVisual.png",Texture.class);
 		assetManager.load("projectiles/arrow.png",Texture.class);
