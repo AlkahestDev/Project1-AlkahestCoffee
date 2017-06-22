@@ -87,7 +87,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		//offline setup things
 		clientSoldier.setPos(58,30);
 		clientSoldier.setCurrentClass(0);
-		clientSoldier.setTeam(1);
+		clientSoldier.setTeam(0);
 		gpuName = Gdx.gl.glGetString(GL20.GL_RENDERER);
 	}
 

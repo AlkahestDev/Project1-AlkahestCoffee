@@ -71,7 +71,7 @@ public class ClientLobbyMenu extends Menu{
         }
         textLevel = 0;
         for(PlayerSoldier player : client.getPlayers().values()){
-            MenuTools.QueueText tempName = new MenuTools.QueueText(5,45+(textLevel*42),0,0);
+            MenuTools.QueueText tempName = new MenuTools.QueueText(5,60+(textLevel*42),0,0);
             tempName.setText(player.getName(),getFonts());
             connectedPlayers.addQueueText(tempName);
             textLevel++;
