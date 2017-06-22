@@ -19,7 +19,7 @@ public class LoadingMenu extends Menu {
     float animationTime = 0;
     TextureAtlas loadingAtlas = new TextureAtlas(Gdx.files.internal("loading/LoadingAnimation.atlas"));
     BitmapFont ailerons = new BitmapFont(Gdx.files.internal("fonts/Ailerons90.fnt"));
-    Animation loadingArcher = new Animation(0.09f,loadingAtlas.findRegions("archerLoad"), Animation.PlayMode.LOOP);
+    Animation loadingArcher = new Animation(0.08f,loadingAtlas.findRegions("archerLoad"), Animation.PlayMode.LOOP);
     public LoadingMenu(Array<BitmapFontCache> bmfc, AssetManager manager, OrthographicCamera camera){
         super(bmfc,manager, camera);
     }
