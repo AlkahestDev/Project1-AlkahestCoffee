@@ -15,7 +15,6 @@ import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.menus.MenuBox;
 import me.dumfing.multiplayerTools.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -140,6 +139,7 @@ public class ClientGameInstance implements InputProcessor{
         float deltaTime = Gdx.graphics.getDeltaTime();
         batch.begin();
         playWorld.getWorldMap().drawBG(batch,camera.position.x,camera.position.y);
+        playWorld.getWorldMap().drawBGClose(batch);
         for(CaptureFlag flag : playWorld.getFlags()){
             flag.draw(batch,playWorld.getPlayers());
         }

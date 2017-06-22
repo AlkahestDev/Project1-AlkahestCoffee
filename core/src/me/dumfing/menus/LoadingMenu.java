@@ -2,8 +2,6 @@ package me.dumfing.menus;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -16,10 +14,10 @@ public class LoadingMenu extends Menu {
     //AssetManager manager;
     //float stateTime = 0;
     //Animation newBG = GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP,Gdx.files.internal("1337hax.gif").read());
-    float animationTime = 0;
-    TextureAtlas loadingAtlas = new TextureAtlas(Gdx.files.internal("loading/LoadingAnimation.atlas"));
-    BitmapFont ailerons = new BitmapFont(Gdx.files.internal("fonts/Ailerons90.fnt"));
-    Animation loadingArcher = new Animation(0.08f,loadingAtlas.findRegions("archerLoad"), Animation.PlayMode.LOOP);
+    private float animationTime = 0;
+    private TextureAtlas loadingAtlas = new TextureAtlas(Gdx.files.internal("loading/LoadingAnimation.atlas"));
+    private BitmapFont ailerons = new BitmapFont(Gdx.files.internal("fonts/Ailerons200.fnt"));
+    private Animation loadingArcher = new Animation(0.08f,loadingAtlas.findRegions("archerLoad"), Animation.PlayMode.LOOP);
     public LoadingMenu(Array<BitmapFontCache> bmfc, AssetManager manager, OrthographicCamera camera){
         super(bmfc,manager, camera);
     }

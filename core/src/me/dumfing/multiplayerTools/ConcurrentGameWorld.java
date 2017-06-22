@@ -249,7 +249,8 @@ public class ConcurrentGameWorld {
         if (pIn.isDrawingShield()){
 
             // Walking
-            if (keyDown(keys, Keys.A) || keyDown(keys, Keys.S)){
+            if ((keyDown(keys, MultiplayerTools.Keys.A) || keyDown(keys, MultiplayerTools.Keys.D))&&(animation&AnimationManager.SHIELD_DRAW_WALKING)!=AnimationManager.SHIELD_DRAW_WALKING){
+                System.out.println("shield draw walk 1");
                 animation += AnimationManager.SHIELD_DRAW_WALKING;
             }
             // Idle
@@ -323,7 +324,8 @@ public class ConcurrentGameWorld {
                         animation += AnimationManager.SHIELD_WALKING;
                     }
                     // Drawing Up shield
-                    else {
+                    else if((animation&AnimationManager.SHIELD_DRAW_WALKING)!=AnimationManager.SHIELD_DRAW_WALKING){
+                        System.out.println("shield draw walk 2");
                         animation += AnimationManager.SHIELD_DRAW_WALKING;
                     }
                     pIn.setDrawingShield(true);
@@ -401,6 +403,7 @@ public class ConcurrentGameWorld {
         if(animation+pIn.getFacingDirection()!=pIn.getAnimationID()){
             pIn.setAnimationTime(0);
         }
+        System.out.println("end animation");
         return animation;
     }
     public void setPlayerPos(int playerID, float posX, float posY){

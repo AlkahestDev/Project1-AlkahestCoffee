@@ -304,6 +304,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		assetManager.load("Menu/SwordSilo.png",Texture.class);
 		assetManager.load("pixmapTest.png",Texture.class);
 		assetManager.load("pixmapVisual.png",Texture.class);
+		assetManager.load("pixmapBackground.png",Texture.class);
 		assetManager.load("projectiles/arrow.png",Texture.class);
 		assetManager.load("redArrow.png",Texture.class);
 		assetManager.load("blueArrow.png",Texture.class);
@@ -386,10 +387,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		batch.setProjectionMatrix(camera.combined);
 	}
 	public void createWorlds(){
-		WorldMap debugWorld = new WorldMap(MenuTools.mGTR("pixmapTest.png",assetManager),MenuTools.mGTR("pixmapVisual.png",assetManager));
-		debugWorld.addBackground(MenuTools.mGTR("cloudTemp.png",assetManager));
+		WorldMap world1 = new WorldMap(MenuTools.mGTR("pixmapTest.png",assetManager),MenuTools.mGTR("pixmapVisual.png",assetManager));
+		world1.addBackground(MenuTools.mGTR("cloudTemp.png",assetManager));
+		world1.addBackgroundClose(MenuTools.mGTR("pixmapBackground.png",assetManager));
 		//debugWorld.addForeground(MenuTools.mGTR("fgTemp.png",assetManager));
-		worldMaps = new WorldMap[]{debugWorld};
+		worldMaps = new WorldMap[]{world1};
 	}
 	public void loadFonts(){
         BitmapFont dagger20 = assetManager.get("fonts/dagger20.fnt",BitmapFont.class);//new BitmapFont(Gdx.files.internal("fonts/dagger20.fnt"));

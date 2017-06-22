@@ -1,8 +1,6 @@
 package me.dumfing.multiplayerTools;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
@@ -22,7 +20,7 @@ import com.badlogic.gdx.utils.Array;
 public class WorldMap {
     Pixmap collisionMap;
     private Array<TextureRegion> visualComponent = new Array<TextureRegion>();
-    private TextureRegion foreground, background;
+    private TextureRegion foreground, background, backgroundClose;
     private GridPoint2 redSpawn, bluSpawn, redFlag, bluFlag;
     private int currentFrame = 0;
     private int frameCount = 0;
@@ -51,6 +49,11 @@ public class WorldMap {
     public void drawFG(SpriteBatch batch,float xPersp,float yPersp){
         if(foreground!=null) {
             batch.draw(foreground, xPersp*1.1f,yPersp*1.1f);
+        }
+    }
+    public void drawBGClose(SpriteBatch batch){
+        if(backgroundClose!=null){
+            batch.draw(backgroundClose,0,0,collisionMap.getWidth(),collisionMap.getHeight());
         }
     }
     public void setFrameRate(int fps){
@@ -98,6 +101,9 @@ public class WorldMap {
     }
     public void addBackground(TextureRegion frame){
         this.background = frame;
+    }
+    public void addBackgroundClose(TextureRegion bgClose){
+        this.backgroundClose = bgClose;
     }
     /**
      * returns the GridPoint2 where the first occurence of the colour with the given ID si found

@@ -275,6 +275,9 @@ public class PlayerSoldier {
         else if((this.getAnimationID()& AnimationManager.SHIELD_WALKING) == AnimationManager.SHIELD_WALKING){
             return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][8][this.getCurrentClass()];
         }
+        else if((this.getAnimationID()& AnimationManager.SHIELD_DRAW_WALKING) == AnimationManager.SHIELD_DRAW_WALKING){
+            return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][9][this.getCurrentClass()];
+        }
         else if((this.getAnimationID()& AnimationManager.ISWALKING) == AnimationManager.WALK){
             return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][0][this.getCurrentClass()];
         }
@@ -292,9 +295,6 @@ public class PlayerSoldier {
         }
         else if((this.getAnimationID()& AnimationManager.SHIELD_DRAW_IDLE) == AnimationManager.SHIELD_DRAW_IDLE){
             return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][7][this.getCurrentClass()];
-        }
-        else if((this.getAnimationID()& AnimationManager.SHIELD_DRAW_WALKING) == AnimationManager.SHIELD_DRAW_WALKING){
-            return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][9][this.getCurrentClass()];
         }
         else if((this.getAnimationID()& AnimationManager.STABBING_IDLE) == AnimationManager.STABBING_IDLE){
             return animationSet[this.getAnimationID()& AnimationManager.DIRECTION][10][this.getCurrentClass()];
