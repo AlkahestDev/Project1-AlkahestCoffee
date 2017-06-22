@@ -28,7 +28,37 @@ public class ConcurrentGameWorld {
     private LinkedList<GridPoint2> respawnTimers = new LinkedList<GridPoint2>(); // a linkedlist of GridPoint2's with the x's as id's and y's as time. 0 means they should respawn
     private LinkedList<GridPoint2> hits= new LinkedList<GridPoint2>();  // LinkedList of GridPoint2's with the x as the attacker's id and the y as the defender's
     private Array<Vector3> particleList = new Array<Vector3>(); // places where particles should be played, and what colour
-    private LinkedList<GridPoint3> killLog = new LinkedList<GridPoint3>();
+    private LinkedList<KillInfo> killLog = new LinkedList<KillInfo>();
+    public static class KillInfo{
+        private String killer, victim;
+        private int weapon;
+        public KillInfo(String k, String v, int weapon) {
+            this.killer = k;
+            this.victim = v;
+            this.weapon = weapon;
+        }
+
+        public String getKiller() {
+            return killer;
+        }
+
+        public String getVictim() {
+            return victim;
+        }
+
+        public int getWeapon() {
+            return weapon;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("%12s    %s",getKiller(),getVictim());
+        }
+    }
+    public ConcurrentGameWorld(HashMap<Integer, PlayerSoldier> initialPlayers){
+        this.players = initialPlayers;
+    }
+
     /**
      * Gets the respawn timeers from the world
      * @return A LinkedList of Vector2 respawn timers
@@ -43,10 +73,6 @@ public class ConcurrentGameWorld {
      */
     public void setRespawnTimers(LinkedList<GridPoint2> respawnTimers) {
         this.respawnTimers = respawnTimers;
-    }
-
-    public ConcurrentGameWorld(HashMap<Integer, PlayerSoldier> initialPlayers){
-        this.players = initialPlayers;
     }
 
     /**
@@ -325,7 +351,6 @@ public class ConcurrentGameWorld {
                     }
                     // Drawing Up shield
                     else if((animation&AnimationManager.SHIELD_DRAW_WALKING)!=AnimationManager.SHIELD_DRAW_WALKING){
-                        System.out.println("shield draw walk 2");
                         animation += AnimationManager.SHIELD_DRAW_WALKING;
                     }
                     pIn.setDrawingShield(true);
@@ -403,7 +428,6 @@ public class ConcurrentGameWorld {
         if(animation+pIn.getFacingDirection()!=pIn.getAnimationID()){
             pIn.setAnimationTime(0);
         }
-        System.out.println("end animation");
         return animation;
     }
     public void setPlayerPos(int playerID, float posX, float posY){
@@ -468,9 +492,11 @@ public class ConcurrentGameWorld {
      * @param weapon the weapon that was used
      */
     public void logKill(int killer, int victim, int weapon){
-        players.get(killer).addKill();
-        players.get(victim).addDeath();
-        killLog.add(new GridPoint3(killer,victim,weapon));
+        PlayerSoldier k = players.get(killer);
+        PlayerSoldier v = players.get(victim);
+        k.addKill();
+        v.addDeath();
+        killLog.add(new KillInfo(k.getName(),v.getName(),weapon));
         if(killLog.size()>10){
             killLog.remove();
         }
@@ -480,7 +506,7 @@ public class ConcurrentGameWorld {
      * gets the kill log
      * @return
      */
-    public LinkedList<GridPoint3> getKillLog() {
+    public LinkedList<KillInfo> getKillLog() {
         return killLog;
     }
 }

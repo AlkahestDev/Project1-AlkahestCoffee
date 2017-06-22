@@ -17,6 +17,7 @@ import me.dumfing.multiplayerTools.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 import static me.dumfing.client.maingame.MainGame.*;
 
@@ -139,6 +140,7 @@ public class ClientGameInstance implements InputProcessor{
         float deltaTime = Gdx.graphics.getDeltaTime();
         batch.begin();
         playWorld.getWorldMap().drawBG(batch,camera.position.x,camera.position.y);
+        playWorld.getWorldMap().drawBGMedium(batch,camera.position.x,camera.position.y);
         playWorld.getWorldMap().drawBGClose(batch);
         for(CaptureFlag flag : playWorld.getFlags()){
             flag.draw(batch,playWorld.getPlayers());
@@ -369,6 +371,11 @@ public class ClientGameInstance implements InputProcessor{
         String deathsText = "[WHITE]Deaths: "+clientSoldier().getDeaths();
         float deathsWidth = MenuTools.textWidth(fonts.get(DAGGER30).getFont(),deathsText);
         fonts.get(DAGGER30).addText(deathsText,Gdx.graphics.getWidth()-430-deathsWidth,Gdx.graphics.getHeight()-15);
+        int numKills = playWorld.getKillLog().size();
+        LinkedList<ConcurrentGameWorld.KillInfo> kills = playWorld.getKillLog();
+        for(int i = 0;i<Math.max(0,numKills);i++){
+            fonts.get(DAGGER20).addText("[BLACK]"+kills.get(numKills-1-i).toString(),5,Gdx.graphics.getHeight()-i*25-5);
+        }
     }
     private void drawDeathSprites(Batch batch, PlayerSoldier center){
         float timeRemaining = 0;
