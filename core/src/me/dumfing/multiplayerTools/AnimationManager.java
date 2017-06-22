@@ -161,7 +161,7 @@ public class AnimationManager {
                         {redPlayerIdleShieldRightKnight,null},
                         {redPlayerIdleShieldDrawRightKnight},
                         {redPlayerWalkingShieldRightKnight}}};
-        bluPlayer = new Animation[][][]{{{bluPlayerWalkLeftKnight,bluPlayerWalkLeftArcher},null,null,{bluPlayerAttackLeftKnight,bluPlayerIdleLegsLeftArcher}, {bluPlayerIdleLeftKnight,bluPlayerIdleLeftArcher},{bluPlayerWalkAttackLeftKnight,bluPlayerWalkingLegsLeftArcher},{bluPlayerIdleShieldLeftKnight,null},{bluPlayerIdleShieldDrawLeftKnight},{bluPlayerWalkingShieldLeftKnight}},{{bluPlayerWalkRightKnight,bluPlayerWalkRightArcher},null,null,{bluPlayerAttackRightKnight,bluPlayerIdleLegsRightArcher}, {bluPlayerIdleRightKnight,bluPlayerIdleRightArcher},{bluPlayerWalkAttackRightKnight,bluPlayerWalkingLegsRightArcher},{bluPlayerIdleShieldRightKnight,null},{bluPlayerIdleShieldDrawRightKnight},{bluPlayerWalkingShieldRightKnight}}};
+        bluPlayer = new Animation[][][]{{{bluPlayerWalkLeftKnight,bluPlayerWalkLeftArcher},null,null,{bluPlayerAttackLeftKnight,bluPlayerIdleLegsLeftArcher}, {bluPlayerIdleLeftKnight,bluPlayerIdleLeftArcher},{bluPlayerWalkAttackLeftKnight,bluPlayerWalkingLegsLeftArcher},{bluPlayerIdleShieldLeftKnight,null},{bluPlayerIdleShieldDrawLeftKnight},{bluPlayerWalkingShieldLeftKnight}, {bluPlayerWalkingShieldDrawLeftKnight}},{{bluPlayerWalkRightKnight,bluPlayerWalkRightArcher},null,null,{bluPlayerAttackRightKnight,bluPlayerIdleLegsRightArcher}, {bluPlayerIdleRightKnight,bluPlayerIdleRightArcher},{bluPlayerWalkAttackRightKnight,bluPlayerWalkingLegsRightArcher},{bluPlayerIdleShieldRightKnight,null},{bluPlayerIdleShieldDrawRightKnight},{bluPlayerWalkingShieldRightKnight}, {bluPlayerWalkingShieldDrawRightKnight}}};
     }
 
     /**
@@ -194,6 +194,10 @@ public class AnimationManager {
     public static final int SHIELD_WALKING = 128;
     public static final int SHIELD_DRAW_IDLE = 256;
     public static final int SHIELD_DRAW_WALKING = 512;
+
+    public static final int STABBING_IDLE = 1024;
+    public static final int STABBING_WALKING = 2048;
+
     public static final int DIRECTION = 1;
     public static final int ISWALKING = 2;
     public static final int ISFALLING = 4;
