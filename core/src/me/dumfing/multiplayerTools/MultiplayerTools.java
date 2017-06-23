@@ -38,11 +38,13 @@ public class MultiplayerTools {
     }
     public static void register(EndPoint endpoint){
         Kryo serializer = endpoint.getKryo();
-        //Can't register Connection so will have to switch with Integer
+        //Prepares everything for serialization to be sent over the network
+        //these are the only classes that are sent around
         serializer.register(GridPoint2.class);
         serializer.register(HashMap.class);
         serializer.register(LinkedList.class);
         serializer.register(Rectangle.class);
+        serializer.register(ConcurrentGameWorld.KillInfo.class);
         serializer.register(PlayerSoldier.class);
         serializer.register(Projectile.class);
         serializer.register(ServerProjectilePositions.class);
@@ -58,6 +60,7 @@ public class MultiplayerTools {
         serializer.register(ClientPickedTeam.class);
         serializer.register(ClientSentChatMessage.class);
         serializer.register(ClientKeysUpdate.class);
+        serializer.register(ServerKillLog.class);
         serializer.register(ServerSummary.class);
         serializer.register(ServerResponse.class);
         serializer.register(ServerResponse.ResponseCode.class);
@@ -94,6 +97,20 @@ public class MultiplayerTools {
 
         public LinkedList<GridPoint2> getTimes() {
             return times;
+        }
+    }
+    public static class ServerKillLog{
+        LinkedList<ConcurrentGameWorld.KillInfo> kills;
+
+        public ServerKillLog() {
+        }
+
+        public ServerKillLog(LinkedList<ConcurrentGameWorld.KillInfo> kills) {
+            this.kills = kills;
+        }
+
+        public LinkedList<ConcurrentGameWorld.KillInfo> getKills() {
+            return kills;
         }
     }
     /**

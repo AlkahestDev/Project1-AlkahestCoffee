@@ -46,6 +46,7 @@ public class MultiplayerClient {
     private HashMap<Integer, PlayerSoldier> players = new HashMap<Integer, PlayerSoldier>();
     CaptureFlag[] flags = new CaptureFlag[2];
     LinkedList<GridPoint2> respawnTimes = new LinkedList<GridPoint2>();
+    LinkedList<ConcurrentGameWorld.KillInfo> killLog = new LinkedList<ConcurrentGameWorld.KillInfo>();
     private boolean findingServers = false;
     private Client playerClient;
     private HashMap<String, MultiplayerTools.ServerSummary> serverSummaries;
@@ -60,6 +61,7 @@ public class MultiplayerClient {
     private boolean hasNewProjectileInfo = false;
     private boolean hasNewFlagInfo = false;
     private boolean hasNewRespawnInfo = false;
+    private boolean hasNewKillInfo = false;
     public MultiplayerClient(){
         playerClient = new Client();
         serverSummaries = new HashMap<String, MultiplayerTools.ServerSummary>();
@@ -154,6 +156,10 @@ public class MultiplayerClient {
                 else if(o instanceof  MultiplayerTools.ServerRespawnTimes){
                     respawnTimes = ((MultiplayerTools.ServerRespawnTimes) o).getTimes();
                     hasNewRespawnInfo = true;
+                }
+                else if(o instanceof MultiplayerTools.ServerKillLog){
+                    killLog = ((MultiplayerTools.ServerKillLog) o).getKills();
+                    hasNewKillInfo = true;
                 }
                 super.received(connection, o);
             }
@@ -328,6 +334,16 @@ public class MultiplayerClient {
         return ogOut;
     }
 
+    public boolean isHasNewKillInfo() {
+        boolean ogOut = hasNewKillInfo;
+        hasNewKillInfo = false;
+        return ogOut;
+    }
+
+    public LinkedList<ConcurrentGameWorld.KillInfo> getKillLog() {
+        return killLog;
+    }
+
     public CaptureFlag[] getFlags() {
         return flags;
     }
@@ -339,7 +355,6 @@ public class MultiplayerClient {
     public LinkedList<GridPoint2> getRespawnTimes() {
         return respawnTimes;
     }
-
     /**
      * Returns how many seconds until the game starts
      * @return

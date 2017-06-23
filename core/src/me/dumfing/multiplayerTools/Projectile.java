@@ -28,6 +28,7 @@ public class Projectile {
     int physicsParent = -1; //upon hitting a player, the arrow will inherit all of their velocities
     boolean particlesStarted = false;
     boolean killedPlayer = false;
+    private boolean killLogged = false;
     private String serverHash; // hashcodes between the client and server are different, this will be used for the client to keep track of arrows
     //0 for arrow
     public Projectile(){}
@@ -41,7 +42,7 @@ public class Projectile {
         this.attackerTeam = attackerTeam;
         this.caster = caster;
         this.serverHash = ""+caster+System.currentTimeMillis(); // the same person shouldn't be able to fire 2 arrows in the same time
-        System.out.println(this.serverHash);
+        System.out.println("new arrow: "+this.serverHash);
     }
 
     public void checkCollisions(HashMap<Integer,PlayerSoldier> players, WorldMap world) {
@@ -146,5 +147,13 @@ public class Projectile {
 
     public void setParticlesStarted(boolean particlesStarted) {
         this.particlesStarted = particlesStarted;
+    }
+
+    public boolean isKillLogged() {
+        return killLogged;
+    }
+
+    public void setKillLogged(boolean killLogged) {
+        this.killLogged = killLogged;
     }
 }

@@ -20,6 +20,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 import static me.dumfing.client.maingame.MainGame.*;
+import static me.dumfing.multiplayerTools.ConcurrentGameWorld.BOW;
+import static me.dumfing.multiplayerTools.ConcurrentGameWorld.SWORD;
 
 /**
  * Created by dumpl on 5/15/2017.
@@ -110,6 +112,9 @@ public class ClientGameInstance implements InputProcessor{
             }
             if(gameClient.isHasNewRespawnInfo()){
                 playWorld.updateRespawnTimes(gameClient.getRespawnTimes());
+            }
+            if(gameClient.isHasNewKillInfo()){
+                playWorld.updateKillInfo(gameClient.getKillLog());
             }
         }
         for(Vector3 partInfo : playWorld.getParticles()){
@@ -361,10 +366,9 @@ public class ClientGameInstance implements InputProcessor{
         return playerScY;
     }
 
-    private void drawHudSprites(Batch batch, PlayerSoldier center){
+    private void drawHudSprites(SpriteBatch batch, PlayerSoldier center){
         fonts.get(DAGGER30).addText(center.getName(),5,25+HEALTH_BAR_HEIGHT);
         fonts.get(DAGGER30).addText(Integer.toString(center.getHealth()),5,25);
-        fonts.get(DAGGER30).addText(String.format("[WHITE]%2.2f %2.2f",center.getX(),center.getY()),5,Gdx.graphics.getHeight()-55);
         fonts.get(DAGGER40).addText(String.format("[WHITE]%d",playWorld.getRedScore()),400,Gdx.graphics.getHeight()-10);
         fonts.get(DAGGER40).addText(String.format("[WHITE]%d",playWorld.getBluScore()),Gdx.graphics.getWidth()-420,Gdx.graphics.getHeight()-10);
         fonts.get(DAGGER30).addText(String.format("[WHITE]Kills: %d",clientSoldier().getKills()),430,Gdx.graphics.getHeight()-15);
@@ -373,8 +377,16 @@ public class ClientGameInstance implements InputProcessor{
         fonts.get(DAGGER30).addText(deathsText,Gdx.graphics.getWidth()-430-deathsWidth,Gdx.graphics.getHeight()-15);
         int numKills = playWorld.getKillLog().size();
         LinkedList<ConcurrentGameWorld.KillInfo> kills = playWorld.getKillLog();
-        for(int i = 0;i<Math.max(0,numKills);i++){
+        for(int i = 0;i<Math.min(4,numKills);i++){
             fonts.get(DAGGER20).addText("[BLACK]"+kills.get(numKills-1-i).toString(),5,Gdx.graphics.getHeight()-i*25-5);
+            switch (kills.get(numKills-1-i).getWeapon()){
+                case SWORD:
+                    batch.draw(MainGame.swordSill,100,Gdx.graphics.getHeight()-i*25-23,17,17);
+                    break;
+                case BOW:
+                    batch.draw(MainGame.bowSill,100,Gdx.graphics.getHeight()-i*25-23,17,17);
+                    break;
+            }
         }
     }
     private void drawDeathSprites(Batch batch, PlayerSoldier center){

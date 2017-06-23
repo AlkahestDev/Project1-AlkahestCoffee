@@ -35,6 +35,7 @@ public class ServerGameInstance {
             sv.quickSendAll(new MultiplayerTools.ServerProjectilePositions(world.getProjectiles()));
             sv.quickSendAll(new MultiplayerTools.ServerFlagPositions(world.getFlags()));
             sv.quickSendAll(new MultiplayerTools.ServerRespawnTimes(world.getRespawnTimers()));
+            sv.quickSendAll(new MultiplayerTools.ServerKillLog(world.getKillLog()));
         }
 
         frameCount++;

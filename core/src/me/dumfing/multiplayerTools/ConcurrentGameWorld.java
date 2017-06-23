@@ -18,8 +18,8 @@ import static me.dumfing.multiplayerTools.PlayerSoldier.KNIGHT;
  * simulation of how the server's world is working
  */
 public class ConcurrentGameWorld {
-    private static final int SWORD = 0;
-    private static final int BOW = 1;
+    public static final int SWORD = 0;
+    public static final int BOW = 1;
     private HashMap<Integer, PlayerSoldier> players;
     private WorldMap worldMap;
     private LinkedList<Projectile> projectiles = new LinkedList<Projectile>();
@@ -32,6 +32,7 @@ public class ConcurrentGameWorld {
     public static class KillInfo{
         private String killer, victim;
         private int weapon;
+        public KillInfo(){}
         public KillInfo(String k, String v, int weapon) {
             this.killer = k;
             this.victim = v;
@@ -52,7 +53,7 @@ public class ConcurrentGameWorld {
 
         @Override
         public String toString() {
-            return String.format("%12s    %s",getKiller(),getVictim());
+            return String.format("%-12s     %s",getKiller(),getVictim());
         }
     }
     public ConcurrentGameWorld(HashMap<Integer, PlayerSoldier> initialPlayers){
@@ -114,10 +115,11 @@ public class ConcurrentGameWorld {
         }
         for(Projectile proj : projectiles){ // iterate through the list of projectiles
             proj.checkCollisions(getLivingPlayers(), worldMap); // check if the projectile is colliding with anything
-            if(proj.killedPlayer){
+            if(proj.killedPlayer && !proj.isKillLogged()){
                 GridPoint2 killPair = proj.getAttackPair();
                 logKill(killPair.x,killPair.y,BOW);
                 System.out.println(players.get(killPair.x).getName()+" killed "+players.get(killPair.y).getName()+" with an arrow");
+                proj.setKillLogged(true);
             }
         }
         for(int i = projectiles.size()-1;i>-1;i--){ // loop in reverse to prepare to remove projectiles from the list
@@ -276,7 +278,6 @@ public class ConcurrentGameWorld {
 
             // Walking
             if ((keyDown(keys, MultiplayerTools.Keys.A) || keyDown(keys, MultiplayerTools.Keys.D))&&(animation&AnimationManager.SHIELD_DRAW_WALKING)!=AnimationManager.SHIELD_DRAW_WALKING){
-                System.out.println("shield draw walk 1");
                 animation += AnimationManager.SHIELD_DRAW_WALKING;
             }
             // Idle
@@ -416,6 +417,7 @@ public class ConcurrentGameWorld {
                 for(Integer v : players.keySet()){
                     if(players.get(v) == pIn){
                         projectiles.add(new Projectile(pIn.getX() + pIn.getWidth() / 2f, pIn.getY() + pIn.getHeight() / 2f, Math.min(2, (float) pIn.getBowDrawTime() / 45f), pIn.getMouseAngle(), 0, pIn.getTeam(),v));
+                        break;
                     }
                 }
             }
@@ -508,5 +510,8 @@ public class ConcurrentGameWorld {
      */
     public LinkedList<KillInfo> getKillLog() {
         return killLog;
+    }
+    public void updateKillInfo(LinkedList<KillInfo> killInfoIn){
+        this.killLog = killInfoIn;
     }
 }
