@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ArtifactManager">
-    <artifact type="jar" name="Server Launcher">
-      <output-path>$PROJECT_DIR$/out/artifacts/Server_Launcher</output-path>
+    <artifact type="jar" name="Desktop Launcher">
+      <output-path>$PROJECT_DIR$/out/artifacts/Desktop_Launcher</output-path>
       <root id="archive" name="Multiplayer.jar">
         <element id="module-output" name="core" />
         <element id="module-output" name="desktop" />
@@ -27,29 +27,32 @@
         <element id="dir-copy" path="$PROJECT_DIR$/core/assets" />
       </root>
     </artifact>
-    <artifact type="jar" name="Desktop Launcher">
-      <output-path>$PROJECT_DIR$/out/artifacts/Desktop_Launcher</output-path>
+    <artifact type="jar" name="Server Launcher">
+      <output-path>$PROJECT_DIR$/out/artifacts/Server_Launcher</output-path>
       <root id="archive" name="Multiplayer.jar">
+        <element id="directory" name="META-INF">
+          <element id="file-copy" path="$PROJECT_DIR$/core/META-INF/MANIFEST.MF" />
+        </element>
         <element id="module-output" name="core" />
         <element id="module-output" name="desktop" />
+        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/jlayer-1.0.1-gdx.jar" path-in-jar="/" />
+        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-1.9.5.jar" path-in-jar="/" />
+        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-backend-lwjgl-1.9.5.jar" path-in-jar="/" />
+        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-tools-1.9.5.jar" path-in-jar="/" />
+        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/kryonet-2.21-all.jar" path-in-jar="/" />
         <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.box2dlights/box2dlights/1.4/3d77ad5b4164fb32fc67e2446e35911bb0aaf0bd/box2dlights-1.4.jar" path-in-jar="/" />
-        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/lwjgl-platform-2.9.2-natives-linux.jar" path-in-jar="/" />
-        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/lwjgl-platform-2.9.2-natives-osx.jar" path-in-jar="/" />
-        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/lwjgl-platform-2.9.2-natives-windows.jar" path-in-jar="/" />
+        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/jinput-2.0.5.jar" path-in-jar="/" />
+        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-desktop.jar" path-in-jar="/" />
+        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/jutils-1.0.0.jar" path-in-jar="/" />
+        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/lwjgl_util-2.9.2.jar" path-in-jar="/" />
+        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/jorbis-0.0.17.jar" path-in-jar="/" />
+        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/lwjgl-2.9.2.jar" path-in-jar="/" />
         <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/jinput-platform-2.0.5-natives-osx.jar" path-in-jar="/" />
         <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/jinput-platform-2.0.5-natives-windows.jar" path-in-jar="/" />
         <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/jinput-platform-2.0.5-natives-linux.jar" path-in-jar="/" />
-        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/jinput-2.0.5.jar" path-in-jar="/" />
-        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/jlayer-1.0.1-gdx.jar" path-in-jar="/" />
-        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-platform-1.9.5-natives-desktop.jar" path-in-jar="/" />
-        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-backend-lwjgl-1.9.5.jar" path-in-jar="/" />
-        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-tools-1.9.5.jar" path-in-jar="/" />
-        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/jorbis-0.0.17.jar" path-in-jar="/" />
-        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/gdxJars/gdx-1.9.5.jar" path-in-jar="/" />
-        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/jutils-1.0.0.jar" path-in-jar="/" />
-        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/lwjgl-2.9.2.jar" path-in-jar="/" />
-        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/kryonet-2.21-all.jar" path-in-jar="/" />
-        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/lwjgl_util-2.9.2.jar" path-in-jar="/" />
+        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/lwjgl-platform-2.9.2-natives-linux.jar" path-in-jar="/" />
+        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/lwjgl-platform-2.9.2-natives-osx.jar" path-in-jar="/" />
+        <element id="extracted-dir" path="$PROJECT_DIR$/core/assets/javalibs/lwjgl/lwjgl-platform-2.9.2-natives-windows.jar" path-in-jar="/" />
         <element id="dir-copy" path="$PROJECT_DIR$/core/assets" />
       </root>
     </artifact>
