@@ -5,8 +5,11 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.utils.Array;
+import me.dumfing.client.maingame.MainGame;
 import me.dumfing.gdxtools.MenuTools;
 import me.dumfing.server.MainServer;
+
+import static me.dumfing.client.maingame.MainGame.DAGGER20;
 
 
 public class ServerRunningGameMenu extends Menu{
@@ -25,7 +28,7 @@ public class ServerRunningGameMenu extends Menu{
     @Override
     public void init() {
         numConnected = new MenuTools.QueueText(5, Gdx.graphics.getHeight()-35,0,0);
-        numConnected.setFont(0);
+        numConnected.setFont(DAGGER20);
         numConnected.setText("",getFonts());
         super.addQueueText(numConnected);
         super.setBackground(MenuTools.mGTR("simpleBG.png",getManager()));//new TextureRegion((Texture)getManager().get("4k-image-santiago.jpg")));

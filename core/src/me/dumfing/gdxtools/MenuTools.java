@@ -282,6 +282,7 @@ public class MenuTools {
         int[] heldKeys; // shift everything up by one because anykey is -1
         boolean showCursor;
         OnEnter enterText;
+        String hint;
 
         /**
          * Constructor for TextField
@@ -294,7 +295,11 @@ public class MenuTools {
             super(x,y,width,height);
             initVars();
         }
-
+        public TextField(float x, float y, float width, float height, String hint){
+            super(x,y,width,height);
+            initVars();
+            this.hint = hint;
+        }
         /**
          * Set the action for the TextField to call when the user presses enter
          * @param et OnEnter object for the TextField to call
@@ -310,9 +315,19 @@ public class MenuTools {
          */
         public void update(Array<BitmapFontCache> bmfc, boolean focused){
             handleHeldKeys();
-            bmfc.get(fontId).setColor(Color.BLACK);
-            String cutString = cutToSize(this.sOut.toString(),super.shape.width,bmfc.get(fontId).getFont());
-            bmfc.get(fontId).addText(cutString,super.shape.getX()+3,super.shape.getY()+super.shape.getHeight() - 7,0,cutString.length(),super.shape.getWidth(), Align.left,false);
+            if(this.sOut.toString().length()>0) {
+                GlyphLayout testLayout = new GlyphLayout(bmfc.get(fontId).getFont(), this.sOut.toString());
+                System.out.println(testLayout.height);
+                bmfc.get(fontId).setColor(Color.BLACK);
+                String cutString = cutToSize(this.sOut.toString(), super.shape.width, bmfc.get(fontId).getFont());
+                bmfc.get(fontId).addText(cutString, super.shape.getX() + 3, super.shape.getY() + super.shape.getHeight()/2f + testLayout.height/2f, 0, cutString.length(), super.shape.getWidth(), Align.left, false);
+            }
+            else if(this.hint!=null && !focused){
+                GlyphLayout testLayout = new GlyphLayout(bmfc.get(fontId).getFont(), this.hint);
+                System.out.println(testLayout.height);
+                bmfc.get(fontId).setColor(Color.LIGHT_GRAY);
+                bmfc.get(fontId).addText(hint, super.shape.getX()+3, super.shape.getY()+super.shape.getHeight()/2f+testLayout.height/2f);
+            }
             if(focused){
                 this.frameCount++; // Integer.MAX_VALUE frames is around 414 days to overflow, if a user has the text box open for 414 days, the game probably won't be worth keeping open
             }

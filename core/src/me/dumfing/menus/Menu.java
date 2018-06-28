@@ -312,6 +312,9 @@ public class Menu implements InputProcessor{
                 focused = textFields.get((textFields.indexOf(focused)+1)%textFields.size());
             }
         }
+        else if(keycode == Input.Keys.ESCAPE){
+            focused = null;
+        }
         return true;
     }
 

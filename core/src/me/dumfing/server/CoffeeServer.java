@@ -167,8 +167,8 @@ public class CoffeeServer extends ApplicationAdapter implements InputProcessor{
     private Menu createServerForm(){
         Menu out = new Menu(fonts,manager,camView);
         out.setBackground(new TextureRegion((Texture)manager.get("simpleBGB.png")));
-        final MenuTools.TextField serverNameField = new MenuTools.TextField(Gdx.graphics.getWidth()/2-150,Gdx.graphics.getHeight()-90,300,45);
-        final MenuTools.TextField maxPlayersField = new MenuTools.TextField(Gdx.graphics.getWidth()/2-150,Gdx.graphics.getHeight()-140,300,45);
+        final MenuTools.TextField serverNameField = new MenuTools.TextField(Gdx.graphics.getWidth()/2-150,Gdx.graphics.getHeight()-90,300,45, "Server Name");
+        final MenuTools.TextField maxPlayersField = new MenuTools.TextField(Gdx.graphics.getWidth()/2-150,Gdx.graphics.getHeight()-140,300,45, "Max players");
         MenuTools.Button submitInfo = new MenuTools.Button(Gdx.graphics.getWidth()/2-80,Gdx.graphics.getHeight()-200,160,55);
         final MenuTools.QueueText errorText = new MenuTools.QueueText(5,Gdx.graphics.getHeight()-20,0,0);
         errorText.setFont(0);
