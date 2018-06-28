@@ -317,14 +317,12 @@ public class MenuTools {
             handleHeldKeys();
             if(this.sOut.toString().length()>0) {
                 GlyphLayout testLayout = new GlyphLayout(bmfc.get(fontId).getFont(), this.sOut.toString());
-                System.out.println(testLayout.height);
                 bmfc.get(fontId).setColor(Color.BLACK);
                 String cutString = cutToSize(this.sOut.toString(), super.shape.width, bmfc.get(fontId).getFont());
                 bmfc.get(fontId).addText(cutString, super.shape.getX() + 3, super.shape.getY() + super.shape.getHeight()/2f + testLayout.height/2f, 0, cutString.length(), super.shape.getWidth(), Align.left, false);
             }
             else if(this.hint!=null && !focused){
                 GlyphLayout testLayout = new GlyphLayout(bmfc.get(fontId).getFont(), this.hint);
-                System.out.println(testLayout.height);
                 bmfc.get(fontId).setColor(Color.LIGHT_GRAY);
                 bmfc.get(fontId).addText(hint, super.shape.getX()+3, super.shape.getY()+super.shape.getHeight()/2f+testLayout.height/2f);
             }

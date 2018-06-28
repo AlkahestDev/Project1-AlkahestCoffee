@@ -47,7 +47,7 @@ public class ServerBrowser extends Menu{
         addRefreshButton();
         addBackButton();
         addOfflineButton();
-        MenuTools.TextField directConnect = new MenuTools.TextField(5,5,400,40);
+        MenuTools.TextField directConnect = new MenuTools.TextField(5,5,400,40, "Server IP");
         directConnect.setEnterAction(new MenuTools.OnEnter() {
             @Override
             public void action(String sIn) {

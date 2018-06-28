@@ -364,9 +364,10 @@ public class Menu implements InputProcessor{
         for(MenuBox mb : menuBoxes){
             focused = mb.textFieldsClicked(screenX,screenY);
             if(focused!=null){
-                break;
+                return true;
             }
         }
+        focused = null;
         return true;
     }
 
