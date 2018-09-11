@@ -9,7 +9,7 @@ public class DesktopLauncher {
 	public static void main (String [] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title="Alkahest Coffee Corporation";
-		boolean fullscreen = true;
+		boolean fullscreen = false;
 		if(fullscreen) {
             config.fullscreen = true;
             config.width = 999999;
