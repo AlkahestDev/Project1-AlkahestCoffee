@@ -3,7 +3,7 @@ A 2D network multiplayer PVP game using LibGDX for graphics and Kryonet for netw
 
 ![Game Screenshot](readme_data/game_screenshot.png)
 
-##Features
+## Features
 
 - 2 different classes with their own team colours
     - ![Blue Swordsman](core/assets/SpriteSheets/sprites/KnightSprites/Idle/Blue/ilbpk_0.png) ![Red Swordsman](core/assets/SpriteSheets/sprites/KnightSprites/Idle/Red/ilrpk_0.png)
