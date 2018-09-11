@@ -1,8 +1,6 @@
 ToDO List
 
 Main Things:
-- Attacking
-- Shielding
 - Game-mode setup
 - Bot AI
 
@@ -13,12 +11,10 @@ Other:
 - Map Animations
 
 Graphics:
-- Shielding
 - Stabbing (horizontal attack?)
-- Archer(walking, shooting, stab, idle)
+- Archer(stab)
 - Jumping/Landing implementation
 - Maps(Flags/Base)
-- Loading screen
 - Basic water
 - Crouching
 + Add ShieldMovement to walking sprites
