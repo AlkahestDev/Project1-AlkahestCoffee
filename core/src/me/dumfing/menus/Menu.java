@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import me.dumfing.gdxtools.MenuTools;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 
 /**
@@ -36,11 +37,13 @@ public class Menu implements InputProcessor{
     private MenuTools.TextField focused; // the textbox that the user will be typing into
     private OrthographicCamera camera;
     private AssetManager manager;
+    private HashSet<String> requestedItems;
     /**
      * Constructor for the menu
      * @param bmfc BitMapFontCache for drawing all text in the menu
      */
     public Menu(Array<BitmapFontCache> bmfc, AssetManager manager, OrthographicCamera camera){
+        requestedItems = new HashSet<String>();
         buttons = new LinkedList<MenuTools.Button>();
         this.manager = manager;
         backgroundFrame = 0;
@@ -274,6 +277,21 @@ public class Menu implements InputProcessor{
      */
     public void clearFocused(){
         this.focused = null;
+    }
+
+    public void queueItemForLoading(String filename, Class type){
+        if(!this.getManager().contains(filename, type)) {
+            this.requestedItems.add(filename);
+            this.getManager().load(filename, type);
+        }
+    }
+
+    public boolean allAssetsLoaded(){
+        boolean allLoaded = true;
+        for(String s : requestedItems){
+            allLoaded = (allLoaded && this.getManager().isLoaded(s));
+        }
+        return allLoaded;
     }
 
     /**
